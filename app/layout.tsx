@@ -2,9 +2,12 @@ import './globals.css';
 import { Space_Grotesk } from 'next/font/google';
 
 export const metadata = {
-  title: 'Next.js App Router + NextAuth + Tailwind CSS',
+  title: {
+    default: 'LimeFolio',
+    template: '%s | LimeFolio'
+  },
   description:
-    'A user admin dashboard configured with Next.js, Postgres, NextAuth, Tailwind CSS, TypeScript, and Prettier.'
+    'A portfolio platform for developers and designers to showcase their work.'
 };
 
 const space_grotesk = Space_Grotesk({

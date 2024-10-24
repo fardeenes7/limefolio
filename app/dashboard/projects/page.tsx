@@ -159,10 +159,10 @@ export default function ProjectPage() {
             </TableHeader>
             <TableBody>
               {projects.map((project) => (
-                <TableRow>
+                <TableRow key={project.id}>
                   <TableCell className="hidden sm:table-cell">
                     <Image
-                      alt="Product image"
+                      alt="Project image"
                       className="aspect-video rounded-md object-cover"
                       height="90"
                       src={project.image}

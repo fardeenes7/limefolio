@@ -1,6 +1,11 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { File, PlusCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+export const metadata = {
+  title: 'Dashboard',
+  description: 'Limefolio user dashboard'
+};
+
 export default async function ProductsPage({
   searchParams
 }: {

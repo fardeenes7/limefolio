@@ -1,4 +1,4 @@
-import SiteConfig from '@/lib/site-config';
+import { SiteConfig } from '@/lib/site-config';
 import Link from 'next/link';
 import {
   FolderKanban,
@@ -30,11 +30,12 @@ import {
   TooltipTrigger
 } from '@/components/ui/tooltip';
 import { User } from './user';
-import { VercelLogo } from '@/components/icons';
+import { Logo, VercelLogo } from '@/components/icons';
 import Providers from './providers';
 import { NavItem } from './nav-item';
 import { SearchInput } from './search';
 import { DynamicBreadcrumbs } from './breadcrumb';
+import Image from 'next/image';
 
 const navLinks = [
   { href: '/dashboard', label: 'Dashboard', icon: Home },
@@ -74,11 +75,23 @@ function DesktopNav() {
       <nav className="flex flex-col gap-6 px-4 sm:py-5 text-sm">
         <Link
           href="/dashboard"
+          className="group flex h-10 shrink-0 items-center gap-2 md:h-8"
+        >
+          <Image
+            src="/limefolio-icon.svg"
+            alt="Limefolio"
+            width={32}
+            height={32}
+          />
+          <span className="font-bold text-2xl">{SiteConfig.title}</span>
+        </Link>
+        {/* <Link
+          href="/dashboard"
           className="group flex h-9 w-9 shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:h-8 md:w-8 md:text-base"
         >
           <VercelLogo className="h-3 w-3 transition-all group-hover:scale-110" />
           <span className="sr-only">{SiteConfig.name}</span>
-        </Link>
+        </Link> */}
         <div className="flex flex-col gap-2">
           {navLinks.map((item, idx) => (
             <NavItem key={idx} href={item.href} label={item.label}>

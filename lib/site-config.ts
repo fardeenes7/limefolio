@@ -1,5 +1,3 @@
-export default function SiteConfig() {
-  return {
-    title: 'LimeFolio'
-  };
-}
+export const SiteConfig = {
+  title: 'LimeFolio'
+};
