@@ -11,10 +11,17 @@ import { signIn } from '@/auth';
 import Image from 'next/image';
 import Link from 'next/link';
 import { SiteConfig } from '@/lib/site-config';
-import { Facebook, Github, Google } from '@/components/icons';
 import { Badge } from '@/components/ui/badge';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { AlertCircle, Chrome, Github, Facebook } from 'lucide-react';
 
-export default function LoginPage() {
+export default async function LoginPage({
+  searchParams
+}: {
+  searchParams: Promise<{ error?: string }>;
+}) {
+  const {error} = await searchParams
+
   return (
     <div className="min-h-full flex flex-col justify-center items-center p-8">
       <Card className=" w-full max-w-sm">
@@ -34,17 +41,32 @@ export default function LoginPage() {
           <CardDescription>Login to access your account.</CardDescription>
         </CardHeader>
         <CardContent className="grid gap-2">
+          {error && (
+            <Alert variant="destructive" className="mb-4">
+              <AlertCircle className="h-4 w-4" />
+              <AlertDescription>
+                {error === 'OAuthAccountNotLinked'
+                  ? 'This email is already associated with another account. Please use a different sign-in method.'
+                  : error === 'OAuthCallback'
+                    ? 'Authentication failed. Please try again.'
+                    : error === 'Configuration'
+                      ? 'There is a problem with the server configuration. Please contact support.'
+                      : 'An error occurred during sign in. Please try again.'}
+              </AlertDescription>
+            </Alert>
+          )}
+
           <form
             action={async () => {
               'use server';
               await signIn('google', {
-                redirectTo: '/dashboard'
+                redirectTo: '/app'
               });
             }}
             className="w-full"
           >
             <Button className="w-full flex gap-2" variant="outline">
-              <Google className="size-5" />
+              <Chrome className="size-5" />
               Sign in with Google
             </Button>
           </form>
@@ -52,7 +74,7 @@ export default function LoginPage() {
             action={async () => {
               'use server';
               await signIn('facebook', {
-                redirectTo: '/dashboard'
+                redirectTo: '/app'
               });
             }}
             className="w-full"
@@ -66,27 +88,16 @@ export default function LoginPage() {
             action={async () => {
               'use server';
               await signIn('github', {
-                redirectTo: '/dashboard'
+                redirectTo: '/app'
               });
             }}
             className="w-full"
           >
-            <Button disabled className="w-full flex gap-2" variant="outline">
+            <Button className="w-full flex gap-2" variant="outline">
               <Github className="size-5" />
-              Sign in with Github <Badge>Upcoming</Badge>
+              Sign in with Github
             </Button>
           </form>
-          {/* <form
-            action={async () => {
-              'use server';
-              await signIn('github', {
-                redirectTo: '/'
-                });
-                }}
-                className="w-full"
-                >
-                <Button className="w-full">Sign in with GitHub</Button>
-                </form> */}
         </CardContent>
       </Card>
     </div>

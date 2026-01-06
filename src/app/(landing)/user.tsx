@@ -45,7 +45,7 @@ export async function User() {
         <DropdownMenuSeparator />
 
         <DropdownMenuItem>
-          <Link href="/dashboard">Dashboard</Link>
+          <Link href="/app">Dashboard</Link>
         </DropdownMenuItem>
         <DropdownMenuItem>Settings</DropdownMenuItem>
         <DropdownMenuItem>Support</DropdownMenuItem>

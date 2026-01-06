@@ -17,7 +17,7 @@ export default function Component() {
         <div className="container px-4 md:px-6">
           <div className="flex flex-col items-center space-y-4 text-center">
             <div className="space-y-2">
-              <h1 className="text-3xl font-extrabold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl/none bg-gradient-to-br from-primary via-blue-500 to-primary text-transparent bg-clip-text  bg-300%  animate-gradient">
+              <h1 className="text-3xl font-extrabold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl/none bg-linear-to-br from-primary via-blue-500 to-primary text-transparent bg-clip-text  bg-300%  animate-gradient">
                 Showcase Your Creative Journey
               </h1>
               <p className="mx-auto max-w-[700px] text-gray-500 md:text-xl dark:text-gray-400">
