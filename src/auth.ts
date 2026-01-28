@@ -37,9 +37,13 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                             },
                             body: JSON.stringify({
                                 grant_type: "convert_token",
-                                client_id: process.env.GOOGLE_CLIENT_ID, // or GITHUB based on provider
-                                client_secret: process.env.GOOGLE_CLIENT_SECRET,
-                                backend: account.provider, // 'google-oauth2' or 'github'
+                                client_id: process.env.API_CLIENT_ID!,
+                                client_secret:
+                                    process.env.API_CLIENT_SECRET! || "ssss",
+                                backend:
+                                    account.provider === "google"
+                                        ? "google-oauth2"
+                                        : account.provider,
                                 token: account.access_token,
                             }),
                         },
