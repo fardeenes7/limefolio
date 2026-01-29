@@ -56,6 +56,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                     }
                 } catch (error) {
                     console.error("Error converting token:", error);
+                    throw error;
                 }
             }
 
@@ -68,7 +69,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         },
     },
     pages: {
-        signIn: "/auth/signin",
-        error: "/auth/error",
+        signIn: "/login",
+        error: "/login",
     },
 });

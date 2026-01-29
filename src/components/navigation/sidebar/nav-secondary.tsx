@@ -6,18 +6,24 @@ import {
     SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import Link from "next/link";
-import { TablerIcon } from "@tabler/icons-react";
+import { IconLifebuoy, IconSend, TablerIcon } from "@tabler/icons-react";
+
+const items = [
+    {
+        title: "Support",
+        url: "/app/support",
+        icon: IconLifebuoy,
+    },
+    {
+        title: "Feedback",
+        url: "/app/feedback",
+        icon: IconSend,
+    },
+];
 
 export function NavSecondary({
-    items,
     ...props
-}: {
-    items: {
-        title: string;
-        url: string;
-        icon: TablerIcon;
-    }[];
-} & React.ComponentPropsWithoutRef<typeof SidebarGroup>) {
+}: React.ComponentPropsWithoutRef<typeof SidebarGroup>) {
     return (
         <SidebarGroup {...props}>
             <SidebarGroupContent>

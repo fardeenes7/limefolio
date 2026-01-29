@@ -1,5 +1,4 @@
-"use client";
-
+import { auth, signOut } from "@/auth";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
     DropdownMenu,
@@ -14,7 +13,6 @@ import {
     SidebarMenu,
     SidebarMenuButton,
     SidebarMenuItem,
-    useSidebar,
 } from "@/components/ui/sidebar";
 import {
     IconBadge,
@@ -24,18 +22,13 @@ import {
     IconSelector,
     IconSparkles,
 } from "@tabler/icons-react";
-
-export function NavUser({
-    user,
-}: {
-    user: {
-        name: string;
-        email: string;
-        avatar: string;
-    };
-}) {
-    const { isMobile } = useSidebar();
-
+const user = {
+    name: "shadcn",
+    email: "m@example.com",
+    avatar: "/placeholder-user.jpg",
+};
+export async function NavUser() {
+    const session = await auth();
     return (
         <SidebarMenu>
             <SidebarMenuItem>
@@ -47,19 +40,19 @@ export function NavUser({
                         >
                             <Avatar className="h-8 w-8 rounded-lg">
                                 <AvatarImage
-                                    src={user.avatar}
-                                    alt={user.name}
+                                    src={session?.user?.image || ""}
+                                    alt={session?.user?.name || ""}
                                 />
                                 <AvatarFallback className="rounded-lg">
-                                    CN
+                                    {session?.user?.name?.charAt(0) || "N/A"}
                                 </AvatarFallback>
                             </Avatar>
                             <div className="grid flex-1 text-left text-sm leading-tight">
                                 <span className="truncate font-medium">
-                                    {user.name}
+                                    {session?.user?.name || "N/A"}
                                 </span>
                                 <span className="truncate text-xs">
-                                    {user.email}
+                                    {session?.user?.email || "N/A"}
                                 </span>
                             </div>
                             <IconSelector className="ml-auto size-4" />
@@ -67,7 +60,8 @@ export function NavUser({
                     </DropdownMenuTrigger>
                     <DropdownMenuContent
                         className="w-(--radix-dropdown-menu-trigger-width) min-w-56 rounded-lg"
-                        side={isMobile ? "bottom" : "right"}
+                        // side={isMobile ? "bottom" : "right"}
+                        side="bottom"
                         align="end"
                         sideOffset={4}
                     >
@@ -75,19 +69,20 @@ export function NavUser({
                             <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                                 <Avatar className="h-8 w-8 rounded-lg">
                                     <AvatarImage
-                                        src={user.avatar}
-                                        alt={user.name}
+                                        src={session?.user?.image || ""}
+                                        alt={session?.user?.name || ""}
                                     />
                                     <AvatarFallback className="rounded-lg">
-                                        CN
+                                        {session?.user?.name?.charAt(0) ||
+                                            "N/A"}
                                     </AvatarFallback>
                                 </Avatar>
                                 <div className="grid flex-1 text-left text-sm leading-tight">
                                     <span className="truncate font-medium">
-                                        {user.name}
+                                        {session?.user?.name || "N/A"}
                                     </span>
                                     <span className="truncate text-xs">
-                                        {user.email}
+                                        {session?.user?.email || "N/A"}
                                     </span>
                                 </div>
                             </div>
@@ -115,10 +110,19 @@ export function NavUser({
                             </DropdownMenuItem>
                         </DropdownMenuGroup>
                         <DropdownMenuSeparator />
-                        <DropdownMenuItem>
-                            <IconLogout />
-                            Log out
-                        </DropdownMenuItem>
+                        <form
+                            action={async () => {
+                                "use server";
+                                await signOut({ redirectTo: "/login" });
+                            }}
+                        >
+                            <DropdownMenuItem asChild>
+                                <button type="submit" className="w-full">
+                                    <IconLogout />
+                                    Log out
+                                </button>
+                            </DropdownMenuItem>
+                        </form>
                     </DropdownMenuContent>
                 </DropdownMenu>
             </SidebarMenuItem>
