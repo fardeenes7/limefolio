@@ -5,31 +5,18 @@ import {
     IconLayoutDashboard,
     IconChartBar,
     IconActivity,
-    IconTrendingUp,
-    IconFileText,
     IconArticle,
     IconBriefcase,
     IconPhoto,
-    IconWorld,
     IconGlobe,
-    IconHierarchy,
     IconSearch,
-    IconUsers,
-    IconShieldLock,
-    IconMailForward,
     IconKey,
-    IconWebhook,
-    IconPlug,
     IconCreditCard,
     IconReceipt,
-    IconWallet,
     IconUser,
-    IconBuilding,
-    IconLock,
-    IconListCheck,
-    IconBook,
-    IconHelp,
-    IconHeartbeat,
+    IconPalette,
+    IconCode,
+    IconWorld,
 } from "@tabler/icons-react";
 
 import { NavMain } from "./nav-main";
@@ -45,6 +32,8 @@ import {
     SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { IconHttpPost, IconLifebuoy, IconSend } from "@tabler/icons-react";
+import Link from "next/link";
+import { LimefolioLIcon } from "@/lib/icons";
 
 const data = {
     user: {
@@ -54,143 +43,100 @@ const data = {
     },
     navMain: [
         {
-            title: "Dashboard",
-            url: "/dashboard",
+            title: "Overview",
+            url: "/app",
             isActive: true,
             items: [
                 {
-                    title: "Overview",
-                    url: "/dashboard",
+                    title: "Dashboard",
+                    url: "/app",
                     icon: IconLayoutDashboard,
+                },
+                {
+                    title: "Analytics",
+                    url: "/app/analytics",
+                    icon: IconChartBar,
                 },
             ],
         },
 
         {
-            title: "Content",
-            url: "/dashboard/content",
+            title: "Portfolio Content",
+            url: "/app/content",
             items: [
-                // {
-                //     title: "Pages",
-                //     url: "/dashboard/content/pages",
-                //     icon: IconFileText,
-                // },
                 {
                     title: "Projects",
-                    url: "/dashboard/content/projects",
+                    url: "/app/content/projects",
                     icon: IconBriefcase,
                 },
                 {
-                    title: "Experiences",
-                    url: "/dashboard/content/experiences",
-                    icon: IconBriefcase,
+                    title: "Experience",
+                    url: "/app/content/experiences",
+                    icon: IconActivity,
+                },
+                {
+                    title: "Skills",
+                    url: "/app/content/skills",
+                    icon: IconCode,
                 },
                 {
                     title: "Blog Posts",
-                    url: "/dashboard/content/posts",
+                    url: "/app/content/posts",
                     icon: IconArticle,
                 },
                 {
                     title: "Media Library",
-                    url: "/dashboard/content/media",
+                    url: "/app/content/media",
                     icon: IconPhoto,
                 },
             ],
         },
 
-        // {
-        //     title: "Analytics",
-        //     url: "/dashboard/analytics",
-        //     items: [
-        //         {
-        //             title: "Overview",
-        //             url: "/dashboard/analytics/overview",
-        //             icon: IconChartBar,
-        //         },
-        //         {
-        //             title: "Traffic",
-        //             url: "/dashboard/analytics/traffic",
-        //             icon: IconActivity,
-        //         },
-        //         {
-        //             title: "Engagement",
-        //             url: "/dashboard/analytics/engagement",
-        //             icon: IconUsers,
-        //         },
-        //         {
-        //             title: "Conversions",
-        //             url: "/dashboard/analytics/conversions",
-        //             icon: IconTrendingUp,
-        //         },
-        //     ],
-        // },
-
         {
-            title: "Sites",
-            url: "/dashboard/sites",
+            title: "Site Settings",
+            url: "/app/site",
             items: [
                 {
-                    title: "Domains",
-                    url: "/dashboard/sites/domains",
-                    icon: IconGlobe,
-                },
-                {
-                    title: "Subdomains",
-                    url: "/dashboard/sites/subdomains",
-                    icon: IconHierarchy,
-                },
-                {
-                    title: "SEO Settings",
-                    url: "/dashboard/sites/seo",
-                    icon: IconSearch,
-                },
-            ],
-        },
-
-        {
-            title: "Billing",
-            url: "/dashboard/billing",
-            items: [
-                {
-                    title: "Subscription",
-                    url: "/dashboard/billing/subscription",
-                    icon: IconCreditCard,
-                },
-                {
-                    title: "Invoices",
-                    url: "/dashboard/billing/invoices",
-                    icon: IconReceipt,
-                },
-                {
-                    title: "Payment Methods",
-                    url: "/dashboard/billing/payment-methods",
-                    icon: IconWallet,
-                },
-            ],
-        },
-
-        {
-            title: "Settings",
-            items: [
-                {
-                    title: "Profile",
-                    url: "/dashboard/settings/profile",
-                    icon: IconUser,
-                },
-                {
-                    title: "Site Settings",
-                    url: "/dashboard/settings/site",
+                    title: "Site",
+                    url: "/app/site",
                     icon: IconWorld,
                 },
                 {
-                    title: "API Keys",
-                    url: "/dashboard/settings/api-keys",
-                    icon: IconKey,
+                    title: "Domains",
+                    url: "/app/site/domains",
+                    icon: IconGlobe,
                 },
                 {
-                    title: "Security",
-                    url: "/dashboard/settings/security",
-                    icon: IconLock,
+                    title: "Appearance",
+                    url: "/app/site/appearance",
+                    icon: IconPalette,
+                },
+            ],
+        },
+
+        {
+            title: "Account",
+            url: "/app/account",
+            items: [
+                {
+                    title: "Subscription",
+                    url: "/app/billing/subscription",
+                    icon: IconCreditCard,
+                },
+                {
+                    title: "Billing & Invoices",
+                    url: "/app/billing/invoices",
+                    icon: IconReceipt,
+                },
+                {
+                    title: "Profile Settings",
+                    url: "/app/settings/profile",
+                    icon: IconUser,
+                },
+                {
+                    title: "API Keys",
+                    url: "/app/settings/api-keys",
+                    icon: IconKey,
                 },
             ],
         },
@@ -198,30 +144,13 @@ const data = {
     navSecondary: [
         {
             title: "Support",
-            url: "/support",
+            url: "/app/support",
             icon: IconLifebuoy,
         },
         {
             title: "Feedback",
-            url: "/feedback",
+            url: "/app/feedback",
             icon: IconSend,
-        },
-    ],
-    projects: [
-        {
-            name: "Design Engineering",
-            url: "#",
-            icon: IconHttpPost,
-        },
-        {
-            name: "Sales & Marketing",
-            url: "#",
-            icon: IconHttpPost,
-        },
-        {
-            name: "Travel",
-            url: "#",
-            icon: IconHttpPost,
         },
     ],
 };
@@ -233,19 +162,17 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 <SidebarMenu>
                     <SidebarMenuItem>
                         <SidebarMenuButton size="lg" asChild>
-                            <a href="#">
-                                <div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
-                                    <IconHttpPost className="size-4" />
-                                </div>
+                            <Link
+                                href="/app"
+                                className="flex items-center gap-2"
+                            >
+                                <LimefolioLIcon />
                                 <div className="grid flex-1 text-left text-sm leading-tight">
                                     <span className="truncate font-medium">
-                                        Acme Inc
-                                    </span>
-                                    <span className="truncate text-xs">
-                                        Enterprise
+                                        Limefolio
                                     </span>
                                 </div>
-                            </a>
+                            </Link>
                         </SidebarMenuButton>
                     </SidebarMenuItem>
                 </SidebarMenu>

@@ -1,4 +1,4 @@
-export function LimefolioLIcon() {
+export function LimefolioLIcon({ className }: { className?: string }) {
     return (
         <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -9,6 +9,7 @@ export function LimefolioLIcon() {
             height="500"
             preserveAspectRatio="xMidYMid meet"
             version="1.0"
+            className={className}
         >
             <defs>
                 <clipPath id="50344aa91f">
