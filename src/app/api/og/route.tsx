@@ -4,37 +4,21 @@ export const runtime = "edge";
 
 export async function GET(request: Request) {
     try {
-        //construct base url with scheme
         const { origin } = new URL(request.url);
-        console.log(origin);
         const { searchParams } = new URL(request.url);
 
         const title = searchParams.get("title") || "Limefolio";
         const description =
             searchParams.get("description") ||
-            "Build your portfolio in minutes";
+            "Build your developer portfolio in minutes.";
 
-        let calSansFont;
-        try {
-            calSansFont = await fetch(
-                new URL(
-                    "../../../../public/fonts/Outfit-Regular.ttf",
-                    import.meta.url,
-                ),
-            ).then((res) => res.arrayBuffer());
-        } catch (error) {
-            console.log(
-                "Failed to load Cal Sans font, using system font fallback",
-            );
-            calSansFont = null;
-        }
-
-        const grainPattern = Array.from({ length: 200 }, (_, i) => ({
-            x: Math.random() * 1200,
-            y: Math.random() * 630,
-            size: Math.random() * 2 + 0.5,
-            opacity: Math.random() * 0.4 + 0.1,
-        }));
+        // Load Outfit font
+        const fontData = await fetch(
+            new URL(
+                "../../../../public/fonts/Outfit-Regular.ttf",
+                import.meta.url,
+            ),
+        ).then((res) => res.arrayBuffer());
 
         return new ImageResponse(
             <div
@@ -43,103 +27,157 @@ export async function GET(request: Request) {
                     width: "100%",
                     display: "flex",
                     flexDirection: "column",
-                    alignItems: "flex-start",
-                    justifyContent: "flex-end",
-                    backgroundColor: "#000",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    backgroundColor: "#09090b", // zinc-950
                     position: "relative",
+                    fontFamily: '"Outfit"',
                 }}
             >
-                {grainPattern.map((grain, i) => (
-                    <div
-                        key={i}
-                        style={{
-                            position: "absolute",
-                            left: `${grain.x}px`,
-                            top: `${grain.y}px`,
-                            width: `${grain.size}px`,
-                            height: `${grain.size}px`,
-                            borderRadius: "50%",
-                            backgroundColor: "#000000",
-                            opacity: grain.opacity,
-                        }}
-                    />
-                ))}
+                {/* Background Grid Pattern */}
+                <div
+                    style={{
+                        position: "absolute",
+                        inset: 0,
+                        backgroundImage:
+                            "linear-gradient(to right, #27272a 1px, transparent 1px), linear-gradient(to bottom, #27272a 1px, transparent 1px)",
+                        backgroundSize: "64px 64px",
+                        opacity: 0.1,
+                        maskImage:
+                            "radial-gradient(circle at center, black, transparent)",
+                    }}
+                />
 
+                {/* Lime Glow Effect */}
+                <div
+                    style={{
+                        position: "absolute",
+                        top: "-20%",
+                        left: "50%",
+                        transform: "translateX(-50%)",
+                        width: "800px",
+                        height: "400px",
+                        background:
+                            "radial-gradient(circle, rgba(163, 230, 53, 0.15) 0%, rgba(0,0,0,0) 70%)",
+                        filter: "blur(40px)",
+                        opacity: 0.8,
+                    }}
+                />
+
+                {/* Content Container */}
                 <div
                     style={{
                         display: "flex",
                         flexDirection: "column",
-                        alignItems: "flex-start",
-                        justifyContent: "flex-end",
-                        padding: "80px",
-                        maxWidth: "1000px",
-                        position: "relative",
-                        zIndex: 1,
+                        alignItems: "center",
+                        justifyContent: "center",
+                        zIndex: 10,
+                        padding: "60px",
+                        textAlign: "center",
                     }}
                 >
+                    {/* Logo / Icon */}
                     <div
                         style={{
                             display: "flex",
                             alignItems: "center",
-                            marginTop: "40px",
-                            gap: "16px",
+                            justifyContent: "center",
+                            marginBottom: "32px",
+                            background: "rgba(39, 39, 42, 0.5)",
+                            border: "1px solid rgba(255, 255, 255, 0.1)",
+                            borderRadius: "24px",
+                            padding: "16px",
+                            boxShadow: "0 4px 20px rgba(0,0,0,0.2)",
                         }}
                     >
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img
                             src={`${origin}/icon.svg`}
-                            style={{
-                                height: "75px",
-                            }}
+                            alt="Limefolio Logo"
+                            width="64"
+                            height="64"
                         />
                     </div>
+
+                    {/* Title */}
                     <div
                         style={{
-                            fontFamily: calSansFont
-                                ? "Cal Sans"
-                                : "system-ui, sans-serif",
-                            fontSize: 128,
+                            fontSize: 84,
                             fontWeight: 700,
                             background:
-                                "linear-gradient(to right, #ffffff, #9EE700)",
+                                "linear-gradient(to bottom right, #ffffff 30%, #a3e635 100%)",
                             backgroundClip: "text",
                             color: "transparent",
-                            textAlign: "center",
+                            lineHeight: 1.1,
+                            letterSpacing: "-0.02em",
                             marginBottom: "24px",
-                            lineHeight: 1.2,
+                            maxWidth: "900px",
+                            textShadow: "0 0 40px rgba(163, 230, 53, 0.2)",
                         }}
                     >
                         {title}
                     </div>
+
+                    {/* Description */}
                     <div
                         style={{
-                            fontSize: 48,
-                            color: "#8f8f98",
-                            textAlign: "center",
+                            fontSize: 36,
+                            color: "#a1a1aa", // zinc-400
+                            lineHeight: 1.5,
                             maxWidth: "800px",
-                            lineHeight: 1.4,
+                            fontWeight: 400,
                         }}
                     >
                         {description}
+                    </div>
+                </div>
+
+                {/* Bottom Branding */}
+                <div
+                    style={{
+                        position: "absolute",
+                        bottom: "40px",
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "8px",
+                        opacity: 0.6,
+                    }}
+                >
+                    <div
+                        style={{
+                            width: "8px",
+                            height: "8px",
+                            borderRadius: "50%",
+                            backgroundColor: "#a3e635",
+                        }}
+                    />
+                    <div
+                        style={{
+                            fontSize: 20,
+                            color: "#e4e4e7",
+                            fontWeight: 500,
+                            letterSpacing: "0.05em",
+                        }}
+                    >
+                        LIMEFOLIO
                     </div>
                 </div>
             </div>,
             {
                 width: 1200,
                 height: 630,
-                ...(calSansFont && {
-                    fonts: [
-                        {
-                            name: "Cal Sans",
-                            data: calSansFont,
-                            style: "normal",
-                            weight: 600,
-                        },
-                    ],
-                }),
+                fonts: [
+                    {
+                        name: "Outfit",
+                        data: fontData,
+                        style: "normal",
+                        weight: 400,
+                    },
+                ],
             },
         );
     } catch (e: any) {
-        console.log(`${e.message}`);
+        console.error(`${e.message}`);
         return new Response(`Failed to generate the image`, {
             status: 500,
         });

@@ -20,6 +20,19 @@ export const metadata: Metadata = {
         default: "Limefolio",
     },
     description: "Create stunning portfolio websites in minutes.",
+    openGraph: {
+        title: "Limefolio",
+        description: "Create stunning portfolio websites in minutes.",
+        type: "website",
+        locale: "en_US",
+        images: [
+            {
+                url: "/api/og",
+                width: 1200,
+                height: 630,
+            },
+        ],
+    },
     icons: {
         icon: [
             { url: "/favicon.ico" },
