@@ -5,22 +5,22 @@ import { z } from "zod";
  */
 
 const socialPlatforms = [
-    "GitHub",
-    "LinkedIn",
-    "Twitter",
-    "Facebook",
-    "Instagram",
-    "YouTube",
-    "Dribbble",
-    "Behance",
-    "Medium",
-    "Dev.to",
-    "Stack Overflow",
-    "CodePen",
-    "Portfolio",
-    "Website",
-    "Email",
-    "Other",
+    "github",
+    "linkedin",
+    "twitter",
+    "facebook",
+    "instagram",
+    "youtube",
+    "dribbble",
+    "behance",
+    "medium",
+    "dev.to",
+    "stack overflow",
+    "codepen",
+    "portfolio",
+    "website",
+    "email",
+    "other",
 ] as const;
 
 export const socialLinkSchema = z.object({
@@ -36,7 +36,6 @@ export const socialLinkFormSchema = z.object({
     url: z.string().url("Invalid URL").min(1, "URL is required").optional(),
     username: z
         .string()
-        .min(1, "Username is required")
         .max(100, "Username must be at most 100 characters")
         .optional(),
     order: z.number().int().min(0).optional(),

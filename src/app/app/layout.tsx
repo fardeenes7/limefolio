@@ -13,8 +13,7 @@ export default function DashboardLayout({
     return (
         <SidebarProvider>
             <AppSidebar />
-            <SidebarInset>
-                <SidebarTrigger />
+            <SidebarInset className="py-10 lg:py-20 px-6">
                 {children}
             </SidebarInset>
         </SidebarProvider>

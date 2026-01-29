@@ -15,6 +15,7 @@ import {
     IconPalette,
     IconCode,
     IconWorld,
+    IconLink,
 } from "@tabler/icons-react";
 
 import {
@@ -75,6 +76,11 @@ const sections = [
                 url: "/app/content/media",
                 icon: IconPhoto,
             },
+            {
+                title: "Social Links",
+                url: "/app/social-links",
+                icon: IconLink,
+            },
         ],
     },
 
@@ -128,7 +134,17 @@ const sections = [
     },
 ];
 
+import { usePathname } from "next/navigation";
+
 export function NavMain() {
+    const pathname = usePathname();
+
+    const isItemActive = (url: string) => {
+        if (url === "/app" && pathname === "/app") return true;
+        if (url !== "/app" && pathname?.startsWith(url)) return true;
+        return false;
+    };
+
     return (
         <>
             {sections.map((section) => (
@@ -137,16 +153,23 @@ export function NavMain() {
 
                     {section.items?.length ? (
                         <SidebarMenu>
-                            {section.items?.map((item) => (
-                                <SidebarMenuItem key={item.title}>
-                                    <SidebarMenuButton asChild className="h-8">
-                                        <Link href={item.url}>
-                                            <item.icon />
-                                            <span>{item.title}</span>
-                                        </Link>
-                                    </SidebarMenuButton>
-                                </SidebarMenuItem>
-                            ))}
+                            {section.items?.map((item) => {
+                                const isActive = isItemActive(item.url);
+                                return (
+                                    <SidebarMenuItem key={item.title}>
+                                        <SidebarMenuButton
+                                            asChild
+                                            isActive={isActive}
+                                            className="h-8"
+                                        >
+                                            <Link href={item.url}>
+                                                <item.icon />
+                                                <span>{item.title}</span>
+                                            </Link>
+                                        </SidebarMenuButton>
+                                    </SidebarMenuItem>
+                                );
+                            })}
                         </SidebarMenu>
                     ) : null}
                 </SidebarGroup>
