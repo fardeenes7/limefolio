@@ -19,7 +19,7 @@ export const metadata: Metadata = {
         template: "%s | Limefolio",
         default: "Limefolio",
     },
-    description: "Build your own portfolio with Limefolio",
+    description: "Create stunning portfolio websites in minutes.",
     icons: {
         icon: [
             { url: "/favicon.ico" },
@@ -29,6 +29,10 @@ export const metadata: Metadata = {
         apple: [{ url: "/apple-touch-icon.png" }],
     },
     manifest: "/site.webmanifest",
+    robots: {
+        index: false,
+        follow: false,
+    },
 };
 
 export default function RootLayout({
