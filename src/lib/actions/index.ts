@@ -4,3 +4,5 @@ export * from "./projects";
 export * from "./experiences";
 export * from "./social-links";
 export * from "./api-keys";
+export * from "./blog";
+export * from "./media";

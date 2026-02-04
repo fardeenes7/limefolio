@@ -102,6 +102,58 @@ export interface APIKey {
     updated_at: string;
 }
 
+// Media types
+export interface Media {
+    id: number;
+    image: string | null;
+    video: string | null;
+    thumbnail: string | null;
+    alt: string;
+    caption: string;
+    order: number;
+    is_featured: boolean;
+    media_type: "image" | "video";
+    url: string;
+    created_at: string;
+    updated_at: string;
+}
+
+// Blog types
+export interface BlogPost {
+    id: number;
+    title: string;
+    slug: string;
+    excerpt: string;
+    content: string;
+    media: Media[];
+    thumbnail: string | null;
+    author: string;
+    author_name: string;
+    tags: string[];
+    categories: string[];
+    meta_description: string;
+    meta_keywords: string;
+    status: "draft" | "published" | "archived";
+    is_featured: boolean;
+    published_at: string | null;
+    reading_time: number;
+    view_count: number;
+    comments_count: number;
+    created_at: string;
+    updated_at: string;
+}
+
+export interface BlogComment {
+    id: number;
+    author_name: string;
+    author_email: string;
+    author_website: string;
+    content: string;
+    is_approved: boolean;
+    created_at: string;
+    updated_at: string;
+}
+
 // Form data types (for creating/updating)
 export type SiteFormData = Partial<
     Omit<Site, "id" | "uuid" | "created_at" | "updated_at">
@@ -121,4 +173,26 @@ export type APIKeyFormData = Partial<
         | "created_at"
         | "updated_at"
     >
+>;
+export type BlogPostFormData = Partial<
+    Omit<
+        BlogPost,
+        | "id"
+        | "slug"
+        | "media"
+        | "thumbnail"
+        | "author_name"
+        | "reading_time"
+        | "view_count"
+        | "comments_count"
+        | "created_at"
+        | "updated_at"
+    >
+>;
+export type BlogCommentFormData = Omit<
+    BlogComment,
+    "id" | "is_approved" | "created_at" | "updated_at"
+>;
+export type MediaFormData = Partial<
+    Omit<Media, "id" | "media_type" | "url" | "created_at" | "updated_at">
 >;

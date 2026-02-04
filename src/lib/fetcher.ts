@@ -1,4 +1,5 @@
-import { auth } from "@/auth";
+import { auth, signOut } from "@/auth";
+import { redirect } from "next/navigation";
 import type { APIResponse } from "../types";
 
 const API_URL = process.env.API_URL || "http://localhost:8000";
@@ -35,6 +36,14 @@ export async function fetcher<T = any>(
             headers,
         });
 
+        if (response.status === 401) {
+            if (typeof window !== "undefined") {
+                await signOut({ redirectTo: "/login" });
+            } else {
+                redirect("/login");
+            }
+        }
+
         let data: T | null = null;
 
         // Try to parse JSON response
@@ -53,6 +62,15 @@ export async function fetcher<T = any>(
             ok: response.ok,
         };
     } catch (error) {
+        if (
+            error &&
+            typeof error === "object" &&
+            "digest" in error &&
+            typeof (error as any).digest === "string" &&
+            (error as any).digest.startsWith("NEXT_REDIRECT")
+        ) {
+            throw error;
+        }
         console.error("Fetch error:", error);
         return {
             data: null,
