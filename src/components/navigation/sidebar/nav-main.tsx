@@ -49,31 +49,31 @@ const sections = [
 
     {
         title: "Portfolio Content",
-        url: "/app/content",
+        url: "/app",
         items: [
             {
                 title: "Projects",
-                url: "/app/content/projects",
+                url: "/app/projects",
                 icon: IconBriefcase,
             },
             {
                 title: "Experience",
-                url: "/app/content/experiences",
+                url: "/app/experiences",
                 icon: IconActivity,
             },
             {
                 title: "Skills",
-                url: "/app/content/skills",
+                url: "/app/skills",
                 icon: IconCode,
             },
             {
                 title: "Blog Posts",
-                url: "/app/content/posts",
+                url: "/app/posts",
                 icon: IconArticle,
             },
             {
                 title: "Media Library",
-                url: "/app/content/media",
+                url: "/app/media",
                 icon: IconPhoto,
             },
             {

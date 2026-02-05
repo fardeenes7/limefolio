@@ -36,17 +36,8 @@ export const experienceFormSchema = z
         type: z
             .enum(["Full Time", "Part Time", "Internship", "Freelance"])
             .optional(),
-        company_logo: z
-            .string()
-            .url("Invalid company logo URL")
-            .nullable()
-            .optional(),
-        url: z
-            .string()
-            .url("Invalid URL")
-            .or(z.literal(""))
-            .nullable()
-            .optional(),
+        company_logo: z.url("Invalid company logo URL").nullable().optional(),
+        url: z.url("Invalid URL").or(z.literal("")).nullable().optional(),
         location: z
             .string()
             .max(200, "Location must be at most 200 characters")

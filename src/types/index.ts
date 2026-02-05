@@ -68,6 +68,7 @@ export interface Experience {
     position: string;
     description: string;
     type: "Full Time" | "Part Time" | "Internship" | "Freelance";
+    type_display: string;
     company_logo: string | null;
     url: string | null;
     location: string | null;
@@ -75,6 +76,31 @@ export interface Experience {
     end_date: string | null;
     is_current: boolean;
     order: number;
+    is_published: boolean;
+}
+
+// Skill types
+export interface Skill {
+    id: number;
+    name: string;
+    category:
+        | "programming"
+        | "framework"
+        | "database"
+        | "devops"
+        | "design"
+        | "soft_skill"
+        | "language"
+        | "tool"
+        | "other";
+    category_display: string;
+    proficiency: "beginner" | "intermediate" | "advanced" | "expert";
+    proficiency_display: string;
+    description: string;
+    years_of_experience: number | null;
+    icon_url: string | null;
+    order: number;
+    is_featured: boolean;
     is_published: boolean;
 }
 
@@ -161,7 +187,12 @@ export type SiteFormData = Partial<
 export type ProjectFormData = Partial<
     Omit<Project, "id" | "slug" | "created_at" | "updated_at">
 >;
-export type ExperienceFormData = Partial<Omit<Experience, "id">>;
+export type ExperienceFormData = Partial<
+    Omit<Experience, "id" | "type_display">
+>;
+export type SkillFormData = Partial<
+    Omit<Skill, "id" | "category_display" | "proficiency_display">
+>;
 export type SocialLinkFormData = Partial<Omit<SocialLink, "id">>;
 export type APIKeyFormData = Partial<
     Omit<

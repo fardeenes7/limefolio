@@ -14,6 +14,9 @@ export * from "./project.schema";
 // Experience schemas
 export * from "./experience.schema";
 
+// Skill schemas
+export * from "./skill.schema";
+
 // Blog schemas
 export * from "./blog.schema";
 
