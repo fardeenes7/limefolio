@@ -16,6 +16,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+    metadataBase: new URL("https://www.limefolio.com"),
     title: {
         template: "%s | Limefolio",
         default: "Limefolio",

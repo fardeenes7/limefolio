@@ -49,7 +49,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
                     if (response.ok) {
                         const data = await response.json();
-                        console.log(data);
                         token.accessToken = data.access_token;
                         token.refreshToken = data.refresh_token;
                         token.expiresAt = Date.now() + data.expires_in * 1000;
@@ -57,7 +56,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                         throw await response.json();
                     }
                 } catch (error) {
-                    console.error("Error converting token:", error);
                     throw error;
                 }
             } else if (Date.now() < (token.expiresAt as number)) {
@@ -74,8 +72,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                             body: JSON.stringify({
                                 grant_type: "refresh_token",
                                 client_id: process.env.API_CLIENT_ID!,
-                                client_secret:
-                                    process.env.API_CLIENT_SECRET! || "ssss",
+                                client_secret: process.env.API_CLIENT_SECRET!,
                                 refresh_token: token.refreshToken,
                             }),
                         },
@@ -83,7 +80,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
                     const data = await response.json();
 
-                    if (!response.ok) throw data;
+                    if (!response.ok) throw new Error(data.error);
 
                     return {
                         ...token,
@@ -91,15 +88,10 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                         refreshToken: data.refresh_token ?? token.refreshToken,
                         expiresAt: Date.now() + data.expires_in * 1000,
                     };
-                } catch (error) {
-                    console.error("Error refreshing Access Token", error);
-                    return {
-                        ...token,
-                        error: "RefreshAccessTokenError",
-                    };
+                } catch (error: any) {
+                    throw error;
                 }
             }
-
             return token;
         },
         async session({ session, token }) {
