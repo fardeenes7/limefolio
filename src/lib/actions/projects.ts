@@ -1,19 +1,59 @@
 "use server";
 
 import { api } from "../fetcher";
-import type { Project, ProjectFormData, ProjectMedia } from "../../types";
 import { revalidatePath } from "next/cache";
 
+export interface Project {
+    id: number;
+    title: string;
+    slug: string;
+    tagline: string;
+    description: string;
+    content: string;
+    thumbnail: string | null;
+    project_url: string | null | undefined;
+    github_url: string | null;
+    technologies: string[];
+    featured: boolean;
+    is_published: boolean;
+    order: number;
+    media: Array<{
+        id: number;
+        url: string;
+        media_type: string;
+        alt: string;
+        caption: string;
+    }>;
+    start_date: string | null;
+    end_date: string | null;
+    created_at: string;
+    updated_at: string;
+}
+
+export interface ProjectListItem {
+    id: number;
+    title: string;
+    slug: string;
+    tagline: string;
+    thumbnail: string | null;
+    featured: boolean;
+    is_published: boolean;
+    media_count: number;
+    created_at: string;
+}
+
 /**
- * Get list of projects
+ * Get all projects for the authenticated user
  */
 export async function getProjectList() {
-    const response = await api.get<Project[]>("/api/dashboard/projects/");
+    const response = await api.get<ProjectListItem[]>(
+        "/api/dashboard/projects/",
+    );
     return response;
 }
 
 /**
- * Get single project details
+ * Get a single project by ID
  */
 export async function getProjectDetail(id: number) {
     const response = await api.get<Project>(`/api/dashboard/projects/${id}/`);
@@ -21,101 +61,60 @@ export async function getProjectDetail(id: number) {
 }
 
 /**
- * Create new project
+ * Create a new project
  */
-export async function createProject(data: ProjectFormData) {
+export async function createProject(data: any) {
     const response = await api.post<Project>("/api/dashboard/projects/", data);
 
     if (response.ok) {
-        revalidatePath("/dashboard/projects");
+        revalidatePath("/app/projects");
     }
 
     return response;
 }
 
 /**
- * Update existing project
+ * Update an existing project
  */
-export async function updateProject(id: number, data: ProjectFormData) {
+export async function updateProject(
+    id: number,
+    data: Partial<{
+        title: string;
+        tagline: string;
+        description: string;
+        content: string;
+        project_url: string | null;
+        github_url: string | null;
+        technologies: string[];
+        featured: boolean;
+        is_published: boolean;
+        order: number;
+        media_ids: number[];
+        start_date: Date | null;
+        end_date: Date | null;
+    }>,
+) {
     const response = await api.patch<Project>(
         `/api/dashboard/projects/${id}/`,
         data,
     );
 
     if (response.ok) {
-        revalidatePath("/dashboard/projects");
-        revalidatePath(`/dashboard/projects/${id}`);
+        revalidatePath("/app/projects");
+        revalidatePath(`/app/projects/${id}`);
     }
 
     return response;
 }
 
 /**
- * Delete project
+ * Delete a project
  */
 export async function deleteProject(id: number) {
     const response = await api.delete(`/api/dashboard/projects/${id}/`);
 
     if (response.ok) {
-        revalidatePath("/dashboard/projects");
-    }
-
-    return response;
-}
-
-/**
- * Toggle project featured status
- */
-export async function toggleProjectFeatured(id: number, featured: boolean) {
-    return updateProject(id, { featured });
-}
-
-/**
- * Update project status (draft/published)
- */
-export async function updateProjectStatus(
-    id: number,
-    status: "draft" | "published",
-) {
-    return updateProject(id, { status });
-}
-
-// Project Media actions
-
-/**
- * Get project media list
- */
-export async function getProjectMediaList() {
-    const response = await api.get<ProjectMedia[]>("/api/dashboard/media/");
-    return response;
-}
-
-/**
- * Create project media
- */
-export async function createProjectMedia(projectId: number, data: FormData) {
-    data.append("project", projectId.toString());
-
-    const response = await api.post<ProjectMedia>(
-        "/api/dashboard/media/",
-        data,
-    );
-
-    if (response.ok) {
-        revalidatePath(`/dashboard/projects/${projectId}`);
-    }
-
-    return response;
-}
-
-/**
- * Delete project media
- */
-export async function deleteProjectMedia(id: number, projectId: number) {
-    const response = await api.delete(`/api/dashboard/media/${id}/`);
-
-    if (response.ok) {
-        revalidatePath(`/dashboard/projects/${projectId}`);
+        revalidatePath("/app/projects");
     }
 
     return response;

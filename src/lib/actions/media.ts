@@ -73,6 +73,32 @@ export async function getMediaList() {
 }
 
 /**
+ * Upload media file through Django backend (proxy upload)
+ * Use this instead of presigned URL to avoid CORS issues
+ */
+export async function uploadMediaFile(
+    file: File,
+    alt?: string,
+    caption?: string,
+) {
+    const formData = new FormData();
+    formData.append("file", file);
+    if (alt) formData.append("alt", alt);
+    if (caption) formData.append("caption", caption);
+
+    const response = await api.post<Media>(
+        "/api/dashboard/media/upload/",
+        formData,
+    );
+
+    if (response.ok) {
+        revalidatePath("/app/media");
+    }
+
+    return response;
+}
+
+/**
  * Create media record after direct S3 upload
  */
 export async function createMediaRecord(data: {

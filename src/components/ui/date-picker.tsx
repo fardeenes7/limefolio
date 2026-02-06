@@ -17,6 +17,7 @@ export function DatePicker({
     placeholder,
     disabled,
     className,
+    ariaInvalid,
     ...props
 }: {
     value: Date | undefined;
@@ -24,6 +25,7 @@ export function DatePicker({
     placeholder?: string;
     disabled?: boolean;
     className?: string;
+    ariaInvalid?: boolean;
 }) {
     return (
         <Popover>
@@ -32,6 +34,7 @@ export function DatePicker({
                     variant="outline"
                     id="date-picker-simple"
                     className="justify-start font-normal"
+                    aria-invalid={ariaInvalid}
                 >
                     {value ? format(value, "PPP") : <span>Pick a date</span>}
                 </Button>
