@@ -72,8 +72,8 @@ export interface Experience {
     company_logo: string | null;
     url: string | null;
     location: string | null;
-    start_date: string;
-    end_date: string | null;
+    start_date?: Date;
+    end_date?: Date;
     is_current: boolean;
     order: number;
     is_published: boolean;

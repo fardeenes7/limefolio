@@ -50,29 +50,33 @@ export function ExperiencesClient({
     return (
         <>
             <div className="flex items-center justify-between gap-4">
-                <div className="flex gap-2">
-                    <Button
-                        variant={filter === "all" ? "default" : "outline"}
-                        size="sm"
-                        onClick={() => setFilter("all")}
-                    >
-                        All ({experiences.length})
-                    </Button>
-                    <Button
-                        variant={filter === "current" ? "default" : "outline"}
-                        size="sm"
-                        onClick={() => setFilter("current")}
-                    >
-                        Current ({currentExperiences.length})
-                    </Button>
-                    <Button
-                        variant={filter === "past" ? "default" : "outline"}
-                        size="sm"
-                        onClick={() => setFilter("past")}
-                    >
-                        Past ({pastExperiences.length})
-                    </Button>
-                </div>
+                {experiences.length > 0 && (
+                    <div className="flex gap-2">
+                        <Button
+                            variant={filter === "all" ? "default" : "outline"}
+                            size="sm"
+                            onClick={() => setFilter("all")}
+                        >
+                            All ({experiences.length})
+                        </Button>
+                        <Button
+                            variant={
+                                filter === "current" ? "default" : "outline"
+                            }
+                            size="sm"
+                            onClick={() => setFilter("current")}
+                        >
+                            Current ({currentExperiences.length})
+                        </Button>
+                        <Button
+                            variant={filter === "past" ? "default" : "outline"}
+                            size="sm"
+                            onClick={() => setFilter("past")}
+                        >
+                            Past ({pastExperiences.length})
+                        </Button>
+                    </div>
+                )}
 
                 <Button onClick={() => setIsCreateOpen(true)}>
                     <IconPlus className="mr-2 h-4 w-4" />

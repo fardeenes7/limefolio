@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { experienceFormSchema } from "@/lib/schemas";
 import { createExperience } from "@/lib/actions";
@@ -43,6 +43,7 @@ import {
     IconClock,
     IconEye,
 } from "@tabler/icons-react";
+import { DatePicker } from "@/components/ui/date-picker";
 
 interface CreateExperienceDialogProps {
     open: boolean;
@@ -71,11 +72,10 @@ export function CreateExperienceDialog({
             position: "",
             description: "",
             type: "Full Time",
-            company_logo: null,
             url: null,
             location: null,
-            start_date: "",
-            end_date: null,
+            start_date: undefined,
+            end_date: undefined,
             is_current: false,
             is_published: true,
             order: 0,
@@ -86,18 +86,21 @@ export function CreateExperienceDialog({
 
     const onSubmit = async (data: ExperienceFormData) => {
         setIsSubmitting(true);
-
-        // If current, remove end_date
-        if (data.is_current) {
-            data.end_date = null;
-        }
-
+        console.log(data);
         const response = await createExperience(data);
+        console.log(response);
 
         if (response.ok && response.data) {
             onSuccess(response.data);
             form.reset();
         } else {
+            if (response.data) {
+                Object.entries(response.data).forEach(([key, value]) => {
+                    form.setError(key as keyof ExperienceFormData, {
+                        message: value[0] as string,
+                    });
+                });
+            }
             alert("Failed to create experience. Please try again.");
         }
         setIsSubmitting(false);
@@ -207,37 +210,50 @@ export function CreateExperienceDialog({
                         </div>
 
                         <div className="grid grid-cols-2 gap-4">
-                            <Field>
-                                <FieldLabel>
-                                    <IconCalendar className="h-4 w-4" />
-                                    Start Date *
-                                </FieldLabel>
-                                <Input
-                                    type="date"
-                                    {...form.register("start_date")}
-                                />
-                                <FieldError
-                                    errors={[form.formState.errors.start_date]}
-                                />
-                            </Field>
+                            <Controller
+                                name="start_date"
+                                control={form.control}
+                                render={({ field, fieldState }) => (
+                                    <Field>
+                                        <FieldLabel>
+                                            <IconCalendar className="h-4 w-4" />
+                                            Start Date *
+                                        </FieldLabel>
+                                        <DatePicker
+                                            value={field.value}
+                                            onChange={field.onChange}
+                                        />
+                                        {fieldState.invalid && (
+                                            <FieldError
+                                                errors={[fieldState.error]}
+                                            />
+                                        )}
+                                    </Field>
+                                )}
+                            />
 
-                            <Field>
-                                <FieldLabel>
-                                    <IconCalendar className="h-4 w-4" />
-                                    End Date
-                                </FieldLabel>
-                                <Input
-                                    type="date"
-                                    {...form.register("end_date")}
-                                    disabled={isCurrent}
-                                />
-                                <FieldDescription>
-                                    Leave empty if current position
-                                </FieldDescription>
-                                <FieldError
-                                    errors={[form.formState.errors.end_date]}
-                                />
-                            </Field>
+                            <Controller
+                                name="end_date"
+                                control={form.control}
+                                render={({ field, fieldState }) => (
+                                    <Field>
+                                        <FieldLabel>
+                                            <IconCalendar className="h-4 w-4" />
+                                            End Date
+                                        </FieldLabel>
+                                        <DatePicker
+                                            value={field.value}
+                                            onChange={field.onChange}
+                                            disabled={isCurrent}
+                                        />
+                                        {fieldState.invalid && (
+                                            <FieldError
+                                                errors={[fieldState.error]}
+                                            />
+                                        )}
+                                    </Field>
+                                )}
+                            />
                         </div>
 
                         <div className="grid grid-cols-2 gap-4">
@@ -255,7 +271,7 @@ export function CreateExperienceDialog({
                                 />
                             </Field>
 
-                            <Field>
+                            {/* <Field>
                                 <FieldLabel>
                                     <IconPhoto className="h-4 w-4" />
                                     Company Logo URL
@@ -269,41 +285,50 @@ export function CreateExperienceDialog({
                                         form.formState.errors.company_logo,
                                     ]}
                                 />
-                            </Field>
+                            </Field> */}
                         </div>
 
                         <div className="flex gap-6">
-                            <Field orientation="horizontal">
-                                <Checkbox
-                                    checked={form.watch("is_current")}
-                                    onCheckedChange={(checked) =>
-                                        form.setValue(
-                                            "is_current",
-                                            checked as boolean,
-                                        )
-                                    }
-                                />
-                                <FieldLabel className="cursor-pointer font-normal">
-                                    <IconClock className="h-4 w-4" />I currently
-                                    work here
-                                </FieldLabel>
-                            </Field>
+                            <Controller
+                                name="is_current"
+                                control={form.control}
+                                render={({ field }) => (
+                                    <Field orientation="horizontal">
+                                        <Checkbox
+                                            id="is_current"
+                                            checked={field.value}
+                                            onCheckedChange={field.onChange}
+                                        />
+                                        <FieldLabel htmlFor="is_current">
+                                            <IconCalendar className="h-4 w-4" />
+                                            I currently work here
+                                        </FieldLabel>
+                                    </Field>
+                                )}
+                            />
 
-                            <Field orientation="horizontal">
-                                <Checkbox
-                                    checked={form.watch("is_published")}
-                                    onCheckedChange={(checked) =>
-                                        form.setValue(
-                                            "is_published",
-                                            checked as boolean,
-                                        )
-                                    }
-                                />
-                                <FieldLabel className="cursor-pointer font-normal">
-                                    <IconEye className="h-4 w-4" />
-                                    Published
-                                </FieldLabel>
-                            </Field>
+                            <Controller
+                                name="is_published"
+                                control={form.control}
+                                render={({ field }) => (
+                                    <Field orientation="horizontal">
+                                        <Checkbox
+                                            id="is_published"
+                                            checked={field.value}
+                                            onCheckedChange={(checked) =>
+                                                form.setValue(
+                                                    "is_published",
+                                                    checked as boolean,
+                                                )
+                                            }
+                                        />
+                                        <FieldLabel htmlFor="is_published">
+                                            <IconEye className="h-4 w-4" />
+                                            Published
+                                        </FieldLabel>
+                                    </Field>
+                                )}
+                            />
                         </div>
                     </FieldGroup>
 

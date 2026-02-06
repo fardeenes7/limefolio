@@ -43,8 +43,8 @@ export const experienceFormSchema = z
             .max(200, "Location must be at most 200 characters")
             .nullable()
             .optional(),
-        start_date: z.string().date("Invalid start date").optional(),
-        end_date: z.string().date("Invalid end date").nullable().optional(),
+        start_date: z.date("Invalid start date").optional(),
+        end_date: z.date("Invalid end date").optional(),
         is_current: z.boolean().optional(),
         order: z.number().int().min(0).optional(),
         is_published: z.boolean().optional(),
