@@ -77,11 +77,12 @@ export function ExperienceCard({
         }
     };
 
-    const formatDate = (dateString: string) => {
+    const formatDate = (date: string | Date | undefined) => {
+        if (!date) return "";
         try {
-            return format(new Date(dateString), "MMM yyyy");
+            return format(new Date(date), "MMM yyyy");
         } catch {
-            return dateString;
+            return String(date);
         }
     };
 

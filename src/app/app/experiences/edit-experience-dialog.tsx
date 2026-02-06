@@ -109,7 +109,7 @@ export function EditExperienceDialog({
 
         // If current, remove end_date
         if (data.is_current) {
-            data.end_date = null;
+            data.end_date = undefined;
         }
 
         const response = await updateExperience(experience.id, data);
