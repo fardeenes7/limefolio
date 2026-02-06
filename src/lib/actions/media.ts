@@ -41,6 +41,59 @@ export async function getPublicMediaDetail(id: number) {
 // ============================================================================
 
 /**
+ * Get presigned URL for uploading media directly to S3
+ */
+export async function getPresignedURL(params: {
+    filename: string;
+    content_type: string;
+    file_size: number;
+}) {
+    const queryParams = new URLSearchParams({
+        filename: params.filename,
+        content_type: params.content_type,
+        file_size: params.file_size.toString(),
+    });
+
+    const response = await api.get<{
+        upload_url: string;
+        file_key: string;
+        public_url: string;
+        content_type: string;
+    }>(`/api/dashboard/media/presigned-url/?${queryParams}`);
+
+    return response;
+}
+
+/**
+ * Get all media for the authenticated user
+ */
+export async function getMediaList() {
+    const response = await api.get<Media[]>("/api/dashboard/media/");
+    return response;
+}
+
+/**
+ * Create media record after direct S3 upload
+ */
+export async function createMediaRecord(data: {
+    image?: string;
+    video?: string;
+    thumbnail?: string;
+    alt?: string;
+    caption?: string;
+    order?: number;
+    is_featured?: boolean;
+}) {
+    const response = await api.post<Media>("/api/dashboard/media/", data);
+
+    if (response.ok) {
+        revalidatePath("/app/media");
+    }
+
+    return response;
+}
+
+/**
  * Create media item
  * Note: This should be used with FormData for file uploads
  */
