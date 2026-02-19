@@ -44,6 +44,12 @@ export function HomeHeader() {
                         Pricing
                     </Link>
                     <Link
+                        href="/templates"
+                        className="hover:text-foreground transition-colors duration-200"
+                    >
+                        Templates
+                    </Link>
+                    <Link
                         href="#testimonials"
                         className="hover:text-foreground transition-colors duration-200"
                     >
