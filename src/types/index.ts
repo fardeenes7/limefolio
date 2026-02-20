@@ -15,6 +15,9 @@ export interface Site {
     description: string;
     logo: string | null;
     favicon: string | null;
+    theme: string;
+    template: string;
+    font: string;
     meta_title: string;
     meta_description: string;
     is_published: boolean;

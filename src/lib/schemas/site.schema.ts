@@ -17,6 +17,9 @@ export const siteSchema = z.object({
     description: z.string(),
     logo: z.string().url().nullable(),
     favicon: z.string().url().nullable(),
+    theme: z.string(),
+    template: z.string(),
+    font: z.string(),
     meta_title: z.string().max(60),
     meta_description: z.string().max(160),
     is_published: z.boolean(),
@@ -57,6 +60,9 @@ export const siteFormSchema = z.object({
     description: z.string().optional(),
     logo: z.string().url("Invalid logo URL").nullable().optional(),
     favicon: z.string().url("Invalid favicon URL").nullable().optional(),
+    theme: z.string().optional(),
+    template: z.string().optional(),
+    font: z.string().optional(),
     meta_title: z
         .string()
         .max(60, "Meta title must be at most 60 characters")
