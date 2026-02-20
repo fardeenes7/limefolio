@@ -77,7 +77,7 @@ export function ProjectForm({ project, onSuccess }: ProjectFormProps) {
     const {
         register,
         handleSubmit,
-        formState: { errors },
+        formState: { errors, isDirty },
         setValue,
         watch,
         control,
@@ -113,7 +113,10 @@ export function ProjectForm({ project, onSuccess }: ProjectFormProps) {
     const featured = watch("featured");
     const isPublished = watch("is_published");
 
-    const onSubmit = async (data: ProjectFormData) => {
+    const processSubmit = async (
+        data: ProjectFormData,
+        currentMedia: UploadedMedia[],
+    ) => {
         setIsLoading(true);
 
         try {
@@ -128,7 +131,7 @@ export function ProjectForm({ project, onSuccess }: ProjectFormProps) {
             const projectData = {
                 ...data,
                 technologies,
-                media_ids: uploadedMedia.map((m) => m.id),
+                media_ids: currentMedia.map((m) => m.id),
             };
 
             const response = project
@@ -139,7 +142,7 @@ export function ProjectForm({ project, onSuccess }: ProjectFormProps) {
                 if (onSuccess) {
                     onSuccess();
                 } else {
-                    router.push("/app/projects");
+                    // router.push("/app/projects");
                 }
             } else {
                 alert("Failed to save project. Please try again.");
@@ -152,8 +155,13 @@ export function ProjectForm({ project, onSuccess }: ProjectFormProps) {
         }
     };
 
-    const handleMediaUpload = (media: UploadedMedia[]) => {
+    const onSubmit = async (data: ProjectFormData) => {
+        return processSubmit(data, uploadedMedia);
+    };
+
+    const handleMediaUpload = async (media: UploadedMedia[]) => {
         setUploadedMedia(media);
+        handleSubmit((data) => processSubmit(data, media))();
     };
 
     return (
@@ -478,7 +486,11 @@ export function ProjectForm({ project, onSuccess }: ProjectFormProps) {
                     >
                         Cancel
                     </Button>
-                    <Button type="submit" loading={isLoading}>
+                    <Button
+                        type="submit"
+                        loading={isLoading}
+                        disabled={!isDirty}
+                    >
                         {project ? "Update Project" : "Create Project"}
                     </Button>
                 </div>
