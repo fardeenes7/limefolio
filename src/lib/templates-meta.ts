@@ -37,4 +37,11 @@ export const TEMPLATES_META: TemplateMeta[] = [
             "Bold, vibrant design with a full-bleed gradient hero and strong typography. Makes a memorable first impression.",
         tags: ["Bold", "Vibrant", "Gradient hero"],
     },
+    {
+        name: "Prism",
+        slug: "prism",
+        description:
+            "A dark, vibrant, Stripe-inspired template with explosive colours and glassmorphism.",
+        tags: ["dark", "vibrant", "gradient", "glass", "stripe"],
+    },
 ];

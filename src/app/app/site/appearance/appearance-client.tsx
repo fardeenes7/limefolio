@@ -162,6 +162,9 @@ export function AppearanceClient({ initialSite }: AppearanceClientProps) {
                                                             tmpl.slug ===
                                                                 "modern" &&
                                                                 "bg-linear-to-br from-violet-500/20 via-violet-500/10 to-transparent",
+                                                            tmpl.slug ===
+                                                                "prism" &&
+                                                                "bg-linear-to-br from-fuchsia-500/20 via-cyan-500/10 to-transparent",
                                                         )}
                                                     >
                                                         <span className="text-3xl font-black tracking-tight text-foreground/10 select-none uppercase">
