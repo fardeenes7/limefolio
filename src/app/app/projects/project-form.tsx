@@ -41,6 +41,11 @@ const projectSchema = z.object({
         .optional()
         .nullable()
         .or(z.literal("")),
+    youtube_url: z
+        .url("Must be a valid URL")
+        .optional()
+        .nullable()
+        .or(z.literal("")),
     technologies: z.string().optional(),
     featured: z.boolean(),
     is_published: z.boolean(),
@@ -96,6 +101,7 @@ export function ProjectForm({ project, onSuccess }: ProjectFormProps) {
                   content: "",
                   project_url: "",
                   github_url: "",
+                  youtube_url: "",
                   technologies: "",
                   featured: false,
                   is_published: true,
@@ -154,53 +160,89 @@ export function ProjectForm({ project, onSuccess }: ProjectFormProps) {
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
             {/* Basic Information */}
             <div className="space-y-4">
-                <div>
-                    <Label htmlFor="title">Title *</Label>
-                    <Input
-                        id="title"
-                        {...register("title")}
-                        placeholder="My Awesome Project"
-                    />
-                    {errors.title && (
-                        <p className="text-sm text-destructive mt-1">
-                            {errors.title.message}
-                        </p>
+                <Controller
+                    name="title"
+                    control={control}
+                    render={({ field, fieldState }) => (
+                        <Field data-invalid={fieldState.invalid}>
+                            <FieldLabel htmlFor="title">Title *</FieldLabel>
+                            <Input
+                                {...field}
+                                id="title"
+                                aria-invalid={fieldState.invalid}
+                                placeholder="My Awesome Project"
+                                autoComplete="off"
+                            />
+                            {fieldState.invalid && (
+                                <FieldError errors={[fieldState.error]} />
+                            )}
+                        </Field>
                     )}
-                </div>
+                />
 
-                <div>
-                    <Label htmlFor="tagline">Tagline</Label>
-                    <Input
-                        id="tagline"
-                        {...register("tagline")}
-                        placeholder="A brief one-liner about your project"
-                    />
-                </div>
-
-                <div>
-                    <Label htmlFor="description">Description *</Label>
-                    <Textarea
-                        id="description"
-                        {...register("description")}
-                        placeholder="Describe your project..."
-                        rows={4}
-                    />
-                    {errors.description && (
-                        <p className="text-sm text-destructive mt-1">
-                            {errors.description.message}
-                        </p>
+                <Controller
+                    name="tagline"
+                    control={control}
+                    render={({ field, fieldState }) => (
+                        <Field data-invalid={fieldState.invalid}>
+                            <FieldLabel htmlFor="tagline">Tagline</FieldLabel>
+                            <Input
+                                {...field}
+                                id="tagline"
+                                aria-invalid={fieldState.invalid}
+                                placeholder="A brief one-liner about your project"
+                                autoComplete="off"
+                            />
+                            {fieldState.invalid && (
+                                <FieldError errors={[fieldState.error]} />
+                            )}
+                        </Field>
                     )}
-                </div>
+                />
 
-                <div>
-                    <Label htmlFor="content">Detailed Content</Label>
-                    <Textarea
-                        id="content"
-                        {...register("content")}
-                        placeholder="Add more detailed information about your project..."
-                        rows={6}
-                    />
-                </div>
+                <Controller
+                    name="description"
+                    control={control}
+                    render={({ field, fieldState }) => (
+                        <Field data-invalid={fieldState.invalid}>
+                            <FieldLabel htmlFor="description">
+                                Description *
+                            </FieldLabel>
+                            <Textarea
+                                {...field}
+                                id="description"
+                                aria-invalid={fieldState.invalid}
+                                placeholder="Describe your project..."
+                                rows={4}
+                            />
+                            {fieldState.invalid && (
+                                <FieldError errors={[fieldState.error]} />
+                            )}
+                        </Field>
+                    )}
+                />
+
+                <Controller
+                    name="content"
+                    control={control}
+                    render={({ field, fieldState }) => (
+                        <Field data-invalid={fieldState.invalid}>
+                            <FieldLabel htmlFor="content">
+                                Detailed Content
+                            </FieldLabel>
+                            <Textarea
+                                {...field}
+                                id="content"
+                                aria-invalid={fieldState.invalid}
+                                placeholder="Add more detailed information about your project..."
+                                rows={6}
+                            />
+                            {fieldState.invalid && (
+                                <FieldError errors={[fieldState.error]} />
+                            )}
+                        </Field>
+                    )}
+                />
             </div>
 
             <Separator />
@@ -208,51 +250,106 @@ export function ProjectForm({ project, onSuccess }: ProjectFormProps) {
             {/* Links */}
             <div className="space-y-4">
                 <h3 className="font-semibold">Links</h3>
-                <div>
-                    <Label htmlFor="project_url">Project URL</Label>
-                    <Input
-                        id="project_url"
-                        {...register("project_url")}
-                        placeholder="https://example.com"
-                        type="url"
-                    />
-                    {errors.project_url && (
-                        <p className="text-sm text-destructive mt-1">
-                            {errors.project_url.message}
-                        </p>
+                <Controller
+                    name="project_url"
+                    control={control}
+                    render={({ field, fieldState }) => (
+                        <Field data-invalid={fieldState.invalid}>
+                            <FieldLabel htmlFor="project_url">
+                                Project URL
+                            </FieldLabel>
+                            <Input
+                                {...field}
+                                id="project_url"
+                                aria-invalid={fieldState.invalid}
+                                placeholder="https://example.com"
+                                type="url"
+                                autoComplete="off"
+                                value={field.value || ""}
+                            />
+                            {fieldState.invalid && (
+                                <FieldError errors={[fieldState.error]} />
+                            )}
+                        </Field>
                     )}
-                </div>
+                />
 
-                <div>
-                    <Label htmlFor="github_url">GitHub URL</Label>
-                    <Input
-                        id="github_url"
-                        {...register("github_url")}
-                        placeholder="https://github.com/username/repo"
-                        type="url"
-                    />
-                    {errors.github_url && (
-                        <p className="text-sm text-destructive mt-1">
-                            {errors.github_url.message}
-                        </p>
+                <Controller
+                    name="github_url"
+                    control={control}
+                    render={({ field, fieldState }) => (
+                        <Field data-invalid={fieldState.invalid}>
+                            <FieldLabel htmlFor="github_url">
+                                GitHub URL
+                            </FieldLabel>
+                            <Input
+                                {...field}
+                                id="github_url"
+                                aria-invalid={fieldState.invalid}
+                                placeholder="https://github.com/username/repo"
+                                type="url"
+                                autoComplete="off"
+                                value={field.value || ""}
+                            />
+                            {fieldState.invalid && (
+                                <FieldError errors={[fieldState.error]} />
+                            )}
+                        </Field>
                     )}
-                </div>
+                />
+
+                <Controller
+                    name="youtube_url"
+                    control={control}
+                    render={({ field, fieldState }) => (
+                        <Field data-invalid={fieldState.invalid}>
+                            <FieldLabel htmlFor="youtube_url">
+                                YouTube URL
+                            </FieldLabel>
+                            <Input
+                                {...field}
+                                id="youtube_url"
+                                aria-invalid={fieldState.invalid}
+                                placeholder="https://youtube.com/watch?v=..."
+                                type="url"
+                                autoComplete="off"
+                                value={field.value || ""}
+                            />
+                            {fieldState.invalid && (
+                                <FieldError errors={[fieldState.error]} />
+                            )}
+                        </Field>
+                    )}
+                />
             </div>
 
             <Separator />
 
             {/* Technologies */}
-            <div>
-                <Label htmlFor="technologies">Technologies</Label>
-                <Input
-                    id="technologies"
-                    {...register("technologies")}
-                    placeholder="React, Node.js, PostgreSQL (comma-separated)"
-                />
-                <p className="text-xs text-muted-foreground mt-1">
-                    Separate technologies with commas
-                </p>
-            </div>
+            <Controller
+                name="technologies"
+                control={control}
+                render={({ field, fieldState }) => (
+                    <Field data-invalid={fieldState.invalid}>
+                        <FieldLabel htmlFor="technologies">
+                            Technologies
+                        </FieldLabel>
+                        <Input
+                            {...field}
+                            id="technologies"
+                            aria-invalid={fieldState.invalid}
+                            placeholder="React, Node.js, PostgreSQL (comma-separated)"
+                            autoComplete="off"
+                        />
+                        <p className="text-xs text-muted-foreground mt-1">
+                            Separate technologies with commas
+                        </p>
+                        {fieldState.invalid && (
+                            <FieldError errors={[fieldState.error]} />
+                        )}
+                    </Field>
+                )}
+            />
 
             <Separator />
 

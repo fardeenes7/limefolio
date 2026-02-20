@@ -22,6 +22,7 @@ export interface Site {
     meta_description: string;
     is_published: boolean;
     is_active: boolean;
+    available_for_hire: boolean;
     custom_domains?: CustomDomain[];
     created_at: string;
     updated_at: string;
@@ -46,6 +47,7 @@ export interface Project {
     thumbnail: string | null;
     demo_url: string;
     github_url: string;
+    youtube_url: string;
     technologies: string[];
     featured: boolean;
     status: "draft" | "published";

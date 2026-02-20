@@ -22,6 +22,7 @@ export const projectSchema = z.object({
     thumbnail: z.string().url().nullable(),
     demo_url: z.string().url(),
     github_url: z.string().url(),
+    youtube_url: z.string().url(),
     technologies: z.array(z.string()),
     featured: z.boolean(),
     status: z.enum(["draft", "published"]),
@@ -46,6 +47,11 @@ export const projectFormSchema = z.object({
     github_url: z
         .string()
         .url("Invalid GitHub URL")
+        .or(z.literal(""))
+        .optional(),
+    youtube_url: z
+        .string()
+        .url("Invalid YouTube URL")
         .or(z.literal(""))
         .optional(),
     technologies: z.array(z.string()).optional(),

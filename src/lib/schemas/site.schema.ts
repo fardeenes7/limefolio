@@ -24,6 +24,7 @@ export const siteSchema = z.object({
     meta_description: z.string().max(160),
     is_published: z.boolean(),
     is_active: z.boolean(),
+    available_for_hire: z.boolean(),
     custom_domains: z.array(z.lazy(() => customDomainSchema)).optional(),
     created_at: z.string().datetime(),
     updated_at: z.string().datetime(),
@@ -73,6 +74,7 @@ export const siteFormSchema = z.object({
         .optional(),
     is_published: z.boolean().optional(),
     is_active: z.boolean().optional(),
+    available_for_hire: z.boolean().optional(),
 });
 
 export type Site = z.infer<typeof siteSchema>;

@@ -9,6 +9,7 @@ import { Site } from "@/types";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { Switch } from "@/components/ui/switch";
 import {
     Field,
     FieldDescription,
@@ -44,6 +45,7 @@ export function SiteSettingsClient({ initialSite }: SiteSettingsClientProps) {
     const {
         register,
         handleSubmit,
+        control,
         formState: { errors, isDirty, isSubmitting },
         reset,
         setError,
@@ -56,6 +58,7 @@ export function SiteSettingsClient({ initialSite }: SiteSettingsClientProps) {
             description: site.description,
             meta_title: site.meta_title,
             meta_description: site.meta_description,
+            available_for_hire: site.available_for_hire,
         },
     });
 
@@ -185,6 +188,26 @@ export function SiteSettingsClient({ initialSite }: SiteSettingsClientProps) {
                                     className="transition-all duration-200 focus:ring-2 focus:ring-primary/20 resize-none"
                                 />
                                 <FieldError errors={[errors.description]} />
+                            </Field>
+
+                            <Field className="flex flex-row items-center justify-between rounded-lg border border-border/40 p-4 transition-all duration-200">
+                                <div className="space-y-0.5">
+                                    <FieldTitle>Available for Hire</FieldTitle>
+                                    <FieldDescription>
+                                        Show a badge indicating that you are
+                                        open to new opportunities
+                                    </FieldDescription>
+                                </div>
+                                <Controller
+                                    control={control}
+                                    name="available_for_hire"
+                                    render={({ field }) => (
+                                        <Switch
+                                            checked={field.value}
+                                            onCheckedChange={field.onChange}
+                                        />
+                                    )}
+                                />
                             </Field>
                         </FieldGroup>
                     </Card>
