@@ -7,6 +7,7 @@ export interface UploadedMedia {
     media_type: string;
     alt: string;
     caption: string;
+    is_featured?: boolean;
 }
 
 /** A file that has been selected but not yet confirmed for upload */

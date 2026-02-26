@@ -21,10 +21,12 @@ import {
     IconEdit,
     IconRefresh,
     IconPhoto,
+    IconStar,
+    IconStarFilled,
 } from "@tabler/icons-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { updateMediaThumbnail } from "@/lib/actions/media";
+import { updateMediaThumbnail, setMediaFeatured } from "@/lib/actions/media";
 import {
     generateImageThumbnail,
     blobToPreviewUrl,
@@ -37,6 +39,8 @@ interface MediaDetailsSheetProps {
     onOpenChange: (open: boolean) => void;
     /** Called after a thumbnail is successfully updated */
     onThumbnailUpdate?: (mediaId: number, newThumbnailUrl: string) => void;
+    /** Called after featured status is updated */
+    onFeaturedUpdate?: (mediaId: number) => void;
 }
 
 export function MediaDetailsSheet({
@@ -44,6 +48,7 @@ export function MediaDetailsSheet({
     open,
     onOpenChange,
     onThumbnailUpdate,
+    onFeaturedUpdate,
 }: MediaDetailsSheetProps) {
     const thumbInputRef = useRef<HTMLInputElement>(null);
 
@@ -115,6 +120,14 @@ export function MediaDetailsSheet({
         setPendingThumbPreview(null);
         setThumbError(null);
         setThumbSaved(false);
+    };
+
+    const handleToggleFeatured = async () => {
+        if (!media) return;
+        const result = await setMediaFeatured(media.id);
+        if (result.ok) {
+            onFeaturedUpdate?.(media.id);
+        }
     };
 
     if (!media) return null;
@@ -301,6 +314,24 @@ export function MediaDetailsSheet({
                             >
                                 {media.media_type}
                             </Badge>
+                            <Button
+                                type="button"
+                                size="sm"
+                                variant={
+                                    media.is_featured ? "default" : "outline"
+                                }
+                                className={`h-7 gap-1.5 text-xs ${media.is_featured ? "bg-yellow-500 hover:bg-yellow-600 border-none" : ""}`}
+                                onClick={handleToggleFeatured}
+                            >
+                                {media.is_featured ? (
+                                    <IconStarFilled className="w-3.5 h-3.5" />
+                                ) : (
+                                    <IconStar className="w-3.5 h-3.5" />
+                                )}
+                                {media.is_featured
+                                    ? "Featured"
+                                    : "Set Featured"}
+                            </Button>
                         </div>
 
                         <div className="grid grid-cols-1 gap-4 text-sm bg-muted/30 p-4 rounded-lg">

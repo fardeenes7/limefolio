@@ -231,6 +231,7 @@ export function MediaUploader({
                     media_type: createResponse.data.media_type,
                     alt: createResponse.data.alt,
                     caption: createResponse.data.caption,
+                    is_featured: createResponse.data.is_featured,
                 };
 
                 onUploadComplete?.([newMedia]);

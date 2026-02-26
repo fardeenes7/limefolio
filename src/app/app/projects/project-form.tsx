@@ -18,6 +18,8 @@ import {
     IconVideo,
     IconPhoto,
     IconMaximize,
+    IconStar,
+    IconStarFilled,
 } from "@tabler/icons-react";
 import { MediaDetailsSheet } from "@/components/ui/media-details-sheet";
 import { Media } from "@/types";
@@ -31,6 +33,11 @@ import {
     MediaUploader,
     UploadedMedia,
 } from "@/components/media/media-uploader";
+import {
+    uploadMediaFile,
+    getMediaList,
+    setMediaFeatured,
+} from "@/lib/actions/media";
 import { MediaLibraryPicker } from "@/components/media/media-library-picker";
 import { Badge } from "@/components/ui/badge";
 import { Field, FieldError, FieldLabel } from "@/components/ui/field";
@@ -82,6 +89,7 @@ export function ProjectForm({ project, onSuccess }: ProjectFormProps) {
             alt: m.alt,
             caption: m.caption,
             thumbnail_url: m.thumbnail ?? undefined,
+            is_featured: m.is_featured,
         })) || [],
     );
 
@@ -243,10 +251,34 @@ export function ProjectForm({ project, onSuccess }: ProjectFormProps) {
                 media_type: m.media_type,
                 alt: m.alt,
                 caption: m.caption,
+                is_featured: m.is_featured,
             }));
         if (newItems.length === 0) return;
         uploadedMediaRef.current = [...uploadedMediaRef.current, ...newItems];
         setUploadedMedia((prev) => [...prev, ...newItems]);
+    }, []);
+
+    const handleSetFeatured = useCallback(async (mediaId: number) => {
+        const response = await setMediaFeatured(mediaId);
+        if (response.ok) {
+            setUploadedMedia((prev) =>
+                prev.map((m) => ({
+                    ...m,
+                    is_featured: m.id === mediaId,
+                })),
+            );
+            uploadedMediaRef.current = uploadedMediaRef.current.map((m) => ({
+                ...m,
+                is_featured: m.id === mediaId,
+            }));
+            setSelectedMedia((prev) =>
+                prev && prev.id === mediaId
+                    ? { ...prev, is_featured: true }
+                    : prev
+                      ? { ...prev, is_featured: false }
+                      : null,
+            );
+        }
     }, []);
 
     return (
@@ -256,6 +288,7 @@ export function ProjectForm({ project, onSuccess }: ProjectFormProps) {
                 open={isSheetOpen}
                 onOpenChange={setIsSheetOpen}
                 onThumbnailUpdate={handleThumbnailUpdate}
+                onFeaturedUpdate={handleSetFeatured}
             />
             {/* Two-column layout: form left, media sidebar right */}
             <div className="flex gap-6 items-start">
@@ -624,8 +657,46 @@ export function ProjectForm({ project, onSuccess }: ProjectFormProps) {
                                             </div>
                                         )}
 
+                                        {/* featured badge */}
+                                        {item.is_featured && (
+                                            <div className="absolute top-1 left-1 z-10">
+                                                <Badge
+                                                    variant="default"
+                                                    className="px-1 h-5 bg-yellow-500 hover:bg-yellow-600 border-none"
+                                                >
+                                                    <IconStarFilled className="w-3 h-3 mr-0.5" />
+                                                    <span className="text-[10px]">
+                                                        Featured
+                                                    </span>
+                                                </Badge>
+                                            </div>
+                                        )}
+
                                         {/* hover overlay */}
                                         <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-1">
+                                            <button
+                                                type="button"
+                                                title={
+                                                    item.is_featured
+                                                        ? "Featured"
+                                                        : "Set as featured"
+                                                }
+                                                className={`p-1 rounded transition-colors ${
+                                                    item.is_featured
+                                                        ? "bg-yellow-500 hover:bg-yellow-600"
+                                                        : "bg-white/20 hover:bg-white/40"
+                                                }`}
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    handleSetFeatured(item.id);
+                                                }}
+                                            >
+                                                {item.is_featured ? (
+                                                    <IconStarFilled className="w-3 h-3 text-white" />
+                                                ) : (
+                                                    <IconStar className="w-3 h-3 text-white" />
+                                                )}
+                                            </button>
                                             <button
                                                 type="button"
                                                 title="View"

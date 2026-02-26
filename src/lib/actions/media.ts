@@ -228,10 +228,27 @@ export async function deleteMedia(
 /**
  * Toggle media featured status
  */
-export async function toggleMediaFeatured(id: number, is_featured: boolean) {
+export async function toggleMediaFeatured(id: number, is_featured: boolean) { 
     const formData = new FormData();
     formData.append("is_featured", is_featured.toString());
     return updateMedia(id, formData);
+}
+
+/**
+ * Atomically set a media item as featured for its parent object.
+ * This clears is_featured on all siblings on the backend.
+ */
+export async function setMediaFeatured(id: number) {
+    const response = await api.post<Media>(
+        `/api/dashboard/media/${id}/set-featured/`,
+        {},
+    );
+
+    if (response.ok) {
+        revalidatePath("/app/media");
+    }
+
+    return response;
 }
 
 /**

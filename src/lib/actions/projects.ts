@@ -24,6 +24,7 @@ export interface Project {
         alt: string;
         caption: string;
         thumbnail: string | null;
+        is_featured: boolean;
     }>;
     start_date: string | null;
     end_date: string | null;
