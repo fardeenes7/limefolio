@@ -77,19 +77,58 @@ export async function getMediaList() {
  * Use this instead of presigned URL to avoid CORS issues
  */
 export async function uploadMediaFile(
-    file: File,
+    file: File | FormData,
     alt?: string,
     caption?: string,
 ) {
-    const formData = new FormData();
-    formData.append("file", file);
-    if (alt) formData.append("alt", alt);
-    if (caption) formData.append("caption", caption);
+    const formData =
+        file instanceof FormData
+            ? file
+            : (() => {
+                  const fd = new FormData();
+                  fd.append("file", file);
+                  if (alt) fd.append("alt", alt);
+                  if (caption) fd.append("caption", caption);
+                  return fd;
+              })();
 
     const response = await api.post<Media>(
         "/api/dashboard/media/upload/",
         formData,
     );
+
+    if (response.ok) {
+        revalidatePath("/app/media");
+    }
+
+    return response;
+}
+
+/**
+ * Confirm a presigned-URL upload by creating the media record.
+ * Sends the video/image public URL as a plain form field and optionally
+ * includes the thumbnail as a real file upload — all in one multipart POST.
+ */
+export async function confirmPresignedUpload(data: {
+    video?: string;
+    image?: string;
+    thumbnailFile?: File;
+    alt?: string;
+    caption?: string;
+}) {
+    const formData = new FormData();
+    if (data.video) formData.append("video", data.video);
+    if (data.image) formData.append("image", data.image);
+    if (data.alt) formData.append("alt", data.alt);
+    if (data.caption) formData.append("caption", data.caption);
+    if (data.thumbnailFile)
+        formData.append(
+            "thumbnail",
+            data.thumbnailFile,
+            data.thumbnailFile.name,
+        );
+
+    const response = await api.post<Media>("/api/dashboard/media/", formData);
 
     if (response.ok) {
         revalidatePath("/app/media");
@@ -193,6 +232,32 @@ export async function toggleMediaFeatured(id: number, is_featured: boolean) {
     const formData = new FormData();
     formData.append("is_featured", is_featured.toString());
     return updateMedia(id, formData);
+}
+
+/**
+ * Update the thumbnail of an existing media item by uploading the file
+ * directly to the PATCH endpoint as multipart/form-data.
+ * No presigned URL needed — thumbnails are small enough for a direct upload.
+ */
+export async function updateMediaThumbnail(
+    id: number,
+    thumbnailFile: File,
+): Promise<{ ok: boolean; thumbnailUrl?: string; error?: string }> {
+    const formData = new FormData();
+    formData.append("thumbnail", thumbnailFile);
+
+    const response = await api.patch<Media>(
+        `/api/dashboard/media/${id}/`,
+        formData,
+    );
+
+    if (!response.ok) {
+        return { ok: false, error: "Failed to update thumbnail" };
+    }
+
+    revalidatePath("/app/media");
+    const thumbnailUrl = response.data?.thumbnail ?? undefined;
+    return { ok: true, thumbnailUrl };
 }
 
 /**

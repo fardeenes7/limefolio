@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useRef, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -11,7 +11,16 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Separator } from "@/components/ui/separator";
-import { IconLoader2, IconArrowLeft } from "@tabler/icons-react";
+import { Card } from "@/components/ui/card";
+import {
+    IconArrowLeft,
+    IconX,
+    IconVideo,
+    IconPhoto,
+    IconMaximize,
+} from "@tabler/icons-react";
+import { MediaDetailsSheet } from "@/components/ui/media-details-sheet";
+import { Media } from "@/types";
 import {
     createProject,
     updateProject,
@@ -71,8 +80,12 @@ export function ProjectForm({ project, onSuccess }: ProjectFormProps) {
             media_type: m.media_type,
             alt: m.alt,
             caption: m.caption,
+            thumbnail_url: m.thumbnail ?? undefined,
         })) || [],
     );
+
+    // Ref mirrors state so concurrent upload callbacks never see stale closures
+    const uploadedMediaRef = useRef<UploadedMedia[]>(uploadedMedia);
 
     const {
         register,
@@ -159,319 +172,481 @@ export function ProjectForm({ project, onSuccess }: ProjectFormProps) {
         return processSubmit(data, uploadedMedia);
     };
 
-    const handleMediaUpload = async (media: UploadedMedia[]) => {
-        setUploadedMedia(media);
-        handleSubmit((data) => processSubmit(data, media))();
+    // Called once per successfully uploaded file — appends, never replaces
+    const handleMediaSuccess = useCallback(
+        (newMedia: UploadedMedia) => {
+            uploadedMediaRef.current = [...uploadedMediaRef.current, newMedia];
+            const updated = uploadedMediaRef.current;
+            setUploadedMedia(updated);
+            handleSubmit((data) => processSubmit(data, updated))();
+        },
+        [handleSubmit],
+    );
+
+    const handleRemoveMedia = (id: number) => {
+        const updated = uploadedMedia.filter((m) => m.id !== id);
+        uploadedMediaRef.current = updated;
+        setUploadedMedia(updated);
+        handleSubmit((data) => processSubmit(data, updated))();
+    };
+
+    const [selectedMedia, setSelectedMedia] = useState<Media | null>(null);
+    const [isSheetOpen, setIsSheetOpen] = useState(false);
+
+    const handleViewMedia = (item: UploadedMedia) => {
+        setSelectedMedia({
+            id: item.id,
+            image: item.media_type === "image" ? item.url : null,
+            video: item.media_type === "video" ? item.url : null,
+            thumbnail: item.thumbnail_url ?? null,
+            alt: item.alt,
+            caption: item.caption,
+            order: 0,
+            is_featured: false,
+            media_type: item.media_type as "image" | "video",
+            url: item.url,
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString(),
+        });
+        setIsSheetOpen(true);
+    };
+
+    const handleThumbnailUpdate = (
+        mediaId: number,
+        newThumbnailUrl: string,
+    ) => {
+        setUploadedMedia((prev) =>
+            prev.map((m) =>
+                m.id === mediaId ? { ...m, thumbnail_url: newThumbnailUrl } : m,
+            ),
+        );
+        uploadedMediaRef.current = uploadedMediaRef.current.map((m) =>
+            m.id === mediaId ? { ...m, thumbnail_url: newThumbnailUrl } : m,
+        );
+        setSelectedMedia((prev) =>
+            prev?.id === mediaId
+                ? { ...prev, thumbnail: newThumbnailUrl }
+                : prev,
+        );
     };
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-            {/* Basic Information */}
-            <div className="space-y-4">
-                <Controller
-                    name="title"
-                    control={control}
-                    render={({ field, fieldState }) => (
-                        <Field data-invalid={fieldState.invalid}>
-                            <FieldLabel htmlFor="title">Title *</FieldLabel>
-                            <Input
-                                {...field}
-                                id="title"
-                                aria-invalid={fieldState.invalid}
-                                placeholder="My Awesome Project"
-                                autoComplete="off"
-                            />
-                            {fieldState.invalid && (
-                                <FieldError errors={[fieldState.error]} />
-                            )}
-                        </Field>
-                    )}
-                />
-
-                <Controller
-                    name="tagline"
-                    control={control}
-                    render={({ field, fieldState }) => (
-                        <Field data-invalid={fieldState.invalid}>
-                            <FieldLabel htmlFor="tagline">Tagline</FieldLabel>
-                            <Input
-                                {...field}
-                                id="tagline"
-                                aria-invalid={fieldState.invalid}
-                                placeholder="A brief one-liner about your project"
-                                autoComplete="off"
-                            />
-                            {fieldState.invalid && (
-                                <FieldError errors={[fieldState.error]} />
-                            )}
-                        </Field>
-                    )}
-                />
-
-                <Controller
-                    name="description"
-                    control={control}
-                    render={({ field, fieldState }) => (
-                        <Field data-invalid={fieldState.invalid}>
-                            <FieldLabel htmlFor="description">
-                                Description *
-                            </FieldLabel>
-                            <Textarea
-                                {...field}
-                                id="description"
-                                aria-invalid={fieldState.invalid}
-                                placeholder="Describe your project..."
-                                rows={4}
-                            />
-                            {fieldState.invalid && (
-                                <FieldError errors={[fieldState.error]} />
-                            )}
-                        </Field>
-                    )}
-                />
-
-                <Controller
-                    name="content"
-                    control={control}
-                    render={({ field, fieldState }) => (
-                        <Field data-invalid={fieldState.invalid}>
-                            <FieldLabel htmlFor="content">
-                                Detailed Content
-                            </FieldLabel>
-                            <Textarea
-                                {...field}
-                                id="content"
-                                aria-invalid={fieldState.invalid}
-                                placeholder="Add more detailed information about your project..."
-                                rows={6}
-                            />
-                            {fieldState.invalid && (
-                                <FieldError errors={[fieldState.error]} />
-                            )}
-                        </Field>
-                    )}
-                />
-            </div>
-
-            <Separator />
-
-            {/* Links */}
-            <div className="space-y-4">
-                <h3 className="font-semibold">Links</h3>
-                <Controller
-                    name="project_url"
-                    control={control}
-                    render={({ field, fieldState }) => (
-                        <Field data-invalid={fieldState.invalid}>
-                            <FieldLabel htmlFor="project_url">
-                                Project URL
-                            </FieldLabel>
-                            <Input
-                                {...field}
-                                id="project_url"
-                                aria-invalid={fieldState.invalid}
-                                placeholder="https://example.com"
-                                type="url"
-                                autoComplete="off"
-                                value={field.value || ""}
-                            />
-                            {fieldState.invalid && (
-                                <FieldError errors={[fieldState.error]} />
-                            )}
-                        </Field>
-                    )}
-                />
-
-                <Controller
-                    name="github_url"
-                    control={control}
-                    render={({ field, fieldState }) => (
-                        <Field data-invalid={fieldState.invalid}>
-                            <FieldLabel htmlFor="github_url">
-                                GitHub URL
-                            </FieldLabel>
-                            <Input
-                                {...field}
-                                id="github_url"
-                                aria-invalid={fieldState.invalid}
-                                placeholder="https://github.com/username/repo"
-                                type="url"
-                                autoComplete="off"
-                                value={field.value || ""}
-                            />
-                            {fieldState.invalid && (
-                                <FieldError errors={[fieldState.error]} />
-                            )}
-                        </Field>
-                    )}
-                />
-
-                <Controller
-                    name="youtube_url"
-                    control={control}
-                    render={({ field, fieldState }) => (
-                        <Field data-invalid={fieldState.invalid}>
-                            <FieldLabel htmlFor="youtube_url">
-                                YouTube URL
-                            </FieldLabel>
-                            <Input
-                                {...field}
-                                id="youtube_url"
-                                aria-invalid={fieldState.invalid}
-                                placeholder="https://youtube.com/watch?v=..."
-                                type="url"
-                                autoComplete="off"
-                                value={field.value || ""}
-                            />
-                            {fieldState.invalid && (
-                                <FieldError errors={[fieldState.error]} />
-                            )}
-                        </Field>
-                    )}
-                />
-            </div>
-
-            <Separator />
-
-            {/* Technologies */}
-            <Controller
-                name="technologies"
-                control={control}
-                render={({ field, fieldState }) => (
-                    <Field data-invalid={fieldState.invalid}>
-                        <FieldLabel htmlFor="technologies">
-                            Technologies
-                        </FieldLabel>
-                        <Input
-                            {...field}
-                            id="technologies"
-                            aria-invalid={fieldState.invalid}
-                            placeholder="React, Node.js, PostgreSQL (comma-separated)"
-                            autoComplete="off"
-                        />
-                        <p className="text-xs text-muted-foreground mt-1">
-                            Separate technologies with commas
-                        </p>
-                        {fieldState.invalid && (
-                            <FieldError errors={[fieldState.error]} />
-                        )}
-                    </Field>
-                )}
+        <>
+            <MediaDetailsSheet
+                media={selectedMedia}
+                open={isSheetOpen}
+                onOpenChange={setIsSheetOpen}
+                onThumbnailUpdate={handleThumbnailUpdate}
             />
-
-            <Separator />
-
-            {/* Dates */}
-            <div className="grid grid-cols-2 gap-4">
-                <Controller
-                    name="start_date"
-                    control={control}
-                    render={({ field, fieldState }) => (
-                        <Field>
-                            <FieldLabel htmlFor="start_date">
-                                Start Date
-                            </FieldLabel>
-                            <DatePicker
-                                value={field.value}
-                                onChange={field.onChange}
-                                ariaInvalid={fieldState.invalid}
-                            />
-                            {fieldState.invalid && (
-                                <FieldError errors={[fieldState.error]} />
+            {/* Two-column layout: form left, media sidebar right */}
+            <div className="flex gap-6 items-start">
+                {/* ── Left: form fields ───────────────────────────────── */}
+                <form
+                    id="project-form"
+                    onSubmit={handleSubmit(onSubmit)}
+                    className="flex-1 min-w-0 space-y-6"
+                >
+                    {/* Basic Information */}
+                    <div className="space-y-4">
+                        <Controller
+                            name="title"
+                            control={control}
+                            render={({ field, fieldState }) => (
+                                <Field data-invalid={fieldState.invalid}>
+                                    <FieldLabel htmlFor="title">
+                                        Title *
+                                    </FieldLabel>
+                                    <Input
+                                        {...field}
+                                        id="title"
+                                        aria-invalid={fieldState.invalid}
+                                        placeholder="My Awesome Project"
+                                        autoComplete="off"
+                                    />
+                                    {fieldState.invalid && (
+                                        <FieldError
+                                            errors={[fieldState.error]}
+                                        />
+                                    )}
+                                </Field>
                             )}
-                        </Field>
-                    )}
-                />
-                <Controller
-                    name="end_date"
-                    control={control}
-                    render={({ field, fieldState }) => (
-                        <Field>
-                            <FieldLabel htmlFor="end_date">End Date</FieldLabel>
-                            <DatePicker
-                                value={field.value}
-                                onChange={field.onChange}
-                                ariaInvalid={fieldState.invalid}
-                            />
-                            {fieldState.invalid && (
-                                <FieldError errors={[fieldState.error]} />
+                        />
+
+                        <Controller
+                            name="tagline"
+                            control={control}
+                            render={({ field, fieldState }) => (
+                                <Field data-invalid={fieldState.invalid}>
+                                    <FieldLabel htmlFor="tagline">
+                                        Tagline
+                                    </FieldLabel>
+                                    <Input
+                                        {...field}
+                                        id="tagline"
+                                        aria-invalid={fieldState.invalid}
+                                        placeholder="A brief one-liner about your project"
+                                        autoComplete="off"
+                                    />
+                                    {fieldState.invalid && (
+                                        <FieldError
+                                            errors={[fieldState.error]}
+                                        />
+                                    )}
+                                </Field>
                             )}
-                        </Field>
+                        />
+
+                        <Controller
+                            name="description"
+                            control={control}
+                            render={({ field, fieldState }) => (
+                                <Field data-invalid={fieldState.invalid}>
+                                    <FieldLabel htmlFor="description">
+                                        Description *
+                                    </FieldLabel>
+                                    <Textarea
+                                        {...field}
+                                        id="description"
+                                        aria-invalid={fieldState.invalid}
+                                        placeholder="Describe your project..."
+                                        rows={4}
+                                    />
+                                    {fieldState.invalid && (
+                                        <FieldError
+                                            errors={[fieldState.error]}
+                                        />
+                                    )}
+                                </Field>
+                            )}
+                        />
+
+                        <Controller
+                            name="content"
+                            control={control}
+                            render={({ field, fieldState }) => (
+                                <Field data-invalid={fieldState.invalid}>
+                                    <FieldLabel htmlFor="content">
+                                        Detailed Content
+                                    </FieldLabel>
+                                    <Textarea
+                                        {...field}
+                                        id="content"
+                                        aria-invalid={fieldState.invalid}
+                                        placeholder="Add more detailed information about your project..."
+                                        rows={6}
+                                    />
+                                    {fieldState.invalid && (
+                                        <FieldError
+                                            errors={[fieldState.error]}
+                                        />
+                                    )}
+                                </Field>
+                            )}
+                        />
+                    </div>
+
+                    <Separator />
+
+                    {/* Links */}
+                    <div className="space-y-4">
+                        <h3 className="font-semibold">Links</h3>
+                        <Controller
+                            name="project_url"
+                            control={control}
+                            render={({ field, fieldState }) => (
+                                <Field data-invalid={fieldState.invalid}>
+                                    <FieldLabel htmlFor="project_url">
+                                        Project URL
+                                    </FieldLabel>
+                                    <Input
+                                        {...field}
+                                        id="project_url"
+                                        aria-invalid={fieldState.invalid}
+                                        placeholder="https://example.com"
+                                        type="url"
+                                        autoComplete="off"
+                                        value={field.value || ""}
+                                    />
+                                    {fieldState.invalid && (
+                                        <FieldError
+                                            errors={[fieldState.error]}
+                                        />
+                                    )}
+                                </Field>
+                            )}
+                        />
+
+                        <Controller
+                            name="github_url"
+                            control={control}
+                            render={({ field, fieldState }) => (
+                                <Field data-invalid={fieldState.invalid}>
+                                    <FieldLabel htmlFor="github_url">
+                                        GitHub URL
+                                    </FieldLabel>
+                                    <Input
+                                        {...field}
+                                        id="github_url"
+                                        aria-invalid={fieldState.invalid}
+                                        placeholder="https://github.com/username/repo"
+                                        type="url"
+                                        autoComplete="off"
+                                        value={field.value || ""}
+                                    />
+                                    {fieldState.invalid && (
+                                        <FieldError
+                                            errors={[fieldState.error]}
+                                        />
+                                    )}
+                                </Field>
+                            )}
+                        />
+
+                        <Controller
+                            name="youtube_url"
+                            control={control}
+                            render={({ field, fieldState }) => (
+                                <Field data-invalid={fieldState.invalid}>
+                                    <FieldLabel htmlFor="youtube_url">
+                                        YouTube URL
+                                    </FieldLabel>
+                                    <Input
+                                        {...field}
+                                        id="youtube_url"
+                                        aria-invalid={fieldState.invalid}
+                                        placeholder="https://youtube.com/watch?v=..."
+                                        type="url"
+                                        autoComplete="off"
+                                        value={field.value || ""}
+                                    />
+                                    {fieldState.invalid && (
+                                        <FieldError
+                                            errors={[fieldState.error]}
+                                        />
+                                    )}
+                                </Field>
+                            )}
+                        />
+                    </div>
+
+                    <Separator />
+
+                    {/* Technologies */}
+                    <Controller
+                        name="technologies"
+                        control={control}
+                        render={({ field, fieldState }) => (
+                            <Field data-invalid={fieldState.invalid}>
+                                <FieldLabel htmlFor="technologies">
+                                    Technologies
+                                </FieldLabel>
+                                <Input
+                                    {...field}
+                                    id="technologies"
+                                    aria-invalid={fieldState.invalid}
+                                    placeholder="React, Node.js, PostgreSQL (comma-separated)"
+                                    autoComplete="off"
+                                />
+                                <p className="text-xs text-muted-foreground mt-1">
+                                    Separate technologies with commas
+                                </p>
+                                {fieldState.invalid && (
+                                    <FieldError errors={[fieldState.error]} />
+                                )}
+                            </Field>
+                        )}
+                    />
+
+                    <Separator />
+
+                    {/* Dates */}
+                    <div className="grid grid-cols-2 gap-4">
+                        <Controller
+                            name="start_date"
+                            control={control}
+                            render={({ field, fieldState }) => (
+                                <Field>
+                                    <FieldLabel htmlFor="start_date">
+                                        Start Date
+                                    </FieldLabel>
+                                    <DatePicker
+                                        value={field.value}
+                                        onChange={field.onChange}
+                                        ariaInvalid={fieldState.invalid}
+                                    />
+                                    {fieldState.invalid && (
+                                        <FieldError
+                                            errors={[fieldState.error]}
+                                        />
+                                    )}
+                                </Field>
+                            )}
+                        />
+                        <Controller
+                            name="end_date"
+                            control={control}
+                            render={({ field, fieldState }) => (
+                                <Field>
+                                    <FieldLabel htmlFor="end_date">
+                                        End Date
+                                    </FieldLabel>
+                                    <DatePicker
+                                        value={field.value}
+                                        onChange={field.onChange}
+                                        ariaInvalid={fieldState.invalid}
+                                    />
+                                    {fieldState.invalid && (
+                                        <FieldError
+                                            errors={[fieldState.error]}
+                                        />
+                                    )}
+                                </Field>
+                            )}
+                        />
+                    </div>
+
+                    <Separator />
+
+                    {/* Settings */}
+                    <div className="space-y-4">
+                        <h3 className="font-semibold">Settings</h3>
+
+                        <div className="flex items-center justify-between">
+                            <div>
+                                <Label htmlFor="featured">
+                                    Featured Project
+                                </Label>
+                                <p className="text-sm text-muted-foreground">
+                                    Show this project prominently on your
+                                    portfolio
+                                </p>
+                            </div>
+                            <Switch
+                                id="featured"
+                                checked={featured}
+                                onCheckedChange={(checked) =>
+                                    setValue("featured", checked)
+                                }
+                            />
+                        </div>
+
+                        <div className="flex items-center justify-between">
+                            <div>
+                                <Label htmlFor="is_published">Published</Label>
+                                <p className="text-sm text-muted-foreground">
+                                    Make this project visible on your public
+                                    portfolio
+                                </p>
+                            </div>
+                            <Switch
+                                id="is_published"
+                                checked={isPublished}
+                                onCheckedChange={(checked) =>
+                                    setValue("is_published", checked)
+                                }
+                            />
+                        </div>
+                    </div>
+                </form>
+                {/* ── Right: media sidebar ─────────────────────────────── */}
+                <div className="w-96 shrink-0 sticky top-6 space-y-4">
+                    <Card className="p-4 space-y-3">
+                        <div>
+                            <h3 className="font-semibold text-sm">
+                                Project Media
+                            </h3>
+                            <p className="text-xs text-muted-foreground mt-0.5">
+                                Images &amp; videos are auto-saved on upload
+                            </p>
+                        </div>
+
+                        <MediaUploader
+                            onSuccess={handleMediaSuccess}
+                            maxFiles={10}
+                            mode="inline"
+                        />
+                    </Card>
+
+                    {/* Uploaded media grid */}
+                    {uploadedMedia.length > 0 && (
+                        <Card className="p-4 space-y-3">
+                            <h3 className="font-semibold text-sm">
+                                Attached ({uploadedMedia.length})
+                            </h3>
+                            <div className="grid grid-cols-2 gap-1.5">
+                                {uploadedMedia.map((item) => (
+                                    <div
+                                        key={item.id}
+                                        className="relative aspect-video rounded-md overflow-hidden bg-muted group cursor-pointer border"
+                                        onClick={() => handleViewMedia(item)}
+                                    >
+                                        {/* thumbnail or fallback */}
+                                        {(item.thumbnail_url ??
+                                        (item.media_type === "image"
+                                            ? item.url
+                                            : null)) ? (
+                                            <img
+                                                src={
+                                                    item.thumbnail_url ??
+                                                    item.url
+                                                }
+                                                alt={item.alt}
+                                                className="w-full h-full object-cover"
+                                            />
+                                        ) : (
+                                            <div className="w-full h-full flex items-center justify-center">
+                                                <IconVideo className="w-5 h-5 text-muted-foreground" />
+                                            </div>
+                                        )}
+
+                                        {/* hover overlay */}
+                                        <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-1">
+                                            <button
+                                                type="button"
+                                                title="View"
+                                                className="p-1 rounded bg-white/20 hover:bg-white/40 transition-colors"
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    handleViewMedia(item);
+                                                }}
+                                            >
+                                                <IconMaximize className="w-3 h-3 text-white" />
+                                            </button>
+                                            <button
+                                                type="button"
+                                                title="Remove from project"
+                                                className="p-1 rounded bg-white/20 hover:bg-red-500/80 transition-colors"
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    handleRemoveMedia(item.id);
+                                                }}
+                                            >
+                                                <IconX className="w-3 h-3 text-white" />
+                                            </button>
+                                        </div>
+
+                                        {/* type badge */}
+                                        <div className="absolute bottom-1 left-1">
+                                            {item.media_type === "video" ? (
+                                                <IconVideo className="w-3 h-3 text-white drop-shadow" />
+                                            ) : (
+                                                <IconPhoto className="w-3 h-3 text-white drop-shadow" />
+                                            )}
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </Card>
                     )}
-                />
-            </div>
-
-            <Separator />
-
-            {/* Media Upload */}
-            <div className="space-y-4">
-                <div>
-                    <h3 className="font-semibold mb-1">Project Media</h3>
-                    <p className="text-sm text-muted-foreground">
-                        Upload images and videos for your project
-                    </p>
-                </div>
-
-                <MediaUploader
-                    initialMedia={
-                        project?.media?.map((m) => ({
-                            id: m.id,
-                            url: m.url,
-                            media_type: m.media_type,
-                            alt: m.alt,
-                            caption: m.caption,
-                        })) || []
-                    }
-                    onUploadComplete={handleMediaUpload}
-                    maxFiles={10}
-                    showPreview={true}
-                />
-            </div>
-
-            <Separator />
-
-            {/* Settings */}
-            <div className="space-y-4">
-                <h3 className="font-semibold">Settings</h3>
-
-                <div className="flex items-center justify-between">
-                    <div>
-                        <Label htmlFor="featured">Featured Project</Label>
-                        <p className="text-sm text-muted-foreground">
-                            Show this project prominently on your portfolio
-                        </p>
-                    </div>
-                    <Switch
-                        id="featured"
-                        checked={featured}
-                        onCheckedChange={(checked) =>
-                            setValue("featured", checked)
-                        }
-                    />
-                </div>
-
-                <div className="flex items-center justify-between">
-                    <div>
-                        <Label htmlFor="is_published">Published</Label>
-                        <p className="text-sm text-muted-foreground">
-                            Make this project visible on your public portfolio
-                        </p>
-                    </div>
-                    <Switch
-                        id="is_published"
-                        checked={isPublished}
-                        onCheckedChange={(checked) =>
-                            setValue("is_published", checked)
-                        }
-                    />
-                </div>
-            </div>
-
-            {/* Submit Button */}
-            <div className="flex justify-between items-center gap-2 pt-4">
+                </div>{" "}
+                {/* end sidebar */}
+            </div>{" "}
+            {/* end two-column flex */}
+            {/* ── Sticky bottom action bar ─────────────────────────────── */}
+            <div className="sticky bottom-0 z-10 flex justify-between items-center gap-2 px-6 py-6 -mx-6 border-t bg-background/80 backdrop-blur-sm">
                 <Button
                     type="button"
-                    variant="outline"
+                    variant="ghost"
                     onClick={() => router.back()}
                 >
                     <IconArrowLeft className="w-4 h-4 mr-2" />
@@ -487,6 +662,7 @@ export function ProjectForm({ project, onSuccess }: ProjectFormProps) {
                         Cancel
                     </Button>
                     <Button
+                        form="project-form"
                         type="submit"
                         loading={isLoading}
                         disabled={!isDirty}
@@ -495,6 +671,6 @@ export function ProjectForm({ project, onSuccess }: ProjectFormProps) {
                     </Button>
                 </div>
             </div>
-        </form>
+        </>
     );
 }

@@ -23,6 +23,7 @@ export interface Project {
         media_type: string;
         alt: string;
         caption: string;
+        thumbnail: string | null;
     }>;
     start_date: string | null;
     end_date: string | null;

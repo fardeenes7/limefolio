@@ -28,7 +28,11 @@ export async function fetcher<T = any>(
 
     const headers = new Headers(options.headers);
     headers.set("Authorization", `Bearer ${session.accessToken}`);
-    headers.set("Content-Type", "application/json");
+    // Don't set Content-Type for FormData — let the browser set it with
+    // the correct multipart boundary automatically.
+    if (!(options.body instanceof FormData)) {
+        headers.set("Content-Type", "application/json");
+    }
 
     try {
         const response = await fetch(url, {
@@ -91,21 +95,36 @@ export const api = {
         fetcher<T>(endpoint, {
             ...options,
             method: "POST",
-            body: body ? JSON.stringify(body) : undefined,
+            body:
+                body instanceof FormData
+                    ? body
+                    : body
+                      ? JSON.stringify(body)
+                      : undefined,
         }),
 
     patch: <T = any>(endpoint: string, body?: any, options?: RequestInit) =>
         fetcher<T>(endpoint, {
             ...options,
             method: "PATCH",
-            body: body ? JSON.stringify(body) : undefined,
+            body:
+                body instanceof FormData
+                    ? body
+                    : body
+                      ? JSON.stringify(body)
+                      : undefined,
         }),
 
     put: <T = any>(endpoint: string, body?: any, options?: RequestInit) =>
         fetcher<T>(endpoint, {
             ...options,
             method: "PUT",
-            body: body ? JSON.stringify(body) : undefined,
+            body:
+                body instanceof FormData
+                    ? body
+                    : body
+                      ? JSON.stringify(body)
+                      : undefined,
         }),
 
     delete: <T = any>(endpoint: string, options?: RequestInit) =>
