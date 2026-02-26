@@ -3,8 +3,8 @@
  * All operations run client-side using Canvas API and HTMLVideoElement.
  */
 
-const THUMBNAIL_WIDTH = 400;
-const THUMBNAIL_HEIGHT = 225;
+const THUMBNAIL_WIDTH = 600;
+const THUMBNAIL_HEIGHT = 337;
 const THUMBNAIL_QUALITY = 0.78;
 
 /**

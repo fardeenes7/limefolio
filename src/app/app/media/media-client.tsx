@@ -89,11 +89,21 @@ export function MediaClient({ initialMedia }: MediaClientProps) {
                 onOpenChange={setIsSheetOpen}
                 onThumbnailUpdate={handleThumbnailUpdate}
             />
-            <MediaUploader
-                mode="dialog"
-                onSuccess={handleMediaSuccess}
-                buttonLabel="Upload Media"
-            />
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div>
+                    <h1 className="text-3xl font-bold tracking-tight">
+                        Media Library
+                    </h1>
+                    <p className="text-muted-foreground mt-1">
+                        Upload and manage your images and videos
+                    </p>
+                </div>
+                <MediaUploader
+                    mode="dialog"
+                    onSuccess={handleMediaSuccess}
+                    buttonLabel="Upload Media"
+                />
+            </div>
 
             {/* Media Gallery */}
             {media.length === 0 ? (
