@@ -13,7 +13,10 @@ import {
     IconRefresh,
     IconPhoto,
     IconVideo,
+    IconMaximize,
 } from "@tabler/icons-react";
+import { MediaDetailsSheet } from "@/components/ui/media-details-sheet";
+import { Media } from "@/types";
 
 export interface UploadedMedia {
     id: number;
@@ -52,6 +55,8 @@ export function MediaUploader({
     const [uploadedMedia, setUploadedMedia] =
         useState<UploadedMedia[]>(initialMedia);
     const [isDragging, setIsDragging] = useState(false);
+    const [selectedMedia, setSelectedMedia] = useState<Media | null>(null);
+    const [isSheetOpen, setIsSheetOpen] = useState(false);
 
     const validateFile = (file: File): string | null => {
         const isImage = file.type.startsWith("image/");
@@ -228,6 +233,17 @@ export function MediaUploader({
         });
     };
 
+    const handleViewMedia = (mediaItem: UploadedMedia) => {
+        setSelectedMedia({
+            ...mediaItem,
+            media_type: mediaItem.media_type as "image" | "video",
+            id: mediaItem.id,
+            url: mediaItem.url,
+            created_at: new Date().toISOString(),
+        } as Media);
+        setIsSheetOpen(true);
+    };
+
     const formatFileSize = (bytes: number) => {
         if (bytes < 1024) return bytes + " B";
         if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + " KB";
@@ -236,6 +252,11 @@ export function MediaUploader({
 
     return (
         <div className="space-y-4">
+            <MediaDetailsSheet
+                media={selectedMedia}
+                open={isSheetOpen}
+                onOpenChange={setIsSheetOpen}
+            />
             {/* Upload Area */}
             <Card
                 className={`border-2 border-dashed transition-colors ${
@@ -377,13 +398,23 @@ export function MediaUploader({
                         {uploadedMedia.map((media) => (
                             <div
                                 key={media.id}
-                                className="relative aspect-square rounded-lg overflow-hidden bg-muted group"
+                                className="relative aspect-square rounded-lg overflow-hidden bg-muted group cursor-pointer"
+                                onClick={() => handleViewMedia(media)}
                             >
                                 {media.media_type === "image" ? (
                                     <img
                                         src={media.url}
                                         alt={media.alt}
                                         className="w-full h-full object-cover"
+                                    />
+                                ) : media.url ? (
+                                    <video
+                                        src={`${media.url}#t=0.001`}
+                                        className="w-full h-full object-cover"
+                                        controls={false}
+                                        preload="metadata"
+                                        playsInline
+                                        muted
                                     />
                                 ) : (
                                     <div className="w-full h-full flex items-center justify-center bg-black/5">
@@ -393,11 +424,23 @@ export function MediaUploader({
                                 <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
                                     <Button
                                         size="icon"
+                                        variant="secondary"
+                                        className="h-8 w-8 rounded-full"
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            handleViewMedia(media);
+                                        }}
+                                    >
+                                        <IconMaximize className="w-4 h-4" />
+                                    </Button>
+                                    <Button
+                                        size="icon"
                                         variant="destructive"
                                         className="h-8 w-8 rounded-full"
-                                        onClick={() =>
-                                            handleRemoveMedia(media.id)
-                                        }
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            handleRemoveMedia(media.id);
+                                        }}
                                     >
                                         <IconX className="w-4 h-4" />
                                     </Button>

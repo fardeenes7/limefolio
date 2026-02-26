@@ -15,6 +15,7 @@ import {
     IconAlertCircle,
     IconFileUpload,
     IconRefresh,
+    IconMaximize,
 } from "@tabler/icons-react";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
@@ -25,6 +26,7 @@ import {
 } from "@/lib/actions/media";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
+import { MediaDetailsSheet } from "@/components/ui/media-details-sheet";
 
 interface MediaClientProps {
     initialMedia: Media[];
@@ -42,6 +44,8 @@ export function MediaClient({ initialMedia }: MediaClientProps) {
     const [media, setMedia] = useState<Media[]>(initialMedia);
     const [uploads, setUploads] = useState<UploadStatus[]>([]);
     const [isDragging, setIsDragging] = useState(false);
+    const [selectedMedia, setSelectedMedia] = useState<Media | null>(null);
+    const [isSheetOpen, setIsSheetOpen] = useState(false);
     const fileInputRef = useRef<HTMLInputElement>(null);
 
     const validateFile = (file: File): string | null => {
@@ -205,13 +209,19 @@ export function MediaClient({ initialMedia }: MediaClientProps) {
         setIsDragging(false);
     };
 
-    const handleDelete = async (id: number) => {
+    const handleDelete = async (e: React.MouseEvent, id: number) => {
+        e.stopPropagation();
         if (!confirm("Are you sure you want to delete this media?")) return;
 
         const response = await deleteMedia(id);
         if (response.ok) {
             setMedia((prev) => prev.filter((m) => m.id !== id));
         }
+    };
+
+    const handleViewMedia = (item: Media) => {
+        setSelectedMedia(item);
+        setIsSheetOpen(true);
     };
 
     const handleRetryUpload = (file: File) => {
@@ -233,6 +243,11 @@ export function MediaClient({ initialMedia }: MediaClientProps) {
 
     return (
         <div className="space-y-6">
+            <MediaDetailsSheet
+                media={selectedMedia}
+                open={isSheetOpen}
+                onOpenChange={setIsSheetOpen}
+            />
             {/* Upload Area */}
             <Card
                 className={cn(
@@ -386,7 +401,8 @@ export function MediaClient({ initialMedia }: MediaClientProps) {
                     {media.map((item) => (
                         <Card
                             key={item.id}
-                            className="group overflow-hidden hover:shadow-lg transition-all duration-300 py-0 gap-0"
+                            className="group overflow-hidden hover:shadow-lg transition-all duration-300 py-0 gap-0 cursor-pointer"
+                            onClick={() => handleViewMedia(item)}
                         >
                             <div className="relative aspect-square bg-muted">
                                 {item.media_type === "image" && item.url && (
@@ -399,17 +415,34 @@ export function MediaClient({ initialMedia }: MediaClientProps) {
                                 )}
                                 {item.media_type === "video" && item.url && (
                                     <video
-                                        src={item.url}
+                                        src={`${item.url}#t=0.001`}
                                         className="w-full h-full object-cover"
                                         controls={false}
+                                        preload="metadata"
+                                        playsInline
+                                        muted
                                     />
                                 )}
                                 <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-2">
                                     <Button
                                         size="sm"
+                                        variant="secondary"
+                                        className="gap-1.5"
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            handleViewMedia(item);
+                                        }}
+                                    >
+                                        <IconMaximize className="w-4 h-4" />
+                                        View
+                                    </Button>
+                                    <Button
+                                        size="sm"
                                         variant="destructive"
-                                        onClick={() => handleDelete(item.id)}
-                                        className="bg-red-500 hover:bg-red-400 text-white"
+                                        onClick={(e) =>
+                                            handleDelete(e, item.id)
+                                        }
+                                        className="bg-red-500 hover:bg-red-400 text-white gap-1.5"
                                     >
                                         <IconTrash className="w-4 h-4" />
                                         Delete
