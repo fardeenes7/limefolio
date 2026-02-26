@@ -87,7 +87,7 @@ const plans = [
         period: "forever",
         desc: "Perfect for getting started and exploring.",
         cta: "Get started free",
-        ctaHref: "/register",
+        ctaHref: "/login",
         ctaVariant: "outline" as const,
         features: [
             "1 portfolio site",
@@ -104,7 +104,7 @@ const plans = [
         period: "/ month",
         desc: "Everything you need to land your next opportunity.",
         cta: "Start 14-day trial",
-        ctaHref: "/register",
+        ctaHref: "/login",
         ctaVariant: "default" as const,
         features: [
             "Unlimited portfolio sites",
@@ -222,7 +222,7 @@ export default function HomePage() {
                     <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
                         <Button size="lg" className="gap-2 px-8">
                             <Link
-                                href="/register"
+                                href="/login"
                                 className="flex items-center gap-2"
                             >
                                 <IconRocket className="size-4" />
@@ -548,7 +548,7 @@ export default function HomePage() {
                     <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
                         <Button size="lg" className="gap-2 px-10">
                             <Link
-                                href="/register"
+                                href="/login"
                                 className="flex items-center gap-2"
                             >
                                 Get started — it&apos;s free

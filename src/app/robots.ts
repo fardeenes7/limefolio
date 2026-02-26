@@ -9,7 +9,7 @@ const BASE_URL = "https://www.limefolio.com";
  * Rules:
  *  - Public marketing / legal pages → fully crawlable.
  *  - Authenticated app routes (/app/*) → disallowed (private dashboard).
- *  - Auth routes (/login, /register, /reset-password) → disallowed (no SEO value).
+ *  - Auth routes (/login, /login, /reset-password) → disallowed (no SEO value).
  *  - Internal API routes (/api/*) → disallowed.
  */
 export default function robots(): MetadataRoute.Robots {
@@ -26,7 +26,6 @@ export default function robots(): MetadataRoute.Robots {
                     "/app/", // authenticated dashboard
                     "/api/", // internal API endpoints
                     "/login", // auth pages have no SEO value
-                    "/register",
                     "/reset-password",
                     "/verify-email",
                 ],

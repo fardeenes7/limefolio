@@ -31,6 +31,7 @@ import {
     MediaUploader,
     UploadedMedia,
 } from "@/components/media/media-uploader";
+import { MediaLibraryPicker } from "@/components/media/media-library-picker";
 import { Badge } from "@/components/ui/badge";
 import { Field, FieldError, FieldLabel } from "@/components/ui/field";
 import { DatePicker } from "@/components/ui/date-picker";
@@ -229,6 +230,24 @@ export function ProjectForm({ project, onSuccess }: ProjectFormProps) {
                 : prev,
         );
     };
+
+    /** Called when the user picks items from the media library picker */
+    const handleLibrarySelect = useCallback((picked: Media[]) => {
+        const currentIds = new Set(uploadedMediaRef.current.map((m) => m.id));
+        const newItems: UploadedMedia[] = picked
+            .filter((m) => !currentIds.has(m.id))
+            .map((m) => ({
+                id: m.id,
+                url: m.url,
+                thumbnail_url: m.thumbnail,
+                media_type: m.media_type,
+                alt: m.alt,
+                caption: m.caption,
+            }));
+        if (newItems.length === 0) return;
+        uploadedMediaRef.current = [...uploadedMediaRef.current, ...newItems];
+        setUploadedMedia((prev) => [...prev, ...newItems]);
+    }, []);
 
     return (
         <>
@@ -560,11 +579,17 @@ export function ProjectForm({ project, onSuccess }: ProjectFormProps) {
                             </p>
                         </div>
 
-                        <MediaUploader
-                            onSuccess={handleMediaSuccess}
-                            maxFiles={10}
-                            mode="inline"
-                        />
+                        <div className="flex flex-col gap-2">
+                            <MediaUploader
+                                onSuccess={handleMediaSuccess}
+                                maxFiles={10}
+                                mode="inline"
+                            />
+                            <MediaLibraryPicker
+                                selectedIds={uploadedMedia.map((m) => m.id)}
+                                onSelect={handleLibrarySelect}
+                            />
+                        </div>
                     </Card>
 
                     {/* Uploaded media grid */}

@@ -112,7 +112,7 @@ export default function TemplatesPage() {
                                                 Preview
                                             </Button>
                                         </Link>
-                                        <Link href="/register">
+                                        <Link href="/login">
                                             <Button
                                                 size="sm"
                                                 className="flex-1 gap-1.5"
