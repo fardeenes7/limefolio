@@ -190,7 +190,7 @@ export type SiteFormData = Partial<
     Omit<Site, "id" | "uuid" | "created_at" | "updated_at">
 >;
 export type ProjectFormData = Partial<
-    Omit<Project, "id" | "slug" | "created_at" | "updated_at">
+    Omit<Project, "id" | "created_at" | "updated_at">
 >;
 export type ExperienceFormData = Partial<
     Omit<Experience, "id" | "type_display">

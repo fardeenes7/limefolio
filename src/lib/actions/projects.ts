@@ -49,7 +49,7 @@ export interface ProjectListItem {
  */
 export async function getProjectList() {
     const response = await api.get<ProjectListItem[]>(
-        "/api/dashboard/projects/",
+        "/api/dashboard/projects/"
     );
     return response;
 }
@@ -82,6 +82,7 @@ export async function updateProject(
     id: number,
     data: Partial<{
         title: string;
+        slug: string;
         tagline: string;
         description: string;
         content: string;
@@ -94,11 +95,11 @@ export async function updateProject(
         media_ids: number[];
         start_date: Date | null;
         end_date: Date | null;
-    }>,
+    }>
 ) {
     const response = await api.patch<Project>(
         `/api/dashboard/projects/${id}/`,
-        data,
+        data
     );
 
     if (response.ok) {

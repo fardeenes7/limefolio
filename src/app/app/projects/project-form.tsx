@@ -19,7 +19,7 @@ import {
     IconPhoto,
     IconMaximize,
     IconStar,
-    IconStarFilled,
+    IconStarFilled
 } from "@tabler/icons-react";
 import { MediaDetailsSheet } from "@/components/ui/media-details-sheet";
 import { Media } from "@/types";
@@ -27,16 +27,16 @@ import {
     createProject,
     updateProject,
     getProjectDetail,
-    Project,
+    Project
 } from "@/lib/actions/projects";
 import {
     MediaUploader,
-    UploadedMedia,
+    UploadedMedia
 } from "@/components/media/media-uploader";
 import {
     uploadMediaFile,
     getMediaList,
-    setMediaFeatured,
+    setMediaFeatured
 } from "@/lib/actions/media";
 import { MediaLibraryPicker } from "@/components/media/media-library-picker";
 import { Badge } from "@/components/ui/badge";
@@ -45,6 +45,13 @@ import { DatePicker } from "@/components/ui/date-picker";
 
 const projectSchema = z.object({
     title: z.string().min(1, "Title is required"),
+    slug: z
+        .string()
+        .min(1, "Slug is required")
+        .regex(
+            /^[a-z0-9-_]+$/,
+            "Slug must contain only lowercase letters, numbers, hyphens, and underscores"
+        ),
     tagline: z.string().optional(),
     description: z.string().min(1, "Description is required"),
     content: z.string().optional(),
@@ -67,7 +74,7 @@ const projectSchema = z.object({
     featured: z.boolean(),
     is_published: z.boolean(),
     start_date: z.date().optional(),
-    end_date: z.date().optional(),
+    end_date: z.date().optional()
 });
 
 type ProjectFormData = z.infer<typeof projectSchema>;
@@ -89,8 +96,8 @@ export function ProjectForm({ project, onSuccess }: ProjectFormProps) {
             alt: m.alt,
             caption: m.caption,
             thumbnail_url: m.thumbnail ?? undefined,
-            is_featured: m.is_featured,
-        })) || [],
+            is_featured: m.is_featured
+        })) || []
     );
 
     // Ref mirrors state so concurrent upload callbacks never see stale closures
@@ -102,7 +109,7 @@ export function ProjectForm({ project, onSuccess }: ProjectFormProps) {
         formState: { errors, isDirty },
         setValue,
         watch,
-        control,
+        control
     } = useForm<ProjectFormData>({
         resolver: zodResolver(projectSchema),
         defaultValues: project
@@ -114,7 +121,7 @@ export function ProjectForm({ project, onSuccess }: ProjectFormProps) {
                       : undefined,
                   end_date: project?.end_date
                       ? new Date(project.end_date)
-                      : undefined,
+                      : undefined
               }
             : {
                   title: "",
@@ -127,9 +134,10 @@ export function ProjectForm({ project, onSuccess }: ProjectFormProps) {
                   technologies: "",
                   featured: false,
                   is_published: true,
+                  slug: "",
                   start_date: undefined,
-                  end_date: undefined,
-              },
+                  end_date: undefined
+              }
     });
 
     const featured = watch("featured");
@@ -137,7 +145,7 @@ export function ProjectForm({ project, onSuccess }: ProjectFormProps) {
 
     const processSubmit = async (
         data: ProjectFormData,
-        currentMedia: UploadedMedia[],
+        currentMedia: UploadedMedia[]
     ) => {
         setIsLoading(true);
 
@@ -153,7 +161,7 @@ export function ProjectForm({ project, onSuccess }: ProjectFormProps) {
             const projectData = {
                 ...data,
                 technologies,
-                media_ids: currentMedia.map((m) => m.id),
+                media_ids: currentMedia.map((m) => m.id)
             };
 
             const response = project
@@ -189,7 +197,7 @@ export function ProjectForm({ project, onSuccess }: ProjectFormProps) {
             setUploadedMedia(updated);
             handleSubmit((data) => processSubmit(data, updated))();
         },
-        [handleSubmit],
+        [handleSubmit]
     );
 
     const handleRemoveMedia = (id: number) => {
@@ -215,27 +223,27 @@ export function ProjectForm({ project, onSuccess }: ProjectFormProps) {
             media_type: item.media_type as "image" | "video",
             url: item.url,
             created_at: new Date().toISOString(),
-            updated_at: new Date().toISOString(),
+            updated_at: new Date().toISOString()
         });
         setIsSheetOpen(true);
     };
 
     const handleThumbnailUpdate = (
         mediaId: number,
-        newThumbnailUrl: string,
+        newThumbnailUrl: string
     ) => {
         setUploadedMedia((prev) =>
             prev.map((m) =>
-                m.id === mediaId ? { ...m, thumbnail_url: newThumbnailUrl } : m,
-            ),
+                m.id === mediaId ? { ...m, thumbnail_url: newThumbnailUrl } : m
+            )
         );
         uploadedMediaRef.current = uploadedMediaRef.current.map((m) =>
-            m.id === mediaId ? { ...m, thumbnail_url: newThumbnailUrl } : m,
+            m.id === mediaId ? { ...m, thumbnail_url: newThumbnailUrl } : m
         );
         setSelectedMedia((prev) =>
             prev?.id === mediaId
                 ? { ...prev, thumbnail: newThumbnailUrl }
-                : prev,
+                : prev
         );
     };
 
@@ -251,7 +259,7 @@ export function ProjectForm({ project, onSuccess }: ProjectFormProps) {
                 media_type: m.media_type,
                 alt: m.alt,
                 caption: m.caption,
-                is_featured: m.is_featured,
+                is_featured: m.is_featured
             }));
         if (newItems.length === 0) return;
         uploadedMediaRef.current = [...uploadedMediaRef.current, ...newItems];
@@ -264,19 +272,19 @@ export function ProjectForm({ project, onSuccess }: ProjectFormProps) {
             setUploadedMedia((prev) =>
                 prev.map((m) => ({
                     ...m,
-                    is_featured: m.id === mediaId,
-                })),
+                    is_featured: m.id === mediaId
+                }))
             );
             uploadedMediaRef.current = uploadedMediaRef.current.map((m) => ({
                 ...m,
-                is_featured: m.id === mediaId,
+                is_featured: m.id === mediaId
             }));
             setSelectedMedia((prev) =>
                 prev && prev.id === mediaId
                     ? { ...prev, is_featured: true }
                     : prev
                       ? { ...prev, is_featured: false }
-                      : null,
+                      : null
             );
         }
     }, []);
@@ -315,6 +323,34 @@ export function ProjectForm({ project, onSuccess }: ProjectFormProps) {
                                         placeholder="My Awesome Project"
                                         autoComplete="off"
                                     />
+                                    {fieldState.invalid && (
+                                        <FieldError
+                                            errors={[fieldState.error]}
+                                        />
+                                    )}
+                                </Field>
+                            )}
+                        />
+
+                        <Controller
+                            name="slug"
+                            control={control}
+                            render={({ field, fieldState }) => (
+                                <Field data-invalid={fieldState.invalid}>
+                                    <FieldLabel htmlFor="slug">
+                                        Slug *
+                                    </FieldLabel>
+                                    <Input
+                                        {...field}
+                                        id="slug"
+                                        aria-invalid={fieldState.invalid}
+                                        placeholder="my-awesome-project"
+                                        autoComplete="off"
+                                        readOnly
+                                    />
+                                    <p className="text-xs text-muted-foreground mt-1">
+                                        The unique identifier used in the URL
+                                    </p>
                                     {fieldState.invalid && (
                                         <FieldError
                                             errors={[fieldState.error]}
