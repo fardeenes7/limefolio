@@ -2,7 +2,7 @@ import { getProjectDetail } from "@/lib/actions";
 import { ProjectForm } from "../../project-form";
 
 export default async function EditProjectPage({
-    params,
+    params
 }: PageProps<"/app/projects/[id]/edit">) {
     const projectId = parseInt((await params).id);
     const project = await getProjectDetail(projectId);

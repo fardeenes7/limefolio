@@ -11,7 +11,7 @@ import {
     IconTrash,
     IconStar,
     IconStarFilled,
-    IconPhoto,
+    IconPhoto
 } from "@tabler/icons-react";
 import { deleteProject, updateProject } from "@/lib/actions/projects";
 import Image from "next/image";
@@ -50,8 +50,8 @@ export function ProjectsClient({ initialProjects }: ProjectsClientProps) {
         if (response.ok && response.data) {
             setProjects((prev) =>
                 prev.map((p) =>
-                    p.id === id ? { ...p, featured: !featured } : p,
-                ),
+                    p.id === id ? { ...p, featured: !featured } : p
+                )
             );
         }
     };
@@ -150,7 +150,7 @@ export function ProjectsClient({ initialProjects }: ProjectsClientProps) {
                                         onClick={() =>
                                             handleToggleFeatured(
                                                 project.id,
-                                                project.featured,
+                                                project.featured
                                             )
                                         }
                                         className="flex-1"
@@ -169,7 +169,7 @@ export function ProjectsClient({ initialProjects }: ProjectsClientProps) {
                                         variant="outline"
                                         onClick={() =>
                                             router.push(
-                                                `/app/projects/${project.id}/edit`,
+                                                `/app/projects/${project.id}/edit`
                                             )
                                         }
                                     >
