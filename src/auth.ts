@@ -9,19 +9,19 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
             authorization: {
                 params: {
-                    redirect_uri: `${process.env.NEXTAUTH_URL}/api/auth/callback/google`,
-                },
-            },
+                    redirect_uri: `${process.env.NEXTAUTH_URL}/api/auth/callback/google`
+                }
+            }
         }),
         GitHub({
             clientId: process.env.GITHUB_CLIENT_ID!,
             clientSecret: process.env.GITHUB_CLIENT_SECRET!,
             authorization: {
                 params: {
-                    redirect_uri: `${process.env.NEXTAUTH_URL}/api/auth/callback/github`,
-                },
-            },
-        }),
+                    redirect_uri: `${process.env.NEXTAUTH_URL}/api/auth/callback/github`
+                }
+            }
+        })
     ],
     callbacks: {
         async jwt({ token, account, profile }) {
@@ -33,7 +33,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                         {
                             method: "POST",
                             headers: {
-                                "Content-Type": "application/json",
+                                "Content-Type": "application/json"
                             },
                             body: JSON.stringify({
                                 grant_type: "convert_token",
@@ -42,9 +42,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                                     account.provider === "google"
                                         ? "google-oauth2"
                                         : account.provider,
-                                token: account.access_token,
-                            }),
-                        },
+                                token: account.access_token
+                            })
+                        }
                     );
 
                     if (response.ok) {
@@ -73,9 +73,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                                 grant_type: "refresh_token",
                                 client_id: process.env.API_CLIENT_ID!,
                                 client_secret: process.env.API_CLIENT_SECRET!,
-                                refresh_token: token.refreshToken,
-                            }),
-                        },
+                                refresh_token: token.refreshToken
+                            })
+                        }
                     );
 
                     const data = await response.json();
@@ -86,7 +86,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                         ...token,
                         accessToken: data.access_token,
                         refreshToken: data.refresh_token ?? token.refreshToken,
-                        expiresAt: Date.now() + data.expires_in * 1000,
+                        expiresAt: Date.now() + data.expires_in * 1000
                     };
                 } catch (error: any) {
                     throw error;
@@ -98,10 +98,11 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             // Add access token to session
             session.accessToken = token.accessToken as string;
             return session;
-        },
+        }
     },
+    trustHost: true,
     pages: {
         signIn: "/login",
-        error: "/login",
-    },
+        error: "/login"
+    }
 });
