@@ -19,7 +19,6 @@ import {
     DialogFooter,
     DialogHeader,
     DialogTitle,
-    DialogTrigger,
 } from "@/components/ui/dialog";
 import {
     Card,
@@ -44,6 +43,23 @@ import {
     IconTrash,
     IconGripVertical,
 } from "@tabler/icons-react";
+import {
+    Empty,
+    EmptyContent,
+    EmptyDescription,
+    EmptyHeader,
+    EmptyMedia,
+    EmptyTitle,
+} from "@/components/ui/empty";
+import {
+    Page,
+    PageAction,
+    PageBody,
+    PageDescription,
+    PageHeader,
+    PageHeading,
+    PageTitle
+} from "@/components/ui/page";
 
 const SOCIAL_PLATFORMS = [
     { value: "github", label: "GitHub" },
@@ -179,257 +195,267 @@ export function SocialLinksClient({ initialLinks }: SocialLinksClientProps) {
     };
 
     return (
-        <div className="space-y-6">
-            {/* Add Button */}
-            <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-                <DialogTrigger asChild>
-                    <Button onClick={() => handleOpenDialog()}>
-                        <IconPlus className="h-4 w-4 mr-2" />
-                        Add Social Link
-                    </Button>
-                </DialogTrigger>
-                <DialogContent className="sm:max-w-[500px]">
-                    <DialogHeader>
-                        <DialogTitle>
-                            {editingLink ? "Edit" : "Add"} Social Link
-                        </DialogTitle>
-                        <DialogDescription>
-                            {editingLink
-                                ? "Update your social media profile information"
-                                : "Add a new social media profile to your portfolio"}
-                        </DialogDescription>
-                    </DialogHeader>
-
-                    <form
-                        onSubmit={form.handleSubmit(onSubmit)}
-                        className="space-y-4"
-                    >
-                        {/* Platform Select */}
-                        <Controller
-                            name="platform"
-                            control={form.control}
-                            render={({ field, fieldState }) => (
-                                <Field data-invalid={fieldState.invalid}>
-                                    <FieldLabel htmlFor={field.name}>
-                                        Platform *
-                                    </FieldLabel>
-                                    <Select
-                                        value={field.value}
-                                        onValueChange={field.onChange}
-                                    >
-                                        <SelectTrigger
-                                            id={field.name}
-                                            aria-invalid={fieldState.invalid}
-                                        >
-                                            <SelectValue placeholder="Select a platform" />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            {SOCIAL_PLATFORMS.map(
-                                                (platform) => (
-                                                    <SelectItem
-                                                        key={platform.value}
-                                                        value={platform.value}
-                                                    >
-                                                        {platform.label}
-                                                    </SelectItem>
-                                                ),
-                                            )}
-                                        </SelectContent>
-                                    </Select>
-                                    {fieldState.invalid && (
-                                        <FieldError
-                                            errors={[fieldState.error]}
-                                        />
-                                    )}
-                                </Field>
-                            )}
-                        />
-
-                        {/* Username */}
-                        <Controller
-                            name="username"
-                            control={form.control}
-                            render={({ field, fieldState }) => (
-                                <Field data-invalid={fieldState.invalid}>
-                                    <FieldLabel htmlFor={field.name}>
-                                        Username *
-                                    </FieldLabel>
-                                    <Input
-                                        {...field}
-                                        id={field.name}
-                                        aria-invalid={fieldState.invalid}
-                                        placeholder="johndoe"
-                                        autoComplete="off"
-                                    />
-                                    {fieldState.invalid && (
-                                        <FieldError
-                                            errors={[fieldState.error]}
-                                        />
-                                    )}
-                                </Field>
-                            )}
-                        />
-
-                        {/* URL */}
-                        <Controller
-                            name="url"
-                            control={form.control}
-                            render={({ field, fieldState }) => (
-                                <Field data-invalid={fieldState.invalid}>
-                                    <FieldLabel htmlFor={field.name}>
-                                        URL *
-                                    </FieldLabel>
-                                    <Input
-                                        {...field}
-                                        id={field.name}
-                                        type="url"
-                                        aria-invalid={fieldState.invalid}
-                                        placeholder="https://github.com/johndoe"
-                                        autoComplete="off"
-                                    />
-                                    {fieldState.invalid && (
-                                        <FieldError
-                                            errors={[fieldState.error]}
-                                        />
-                                    )}
-                                </Field>
-                            )}
-                        />
-
-                        <DialogFooter>
-                            <Button
-                                type="button"
-                                variant="outline"
-                                onClick={handleCloseDialog}
-                                disabled={isSubmitting}
-                            >
-                                Cancel
-                            </Button>
-                            <Button type="submit" disabled={isSubmitting}>
-                                {isSubmitting
-                                    ? "Saving..."
-                                    : editingLink
-                                      ? "Update"
-                                      : "Add"}{" "}
-                                Link
-                            </Button>
-                        </DialogFooter>
-                    </form>
-                </DialogContent>
-            </Dialog>
-
-            {/* Social Links Grid */}
-            {links.length === 0 ? (
-                <Card>
-                    <CardContent className="flex flex-col items-center justify-center py-12">
-                        <div className="rounded-full bg-muted p-4 mb-4">
-                            <IconExternalLink className="h-8 w-8 text-muted-foreground" />
-                        </div>
-                        <h3 className="text-lg font-semibold mb-1">
-                            No social links yet
-                        </h3>
-                        <p className="text-sm text-muted-foreground mb-4 text-center max-w-sm">
-                            Add your social media profiles to make it easy for
-                            visitors to connect with you
-                        </p>
+        <Page>
+            <PageHeader>
+                <PageHeading>
+                    <PageTitle>Social Links</PageTitle>
+                    <PageDescription>
+                        Manage your social media profiles and links
+                    </PageDescription>
+                </PageHeading>
+                {links.length > 0 && (
+                    <PageAction>
                         <Button onClick={() => handleOpenDialog()}>
                             <IconPlus className="h-4 w-4 mr-2" />
-                            Add Your First Link
+                            Add Social Link
                         </Button>
-                    </CardContent>
-                </Card>
-            ) : (
-                <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-                    {links
-                        .sort((a, b) => a.order - b.order)
-                        .map((link) => (
-                            <Card
-                                key={link.id}
-                                className="group hover:border-primary/50 transition-colors"
-                            >
-                                <CardHeader className="pb-3">
-                                    <div className="flex items-start justify-between">
-                                        <div className="flex items-center gap-2">
-                                            <div className="rounded-md bg-primary/10 p-2">
-                                                {getPlatformIcon(link.platform)}
+                    </PageAction>
+                )}
+            </PageHeader>
+
+            <PageBody>
+                {links.length === 0 ? (
+                    <Empty className="border-2 border-dashed">
+                        <EmptyHeader>
+                            <EmptyMedia variant="icon">
+                                <IconExternalLink className="w-12 h-12 text-muted-foreground" />
+                            </EmptyMedia>
+                            <EmptyTitle>No social links yet</EmptyTitle>
+                            <EmptyDescription>
+                                Add your social media profiles to make it easy for visitors to connect with you.
+                            </EmptyDescription>
+                        </EmptyHeader>
+                        <EmptyContent>
+                            <Button onClick={() => handleOpenDialog()}>
+                                <IconPlus className="mr-2 h-4 w-4" />
+                                Add Your First Link
+                            </Button>
+                        </EmptyContent>
+                    </Empty>
+                ) : (
+                    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                        {links
+                            .sort((a, b) => a.order - b.order)
+                            .map((link) => (
+                                <Card
+                                    key={link.id}
+                                    className="group hover:border-primary/50 transition-colors"
+                                >
+                                    <CardHeader className="pb-3">
+                                        <div className="flex items-start justify-between">
+                                            <div className="flex items-center gap-2">
+                                                <div className="rounded-md bg-primary/10 p-2">
+                                                    {getPlatformIcon(link.platform)}
+                                                </div>
+                                                <div>
+                                                    <CardTitle className="text-base">
+                                                        {getPlatformLabel(
+                                                            link.platform,
+                                                        )}
+                                                    </CardTitle>
+                                                    <CardDescription className="text-xs">
+                                                        @{link.username}
+                                                    </CardDescription>
+                                                </div>
                                             </div>
-                                            <div>
-                                                <CardTitle className="text-base">
-                                                    {getPlatformLabel(
-                                                        link.platform,
-                                                    )}
-                                                </CardTitle>
-                                                <CardDescription className="text-xs">
-                                                    @{link.username}
-                                                </CardDescription>
+                                            <div className="opacity-0 group-hover:opacity-100 transition-opacity">
+                                                <IconGripVertical className="h-4 w-4 text-muted-foreground cursor-move" />
                                             </div>
                                         </div>
-                                        <div className="opacity-0 group-hover:opacity-100 transition-opacity">
-                                            <IconGripVertical className="h-4 w-4 text-muted-foreground cursor-move" />
+                                    </CardHeader>
+                                    <CardContent className="space-y-3">
+                                        <a
+                                            href={link.url}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="text-sm text-primary hover:underline flex items-center gap-1 truncate"
+                                        >
+                                            <span className="truncate">
+                                                {link.url}
+                                            </span>
+                                            <IconExternalLink className="h-3 w-3 shrink-0" />
+                                        </a>
+
+                                        <div className="flex items-center gap-2 pt-2 border-t">
+                                            <Button
+                                                variant="outline"
+                                                size="sm"
+                                                className="flex-1"
+                                                onClick={() =>
+                                                    handleOpenDialog(link)
+                                                }
+                                            >
+                                                Edit
+                                            </Button>
+                                            <Button
+                                                variant="destructive"
+                                                size="sm"
+                                                onClick={() =>
+                                                    handleDelete(link.id)
+                                                }
+                                                disabled={isDeleting === link.id}
+                                            >
+                                                {isDeleting === link.id ? (
+                                                    "Deleting..."
+                                                ) : (
+                                                    <IconTrash className="h-4 w-4" />
+                                                )}
+                                            </Button>
                                         </div>
-                                    </div>
-                                </CardHeader>
-                                <CardContent className="space-y-3">
-                                    <a
-                                        href={link.url}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="text-sm text-primary hover:underline flex items-center gap-1 truncate"
-                                    >
-                                        <span className="truncate">
-                                            {link.url}
-                                        </span>
-                                        <IconExternalLink className="h-3 w-3 shrink-0" />
-                                    </a>
+                                    </CardContent>
+                                </Card>
+                            ))}
+                    </div>
+                )}
 
-                                    <div className="flex items-center gap-2 pt-2 border-t">
-                                        <Button
-                                            variant="outline"
-                                            size="sm"
-                                            className="flex-1"
-                                            onClick={() =>
-                                                handleOpenDialog(link)
-                                            }
-                                        >
-                                            Edit
-                                        </Button>
-                                        <Button
-                                            variant="destructive"
-                                            size="sm"
-                                            onClick={() =>
-                                                handleDelete(link.id)
-                                            }
-                                            disabled={isDeleting === link.id}
-                                        >
-                                            {isDeleting === link.id ? (
-                                                "Deleting..."
-                                            ) : (
-                                                <IconTrash className="h-4 w-4" />
-                                            )}
-                                        </Button>
-                                    </div>
-                                </CardContent>
-                            </Card>
-                        ))}
-                </div>
-            )}
+                {/* Stats */}
+                {links.length > 0 && (
+                    <Card>
+                        <CardHeader>
+                            <CardTitle className="text-sm font-medium">
+                                Summary
+                            </CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                                <span>Total links:</span>
+                                <Badge variant="secondary">{links.length}</Badge>
+                            </div>
+                        </CardContent>
+                    </Card>
+                )}
 
-            {/* Stats */}
-            {links.length > 0 && (
-                <Card>
-                    <CardHeader>
-                        <CardTitle className="text-sm font-medium">
-                            Summary
-                        </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                            <span>Total links:</span>
-                            <Badge variant="secondary">{links.length}</Badge>
-                        </div>
-                    </CardContent>
-                </Card>
-            )}
-        </div>
+                <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+                    <DialogContent className="sm:max-w-[500px]">
+                        <DialogHeader>
+                            <DialogTitle>
+                                {editingLink ? "Edit" : "Add"} Social Link
+                            </DialogTitle>
+                            <DialogDescription>
+                                {editingLink
+                                    ? "Update your social media profile information"
+                                    : "Add a new social media profile to your portfolio"}
+                            </DialogDescription>
+                        </DialogHeader>
+
+                        <form
+                            onSubmit={form.handleSubmit(onSubmit)}
+                            className="space-y-4"
+                        >
+                            {/* Platform Select */}
+                            <Controller
+                                name="platform"
+                                control={form.control}
+                                render={({ field, fieldState }) => (
+                                    <Field data-invalid={fieldState.invalid}>
+                                        <FieldLabel htmlFor={field.name}>
+                                            Platform *
+                                        </FieldLabel>
+                                        <Select
+                                            value={field.value}
+                                            onValueChange={field.onChange}
+                                        >
+                                            <SelectTrigger
+                                                id={field.name}
+                                                aria-invalid={fieldState.invalid}
+                                            >
+                                                <SelectValue placeholder="Select a platform" />
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                {SOCIAL_PLATFORMS.map(
+                                                    (platform) => (
+                                                        <SelectItem
+                                                            key={platform.value}
+                                                            value={platform.value}
+                                                        >
+                                                            {platform.label}
+                                                        </SelectItem>
+                                                    ),
+                                                )}
+                                            </SelectContent>
+                                        </Select>
+                                        {fieldState.invalid && (
+                                            <FieldError
+                                                errors={[fieldState.error]}
+                                            />
+                                        )}
+                                    </Field>
+                                )}
+                            />
+
+                            {/* Username */}
+                            <Controller
+                                name="username"
+                                control={form.control}
+                                render={({ field, fieldState }) => (
+                                    <Field data-invalid={fieldState.invalid}>
+                                        <FieldLabel htmlFor={field.name}>
+                                            Username *
+                                        </FieldLabel>
+                                        <Input
+                                            {...field}
+                                            id={field.name}
+                                            aria-invalid={fieldState.invalid}
+                                            placeholder="johndoe"
+                                            autoComplete="off"
+                                        />
+                                        {fieldState.invalid && (
+                                            <FieldError
+                                                errors={[fieldState.error]}
+                                            />
+                                        )}
+                                    </Field>
+                                )}
+                            />
+
+                            {/* URL */}
+                            <Controller
+                                name="url"
+                                control={form.control}
+                                render={({ field, fieldState }) => (
+                                    <Field data-invalid={fieldState.invalid}>
+                                        <FieldLabel htmlFor={field.name}>
+                                            URL *
+                                        </FieldLabel>
+                                        <Input
+                                            {...field}
+                                            id={field.name}
+                                            type="url"
+                                            aria-invalid={fieldState.invalid}
+                                            placeholder="https://github.com/johndoe"
+                                            autoComplete="off"
+                                        />
+                                        {fieldState.invalid && (
+                                            <FieldError
+                                                errors={[fieldState.error]}
+                                            />
+                                        )}
+                                    </Field>
+                                )}
+                            />
+
+                            <DialogFooter>
+                                <Button
+                                    type="button"
+                                    variant="outline"
+                                    onClick={handleCloseDialog}
+                                    disabled={isSubmitting}
+                                >
+                                    Cancel
+                                </Button>
+                                <Button type="submit" disabled={isSubmitting}>
+                                    {isSubmitting
+                                        ? "Saving..."
+                                        : editingLink
+                                          ? "Update"
+                                          : "Add"}{" "}
+                                    Link
+                                </Button>
+                            </DialogFooter>
+                        </form>
+                    </DialogContent>
+                </Dialog>
+            </PageBody>
+        </Page>
     );
 }

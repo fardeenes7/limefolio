@@ -1,6 +1,15 @@
 import { getProjectList } from "@/lib/actions/projects";
 import { ProjectsClient } from "./projects-client";
 import { Button } from "@/components/ui/button";
+import {
+    Page,
+    PageAction,
+    PageBody,
+    PageDescription,
+    PageHeader,
+    PageHeading,
+    PageTitle
+} from "@/components/ui/page";
 import Link from "next/link";
 import { IconPlus } from "@tabler/icons-react";
 
@@ -9,23 +18,29 @@ export default async function ProjectsPage() {
     const projects = response.ok ? response.data || [] : [];
 
     return (
-        <div className="container space-y-6">
-            <div className="flex items-center justify-between">
-                <div>
-                    <h1 className="text-3xl font-bold">Projects</h1>
-                    <p className="text-muted-foreground mt-1">
+        <Page>
+            <PageHeader>
+                <PageHeading>
+                    <PageTitle>Projects</PageTitle>
+                    <PageDescription>
                         Manage your portfolio projects
-                    </p>
-                </div>
-                <Link href="/app/projects/new">
-                    <Button>
-                        <IconPlus />
-                        New Project
-                    </Button>
-                </Link>
-            </div>
+                    </PageDescription>
+                </PageHeading>
+                {projects.length > 0 && (
+                    <PageAction>
+                        <Link href="/app/projects/new">
+                            <Button>
+                                <IconPlus />
+                                New Project
+                            </Button>
+                        </Link>
+                    </PageAction>
+                )}
+            </PageHeader>
 
-            <ProjectsClient initialProjects={projects} />
-        </div>
+            <PageBody>
+                <ProjectsClient initialProjects={projects} />
+            </PageBody>
+        </Page>
     );
 }

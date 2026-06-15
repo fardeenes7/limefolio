@@ -15,21 +15,5 @@ export default async function AppearancePage() {
         return <div>Something went wrong</div>;
     }
 
-    return (
-        <div className="container flex flex-col gap-8">
-            <div className="flex items-start justify-between">
-                <div className="space-y-1">
-                    <h1 className="text-3xl font-bold tracking-tight">
-                        Appearance
-                    </h1>
-                    <p className="text-muted-foreground">
-                        Choose your portfolio's template, color theme, and
-                        typography
-                    </p>
-                </div>
-            </div>
-
-            <AppearanceClient initialSite={response.data} />
-        </div>
-    );
+    return <AppearanceClient initialSite={response.data} />;
 }

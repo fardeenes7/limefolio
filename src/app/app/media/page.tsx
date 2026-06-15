@@ -11,11 +11,5 @@ export default async function MediaPage() {
     const response = await getMediaList();
     const media = response.ok && response.data ? response.data : [];
 
-    return (
-        <div className="container flex flex-col gap-6">
-           
-
-            <MediaClient initialMedia={media} />
-        </div>
-    );
+    return <MediaClient initialMedia={media} />;
 }

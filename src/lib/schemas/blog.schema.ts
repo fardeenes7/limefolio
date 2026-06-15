@@ -60,6 +60,15 @@ export const blogPostFormSchema = z.object({
         .min(1, "Title is required")
         .max(200, "Title must be at most 200 characters")
         .optional(),
+    slug: z
+        .string()
+        .min(1, "Slug is required")
+        .regex(
+            /^[a-z0-9-_]+$/,
+            "Slug must contain only lowercase letters, numbers, hyphens, and underscores"
+        )
+        .optional(),
+    thumbnail_url: z.string().url("Must be a valid URL").optional().or(z.literal("")),
     excerpt: z
         .string()
         .max(500, "Excerpt must be at most 500 characters")
@@ -70,7 +79,6 @@ export const blogPostFormSchema = z.object({
         .max(100, "Author name must be at most 100 characters")
         .optional(),
     tags: z.array(z.string()).optional(),
-    categories: z.array(z.string()).optional(),
     meta_description: z
         .string()
         .max(160, "Meta description must be at most 160 characters")
@@ -86,6 +94,7 @@ export const blogPostFormSchema = z.object({
         .datetime("Invalid published date")
         .nullable()
         .optional(),
+    media_ids: z.array(z.number()).optional(),
 });
 
 export const blogCommentFormSchema = z.object({

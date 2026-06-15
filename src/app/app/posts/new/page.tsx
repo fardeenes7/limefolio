@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { ProjectForm } from "../project-form";
+import { PostForm } from "../post-form";
 import {
     Page,
     PageAction,
@@ -12,28 +12,28 @@ import {
 import Link from "next/link";
 import { IconChevronLeft } from "@tabler/icons-react";
 
-export default function NewProjectPage() {
+export default function NewPostPage() {
     return (
         <Page>
             <PageHeader>
                 <PageHeading>
-                    <PageTitle>Create New Project</PageTitle>
+                    <PageTitle>Create New Blog Post</PageTitle>
                     <PageDescription>
-                        Add a new project to your portfolio
+                        Write a new article for your blog
                     </PageDescription>
                 </PageHeading>
                 <PageAction>
-                    <Link href="/app/projects">
+                    <Link href="/app/posts">
                         <Button variant="outline">
                             <IconChevronLeft />
-                            Back to Projects
+                            Back to Posts
                         </Button>
                     </Link>
                 </PageAction>
             </PageHeader>
 
             <PageBody>
-                <ProjectForm />
+                <PostForm />
             </PageBody>
         </Page>
     );

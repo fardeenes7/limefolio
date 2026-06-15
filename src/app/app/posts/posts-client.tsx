@@ -19,67 +19,57 @@ import {
     IconTrash,
     IconStar,
     IconStarFilled,
-    IconPhoto
+    IconArticle,
+    IconEye
 } from "@tabler/icons-react";
-import { deleteProject, updateProject } from "@/lib/actions/projects";
+import { deleteBlogPost, updateBlogPost, toggleBlogPostFeatured } from "@/lib/actions/blog";
+import { BlogPost } from "@/types";
 import Image from "next/image";
 
-interface Project {
-    id: number;
-    title: string;
-    slug: string;
-    tagline: string;
-    thumbnail: string | null;
-    featured: boolean;
-    is_published: boolean;
-    media_count: number;
-    created_at: string;
+interface PostsClientProps {
+    initialPosts: BlogPost[];
 }
 
-interface ProjectsClientProps {
-    initialProjects: Project[];
-}
-
-export function ProjectsClient({ initialProjects }: ProjectsClientProps) {
+export function PostsClient({ initialPosts }: PostsClientProps) {
     const router = useRouter();
-    const [projects, setProjects] = useState<Project[]>(initialProjects);
+    const [posts, setPosts] = useState<BlogPost[]>(initialPosts);
 
     const handleDelete = async (id: number) => {
-        if (!confirm("Are you sure you want to delete this project?")) return;
+        if (!confirm("Are you sure you want to delete this blog post?")) return;
 
-        const response = await deleteProject(id);
+        const response = await deleteBlogPost(id);
         if (response.ok) {
-            setProjects((prev) => prev.filter((p) => p.id !== id));
+            setPosts((prev) => prev.filter((p) => p.id !== id));
         }
     };
 
     const handleToggleFeatured = async (id: number, featured: boolean) => {
-        const response = await updateProject(id, { featured: !featured });
+        const response = await toggleBlogPostFeatured(id, !featured);
         if (response.ok && response.data) {
-            setProjects((prev) =>
+            setPosts((prev) =>
                 prev.map((p) =>
-                    p.id === id ? { ...p, featured: !featured } : p
+                    p.id === id ? { ...p, is_featured: !featured } : p
                 )
             );
         }
     };
 
-    if (initialProjects.length === 0) {
+    if (initialPosts.length === 0) {
         return (
             <Empty className="border-2">
                 <EmptyHeader>
                     <EmptyMedia variant="icon">
-                        <IconPhoto />
+                        <IconArticle />
                     </EmptyMedia>
-                    <EmptyTitle>No projects yet</EmptyTitle>
+                    <EmptyTitle>No blog posts yet</EmptyTitle>
                     <EmptyDescription>
-                        Create your first project to showcase your work.
+                        Create your first blog post to share your expertise.
                     </EmptyDescription>
                 </EmptyHeader>
                 <EmptyContent>
-                    <Button onClick={() => router.push("/app/projects/new")}>
+                    <Button onClick={() => router.push("/app/posts/new")}>
                         <IconPlus />
-                        Create Project
+                        Create Post
                     </Button>
                 </EmptyContent>
             </Empty>
@@ -88,28 +78,28 @@ export function ProjectsClient({ initialProjects }: ProjectsClientProps) {
 
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {projects.map((project) => (
+            {posts.map((post) => (
                 <Card
-                    key={project.id}
-                    className="group overflow-hidden hover:shadow-lg transition-all duration-300 py-0 gap-2"
+                    key={post.id}
+                    className="group overflow-hidden hover:shadow-lg transition-all duration-300 py-0 gap-2 flex flex-col"
                 >
                     {/* Thumbnail */}
-                    <div className="relative aspect-video bg-muted">
-                        {project.thumbnail ? (
+                    <div className="relative aspect-video bg-muted shrink-0">
+                        {post.thumbnail ? (
                             <Image
-                                src={project.thumbnail}
-                                alt={project.title}
+                                src={post.thumbnail}
+                                alt={post.title}
                                 fill
                                 className="object-cover"
                             />
                         ) : (
                             <div className="w-full h-full flex items-center justify-center">
-                                <IconPhoto className="w-12 h-12 text-muted-foreground" />
+                                <IconArticle className="w-12 h-12 text-muted-foreground opacity-50" />
                             </div>
                         )}
 
                         {/* Featured Badge */}
-                        {project.featured && (
+                        {post.is_featured && (
                             <div className="absolute top-2 right-2">
                                 <Badge className="bg-yellow-500 text-white">
                                     <IconStarFilled className="w-3 h-3 mr-1" />
@@ -120,58 +110,64 @@ export function ProjectsClient({ initialProjects }: ProjectsClientProps) {
                     </div>
 
                     {/* Content */}
-                    <div className="p-4 space-y-3">
+                    <div className="p-4 space-y-3 flex-1 flex flex-col">
                         <div>
-                            <h3 className="font-semibold line-clamp-1">
-                                {project.title}
+                            <h3 className="font-semibold line-clamp-2">
+                                {post.title}
                             </h3>
-                            {project.tagline && (
+                            {post.excerpt && (
                                 <p className="text-sm text-muted-foreground line-clamp-2 mt-1">
-                                    {project.tagline}
+                                    {post.excerpt}
                                 </p>
                             )}
                         </div>
 
-                        <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                        <div className="flex-1" />
+
+                        <div className="flex items-center gap-2 text-xs text-muted-foreground mt-2 flex-wrap">
                             <Badge variant="secondary" className="text-xs">
-                                {project.media_count} media
+                                {post.reading_time} min read
                             </Badge>
                             <Badge
                                 variant={
-                                    project.is_published ? "default" : "outline"
+                                    post.status === "published" ? "default" : post.status === "archived" ? "destructive" : "outline"
                                 }
-                                className="text-xs"
+                                className="text-xs capitalize"
                             >
-                                {project.is_published ? "Published" : "Draft"}
+                                {post.status}
                             </Badge>
+                            <span className="flex items-center ml-auto gap-1">
+                                <IconEye className="size-3.5" />
+                                {post.view_count}
+                            </span>
                         </div>
 
                         {/* Actions */}
-                        <div className="flex items-center gap-2 pt-2">
+                        <div className="flex items-center gap-2 pt-2 border-t mt-3">
                             <Button
                                 size="sm"
                                 variant="outline"
                                 onClick={() =>
                                     handleToggleFeatured(
-                                        project.id,
-                                        project.featured
+                                        post.id,
+                                        post.is_featured
                                     )
                                 }
                                 className="flex-1"
                             >
-                                {project.featured ? (
+                                {post.is_featured ? (
                                     <IconStarFilled className="w-3.5 h-3.5 mr-1 text-yellow-500" />
                                 ) : (
                                     <IconStar className="w-3.5 h-3.5 mr-1" />
                                 )}
-                                {project.featured ? "Unfeature" : "Feature"}
+                                {post.is_featured ? "Unfeature" : "Feature"}
                             </Button>
                             <Button
                                 size="sm"
                                 variant="outline"
                                 onClick={() =>
                                     router.push(
-                                        `/app/projects/${project.id}/edit`
+                                        `/app/posts/${post.id}/edit`
                                     )
                                 }
                             >
@@ -180,7 +176,7 @@ export function ProjectsClient({ initialProjects }: ProjectsClientProps) {
                             <Button
                                 size="sm"
                                 variant="destructive"
-                                onClick={() => handleDelete(project.id)}
+                                onClick={() => handleDelete(post.id)}
                             >
                                 <IconTrash className="w-3.5 h-3.5" />
                             </Button>

@@ -193,19 +193,15 @@ export function MediaUploader({
                 let createResponse;
 
                 if (mediaType === "image") {
-                    // Images: single multipart POST (small enough to go through Django)
-                    const formData = new FormData();
-                    formData.append("file", file, file.name);
-                    formData.append("alt", file.name);
-                    if (thumbFileToUpload) {
-                        formData.append(
-                            "thumbnail",
-                            thumbFileToUpload,
-                            thumbFileToUpload.name,
-                        );
-                    }
-                    updateUpload(file, { progress: 50 });
-                    createResponse = await uploadMediaFile(formData);
+                    // Images: presigned URL -> S3 directly
+                    updateUpload(file, { progress: 20 });
+                    const imagePublicUrl = await uploadToS3(file);
+                    updateUpload(file, { progress: 80 });
+                    createResponse = await confirmPresignedUpload({
+                        image: imagePublicUrl,
+                        thumbnailFile: thumbFileToUpload,
+                        alt: file.name,
+                    });
                 } else {
                     // Videos: presigned URL → S3 directly, then confirm with thumbnail
                     updateUpload(file, { progress: 20 });

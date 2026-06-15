@@ -25,6 +25,10 @@ const nextConfig = {
             },
             {
                 protocol: "https",
+                hostname: "limefolio-media-test.limefolio.com"
+            },
+            {
+                protocol: "https",
                 hostname: "*"
             }
         ]

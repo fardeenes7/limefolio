@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef, useCallback, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -8,10 +8,16 @@ import * as z from "zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { RichTextEditor } from "@/components/ui/rich-text-editor";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
-import { Separator } from "@/components/ui/separator";
-import { Card } from "@/components/ui/card";
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from "@/components/ui/card";
 import {
     IconArrowLeft,
     IconX,
@@ -19,7 +25,13 @@ import {
     IconPhoto,
     IconMaximize,
     IconStar,
-    IconStarFilled
+    IconStarFilled,
+    IconLink,
+    IconBrandGithub,
+    IconBrandYoutube,
+    IconCalendar,
+    IconTags,
+    IconSettings,
 } from "@tabler/icons-react";
 import { MediaDetailsSheet } from "@/components/ui/media-details-sheet";
 import { Media } from "@/types";
@@ -27,21 +39,22 @@ import {
     createProject,
     updateProject,
     getProjectDetail,
-    Project
+    Project,
 } from "@/lib/actions/projects";
 import {
     MediaUploader,
-    UploadedMedia
+    UploadedMedia,
 } from "@/components/media/media-uploader";
 import {
     uploadMediaFile,
     getMediaList,
-    setMediaFeatured
+    setMediaFeatured,
 } from "@/lib/actions/media";
 import { MediaLibraryPicker } from "@/components/media/media-library-picker";
 import { Badge } from "@/components/ui/badge";
 import { Field, FieldError, FieldLabel } from "@/components/ui/field";
 import { DatePicker } from "@/components/ui/date-picker";
+import { TagsInput } from "@/components/ui/tags-input";
 
 const projectSchema = z.object({
     title: z.string().min(1, "Title is required"),
@@ -70,11 +83,11 @@ const projectSchema = z.object({
         .optional()
         .nullable()
         .or(z.literal("")),
-    technologies: z.string().optional(),
+    technologies: z.array(z.string()).optional(),
     featured: z.boolean(),
     is_published: z.boolean(),
     start_date: z.date().optional(),
-    end_date: z.date().optional()
+    end_date: z.date().optional(),
 });
 
 type ProjectFormData = z.infer<typeof projectSchema>;
@@ -96,7 +109,7 @@ export function ProjectForm({ project, onSuccess }: ProjectFormProps) {
             alt: m.alt,
             caption: m.caption,
             thumbnail_url: m.thumbnail ?? undefined,
-            is_featured: m.is_featured
+            is_featured: m.is_featured,
         })) || []
     );
 
@@ -109,19 +122,19 @@ export function ProjectForm({ project, onSuccess }: ProjectFormProps) {
         formState: { errors, isDirty },
         setValue,
         watch,
-        control
+        control,
     } = useForm<ProjectFormData>({
         resolver: zodResolver(projectSchema),
         defaultValues: project
             ? {
                   ...project,
-                  technologies: project?.technologies?.join(", "),
+                  technologies: project?.technologies ?? [],
                   start_date: project?.start_date
                       ? new Date(project.start_date)
                       : undefined,
                   end_date: project?.end_date
                       ? new Date(project.end_date)
-                      : undefined
+                      : undefined,
               }
             : {
                   title: "",
@@ -131,17 +144,35 @@ export function ProjectForm({ project, onSuccess }: ProjectFormProps) {
                   project_url: "",
                   github_url: "",
                   youtube_url: "",
-                  technologies: "",
+                  technologies: [],
                   featured: false,
                   is_published: true,
                   slug: "",
                   start_date: undefined,
-                  end_date: undefined
-              }
+                  end_date: undefined,
+              },
     });
 
     const featured = watch("featured");
     const isPublished = watch("is_published");
+    const titleValue = watch("title");
+
+    // ── Smart slug: auto-derive from title unless manually edited ────────
+    /** true once the user has typed in the slug field themselves */
+    const slugManuallyEdited = useRef(!!project?.slug);
+
+    const slugify = (value: string) =>
+        value
+            .toLowerCase()
+            .trim()
+            .replace(/[^\w\s-]/g, "")
+            .replace(/[\s_]+/g, "-")
+            .replace(/^-+|-+$/g, "");
+
+    useEffect(() => {
+        if (slugManuallyEdited.current) return;
+        setValue("slug", slugify(titleValue ?? ""), { shouldDirty: true });
+    }, [titleValue, setValue]);
 
     const processSubmit = async (
         data: ProjectFormData,
@@ -150,18 +181,10 @@ export function ProjectForm({ project, onSuccess }: ProjectFormProps) {
         setIsLoading(true);
 
         try {
-            // Parse technologies from comma-separated string to array
-            const technologies = data.technologies
-                ? data.technologies
-                      .split(",")
-                      .map((t) => t.trim())
-                      .filter(Boolean)
-                : [];
-
             const projectData = {
                 ...data,
-                technologies,
-                media_ids: currentMedia.map((m) => m.id)
+                technologies: data.technologies ?? [],
+                media_ids: currentMedia.map((m) => m.id),
             };
 
             const response = project
@@ -223,7 +246,7 @@ export function ProjectForm({ project, onSuccess }: ProjectFormProps) {
             media_type: item.media_type as "image" | "video",
             url: item.url,
             created_at: new Date().toISOString(),
-            updated_at: new Date().toISOString()
+            updated_at: new Date().toISOString(),
         });
         setIsSheetOpen(true);
     };
@@ -259,7 +282,7 @@ export function ProjectForm({ project, onSuccess }: ProjectFormProps) {
                 media_type: m.media_type,
                 alt: m.alt,
                 caption: m.caption,
-                is_featured: m.is_featured
+                is_featured: m.is_featured,
             }));
         if (newItems.length === 0) return;
         uploadedMediaRef.current = [...uploadedMediaRef.current, ...newItems];
@@ -272,12 +295,12 @@ export function ProjectForm({ project, onSuccess }: ProjectFormProps) {
             setUploadedMedia((prev) =>
                 prev.map((m) => ({
                     ...m,
-                    is_featured: m.id === mediaId
+                    is_featured: m.id === mediaId,
                 }))
             );
             uploadedMediaRef.current = uploadedMediaRef.current.map((m) => ({
                 ...m,
-                is_featured: m.id === mediaId
+                is_featured: m.id === mediaId,
             }));
             setSelectedMedia((prev) =>
                 prev && prev.id === mediaId
@@ -298,357 +321,407 @@ export function ProjectForm({ project, onSuccess }: ProjectFormProps) {
                 onThumbnailUpdate={handleThumbnailUpdate}
                 onFeaturedUpdate={handleSetFeatured}
             />
+
             {/* Two-column layout: form left, media sidebar right */}
             <div className="flex gap-6 items-start">
-                {/* ── Left: form fields ───────────────────────────────── */}
+
+                {/* ── Left: form fields ─────────────────────────────────── */}
                 <form
                     id="project-form"
                     onSubmit={handleSubmit(onSubmit)}
-                    className="flex-1 min-w-0 space-y-6"
+                    className="flex-1 min-w-0 space-y-4"
                 >
-                    {/* Basic Information */}
-                    <div className="space-y-4">
-                        <Controller
-                            name="title"
-                            control={control}
-                            render={({ field, fieldState }) => (
-                                <Field data-invalid={fieldState.invalid}>
-                                    <FieldLabel htmlFor="title">
-                                        Title *
-                                    </FieldLabel>
-                                    <Input
-                                        {...field}
-                                        id="title"
-                                        aria-invalid={fieldState.invalid}
-                                        placeholder="My Awesome Project"
-                                        autoComplete="off"
-                                    />
-                                    {fieldState.invalid && (
-                                        <FieldError
-                                            errors={[fieldState.error]}
-                                        />
+                    {/* ── Basic Information ─────────────────────────────── */}
+                    <Card>
+                        <CardHeader>
+                            <CardTitle>Basic Information</CardTitle>
+                            <CardDescription>
+                                The core details that identify your project.
+                            </CardDescription>
+                        </CardHeader>
+                        <CardContent className="space-y-4">
+                            {/* Title + Slug side by side */}
+                            <div className="grid grid-cols-2 gap-4">
+                                <Controller
+                                    name="title"
+                                    control={control}
+                                    render={({ field, fieldState }) => (
+                                        <Field data-invalid={fieldState.invalid}>
+                                            <FieldLabel htmlFor="title">
+                                                Title *
+                                            </FieldLabel>
+                                            <Input
+                                                {...field}
+                                                id="title"
+                                                aria-invalid={fieldState.invalid}
+                                                placeholder="My Awesome Project"
+                                                autoComplete="off"
+                                            />
+                                            {fieldState.invalid && (
+                                                <FieldError
+                                                    errors={[fieldState.error]}
+                                                />
+                                            )}
+                                        </Field>
                                     )}
-                                </Field>
-                            )}
-                        />
-
-                        <Controller
-                            name="slug"
-                            control={control}
-                            render={({ field, fieldState }) => (
-                                <Field data-invalid={fieldState.invalid}>
-                                    <FieldLabel htmlFor="slug">
-                                        Slug *
-                                    </FieldLabel>
-                                    <Input
-                                        {...field}
-                                        id="slug"
-                                        aria-invalid={fieldState.invalid}
-                                        placeholder="my-awesome-project"
-                                        autoComplete="off"
-                                        readOnly
-                                    />
-                                    <p className="text-xs text-muted-foreground mt-1">
-                                        The unique identifier used in the URL
-                                    </p>
-                                    {fieldState.invalid && (
-                                        <FieldError
-                                            errors={[fieldState.error]}
-                                        />
-                                    )}
-                                </Field>
-                            )}
-                        />
-
-                        <Controller
-                            name="tagline"
-                            control={control}
-                            render={({ field, fieldState }) => (
-                                <Field data-invalid={fieldState.invalid}>
-                                    <FieldLabel htmlFor="tagline">
-                                        Tagline
-                                    </FieldLabel>
-                                    <Input
-                                        {...field}
-                                        id="tagline"
-                                        aria-invalid={fieldState.invalid}
-                                        placeholder="A brief one-liner about your project"
-                                        autoComplete="off"
-                                    />
-                                    {fieldState.invalid && (
-                                        <FieldError
-                                            errors={[fieldState.error]}
-                                        />
-                                    )}
-                                </Field>
-                            )}
-                        />
-
-                        <Controller
-                            name="description"
-                            control={control}
-                            render={({ field, fieldState }) => (
-                                <Field data-invalid={fieldState.invalid}>
-                                    <FieldLabel htmlFor="description">
-                                        Description *
-                                    </FieldLabel>
-                                    <Textarea
-                                        {...field}
-                                        id="description"
-                                        aria-invalid={fieldState.invalid}
-                                        placeholder="Describe your project..."
-                                        rows={4}
-                                    />
-                                    {fieldState.invalid && (
-                                        <FieldError
-                                            errors={[fieldState.error]}
-                                        />
-                                    )}
-                                </Field>
-                            )}
-                        />
-
-                        <Controller
-                            name="content"
-                            control={control}
-                            render={({ field, fieldState }) => (
-                                <Field data-invalid={fieldState.invalid}>
-                                    <FieldLabel htmlFor="content">
-                                        Detailed Content
-                                    </FieldLabel>
-                                    <Textarea
-                                        {...field}
-                                        id="content"
-                                        aria-invalid={fieldState.invalid}
-                                        placeholder="Add more detailed information about your project..."
-                                        rows={6}
-                                    />
-                                    {fieldState.invalid && (
-                                        <FieldError
-                                            errors={[fieldState.error]}
-                                        />
-                                    )}
-                                </Field>
-                            )}
-                        />
-                    </div>
-
-                    <Separator />
-
-                    {/* Links */}
-                    <div className="space-y-4">
-                        <h3 className="font-semibold">Links</h3>
-                        <Controller
-                            name="project_url"
-                            control={control}
-                            render={({ field, fieldState }) => (
-                                <Field data-invalid={fieldState.invalid}>
-                                    <FieldLabel htmlFor="project_url">
-                                        Project URL
-                                    </FieldLabel>
-                                    <Input
-                                        {...field}
-                                        id="project_url"
-                                        aria-invalid={fieldState.invalid}
-                                        placeholder="https://example.com"
-                                        type="url"
-                                        autoComplete="off"
-                                        value={field.value || ""}
-                                    />
-                                    {fieldState.invalid && (
-                                        <FieldError
-                                            errors={[fieldState.error]}
-                                        />
-                                    )}
-                                </Field>
-                            )}
-                        />
-
-                        <Controller
-                            name="github_url"
-                            control={control}
-                            render={({ field, fieldState }) => (
-                                <Field data-invalid={fieldState.invalid}>
-                                    <FieldLabel htmlFor="github_url">
-                                        GitHub URL
-                                    </FieldLabel>
-                                    <Input
-                                        {...field}
-                                        id="github_url"
-                                        aria-invalid={fieldState.invalid}
-                                        placeholder="https://github.com/username/repo"
-                                        type="url"
-                                        autoComplete="off"
-                                        value={field.value || ""}
-                                    />
-                                    {fieldState.invalid && (
-                                        <FieldError
-                                            errors={[fieldState.error]}
-                                        />
-                                    )}
-                                </Field>
-                            )}
-                        />
-
-                        <Controller
-                            name="youtube_url"
-                            control={control}
-                            render={({ field, fieldState }) => (
-                                <Field data-invalid={fieldState.invalid}>
-                                    <FieldLabel htmlFor="youtube_url">
-                                        YouTube URL
-                                    </FieldLabel>
-                                    <Input
-                                        {...field}
-                                        id="youtube_url"
-                                        aria-invalid={fieldState.invalid}
-                                        placeholder="https://youtube.com/watch?v=..."
-                                        type="url"
-                                        autoComplete="off"
-                                        value={field.value || ""}
-                                    />
-                                    {fieldState.invalid && (
-                                        <FieldError
-                                            errors={[fieldState.error]}
-                                        />
-                                    )}
-                                </Field>
-                            )}
-                        />
-                    </div>
-
-                    <Separator />
-
-                    {/* Technologies */}
-                    <Controller
-                        name="technologies"
-                        control={control}
-                        render={({ field, fieldState }) => (
-                            <Field data-invalid={fieldState.invalid}>
-                                <FieldLabel htmlFor="technologies">
-                                    Technologies
-                                </FieldLabel>
-                                <Input
-                                    {...field}
-                                    id="technologies"
-                                    aria-invalid={fieldState.invalid}
-                                    placeholder="React, Node.js, PostgreSQL (comma-separated)"
-                                    autoComplete="off"
                                 />
-                                <p className="text-xs text-muted-foreground mt-1">
-                                    Separate technologies with commas
-                                </p>
-                                {fieldState.invalid && (
-                                    <FieldError errors={[fieldState.error]} />
+
+                                <Controller
+                                    name="slug"
+                                    control={control}
+                                    render={({ field, fieldState }) => (
+                                        <Field data-invalid={fieldState.invalid}>
+                                            <FieldLabel htmlFor="slug">
+                                                Slug *
+                                            </FieldLabel>
+                                            <Input
+                                                {...field}
+                                                id="slug"
+                                                aria-invalid={fieldState.invalid}
+                                                placeholder="my-awesome-project"
+                                                autoComplete="off"
+                                                onChange={(e) => {
+                                                    const val = e.target.value;
+                                                    // Empty → revert to auto-mode
+                                                    if (val === "") {
+                                                        slugManuallyEdited.current = false;
+                                                    } else {
+                                                        slugManuallyEdited.current = true;
+                                                    }
+                                                    field.onChange(e);
+                                                }}
+                                            />
+                                            <p className="text-xs text-muted-foreground">
+                                                {slugManuallyEdited.current
+                                                    ? "Manually set — clear to auto-generate again"
+                                                    : "Auto-generated from the title"}
+                                            </p>
+                                            {fieldState.invalid && (
+                                                <FieldError
+                                                    errors={[fieldState.error]}
+                                                />
+                                            )}
+                                        </Field>
+                                    )}
+                                />
+                            </div>
+
+                            <Controller
+                                name="tagline"
+                                control={control}
+                                render={({ field, fieldState }) => (
+                                    <Field data-invalid={fieldState.invalid}>
+                                        <FieldLabel htmlFor="tagline">
+                                            Tagline
+                                        </FieldLabel>
+                                        <Input
+                                            {...field}
+                                            id="tagline"
+                                            aria-invalid={fieldState.invalid}
+                                            placeholder="A brief one-liner about your project"
+                                            autoComplete="off"
+                                        />
+                                        {fieldState.invalid && (
+                                            <FieldError
+                                                errors={[fieldState.error]}
+                                            />
+                                        )}
+                                    </Field>
                                 )}
-                            </Field>
-                        )}
-                    />
-
-                    <Separator />
-
-                    {/* Dates */}
-                    <div className="grid grid-cols-2 gap-4">
-                        <Controller
-                            name="start_date"
-                            control={control}
-                            render={({ field, fieldState }) => (
-                                <Field>
-                                    <FieldLabel htmlFor="start_date">
-                                        Start Date
-                                    </FieldLabel>
-                                    <DatePicker
-                                        value={field.value}
-                                        onChange={field.onChange}
-                                        ariaInvalid={fieldState.invalid}
-                                    />
-                                    {fieldState.invalid && (
-                                        <FieldError
-                                            errors={[fieldState.error]}
-                                        />
-                                    )}
-                                </Field>
-                            )}
-                        />
-                        <Controller
-                            name="end_date"
-                            control={control}
-                            render={({ field, fieldState }) => (
-                                <Field>
-                                    <FieldLabel htmlFor="end_date">
-                                        End Date
-                                    </FieldLabel>
-                                    <DatePicker
-                                        value={field.value}
-                                        onChange={field.onChange}
-                                        ariaInvalid={fieldState.invalid}
-                                    />
-                                    {fieldState.invalid && (
-                                        <FieldError
-                                            errors={[fieldState.error]}
-                                        />
-                                    )}
-                                </Field>
-                            )}
-                        />
-                    </div>
-
-                    <Separator />
-
-                    {/* Settings */}
-                    <div className="space-y-4">
-                        <h3 className="font-semibold">Settings</h3>
-
-                        <div className="flex items-center justify-between">
-                            <div>
-                                <Label htmlFor="featured">
-                                    Featured Project
-                                </Label>
-                                <p className="text-sm text-muted-foreground">
-                                    Show this project prominently on your
-                                    portfolio
-                                </p>
-                            </div>
-                            <Switch
-                                id="featured"
-                                checked={featured}
-                                onCheckedChange={(checked) =>
-                                    setValue("featured", checked)
-                                }
                             />
-                        </div>
 
-                        <div className="flex items-center justify-between">
-                            <div>
-                                <Label htmlFor="is_published">Published</Label>
-                                <p className="text-sm text-muted-foreground">
-                                    Make this project visible on your public
-                                    portfolio
-                                </p>
-                            </div>
-                            <Switch
-                                id="is_published"
-                                checked={isPublished}
-                                onCheckedChange={(checked) =>
-                                    setValue("is_published", checked)
-                                }
+                            <Controller
+                                name="description"
+                                control={control}
+                                render={({ field, fieldState }) => (
+                                    <Field data-invalid={fieldState.invalid}>
+                                        <FieldLabel htmlFor="description">
+                                            Excerpt *
+                                        </FieldLabel>
+                                        <Textarea
+                                            {...field}
+                                            id="description"
+                                            aria-invalid={fieldState.invalid}
+                                            placeholder="Describe your project in a few sentences…"
+                                            rows={3}
+                                        />
+                                        {fieldState.invalid && (
+                                            <FieldError
+                                                errors={[fieldState.error]}
+                                            />
+                                        )}
+                                    </Field>
+                                )}
                             />
-                        </div>
-                    </div>
+
+                            <Controller
+                                name="content"
+                                control={control}
+                                render={({ field, fieldState }) => (
+                                    <Field data-invalid={fieldState.invalid}>
+                                        <FieldLabel htmlFor="content">
+                                            Content
+                                        </FieldLabel>
+                                        <RichTextEditor
+                                            id="content"
+                                            value={field.value}
+                                            onChange={field.onChange}
+                                            aria-invalid={fieldState.invalid}
+                                            placeholder="Add richer detail, case study notes, or content…"
+                                            minHeight="300px"
+                                        />
+                                        {fieldState.invalid && (
+                                            <FieldError
+                                                errors={[fieldState.error]}
+                                            />
+                                        )}
+                                    </Field>
+                                )}
+                            />
+                        </CardContent>
+                    </Card>
+
+                    {/* ── Links ─────────────────────────────────────────── */}
+                    <Card>
+                        <CardHeader>
+                            <CardTitle>Links</CardTitle>
+                            <CardDescription>
+                                External URLs associated with this project.
+                            </CardDescription>
+                        </CardHeader>
+                        <CardContent className="space-y-4">
+                            <div className="grid grid-cols-2 gap-4">
+                                <Controller
+                                    name="project_url"
+                                    control={control}
+                                    render={({ field, fieldState }) => (
+                                        <Field data-invalid={fieldState.invalid}>
+                                            <FieldLabel htmlFor="project_url">
+                                                <IconLink className="size-3.5 inline-block mr-1 opacity-60" />
+                                                Live URL
+                                            </FieldLabel>
+                                            <Input
+                                                {...field}
+                                                id="project_url"
+                                                aria-invalid={fieldState.invalid}
+                                                placeholder="https://example.com"
+                                                type="url"
+                                                autoComplete="off"
+                                                value={field.value || ""}
+                                            />
+                                            {fieldState.invalid && (
+                                                <FieldError
+                                                    errors={[fieldState.error]}
+                                                />
+                                            )}
+                                        </Field>
+                                    )}
+                                />
+
+                                <Controller
+                                    name="github_url"
+                                    control={control}
+                                    render={({ field, fieldState }) => (
+                                        <Field data-invalid={fieldState.invalid}>
+                                            <FieldLabel htmlFor="github_url">
+                                                <IconBrandGithub className="size-3.5 inline-block mr-1 opacity-60" />
+                                                GitHub
+                                            </FieldLabel>
+                                            <Input
+                                                {...field}
+                                                id="github_url"
+                                                aria-invalid={fieldState.invalid}
+                                                placeholder="https://github.com/username/repo"
+                                                type="url"
+                                                autoComplete="off"
+                                                value={field.value || ""}
+                                            />
+                                            {fieldState.invalid && (
+                                                <FieldError
+                                                    errors={[fieldState.error]}
+                                                />
+                                            )}
+                                        </Field>
+                                    )}
+                                />
+                            </div>
+
+                            <Controller
+                                name="youtube_url"
+                                control={control}
+                                render={({ field, fieldState }) => (
+                                    <Field data-invalid={fieldState.invalid}>
+                                        <FieldLabel htmlFor="youtube_url">
+                                            <IconBrandYoutube className="size-3.5 inline-block mr-1 opacity-60" />
+                                            YouTube
+                                        </FieldLabel>
+                                        <Input
+                                            {...field}
+                                            id="youtube_url"
+                                            aria-invalid={fieldState.invalid}
+                                            placeholder="https://youtube.com/watch?v=…"
+                                            type="url"
+                                            autoComplete="off"
+                                            value={field.value || ""}
+                                        />
+                                        {fieldState.invalid && (
+                                            <FieldError
+                                                errors={[fieldState.error]}
+                                            />
+                                        )}
+                                    </Field>
+                                )}
+                            />
+                        </CardContent>
+                    </Card>
+
+                    {/* ── Details ───────────────────────────────────────── */}
+                    <Card>
+                        <CardHeader>
+                            <CardTitle>Details</CardTitle>
+                            <CardDescription>
+                                Technologies used and project timeline.
+                            </CardDescription>
+                        </CardHeader>
+                        <CardContent className="space-y-4">
+                            <Controller
+                                name="technologies"
+                                control={control}
+                                render={({ field, fieldState }) => (
+                                    <Field data-invalid={fieldState.invalid}>
+                                        <FieldLabel htmlFor="technologies">
+                                            <IconTags className="size-3.5 inline-block mr-1 opacity-60" />
+                                            Technologies
+                                        </FieldLabel>
+                                        <TagsInput
+                                            id="technologies"
+                                            value={field.value ?? []}
+                                            onChange={field.onChange}
+                                            aria-invalid={fieldState.invalid}
+                                            placeholder="Type and press Enter or comma…"
+                                        />
+                                        <p className="text-xs text-muted-foreground">
+                                            Press Enter, comma, or Tab to add a tag
+                                        </p>
+                                        {fieldState.invalid && (
+                                            <FieldError
+                                                errors={[fieldState.error]}
+                                            />
+                                        )}
+                                    </Field>
+                                )}
+                            />
+
+                            <div className="grid grid-cols-2 gap-4">
+                                <Controller
+                                    name="start_date"
+                                    control={control}
+                                    render={({ field, fieldState }) => (
+                                        <Field>
+                                            <FieldLabel htmlFor="start_date">
+                                                <IconCalendar className="size-3.5 inline-block mr-1 opacity-60" />
+                                                Start Date
+                                            </FieldLabel>
+                                            <DatePicker
+                                                value={field.value}
+                                                onChange={field.onChange}
+                                                ariaInvalid={fieldState.invalid}
+                                            />
+                                            {fieldState.invalid && (
+                                                <FieldError
+                                                    errors={[fieldState.error]}
+                                                />
+                                            )}
+                                        </Field>
+                                    )}
+                                />
+                                <Controller
+                                    name="end_date"
+                                    control={control}
+                                    render={({ field, fieldState }) => (
+                                        <Field>
+                                            <FieldLabel htmlFor="end_date">
+                                                <IconCalendar className="size-3.5 inline-block mr-1 opacity-60" />
+                                                End Date
+                                            </FieldLabel>
+                                            <DatePicker
+                                                value={field.value}
+                                                onChange={field.onChange}
+                                                ariaInvalid={fieldState.invalid}
+                                            />
+                                            {fieldState.invalid && (
+                                                <FieldError
+                                                    errors={[fieldState.error]}
+                                                />
+                                            )}
+                                        </Field>
+                                    )}
+                                />
+                            </div>
+                        </CardContent>
+                    </Card>
+
+                    {/* ── Settings ──────────────────────────────────────── */}
+                    <Card>
+                        <CardHeader>
+                            <CardTitle>
+                                <IconSettings className="size-4 inline-block mr-1.5 opacity-60" />
+                                Settings
+                            </CardTitle>
+                            <CardDescription>
+                                Control visibility and highlighting of this project.
+                            </CardDescription>
+                        </CardHeader>
+                        <CardContent className="space-y-0 divide-y divide-border">
+                            <div className="flex items-center justify-between py-4 first:pt-0 last:pb-0">
+                                <div>
+                                    <Label htmlFor="featured" className="font-medium">
+                                        Featured Project
+                                    </Label>
+                                    <p className="text-sm text-muted-foreground mt-0.5">
+                                        Show this project prominently on your portfolio
+                                    </p>
+                                </div>
+                                <Switch
+                                    id="featured"
+                                    checked={featured}
+                                    onCheckedChange={(checked) =>
+                                        setValue("featured", checked)
+                                    }
+                                />
+                            </div>
+
+                            <div className="flex items-center justify-between py-4 first:pt-0 last:pb-0">
+                                <div>
+                                    <Label htmlFor="is_published" className="font-medium">
+                                        Published
+                                    </Label>
+                                    <p className="text-sm text-muted-foreground mt-0.5">
+                                        Make this project visible on your public portfolio
+                                    </p>
+                                </div>
+                                <Switch
+                                    id="is_published"
+                                    checked={isPublished}
+                                    onCheckedChange={(checked) =>
+                                        setValue("is_published", checked)
+                                    }
+                                />
+                            </div>
+                        </CardContent>
+                    </Card>
                 </form>
-                {/* ── Right: media sidebar ─────────────────────────────── */}
-                <div className="w-96 shrink-0 sticky top-6 space-y-4">
-                    <Card className="p-4 space-y-3">
-                        <div>
-                            <h3 className="font-semibold text-sm">
-                                Project Media
-                            </h3>
-                            <p className="text-xs text-muted-foreground mt-0.5">
-                                Images &amp; videos are auto-saved on upload
-                            </p>
-                        </div>
 
-                        <div className="flex flex-col gap-2">
+                {/* ── Right: media sidebar ──────────────────────────────── */}
+                <div className="w-88 shrink-0 sticky top-6 space-y-4">
+                    <Card>
+                        <CardHeader>
+                            <CardTitle>Project Media</CardTitle>
+                            <CardDescription>
+                                Images &amp; videos — auto-saved on upload
+                            </CardDescription>
+                        </CardHeader>
+                        <CardContent className="space-y-2">
                             <MediaUploader
                                 onSuccess={handleMediaSuccess}
                                 maxFiles={10}
@@ -658,124 +731,132 @@ export function ProjectForm({ project, onSuccess }: ProjectFormProps) {
                                 selectedIds={uploadedMedia.map((m) => m.id)}
                                 onSelect={handleLibrarySelect}
                             />
-                        </div>
+                        </CardContent>
                     </Card>
 
-                    {/* Uploaded media grid */}
+                    {/* Attached media grid */}
                     {uploadedMedia.length > 0 && (
-                        <Card className="p-4 space-y-3">
-                            <h3 className="font-semibold text-sm">
-                                Attached ({uploadedMedia.length})
-                            </h3>
-                            <div className="grid grid-cols-2 gap-1.5">
-                                {uploadedMedia.map((item) => (
-                                    <div
-                                        key={item.id}
-                                        className="relative aspect-video rounded-md overflow-hidden bg-muted group cursor-pointer border"
-                                        onClick={() => handleViewMedia(item)}
-                                    >
-                                        {/* thumbnail or fallback */}
-                                        {(item.thumbnail_url ??
-                                        (item.media_type === "image"
-                                            ? item.url
-                                            : null)) ? (
-                                            <img
-                                                src={
-                                                    item.thumbnail_url ??
-                                                    item.url
-                                                }
-                                                alt={item.alt}
-                                                className="w-full h-full object-cover"
-                                            />
-                                        ) : (
-                                            <div className="w-full h-full flex items-center justify-center">
-                                                <IconVideo className="w-5 h-5 text-muted-foreground" />
-                                            </div>
-                                        )}
-
-                                        {/* featured badge */}
-                                        {item.is_featured && (
-                                            <div className="absolute top-1 left-1 z-10">
-                                                <Badge
-                                                    variant="default"
-                                                    className="px-1 h-5 bg-yellow-500 hover:bg-yellow-600 border-none"
-                                                >
-                                                    <IconStarFilled className="w-3 h-3 mr-0.5" />
-                                                    <span className="text-[10px]">
-                                                        Featured
-                                                    </span>
-                                                </Badge>
-                                            </div>
-                                        )}
-
-                                        {/* hover overlay */}
-                                        <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-1">
-                                            <button
-                                                type="button"
-                                                title={
-                                                    item.is_featured
-                                                        ? "Featured"
-                                                        : "Set as featured"
-                                                }
-                                                className={`p-1 rounded transition-colors ${
-                                                    item.is_featured
-                                                        ? "bg-yellow-500 hover:bg-yellow-600"
-                                                        : "bg-white/20 hover:bg-white/40"
-                                                }`}
-                                                onClick={(e) => {
-                                                    e.stopPropagation();
-                                                    handleSetFeatured(item.id);
-                                                }}
-                                            >
-                                                {item.is_featured ? (
-                                                    <IconStarFilled className="w-3 h-3 text-white" />
-                                                ) : (
-                                                    <IconStar className="w-3 h-3 text-white" />
-                                                )}
-                                            </button>
-                                            <button
-                                                type="button"
-                                                title="View"
-                                                className="p-1 rounded bg-white/20 hover:bg-white/40 transition-colors"
-                                                onClick={(e) => {
-                                                    e.stopPropagation();
-                                                    handleViewMedia(item);
-                                                }}
-                                            >
-                                                <IconMaximize className="w-3 h-3 text-white" />
-                                            </button>
-                                            <button
-                                                type="button"
-                                                title="Remove from project"
-                                                className="p-1 rounded bg-white/20 hover:bg-red-500/80 transition-colors"
-                                                onClick={(e) => {
-                                                    e.stopPropagation();
-                                                    handleRemoveMedia(item.id);
-                                                }}
-                                            >
-                                                <IconX className="w-3 h-3 text-white" />
-                                            </button>
-                                        </div>
-
-                                        {/* type badge */}
-                                        <div className="absolute bottom-1 left-1">
-                                            {item.media_type === "video" ? (
-                                                <IconVideo className="w-3 h-3 text-white drop-shadow" />
+                        <Card>
+                            <CardHeader>
+                                <CardTitle className="flex items-center gap-2">
+                                    Attached
+                                    <Badge variant="secondary">
+                                        {uploadedMedia.length}
+                                    </Badge>
+                                </CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                                <div className="grid grid-cols-2 gap-1.5">
+                                    {uploadedMedia.map((item) => (
+                                        <div
+                                            key={item.id}
+                                            className="relative aspect-video rounded-md overflow-hidden bg-muted group cursor-pointer border"
+                                            onClick={() => handleViewMedia(item)}
+                                        >
+                                            {/* thumbnail or fallback */}
+                                            {(item.thumbnail_url ??
+                                            (item.media_type === "image"
+                                                ? item.url
+                                                : null)) ? (
+                                                <img
+                                                    src={
+                                                        item.thumbnail_url ??
+                                                        item.url
+                                                    }
+                                                    alt={item.alt}
+                                                    className="w-full h-full object-cover"
+                                                />
                                             ) : (
-                                                <IconPhoto className="w-3 h-3 text-white drop-shadow" />
+                                                <div className="w-full h-full flex items-center justify-center">
+                                                    <IconVideo className="w-5 h-5 text-muted-foreground" />
+                                                </div>
                                             )}
+
+                                            {/* featured badge */}
+                                            {item.is_featured && (
+                                                <div className="absolute top-1 left-1 z-10">
+                                                    <Badge
+                                                        variant="default"
+                                                        className="px-1 h-5 bg-yellow-500 hover:bg-yellow-600 border-none"
+                                                    >
+                                                        <IconStarFilled className="w-3 h-3 mr-0.5" />
+                                                        <span className="text-[10px]">
+                                                            Featured
+                                                        </span>
+                                                    </Badge>
+                                                </div>
+                                            )}
+
+                                            {/* hover overlay */}
+                                            <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-1">
+                                                <button
+                                                    type="button"
+                                                    title={
+                                                        item.is_featured
+                                                            ? "Featured"
+                                                            : "Set as featured"
+                                                    }
+                                                    className={`p-1 rounded transition-colors ${
+                                                        item.is_featured
+                                                            ? "bg-yellow-500 hover:bg-yellow-600"
+                                                            : "bg-white/20 hover:bg-white/40"
+                                                    }`}
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        handleSetFeatured(item.id);
+                                                    }}
+                                                >
+                                                    {item.is_featured ? (
+                                                        <IconStarFilled className="w-3 h-3 text-white" />
+                                                    ) : (
+                                                        <IconStar className="w-3 h-3 text-white" />
+                                                    )}
+                                                </button>
+                                                <button
+                                                    type="button"
+                                                    title="View"
+                                                    className="p-1 rounded bg-white/20 hover:bg-white/40 transition-colors"
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        handleViewMedia(item);
+                                                    }}
+                                                >
+                                                    <IconMaximize className="w-3 h-3 text-white" />
+                                                </button>
+                                                <button
+                                                    type="button"
+                                                    title="Remove from project"
+                                                    className="p-1 rounded bg-white/20 hover:bg-red-500/80 transition-colors"
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        handleRemoveMedia(item.id);
+                                                    }}
+                                                >
+                                                    <IconX className="w-3 h-3 text-white" />
+                                                </button>
+                                            </div>
+
+                                            {/* type indicator */}
+                                            <div className="absolute bottom-1 left-1">
+                                                {item.media_type === "video" ? (
+                                                    <IconVideo className="w-3 h-3 text-white drop-shadow" />
+                                                ) : (
+                                                    <IconPhoto className="w-3 h-3 text-white drop-shadow" />
+                                                )}
+                                            </div>
                                         </div>
-                                    </div>
-                                ))}
-                            </div>
+                                    ))}
+                                </div>
+                            </CardContent>
                         </Card>
                     )}
-                </div>{" "}
+                </div>
                 {/* end sidebar */}
-            </div>{" "}
+            </div>
             {/* end two-column flex */}
-            {/* ── Sticky bottom action bar ─────────────────────────────── */}
-            <div className="sticky bottom-0 z-10 flex justify-between items-center gap-2 px-6 py-6 -mx-6 border-t bg-background/80 backdrop-blur-sm">
+
+            {/* ── Sticky bottom action bar ──────────────────────────────── */}
+            <div className="sticky bottom-0 z-10 flex justify-between items-center gap-2 px-6 py-4 -mx-6 border-t bg-background/80 backdrop-blur-sm">
                 <Button
                     type="button"
                     variant="ghost"
