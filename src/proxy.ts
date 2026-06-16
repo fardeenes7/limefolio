@@ -34,8 +34,9 @@ export default auth(async function middleware(req) {
     }
 
     if (host.startsWith("fardeenes7")) {
+        const rewritePath = pathname === "/" ? "" : pathname;
         return NextResponse.rewrite(
-            new URL(`/sites/fardeenes7${pathname}${req.nextUrl.search}`, req.url)
+            new URL(`/sites/fardeenes7${rewritePath}${req.nextUrl.search}`, req.url)
         );
     }
 
@@ -48,7 +49,8 @@ export default auth(async function middleware(req) {
     console.log("DETECTED SUB/CUSTOM DOMAIN:", domain);
     
     // Custom domain or subdomain — rewrite to /sites/[domain]/...
-    return NextResponse.rewrite(new URL(`/sites/${domain}${pathname}`, req.url));
+    const rewritePath = pathname === "/" ? "" : pathname;
+    return NextResponse.rewrite(new URL(`/sites/${domain}${rewritePath}${req.nextUrl.search}`, req.url));
 })
 
 export const config = {
