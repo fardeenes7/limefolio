@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { LimefolioLIcon } from "@/lib/icons";
+import { PricingSection } from "@/components/home/pricing-section";
 import {
     IconSparkles,
     IconPalette,
@@ -80,62 +81,6 @@ const steps = [
     },
 ];
 
-const plans = [
-    {
-        name: "Free",
-        price: "$0",
-        period: "forever",
-        desc: "Perfect for getting started and exploring.",
-        cta: "Get started free",
-        ctaHref: "/login",
-        ctaVariant: "outline" as const,
-        features: [
-            "1 portfolio site",
-            "limefolio.com subdomain",
-            "3 templates",
-            "Basic analytics",
-            "SEO ready",
-        ],
-        highlighted: false,
-    },
-    {
-        name: "Pro",
-        price: "$9",
-        period: "/ month",
-        desc: "Everything you need to land your next opportunity.",
-        cta: "Start 14-day trial",
-        ctaHref: "/login",
-        ctaVariant: "default" as const,
-        features: [
-            "Unlimited portfolio sites",
-            "Custom domain support",
-            "All templates",
-            "Advanced analytics",
-            "Priority support",
-            "Remove Limefolio branding",
-        ],
-        highlighted: true,
-    },
-    {
-        name: "Team",
-        price: "$29",
-        period: "/ month",
-        desc: "For agencies and studios managing many portfolios.",
-        cta: "Contact sales",
-        ctaHref: "/contact",
-        ctaVariant: "outline" as const,
-        features: [
-            "Everything in Pro",
-            "Up to 10 team members",
-            "Shared asset library",
-            "Custom templates",
-            "API access",
-            "Dedicated support",
-        ],
-        highlighted: false,
-    },
-];
-
 const testimonials = [
     {
         quote: "Limefolio took my portfolio from a clunky PDF to a stunning live site in under an hour. I got two interview calls the same week I launched.",
@@ -174,7 +119,37 @@ const integrations = [
 
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
-export default function HomePage() {
+
+async function getLatestPromotion() {
+    try {
+        const apiUrl = process.env.API_URL || "http://localhost:8001";
+        const res = await fetch(`${apiUrl}/api/billing/promotions/latest/`, { next: { revalidate: 3600 } });
+        if (res.ok && res.status !== 204) {
+            return await res.json();
+        }
+    } catch (e) {
+        console.error("Failed to fetch promotion:", e);
+    }
+    return null;
+}
+
+async function getPlans() {
+    try {
+        const apiUrl = process.env.API_URL || "http://localhost:8001";
+        const res = await fetch(`${apiUrl}/api/billing/plans/`, { next: { revalidate: 300 } });
+        if (res.ok && res.status !== 204) {
+            return await res.json();
+        }
+    } catch (e) {
+        console.error("Failed to fetch plans:", e);
+    }
+    return [];
+}
+
+export default async function HomePage() {
+    const promotion = await getLatestPromotion();
+    const plans = await getPlans();
+
     return (
         <div className="flex flex-col">
             {/* ── Hero ─────────────────────────────────────────────────── */}
@@ -194,13 +169,26 @@ export default function HomePage() {
                 <div className="container relative px-6 text-center">
                     {/* Eyebrow badge */}
                     <div className="mb-8 flex justify-center">
-                        <Badge
-                            variant="outline"
-                            className="gap-1.5 px-3 py-1 text-sm"
-                        >
-                            <IconSparkles className="size-3.5 text-primary" />
-                            Now in public beta — free to use
-                        </Badge>
+                        {promotion ? (
+                            <Link href="/pricing">
+                                <Badge
+                                    variant="secondary"
+                                    className="gap-1.5 px-3 py-1 text-sm bg-primary/10 text-primary hover:bg-primary/20 transition-colors"
+                                >
+                                    <IconSparkles className="size-3.5" />
+                                    <span className="font-semibold">{promotion.name}</span>: Get {promotion.duration_days} days of {promotion.plan_name} for free!
+                                    <IconArrowRight className="size-3.5 ml-1" />
+                                </Badge>
+                            </Link>
+                        ) : (
+                            <Badge
+                                variant="outline"
+                                className="gap-1.5 px-3 py-1 text-sm"
+                            >
+                                <IconSparkles className="size-3.5 text-primary" />
+                                Now in public beta — free to use
+                            </Badge>
+                        )}
                     </div>
 
                     {/* Headline */}
@@ -411,105 +399,7 @@ export default function HomePage() {
                 </div>
             </section>
 
-            {/* ── Pricing ──────────────────────────────────────────────── */}
-            <section
-                id="pricing"
-                className="py-24 border-b border-border bg-muted/20"
-            >
-                <div className="container px-6">
-                    <div className="mb-16 text-center space-y-4">
-                        <Badge variant="secondary" className="gap-1.5">
-                            <IconSparkles className="size-3" />
-                            Pricing
-                        </Badge>
-                        <h2 className="text-4xl font-bold tracking-tight">
-                            Simple, transparent pricing
-                        </h2>
-                        <p className="mx-auto max-w-xl text-muted-foreground">
-                            Start for free. Upgrade when you&apos;re ready. No
-                            hidden fees.
-                        </p>
-                    </div>
-
-                    <div className="grid gap-6 md:grid-cols-3 max-w-5xl mx-auto">
-                        {plans.map(
-                            ({
-                                name,
-                                price,
-                                period,
-                                desc,
-                                cta,
-                                ctaHref,
-                                ctaVariant,
-                                features: planFeatures,
-                                highlighted,
-                            }) => (
-                                <Card
-                                    key={name}
-                                    className={`relative p-8 flex flex-col gap-6 ${
-                                        highlighted
-                                            ? "border-primary shadow-lg shadow-primary/10 ring-1 ring-primary/30"
-                                            : ""
-                                    }`}
-                                >
-                                    {highlighted && (
-                                        <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                                            <Badge className="gap-1 shadow-sm">
-                                                <IconStar className="size-3" />
-                                                Most popular
-                                            </Badge>
-                                        </div>
-                                    )}
-
-                                    <div className="space-y-1">
-                                        <h3 className="text-lg font-semibold text-foreground">
-                                            {name}
-                                        </h3>
-                                        <p className="text-sm text-muted-foreground">
-                                            {desc}
-                                        </p>
-                                    </div>
-
-                                    <div className="flex items-baseline gap-1">
-                                        <span className="text-4xl font-bold text-foreground">
-                                            {price}
-                                        </span>
-                                        <span className="text-sm text-muted-foreground">
-                                            {period}
-                                        </span>
-                                    </div>
-
-                                    <Separator />
-
-                                    <ul className="flex-1 space-y-3">
-                                        {planFeatures.map((f) => (
-                                            <li
-                                                key={f}
-                                                className="flex items-center gap-2.5 text-sm"
-                                            >
-                                                <IconCheck className="size-4 shrink-0 text-primary" />
-                                                <span className="text-muted-foreground">
-                                                    {f}
-                                                </span>
-                                            </li>
-                                        ))}
-                                    </ul>
-
-                                    <Button
-                                        variant={ctaVariant}
-                                        className="w-full"
-                                        size="lg"
-                                    >
-                                        <Link href={ctaHref} className="w-full">
-                                            {cta}
-                                        </Link>
-                                    </Button>
-                                </Card>
-                            ),
-                        )}
-                    </div>
-                </div>
-            </section>
+            <PricingSection plans={plans} />
 
             {/* ── Integrations strip ───────────────────────────────────── */}
             <section className="py-16 border-b border-border">

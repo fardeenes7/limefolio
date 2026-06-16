@@ -26,19 +26,19 @@ export function HomeHeader() {
                 {/* Nav */}
                 <nav className="hidden md:flex items-center gap-6 text-sm text-muted-foreground">
                     <Link
-                        href="#features"
+                        href="/#features"
                         className="hover:text-foreground transition-colors duration-200"
                     >
                         Features
                     </Link>
                     <Link
-                        href="#how-it-works"
+                        href="/#how-it-works"
                         className="hover:text-foreground transition-colors duration-200"
                     >
                         How it works
                     </Link>
                     <Link
-                        href="#pricing"
+                        href="/pricing"
                         className="hover:text-foreground transition-colors duration-200"
                     >
                         Pricing
@@ -50,7 +50,7 @@ export function HomeHeader() {
                         Templates
                     </Link>
                     <Link
-                        href="#testimonials"
+                        href="/#testimonials"
                         className="hover:text-foreground transition-colors duration-200"
                     >
                         Testimonials

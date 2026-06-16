@@ -102,14 +102,9 @@ export const primaryNavItems = [
         url: "/app/account",
         items: [
             {
-                title: "Subscription",
-                url: "/app/billing/subscription",
+                title: "Billing & Subscription",
+                url: "/app/billing",
                 icon: IconCreditCard,
-            },
-            {
-                title: "Billing & Invoices",
-                url: "/app/billing/invoices",
-                icon: IconReceipt,
             },
             {
                 title: "Profile Settings",
