@@ -2,7 +2,6 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
 import { LimefolioLIcon } from "@/lib/icons";
 import { PricingSection } from "@/components/home/pricing-section";
 import {
@@ -14,13 +13,12 @@ import {
     IconRocket,
     IconShield,
     IconArrowRight,
-    IconCheck,
     IconStar,
     IconBolt,
     IconUsers,
     IconTemplate,
     IconBrandGithub,
-    IconLink,
+    IconLink
 } from "@tabler/icons-react";
 
 // ─── Data ────────────────────────────────────────────────────────────────────
@@ -29,56 +27,56 @@ const features = [
     {
         icon: IconTemplate,
         label: "Beautiful Templates",
-        desc: "Choose from a library of stunning, professionally-crafted portfolio templates designed for maximum impact.",
+        desc: "Choose from a library of stunning, professionally-crafted portfolio templates designed for maximum impact."
     },
     {
         icon: IconPalette,
         label: "Theme Customisation",
-        desc: "Personalise every detail — colours, fonts, sections — with a live visual editor, no code required.",
+        desc: "Personalise every detail — colours, fonts, sections — with a live visual editor, no code required."
     },
     {
         icon: IconWorld,
         label: "Custom Domains",
-        desc: "Bring your own domain or get a free <you>.limefolio.com subdomain in seconds.",
+        desc: "Bring your own domain or get a free <you>.limefolio.com subdomain in seconds."
     },
     {
         icon: IconChartBar,
         label: "Built-in Analytics",
-        desc: "See who visits, where they come from, and which projects capture their attention most.",
+        desc: "See who visits, where they come from, and which projects capture their attention most."
     },
     {
         icon: IconCode,
         label: "SEO Ready",
-        desc: "Every portfolio is server-rendered and optimised so you rank higher on Google.",
+        desc: "Every portfolio is server-rendered and optimised so you rank higher on Google."
     },
     {
         icon: IconShield,
         label: "Privacy First",
-        desc: "No third-party trackers. Your data and your visitors' data stays yours.",
-    },
+        desc: "No third-party trackers. Your data and your visitors' data stays yours."
+    }
 ];
 
 const steps = [
     {
         step: "01",
         title: "Create your account",
-        desc: "Sign up in seconds with Google or email — no credit card required.",
+        desc: "Sign up in seconds with Google or email — no credit card required."
     },
     {
         step: "02",
         title: "Pick a template",
-        desc: "Browse our growing library and choose the layout that fits your style.",
+        desc: "Browse our growing library and choose the layout that fits your style."
     },
     {
         step: "03",
         title: "Add your content",
-        desc: "Fill in your projects, experience, and skills. We make it painless.",
+        desc: "Fill in your projects, experience, and skills. We make it painless."
     },
     {
         step: "04",
         title: "Publish & share",
-        desc: "Hit publish and share your portfolio with the world. Done in minutes.",
-    },
+        desc: "Hit publish and share your portfolio with the world. Done in minutes."
+    }
 ];
 
 const testimonials = [
@@ -86,27 +84,27 @@ const testimonials = [
         quote: "Limefolio took my portfolio from a clunky PDF to a stunning live site in under an hour. I got two interview calls the same week I launched.",
         name: "Sarah K.",
         role: "Product Designer",
-        avatar: "SK",
+        avatar: "SK"
     },
     {
         quote: "As a freelance developer, my portfolio is my storefront. Limefolio made it look like I hired a professional studio. Highly recommend.",
         name: "Marcus T.",
         role: "Freelance Developer",
-        avatar: "MT",
+        avatar: "MT"
     },
     {
         quote: "The analytics alone are worth it. I can see exactly which projects get the most attention and update my portfolio strategy accordingly.",
         name: "Priya M.",
         role: "UX Researcher",
-        avatar: "PM",
-    },
+        avatar: "PM"
+    }
 ];
 
 const stats = [
     { value: "12 000+", label: "Portfolios created" },
     { value: "94%", label: "User satisfaction" },
     { value: "3 min", label: "Average setup time" },
-    { value: "40+", label: "Templates available" },
+    { value: "40+", label: "Templates available" }
 ];
 
 const integrations = [
@@ -114,16 +112,17 @@ const integrations = [
     { icon: IconLink, label: "Behance" },
     { icon: IconWorld, label: "Dribbble" },
     { icon: IconCode, label: "Codepen" },
-    { icon: IconUsers, label: "LinkedIn" },
+    { icon: IconUsers, label: "LinkedIn" }
 ];
 
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
-
 async function getLatestPromotion() {
     try {
         const apiUrl = process.env.API_URL || "http://localhost:8001";
-        const res = await fetch(`${apiUrl}/api/billing/promotions/latest/`, { next: { revalidate: 3600 } });
+        const res = await fetch(`${apiUrl}/api/billing/promotions/latest/`, {
+            next: { revalidate: 3600 }
+        });
         if (res.ok && res.status !== 204) {
             return await res.json();
         }
@@ -136,7 +135,9 @@ async function getLatestPromotion() {
 async function getPlans() {
     try {
         const apiUrl = process.env.API_URL || "http://localhost:8001";
-        const res = await fetch(`${apiUrl}/api/billing/plans/`, { next: { revalidate: 300 } });
+        const res = await fetch(`${apiUrl}/api/billing/plans/`, {
+            next: { revalidate: 300 }
+        });
         if (res.ok && res.status !== 204) {
             return await res.json();
         }
@@ -147,8 +148,10 @@ async function getPlans() {
 }
 
 export default async function HomePage() {
-    const promotion = await getLatestPromotion();
-    const plans = await getPlans();
+    const [promotion, plans] = await Promise.all([
+        getLatestPromotion(),
+        getPlans()
+    ]);
 
     return (
         <div className="flex flex-col">
@@ -160,7 +163,7 @@ export default async function HomePage() {
                     style={{
                         backgroundImage:
                             "linear-gradient(var(--border) 1px, transparent 1px), linear-gradient(90deg, var(--border) 1px, transparent 1px)",
-                        backgroundSize: "64px 64px",
+                        backgroundSize: "64px 64px"
                     }}
                 />
                 {/* Glow orb */}
@@ -176,7 +179,11 @@ export default async function HomePage() {
                                     className="gap-1.5 px-3 py-1 text-sm bg-primary/10 text-primary hover:bg-primary/20 transition-colors"
                                 >
                                     <IconSparkles className="size-3.5" />
-                                    <span className="font-semibold">{promotion.name}</span>: Get {promotion.duration_days} days of {promotion.plan_name} for free!
+                                    <span className="font-semibold">
+                                        {promotion.name}
+                                    </span>
+                                    : Get {promotion.duration_days} days of{" "}
+                                    {promotion.plan_name} for free!
                                     <IconArrowRight className="size-3.5 ml-1" />
                                 </Badge>
                             </Link>

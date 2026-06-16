@@ -1,0 +1,5 @@
+import PageNotFoundComponent from "@/components/page-not-found";
+
+export default function NotFound() {
+    return <PageNotFoundComponent />;
+}

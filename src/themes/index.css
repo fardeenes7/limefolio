@@ -1,0 +1,43 @@
+/**
+ * Theme Barrel
+ *
+ * All CSS class-based color themes are imported here.
+ * To add a new theme: create a new .css file in this directory
+ * and add its @import below. The file should contain one or two
+ * CSS class blocks (light + dark variant) using the naming convention:
+ *
+ *   .my-theme { ... }         ← light
+ *   .my-theme-dark { ... }    ← dark (optional)
+ */
+
+@import "./default.css";
+@import "./amethyst-haze.css";
+@import "./bold-tech.css";
+@import "./bubblegum.css";
+@import "./caffeine.css";
+@import "./candyland.css";
+@import "./catppuccin.css";
+@import "./claude.css";
+@import "./claymorphism.css";
+@import "./clean-slate.css";
+@import "./cosmic-night.css";
+@import "./cyberpunk.css";
+@import "./darkmatter.css";
+@import "./doom-64.css";
+@import "./elegant-luxury.css";
+@import "./graphite.css";
+@import "./midnight-bloom.css";
+@import "./mocha-mousse.css";
+@import "./modern-minimal.css";
+@import "./nature.css";
+@import "./northern-lights.css";
+@import "./ocean-breeze.css";
+@import "./pastel-dreams.css";
+@import "./soft-pop.css";
+@import "./solar-dusk.css";
+@import "./starry-night.css";
+@import "./tangerine.css";
+@import "./twitter.css";
+@import "./vercel.css";
+@import "./vintage-paper.css";
+@import "./violet-bloom.css";
