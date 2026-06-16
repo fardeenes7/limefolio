@@ -4,6 +4,10 @@ import { SAMPLE_DATA } from "@/lib/sample-data";
 
 const REVALIDATE_TIME = 86400;
 
+const isPreview = (domain: string) => {
+    return domain === "preview" || domain.startsWith("preview.")
+}
+
 async function fetcher(pathname: string, options: RequestInit = {}) {
     const apiUrl = `${process.env.API_URL?.replace(/\/$/, "")}/api/public`;
     const reqUrl = `${apiUrl}/${pathname.replace(/^\//, "")}`;
@@ -25,7 +29,7 @@ export default async function getSite(domain: string) {
     // Preview domain — return static sample data without hitting the API.
     // Template can be overridden via ?template=<slug> in the page component.
     console.log("domain::", domain);
-    if (domain === "preview") {
+    if (isPreview(domain)) {
         return SAMPLE_DATA;
     }
 
@@ -40,7 +44,7 @@ export default async function getSite(domain: string) {
 }
 
 export async function getProjects(domain: string) {
-    if (domain === "preview") {
+    if (isPreview(domain)) {
         return SAMPLE_DATA.projects;
     }
 
@@ -55,7 +59,7 @@ export async function getProjects(domain: string) {
 }
 
 export async function getProject(domain: string, slug: string) {
-    if (domain === "preview") {
+    if (isPreview(domain)) {
         return (
             SAMPLE_DATA.projects.find((p: any) => p.slug === slug) ??
             SAMPLE_DATA.projects[0]
