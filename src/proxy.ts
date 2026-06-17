@@ -1,57 +1,60 @@
 import { auth } from "@/auth";
 import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
 
 export default auth(async function middleware(req) {
     const session = req.auth;
     const { pathname } = req.nextUrl;
     const host = req.headers.get("host") ?? "";
-    console.log("");
-    console.log("HOST::", host);
-    console.log("PATHNAME::", pathname);
 
-    // ── Auth guards ──────────────────────────────────────────────
-    if (!session && pathname.startsWith("/app")) {
-        const loginUrl = new URL("/login", req.url);
-        loginUrl.searchParams.set("next", pathname);
-        return NextResponse.redirect(loginUrl);
-    }
+    console.log("\nHOST::", host, "\nPATHNAME::", pathname);
 
-    if (session && pathname === "/login") {
-        return NextResponse.redirect(new URL("/app", req.url));
-    }
-
-    // ── Host-based routing ───────────────────────────────────────
-    const isMainDomain =
-        host === "limefolio.com" ||
-        host === "www.limefolio.com" ||
-        host === "localhost:3000";
-
-    console.log("isMainDomain::", isMainDomain);
-
-    if (isMainDomain) {
+    // ── 1. API domain — hard passthrough, touch nothing ──────────
+    if (host === "api.limefolio.com") {
         return NextResponse.next();
     }
 
-    if (host.startsWith("fardeenes7")) {
-        const rewritePath = pathname === "/" ? "" : pathname;
-        return NextResponse.rewrite(
-            new URL(`/sites/fardeenes7${rewritePath}${req.nextUrl.search}`, req.url)
-        );
+    // ── 2. Main domain passthrough (must be first) ───────────────
+    const isMainDomain = [
+        "limefolio.com",
+        "www.limefolio.com",
+        "localhost:3000"
+    ].includes(host);
+
+    if (isMainDomain) {
+        // Auth guards only apply on the main domain
+        if (!session && pathname.startsWith("/app")) {
+            const loginUrl = new URL("/login", req.url);
+            loginUrl.searchParams.set("next", pathname);
+            return NextResponse.redirect(loginUrl);
+        }
+
+        if (session && pathname === "/login") {
+            return NextResponse.redirect(new URL("/app", req.url));
+        }
+
+        return NextResponse.next();
     }
 
-    // Strip .localhost:3000 for local development subdomains
-    let domain = host;
-    if (domain.endsWith(".localhost:3000")) {
-        domain = domain.replace(".localhost:3000", "");
+    // ── 3. Subdomain / custom domain rewrite ─────────────────────
+    let domain = host
+        .replace(/\.localhost(:\d+)?$/, "") // strip .localhost:3000 or .localhost
+        .replace(/\.limefolio\.com$/, ""); // strip .limefolio.com for subdomains
+
+    // For custom domains, keep the full host as the domain key
+    // e.g. www.alviclicks.com stays as-is
+    if (host.includes(".limefolio.com")) {
+        domain = host.replace(/\.limefolio\.com$/, ""); // just the subdomain slug
+    } else if (!host.includes("localhost")) {
+        domain = host; // custom domain — use full host
     }
 
-    console.log("DETECTED SUB/CUSTOM DOMAIN:", domain);
-    
-    // Custom domain or subdomain — rewrite to /sites/[domain]/...
+    console.log("DETECTED DOMAIN:", domain);
+
     const rewritePath = pathname === "/" ? "" : pathname;
-    return NextResponse.rewrite(new URL(`/sites/${domain}${rewritePath}${req.nextUrl.search}`, req.url));
-})
+    return NextResponse.rewrite(
+        new URL(`/sites/${domain}${rewritePath}${req.nextUrl.search}`, req.url)
+    );
+});
 
 export const config = {
     matcher: ["/((?!api|_next/static|_next/image|.*\\.png$).*)"]
