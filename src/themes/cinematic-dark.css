@@ -1,0 +1,37 @@
+.cinematic-dark {
+    /* 
+     * Cinematic Dark Theme
+     * A deep, rich dark palette with subtle cinematic accents (like neon crimson/blue) 
+     * designed to let video content pop.
+     */
+    --background: 0 0% 4%; /* Near black */
+    --foreground: 0 0% 95%; /* Off-white */
+
+    --card: 0 0% 6%;
+    --card-foreground: 0 0% 95%;
+
+    --popover: 0 0% 4%;
+    --popover-foreground: 0 0% 95%;
+
+    --primary: 220 80% 50%; /* Electric blue for primary actions */
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 0 0% 15%;
+    --secondary-foreground: 0 0% 95%;
+
+    --muted: 0 0% 12%;
+    --muted-foreground: 0 0% 65%;
+
+    --accent: 348 83% 47%; /* Crimson for secondary highlights */
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 0 0% 12%;
+    --input: 0 0% 12%;
+    --ring: 220 80% 50%; /* Electric blue focus ring */
+
+    /* Cinematic themes often use sharp, clean edges to mimic a screen */
+    --radius: 0.25rem;
+}

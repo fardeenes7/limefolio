@@ -319,6 +319,175 @@ const defaultTemplate: Template = {
     ],
 };
 
+/**
+ * "Cinematic" template — tailored for video editors and filmmakers.
+ *
+ * Uses GSAP animations for a premium screening room feel. Features large video 
+ * thumbnails, horizontal scroll galleries, and text reveals.
+ */
+const cinematicTemplate: Template = {
+    key: 'cinematic',
+    label: 'Cinematic',
+    version: '1.0.0',
+    defaultTheme: 'cinematic-dark',
+    defaultFont: 'space-grotesk',
+
+    // ── Layout sections (rendered by layout.tsx on every page) ─────────────────
+    layout: [
+        {
+            instanceId: 'header_1',
+            componentKey: 'header',
+            allowedVariants: allVariants('header'),
+            defaultVariant: 'default',
+            fixed: true,
+        },
+        {
+            instanceId: 'footer_1',
+            componentKey: 'footer',
+            allowedVariants: allVariants('footer'),
+            defaultVariant: 'default',
+            fixed: true,
+        },
+        {
+            instanceId: 'cookie_banner_1',
+            componentKey: 'cookie_banner',
+            allowedVariants: allVariants('cookie_banner'),
+            defaultVariant: 'bar',
+            fixed: false,
+        },
+    ] satisfies SectionInstance[],
+
+    // ── Pages ──────────────────────────────────────────────────────────────────
+    pages: [
+        {
+            key: 'landing',
+            label: 'Landing Page',
+            sections: [
+                {
+                    instanceId: 'hero_1',
+                    componentKey: 'hero',
+                    allowedVariants: allVariants('hero'),
+                    defaultVariant: 'video_reel',
+                    fixed: true,
+                    removable: false,
+                },
+                {
+                    instanceId: 'about_1',
+                    componentKey: 'about',
+                    allowedVariants: allVariants('about'),
+                    defaultVariant: 'director_cut',
+                    fixed: false,
+                    removable: true,
+                },
+                {
+                    instanceId: 'stats_1',
+                    componentKey: 'stats',
+                    allowedVariants: allVariants('stats'),
+                    defaultVariant: 'counter_row',
+                    fixed: false,
+                    removable: true,
+                },
+                {
+                    instanceId: 'featured_projects_1',
+                    componentKey: 'featured_projects',
+                    allowedVariants: allVariants('featured_projects'),
+                    defaultVariant: 'cinematic_grid',
+                    fixed: false,
+                    removable: true,
+                },
+                {
+                    instanceId: 'media_gallery_1',
+                    componentKey: 'media_gallery',
+                    allowedVariants: allVariants('media_gallery'),
+                    defaultVariant: 'horizontal_scroll',
+                    fixed: false,
+                    removable: true,
+                },
+                {
+                    instanceId: 'cta_1',
+                    componentKey: 'cta',
+                    allowedVariants: allVariants('cta'),
+                    defaultVariant: 'banner',
+                    fixed: false,
+                    removable: true,
+                },
+            ],
+        },
+        {
+            key: 'all_projects',
+            label: 'All Projects',
+            sections: [
+                {
+                    instanceId: 'featured_projects_1',
+                    componentKey: 'featured_projects',
+                    allowedVariants: allVariants('featured_projects'),
+                    defaultVariant: 'cinematic_grid',
+                    fixed: true,
+                },
+            ],
+        },
+        {
+            key: 'project_details',
+            label: 'Project Details',
+            sections: [
+                {
+                    instanceId: 'media_gallery_1',
+                    componentKey: 'media_gallery',
+                    allowedVariants: allVariants('media_gallery'),
+                    defaultVariant: 'horizontal_scroll',
+                    fixed: false,
+                },
+                {
+                    instanceId: 'cta_1',
+                    componentKey: 'cta',
+                    allowedVariants: allVariants('cta'),
+                    defaultVariant: 'card',
+                    fixed: false,
+                },
+            ],
+        },
+        {
+            key: 'all_blog',
+            label: 'All Blog Posts',
+            sections: [
+                {
+                    instanceId: 'latest_blogs_1',
+                    componentKey: 'latest_blogs',
+                    allowedVariants: allVariants('latest_blogs'),
+                    defaultVariant: 'grid',
+                    fixed: true,
+                },
+            ],
+        },
+        {
+            key: 'blog_details',
+            label: 'Blog Post',
+            sections: [
+                {
+                    instanceId: 'cta_1',
+                    componentKey: 'cta',
+                    allowedVariants: allVariants('cta'),
+                    defaultVariant: 'minimal',
+                    fixed: false,
+                },
+            ],
+        },
+        {
+            key: 'contact',
+            label: 'Contact',
+            sections: [
+                {
+                    instanceId: 'contact_1',
+                    componentKey: 'contact',
+                    allowedVariants: allVariants('contact'),
+                    defaultVariant: 'split_with_info',
+                    fixed: true,
+                },
+            ],
+        },
+    ],
+};
+
 // ─────────────────────────────────────────────────────────────────────────────
 // Registry export
 // ─────────────────────────────────────────────────────────────────────────────
@@ -331,6 +500,7 @@ const defaultTemplate: Template = {
  */
 export const TemplateRegistry: Record<string, Template> = {
     default: defaultTemplate,
+    cinematic: cinematicTemplate,
 };
 
 /**

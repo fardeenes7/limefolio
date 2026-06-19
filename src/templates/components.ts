@@ -233,6 +233,7 @@ const hero: ComponentSchema = {
         { key: 'animated_gradient', label: 'Animated Gradient' },
         { key: '3d_model', label: '3D Model' },
         { key: 'minimal_text', label: 'Minimal Text' },
+        { key: 'video_reel', label: 'Video Reel' },
     ],
     defaultVariant: 'default',
     inputs: [
@@ -308,6 +309,13 @@ const hero: ComponentSchema = {
             type: { kind: 'boolean' },
             default: true,
         },
+        {
+            key: 'showPlayButton',
+            label: 'Show "Play Reel" button',
+            type: { kind: 'boolean' },
+            default: true,
+            showIf: { input: 'variant', equals: 'video_reel' },
+        },
     ],
 };
 
@@ -329,6 +337,7 @@ const about: ComponentSchema = {
         { key: 'timeline', label: 'Timeline' },
         { key: 'skills_focused', label: 'Skills Focused' },
         { key: 'split_image', label: 'Split Image' },
+        { key: 'director_cut', label: 'Director Cut' },
     ],
     defaultVariant: 'default',
     inputs: [
@@ -442,6 +451,7 @@ const featured_projects: ComponentSchema = {
         { key: 'table', label: 'Table' },
         { key: 'grid', label: 'Grid' },
         { key: 'bento', label: 'Bento' },
+        { key: 'cinematic_grid', label: 'Cinematic Grid' },
     ],
     defaultVariant: 'grid',
     inputs: [
@@ -484,6 +494,13 @@ const featured_projects: ComponentSchema = {
             default: 'View All Projects',
             showIf: { input: 'showViewAll', equals: true },
         },
+        {
+            key: 'hoverToPlay',
+            label: 'Hover to play video',
+            type: { kind: 'boolean' },
+            default: true,
+            showIf: { input: 'variant', equals: 'cinematic_grid' },
+        },
     ],
 };
 
@@ -505,6 +522,7 @@ const media_gallery: ComponentSchema = {
         { key: 'carousel', label: 'Carousel' },
         { key: 'grid', label: 'Grid' },
         { key: 'masonry', label: 'Masonry' },
+        { key: 'horizontal_scroll', label: 'Horizontal Scroll' },
     ],
     defaultVariant: 'masonry',
     inputs: [

@@ -65,13 +65,13 @@ export function CustomizerSidebar({
 
         return (
             <div className="flex flex-col h-full bg-card border-r w-80 shrink-0">
-                <div className="p-4 border-b flex items-center gap-2">
+                <div className="p-4 border-b flex items-center gap-2 shrink-0">
                     <Button variant="ghost" size="sm" onClick={() => setSelectedSectionId(null)}>
                         ← Back
                     </Button>
                     <span className="font-semibold">{ComponentRegistry[section.componentKey]?.label || section.componentKey}</span>
                 </div>
-                <div className="p-4 overflow-y-auto flex-1">
+                <div className="p-4 overflow-y-auto flex-1 min-h-0">
                     <SectionEditor
                         instance={section}
                         override={override}
@@ -168,100 +168,102 @@ export function CustomizerSidebar({
     };
 
     return (
-        <div className="flex flex-col h-full bg-card border-r w-80 shrink-0 overflow-y-auto">
-            <div className="p-4 border-b">
+        <div className="flex flex-col h-full bg-card border-r w-80 shrink-0">
+            <div className="p-4 border-b shrink-0">
                 <h2 className="font-semibold text-lg">Site Customizer</h2>
                 <p className="text-sm text-muted-foreground">Edit your site appearance</p>
             </div>
             
-            <Accordion type="multiple" defaultValue={["global", "layout", "pages"]} className="w-full">
-                <AccordionItem value="global" className="border-b-0 px-4">
-                    <AccordionTrigger className="hover:no-underline py-4 text-sm font-semibold">Global Settings</AccordionTrigger>
-                    <AccordionContent className="space-y-4">
-                        <div className="space-y-2">
-                            <label className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Template</label>
-                            <div className="grid grid-cols-2 gap-2">
-                                {getAvailableTemplates().map(key => (
-                                    <button
-                                        key={key}
-                                        onClick={() => updateGlobal('templateKey', key)}
-                                        className={`p-2 border rounded-md text-sm text-left ${draftConfig.templateKey === key ? 'border-primary bg-primary/5 ring-1 ring-primary' : 'border-border'}`}
-                                    >
-                                        {getTemplate(key).label}
-                                    </button>
-                                ))}
+            <div className="flex-1 overflow-y-auto min-h-0">
+                <Accordion type="multiple" defaultValue={["global", "layout", "pages"]} className="w-full">
+                    <AccordionItem value="global" className="border-b-0 px-4">
+                        <AccordionTrigger className="hover:no-underline py-4 text-sm font-semibold">Global Settings</AccordionTrigger>
+                        <AccordionContent className="space-y-4">
+                            <div className="space-y-2">
+                                <label className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Template</label>
+                                <div className="grid grid-cols-2 gap-2">
+                                    {getAvailableTemplates().map(key => (
+                                        <button
+                                            key={key}
+                                            onClick={() => updateGlobal('templateKey', key)}
+                                            className={`p-2 border rounded-md text-sm text-left ${draftConfig.templateKey === key ? 'border-primary bg-primary/5 ring-1 ring-primary' : 'border-border'}`}
+                                        >
+                                            {getTemplate(key).label}
+                                        </button>
+                                    ))}
+                                </div>
                             </div>
-                        </div>
 
-                        <div className="space-y-2">
-                            <label className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Theme</label>
-                            <div className="grid grid-cols-2 gap-2">
-                                {THEMES_META.map(theme => (
-                                    <button
-                                        key={theme.slug}
-                                        onClick={() => updateGlobal('themeKey', theme.slug)}
-                                        className={`p-2 border rounded-md text-sm text-left flex items-center gap-2 ${draftConfig.themeKey === theme.slug ? 'border-primary bg-primary/5 ring-1 ring-primary' : 'border-border'}`}
-                                    >
-                                        <span className="w-4 h-4 rounded-full" style={{ background: theme.swatches[0] }} />
-                                        <span className="truncate">{theme.name}</span>
-                                    </button>
-                                ))}
+                            <div className="space-y-2">
+                                <label className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Theme</label>
+                                <div className="grid grid-cols-2 gap-2">
+                                    {THEMES_META.map(theme => (
+                                        <button
+                                            key={theme.slug}
+                                            onClick={() => updateGlobal('themeKey', theme.slug)}
+                                            className={`p-2 border rounded-md text-sm text-left flex items-center gap-2 ${draftConfig.themeKey === theme.slug ? 'border-primary bg-primary/5 ring-1 ring-primary' : 'border-border'}`}
+                                        >
+                                            <span className="w-4 h-4 rounded-full" style={{ background: theme.swatches[0] }} />
+                                            <span className="truncate">{theme.name}</span>
+                                        </button>
+                                    ))}
+                                </div>
                             </div>
-                        </div>
 
-                        <div className="space-y-2">
-                            <label className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Font</label>
-                            <div className="grid grid-cols-2 gap-2">
-                                {FONTS_META.map(font => (
-                                    <button
-                                        key={font.slug}
-                                        onClick={() => updateGlobal('fontKey', font.slug)}
-                                        className={`p-2 border rounded-md text-sm text-left ${draftConfig.fontKey === font.slug ? 'border-primary bg-primary/5 ring-1 ring-primary' : 'border-border'}`}
-                                        style={{ fontFamily: font.previewStack }}
-                                    >
-                                        {font.name}
-                                    </button>
-                                ))}
+                            <div className="space-y-2">
+                                <label className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Font</label>
+                                <div className="grid grid-cols-2 gap-2">
+                                    {FONTS_META.map(font => (
+                                        <button
+                                            key={font.slug}
+                                            onClick={() => updateGlobal('fontKey', font.slug)}
+                                            className={`p-2 border rounded-md text-sm text-left ${draftConfig.fontKey === font.slug ? 'border-primary bg-primary/5 ring-1 ring-primary' : 'border-border'}`}
+                                            style={{ fontFamily: font.previewStack }}
+                                        >
+                                            {font.name}
+                                        </button>
+                                    ))}
+                                </div>
                             </div>
-                        </div>
-                    </AccordionContent>
-                </AccordionItem>
-                
-                <AccordionItem value="layout" className="border-b-0 px-4">
-                    <AccordionTrigger className="hover:no-underline py-4 text-sm font-semibold">Layout Sections</AccordionTrigger>
-                    <AccordionContent>
-                        {renderSectionList(templateDef.layout, draftConfig.additions.layout || [], draftConfig.removals.layout || [], 'layout')}
-                    </AccordionContent>
-                </AccordionItem>
+                        </AccordionContent>
+                    </AccordionItem>
+                    
+                    <AccordionItem value="layout" className="border-b-0 px-4">
+                        <AccordionTrigger className="hover:no-underline py-4 text-sm font-semibold">Layout Sections</AccordionTrigger>
+                        <AccordionContent>
+                            {renderSectionList(templateDef.layout, draftConfig.additions.layout || [], draftConfig.removals.layout || [], 'layout')}
+                        </AccordionContent>
+                    </AccordionItem>
 
-                <AccordionItem value="pages" className="border-b-0 px-4">
-                    <AccordionTrigger className="hover:no-underline py-4 text-sm font-semibold">Pages</AccordionTrigger>
-                    <AccordionContent className="space-y-4">
-                        <div className="space-y-2">
-                            <label className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Select Page</label>
-                            <select 
-                                className="w-full p-2 text-sm border rounded-md bg-background"
-                                value={selectedPageKey}
-                                onChange={(e) => setSelectedPageKey(e.target.value)}
-                            >
-                                {templateDef.pages.map(p => (
-                                    <option key={p.key} value={p.key}>{p.label}</option>
-                                ))}
-                            </select>
-                        </div>
-                        
-                        <div className="space-y-2">
-                            <label className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Page Sections</label>
-                            {renderSectionList(
-                                templateDef.pages.find(p => p.key === selectedPageKey)?.sections || [], 
-                                draftConfig.additions.pages?.[selectedPageKey] || [], 
-                                draftConfig.removals.pages?.[selectedPageKey] || [], 
-                                'page'
-                            )}
-                        </div>
-                    </AccordionContent>
-                </AccordionItem>
-            </Accordion>
+                    <AccordionItem value="pages" className="border-b-0 px-4">
+                        <AccordionTrigger className="hover:no-underline py-4 text-sm font-semibold">Pages</AccordionTrigger>
+                        <AccordionContent className="space-y-4">
+                            <div className="space-y-2">
+                                <label className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Select Page</label>
+                                <select 
+                                    className="w-full p-2 text-sm border rounded-md bg-background"
+                                    value={selectedPageKey}
+                                    onChange={(e) => setSelectedPageKey(e.target.value)}
+                                >
+                                    {templateDef.pages.map(p => (
+                                        <option key={p.key} value={p.key}>{p.label}</option>
+                                    ))}
+                                </select>
+                            </div>
+                            
+                            <div className="space-y-2">
+                                <label className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Page Sections</label>
+                                {renderSectionList(
+                                    templateDef.pages.find(p => p.key === selectedPageKey)?.sections || [], 
+                                    draftConfig.additions.pages?.[selectedPageKey] || [], 
+                                    draftConfig.removals.pages?.[selectedPageKey] || [], 
+                                    'page'
+                                )}
+                            </div>
+                        </AccordionContent>
+                    </AccordionItem>
+                </Accordion>
+            </div>
         </div>
     );
 }

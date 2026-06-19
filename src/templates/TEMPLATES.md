@@ -97,7 +97,7 @@ a normally non-removable component by setting `removable: true`.
 A variant is a visual style variation of a component. For example, the `hero` component
 has variants `default`, `typing_animation`, `image_split`, `video_background`, etc.
 Each variant is a separate React component file under
-`src/components/template/hero/default.tsx`, `src/components/template/hero/typing_animation.tsx`,
+`src/components/sections/hero/default.tsx`, `src/components/sections/hero/typing_animation.tsx`,
 etc.
 
 `allowedVariants` in a `SectionInstance` narrows the full list of variants declared in
@@ -313,10 +313,10 @@ no harm. When the user next saves their config, the orphaned key can be cleaned 
    If adding to an existing template, bump the template's `version` (it's a breaking
    change if it inserts between existing sections and would disrupt existing orderings).
 
-3. **Build the React components** under `src/components/template/[componentKey]/`.
+3. **Build the React components** under `src/components/sections/[componentKey]/`.
    Name each file after its variant: `default.tsx`, `grid.tsx`, `masonry.tsx`, etc.
 
-4. **Create a barrel export** in `src/components/template/[componentKey]/index.ts`
+4. **Create a barrel export** in `src/components/sections/[componentKey]/index.ts`
    that the renderer can dynamically import from:
    ```ts
    export { default as default } from './default'

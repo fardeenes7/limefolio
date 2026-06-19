@@ -137,6 +137,13 @@ export const ColorThemes: Record<string, ColorThemeConfig> = {
     },
 
     // ── Nature ───────────────────────────────────────────────────────────────
+    "cinematic-dark": {
+        name: "Cinematic",
+        slug: "cinematic-dark",
+        description: "Deep dark tones to let video content pop",
+        hasDark: false,
+        category: "dark-only",
+    },
     nature: {
         name: "Nature",
         slug: "nature",
