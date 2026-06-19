@@ -1,128 +1,50 @@
 import { notFound } from "next/navigation";
-import getSite, { getProjects } from "@/lib/api";
-import { getTemplate } from "@/templates";
-import Link from "next/link";
-import { IconArrowLeft, IconSparkles } from "@tabler/icons-react";
-import ProjectCard from "./card";
+import getSite, { getProjects, getTemplateConfig } from "@/lib/api";
+import { getTemplate } from "@/templates/registry";
+import { resolvePortfolioConfig, emptyUserConfig } from "@/templates/merge";
+import { PageRenderer } from "@/components/sections/_renderer/PageRenderer";
 
 interface ProjectsPageProps {
     params: Promise<{ domain: string }>;
-    searchParams: Promise<{ template?: string }>;
 }
 
-export default async function ProjectsPage({
-    params,
-    searchParams,
-}: ProjectsPageProps) {
+export default async function ProjectsPage({ params }: ProjectsPageProps) {
     const { domain } = await params;
-    const { template: templateOverride } = await searchParams;
 
     const [siteData, projects] = await Promise.all([
         getSite(domain),
-        getProjects(domain),
+        getProjects(domain)
     ]);
 
     if (!siteData || siteData.error) return notFound();
 
-    const templateSlug =
-        domain === "preview" && templateOverride
-            ? templateOverride
-            : siteData.template;
+    const templateSlug = siteData.template || "default";
+    const colorThemeSlug = siteData.theme || "default";
+    const fontSlug = siteData.font || "inter";
 
-    // Get brand colours from the active template for consistent accent styling
-    const _ = getTemplate(templateSlug); // type-check only; unused here
+    const rawConfig = await getTemplateConfig(domain);
+    const templateDef = getTemplate(templateSlug);
+    
+    const userConfig = rawConfig && !rawConfig.error ? {
+        templateKey: templateSlug,
+        themeKey: colorThemeSlug,
+        fontKey: fontSlug,
+        templateVersion: rawConfig.template_version || '1.0.0',
+        overrides: rawConfig.config_overrides || { layout: {}, pages: {} },
+        additions: rawConfig.config_additions || { layout: [], pages: {} },
+        removals: rawConfig.config_removals || { layout: [], pages: {} },
+        ordering: rawConfig.config_ordering || {},
+    } : emptyUserConfig(templateSlug, colorThemeSlug, fontSlug, templateDef.version);
+
+    const resolvedConfig = resolvePortfolioConfig(templateDef, userConfig);
+
+    // Provide the projects data to the renderer
+    const pageData = { ...siteData, projects };
 
     return (
-        <AllProjectsPage
-            siteData={siteData}
-            projects={projects}
-            templateSlug={templateSlug}
+        <PageRenderer
+            sections={resolvedConfig.pages.find(p => p.key === "all_projects")?.sections || []}
+            siteData={pageData}
         />
-    );
-}
-
-// ── View ─────────────────────────────────────────────────────────────────────
-
-function AllProjectsPage({
-    siteData,
-    projects,
-    templateSlug,
-}: {
-    siteData: any;
-    projects: any[];
-    templateSlug: string;
-}) {
-    const featured = projects.filter((p) => p.featured);
-    const others = projects.filter((p) => !p.featured);
-
-    return (
-        <div className="min-h-screen bg-background text-foreground antialiased">
-            {/* ── Page header ───────────────────────────────────────────── */}
-            <div className="border-b border-border bg-muted/30">
-                <div className="container mx-auto max-w-5xl px-6 py-10">
-                    <Link
-                        href="/"
-                        className="mb-6 inline-flex items-center gap-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
-                    >
-                        <IconArrowLeft size={15} />
-                        Back to Portfolio
-                    </Link>
-                    <h1 className="text-4xl font-extrabold tracking-tight text-foreground mb-2">
-                        All Projects
-                    </h1>
-                    <p className="text-muted-foreground">
-                        {projects.length} project{projects.length !== 1 && "s"}{" "}
-                        · {siteData.title}
-                    </p>
-                </div>
-            </div>
-
-            <div className="container mx-auto max-w-5xl px-6 py-14 space-y-16">
-                {/* Featured */}
-                {featured.length > 0 && (
-                    <section>
-                        <div className="flex items-center gap-2 mb-8">
-                            <IconSparkles size={16} className="text-primary" />
-                            <h2 className="text-sm font-semibold uppercase tracking-widest text-primary">
-                                Featured
-                            </h2>
-                        </div>
-                        <div className="grid gap-5 sm:grid-cols-2">
-                            {featured.map((project) => (
-                                <ProjectCard
-                                    key={project.id}
-                                    project={project}
-                                />
-                            ))}
-                        </div>
-                    </section>
-                )}
-
-                {/* Other projects */}
-                {others.length > 0 && (
-                    <section>
-                        {featured.length > 0 && (
-                            <h2 className="mb-8 text-sm font-semibold uppercase tracking-widest text-muted-foreground">
-                                Other Projects
-                            </h2>
-                        )}
-                        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-                            {others.map((project) => (
-                                <ProjectCard
-                                    key={project.id}
-                                    project={project}
-                                />
-                            ))}
-                        </div>
-                    </section>
-                )}
-
-                {projects.length === 0 && (
-                    <div className="py-24 text-center text-muted-foreground">
-                        No projects yet.
-                    </div>
-                )}
-            </div>
-        </div>
     );
 }

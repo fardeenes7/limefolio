@@ -1,0 +1,1054 @@
+/**
+ * @file src/templates/components.ts
+ *
+ * Component Registry — the source of truth for every portfolio section component
+ * available in the Limefolio templating system.
+ *
+ * ## What is the component registry?
+ * The registry maps stable `key` strings to `ComponentSchema` objects. Each
+ * schema describes what a component renders, which visual variants it supports,
+ * and which user-configurable inputs it accepts. The registry is consumed by:
+ *   - `registry.ts` — to declare which components appear in each template/page
+ *   - `merge.ts`    — to resolve default input values during SSR
+ *   - The editor UI — to render the correct control for each input
+ *   - The page renderer — to dynamically import the correct variant component
+ *
+ * ## isGlobal flag
+ * Components with `isGlobal: true` (currently `header`, `footer`, `cookie_banner`)
+ * are automatically injected into every page's resolved section list by
+ * `resolvePortfolioConfig`. They must NOT be declared in `template.pages[x].sections`
+ * — their config comes exclusively from `template.layout`. At render time, every
+ * page automatically receives global components regardless of its own section list.
+ *
+ * ## repeatable and removable flags
+ * - `repeatable: true`  — the user can add multiple instances of this component
+ *   to the same page via the editor (e.g. two `featured_projects` sections with
+ *   different filters). Each instance gets a unique `instanceId` (e.g.
+ *   "featured_projects_2", "featured_projects_3").
+ * - `removable: true`   — the user can remove this component from their layout
+ *   entirely. `SectionInstance.removable` in the template definition can further
+ *   override this per-instance (e.g. a component that is normally removable can
+ *   be pinned as non-removable in a specific template).
+ *
+ * ## Color inputs
+ * All color inputs MUST use `{ kind: 'token', category: 'color' }`. This resolves
+ * to a shadcn semantic CSS variable (e.g. `--primary`, `--muted`, `--card`).
+ * Raw hex values and Tailwind arbitrary color classes are strictly forbidden in
+ * both component schemas and the component React implementations.
+ *
+ * ## Site name and logo
+ * These are sourced from the global `Site` model (title + logo fields) and are
+ * automatically available to all components. They must NEVER appear as component
+ * inputs in this registry.
+ */
+
+import type { ComponentSchema } from './types';
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Global components (isGlobal: true)
+// These are injected into every page render via template.layout — not declared
+// in template.pages[x].sections.
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Header — global top-of-page navigation bar.
+ *
+ * Non-removable because every portfolio needs a nav. The `transparentOnTop`
+ * input is useful for hero sections that bleed to the top of the viewport.
+ * `ctaLabel` is guarded by `showIf` so it only appears when the CTA is enabled.
+ */
+const header: ComponentSchema = {
+    key: 'header',
+    label: 'Header',
+    isGlobal: true,
+    repeatable: false,
+    removable: false,
+    variants: [
+        { key: 'default', label: 'Default' },
+        { key: 'compact', label: 'Compact' },
+        { key: 'centered', label: 'Centered' },
+        { key: 'split', label: 'Split' },
+    ],
+    defaultVariant: 'default',
+    inputs: [
+        {
+            key: 'sticky',
+            label: 'Sticky header',
+            type: { kind: 'boolean' },
+            default: true,
+        },
+        {
+            key: 'showNav',
+            label: 'Show navigation',
+            type: { kind: 'boolean' },
+            default: true,
+        },
+        {
+            key: 'navLinks',
+            label: 'Navigation links',
+            type: {
+                kind: 'select',
+                options: [
+                    { label: 'All Pages', value: 'all' },
+                    { label: 'Custom', value: 'custom' },
+                ],
+            },
+        },
+        {
+            key: 'ctaButton',
+            label: 'Show CTA button',
+            type: { kind: 'boolean' },
+            default: true,
+        },
+        {
+            key: 'ctaLabel',
+            label: 'CTA button label',
+            type: { kind: 'text' },
+            default: 'Hire Me',
+            showIf: { input: 'ctaButton', equals: true },
+        },
+        {
+            key: 'transparentOnTop',
+            label: 'Transparent when at top of page',
+            type: { kind: 'boolean' },
+            default: false,
+        },
+    ],
+};
+
+/**
+ * Footer — global bottom-of-page footer.
+ *
+ * Non-removable because every portfolio site needs a footer for copyright and
+ * social links. `copyrightText` defaults to empty string — the renderer
+ * auto-generates "© {siteName} {year}" when empty.
+ */
+const footer: ComponentSchema = {
+    key: 'footer',
+    label: 'Footer',
+    isGlobal: true,
+    repeatable: false,
+    removable: false,
+    variants: [
+        { key: 'default', label: 'Default' },
+        { key: 'compact', label: 'Compact' },
+        { key: 'centered', label: 'Centered' },
+        { key: 'columns', label: 'Columns' },
+    ],
+    defaultVariant: 'default',
+    inputs: [
+        {
+            key: 'showSocialLinks',
+            label: 'Show social links',
+            type: { kind: 'boolean' },
+            default: true,
+        },
+        {
+            key: 'showCopyright',
+            label: 'Show copyright notice',
+            type: { kind: 'boolean' },
+            default: true,
+        },
+        {
+            key: 'copyrightText',
+            label: 'Copyright text',
+            type: { kind: 'text' },
+            default: '',
+            // empty string = auto-generate "{siteName} © {year}"
+        },
+        {
+            key: 'showBackToTop',
+            label: 'Show "Back to top" button',
+            type: { kind: 'boolean' },
+            default: true,
+        },
+    ],
+};
+
+/**
+ * Cookie Banner — GDPR/CCPA consent notice.
+ *
+ * Removable (users who don't need cookie consent can hide it).
+ * The `position` input only applies to the `bar` variant, so it is guarded by
+ * a `showIf` condition to keep the editor uncluttered for other variants.
+ */
+const cookie_banner: ComponentSchema = {
+    key: 'cookie_banner',
+    label: 'Cookie Banner',
+    isGlobal: true,
+    repeatable: false,
+    removable: true,
+    variants: [
+        { key: 'bar', label: 'Bar' },
+        { key: 'modal', label: 'Modal' },
+        { key: 'corner_card', label: 'Corner Card' },
+    ],
+    defaultVariant: 'bar',
+    inputs: [
+        {
+            key: 'position',
+            label: 'Position',
+            type: {
+                kind: 'select',
+                options: [
+                    { label: 'Bottom', value: 'bottom' },
+                    { label: 'Top', value: 'top' },
+                ],
+            },
+            showIf: { input: 'variant', equals: 'bar' },
+        },
+        {
+            key: 'policyUrl',
+            label: 'Privacy policy URL',
+            type: { kind: 'text' },
+            default: '/privacy-policy',
+        },
+    ],
+};
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Page components (isGlobal: false)
+// Declared in template.pages[x].sections and rendered by each page.tsx.
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Hero — the first visual section on the landing page.
+ *
+ * Non-removable by default because a landing page without a hero is incomplete.
+ * The `backgroundImage`, `backgroundVideo`, and `typingStrings` inputs are each
+ * guarded by `showIf` conditions — they only appear when the corresponding variant
+ * is selected, keeping the editor clean for users on other variants.
+ */
+const hero: ComponentSchema = {
+    key: 'hero',
+    label: 'Hero',
+    isGlobal: false,
+    repeatable: false,
+    removable: false,
+    variants: [
+        { key: 'default', label: 'Default' },
+        { key: 'typing_animation', label: 'Typing Animation' },
+        { key: 'image_split', label: 'Image Split' },
+        { key: 'video_background', label: 'Video Background' },
+        { key: 'animated_gradient', label: 'Animated Gradient' },
+        { key: '3d_model', label: '3D Model' },
+        { key: 'minimal_text', label: 'Minimal Text' },
+    ],
+    defaultVariant: 'default',
+    inputs: [
+        {
+            key: 'headline',
+            label: 'Headline',
+            type: { kind: 'text' },
+            default: "Hi, I'm {name}",
+        },
+        {
+            key: 'subheadline',
+            label: 'Subheadline',
+            type: { kind: 'text' },
+            default: '',
+        },
+        {
+            key: 'primaryCtaLabel',
+            label: 'Primary CTA label',
+            type: { kind: 'text' },
+            default: 'View My Work',
+        },
+        {
+            key: 'primaryCtaUrl',
+            label: 'Primary CTA URL',
+            type: { kind: 'text' },
+            default: '#projects',
+        },
+        {
+            key: 'secondaryCtaLabel',
+            label: 'Secondary CTA label',
+            type: { kind: 'text' },
+            default: 'Contact Me',
+        },
+        {
+            key: 'secondaryCtaUrl',
+            label: 'Secondary CTA URL',
+            type: { kind: 'text' },
+            default: '#contact',
+        },
+        {
+            key: 'backgroundImage',
+            label: 'Background image',
+            type: { kind: 'file', accepts: 'image' },
+            showIf: { input: 'variant', equals: 'image_split' },
+        },
+        {
+            key: 'backgroundVideo',
+            label: 'Background video',
+            type: { kind: 'file', accepts: 'video' },
+            showIf: { input: 'variant', equals: 'video_background' },
+        },
+        {
+            key: 'typingStrings',
+            label: 'Typing animation strings (comma-separated)',
+            type: { kind: 'text' },
+            default: 'Developer, Designer, Creator',
+            showIf: { input: 'variant', equals: 'typing_animation' },
+        },
+        {
+            key: 'showScrollIndicator',
+            label: 'Show scroll indicator',
+            type: { kind: 'boolean' },
+            default: true,
+        },
+        {
+            key: 'avatarImage',
+            label: 'Avatar image',
+            type: { kind: 'file', accepts: 'image' },
+        },
+        {
+            key: 'showAvatar',
+            label: 'Show avatar',
+            type: { kind: 'boolean' },
+            default: true,
+        },
+    ],
+};
+
+/**
+ * About — bio, profile image, and skills summary section.
+ *
+ * `resumeFile` and `resumeLabel` are guarded by `showIf` so they only appear
+ * when the resume button is enabled, preventing unnecessary file uploads for
+ * users who don't want a resume download link.
+ */
+const about: ComponentSchema = {
+    key: 'about',
+    label: 'About',
+    isGlobal: false,
+    repeatable: false,
+    removable: true,
+    variants: [
+        { key: 'default', label: 'Default' },
+        { key: 'timeline', label: 'Timeline' },
+        { key: 'skills_focused', label: 'Skills Focused' },
+        { key: 'split_image', label: 'Split Image' },
+    ],
+    defaultVariant: 'default',
+    inputs: [
+        {
+            key: 'bio',
+            label: 'Bio',
+            type: { kind: 'text' },
+            default: '',
+        },
+        {
+            key: 'profileImage',
+            label: 'Profile image',
+            type: { kind: 'file', accepts: 'image' },
+        },
+        {
+            key: 'showProfileImage',
+            label: 'Show profile image',
+            type: { kind: 'boolean' },
+            default: true,
+        },
+        {
+            key: 'showSkills',
+            label: 'Show skills',
+            type: { kind: 'boolean' },
+            default: true,
+        },
+        {
+            key: 'showResumeButton',
+            label: 'Show resume download button',
+            type: { kind: 'boolean' },
+            default: false,
+        },
+        {
+            key: 'resumeFile',
+            label: 'Resume file',
+            type: { kind: 'file', accepts: 'doc' },
+            showIf: { input: 'showResumeButton', equals: true },
+        },
+        {
+            key: 'resumeLabel',
+            label: 'Resume button label',
+            type: { kind: 'text' },
+            default: 'Download Resume',
+            showIf: { input: 'showResumeButton', equals: true },
+        },
+    ],
+};
+
+/**
+ * Skills — displays the user's skill set.
+ *
+ * The `showProficiencyLevel` input controls whether a percentage bar or level
+ * label is rendered alongside each skill. The `layout` select adjusts spacing
+ * and density, useful for users with many skills.
+ */
+const skills: ComponentSchema = {
+    key: 'skills',
+    label: 'Skills',
+    isGlobal: false,
+    repeatable: false,
+    removable: true,
+    variants: [
+        { key: 'icon_grid', label: 'Icon Grid' },
+        { key: 'tag_cloud', label: 'Tag Cloud' },
+        { key: 'progress_bars', label: 'Progress Bars' },
+        { key: 'category_grouped', label: 'Category Grouped' },
+    ],
+    defaultVariant: 'icon_grid',
+    inputs: [
+        {
+            key: 'sectionTitle',
+            label: 'Section title',
+            type: { kind: 'text' },
+            default: 'Skills',
+        },
+        {
+            key: 'showProficiencyLevel',
+            label: 'Show proficiency level',
+            type: { kind: 'boolean' },
+            default: false,
+        },
+        {
+            key: 'layout',
+            label: 'Layout density',
+            type: {
+                kind: 'select',
+                options: [
+                    { label: 'Compact', value: 'compact' },
+                    { label: 'Spacious', value: 'spacious' },
+                ],
+            },
+        },
+    ],
+};
+
+/**
+ * Featured Projects — grid/table/bento display of the user's projects.
+ *
+ * Repeatable so users can have multiple project sections on one page (e.g.
+ * one section filtered by "web" and another by "design"). `filterByTag` accepts
+ * a comma-separated list of tag slugs to narrow which projects are displayed.
+ * `viewAllLabel` is guarded by `showIf` to avoid surfacing an inaccessible input.
+ */
+const featured_projects: ComponentSchema = {
+    key: 'featured_projects',
+    label: 'Featured Projects',
+    isGlobal: false,
+    repeatable: true,
+    removable: true,
+    variants: [
+        { key: 'table', label: 'Table' },
+        { key: 'grid', label: 'Grid' },
+        { key: 'bento', label: 'Bento' },
+    ],
+    defaultVariant: 'grid',
+    inputs: [
+        {
+            key: 'sectionTitle',
+            label: 'Section title',
+            type: { kind: 'text' },
+            default: 'Projects',
+        },
+        {
+            key: 'maxItems',
+            label: 'Max items to show',
+            type: {
+                kind: 'select',
+                options: [
+                    { label: '3', value: '3' },
+                    { label: '4', value: '4' },
+                    { label: '6', value: '6' },
+                    { label: 'All', value: 'all' },
+                ],
+            },
+            default: '6',
+        },
+        {
+            key: 'filterByTag',
+            label: 'Filter by tag(s) (comma-separated)',
+            type: { kind: 'text' },
+            default: '',
+        },
+        {
+            key: 'showViewAll',
+            label: 'Show "View all" link',
+            type: { kind: 'boolean' },
+            default: true,
+        },
+        {
+            key: 'viewAllLabel',
+            label: '"View all" link label',
+            type: { kind: 'text' },
+            default: 'View All Projects',
+            showIf: { input: 'showViewAll', equals: true },
+        },
+    ],
+};
+
+/**
+ * Media Gallery — displays a collection of images.
+ *
+ * Repeatable to support multiple galleries on one page (e.g. photography
+ * portfolio with separate nature and portrait galleries). The `columns` input
+ * is guarded by `showIf` because it is only meaningful for the `grid` variant
+ * — masonry and carousel control their own layout geometry.
+ */
+const media_gallery: ComponentSchema = {
+    key: 'media_gallery',
+    label: 'Media Gallery',
+    isGlobal: false,
+    repeatable: true,
+    removable: true,
+    variants: [
+        { key: 'carousel', label: 'Carousel' },
+        { key: 'grid', label: 'Grid' },
+        { key: 'masonry', label: 'Masonry' },
+    ],
+    defaultVariant: 'masonry',
+    inputs: [
+        {
+            key: 'sectionTitle',
+            label: 'Section title',
+            type: { kind: 'text' },
+            default: 'Gallery',
+        },
+        {
+            key: 'images',
+            label: 'Images',
+            type: { kind: 'file', accepts: 'image' },
+        },
+        {
+            key: 'showCaptions',
+            label: 'Show captions',
+            type: { kind: 'boolean' },
+            default: false,
+        },
+        {
+            key: 'lightboxEnabled',
+            label: 'Enable lightbox',
+            type: { kind: 'boolean' },
+            default: true,
+        },
+        {
+            key: 'columns',
+            label: 'Number of columns',
+            type: {
+                kind: 'select',
+                options: [
+                    { label: '2', value: '2' },
+                    { label: '3', value: '3' },
+                    { label: '4', value: '4' },
+                ],
+            },
+            default: '3',
+            showIf: { input: 'variant', equals: 'grid' },
+        },
+    ],
+};
+
+/**
+ * Latest Blogs — preview cards linking to blog posts.
+ *
+ * Non-repeatable (one blog section per page is sufficient). `viewAllLabel`
+ * is guarded by `showIf` to keep the UI clean when the link is disabled.
+ */
+const latest_blogs: ComponentSchema = {
+    key: 'latest_blogs',
+    label: 'Latest Blog Posts',
+    isGlobal: false,
+    repeatable: false,
+    removable: true,
+    variants: [
+        { key: 'carousel', label: 'Carousel' },
+        { key: 'grid', label: 'Grid' },
+        { key: 'masonry', label: 'Masonry' },
+        { key: 'bento', label: 'Bento' },
+    ],
+    defaultVariant: 'grid',
+    inputs: [
+        {
+            key: 'sectionTitle',
+            label: 'Section title',
+            type: { kind: 'text' },
+            default: 'Latest Posts',
+        },
+        {
+            key: 'maxItems',
+            label: 'Max items to show',
+            type: {
+                kind: 'select',
+                options: [
+                    { label: '3', value: '3' },
+                    { label: '4', value: '4' },
+                    { label: '6', value: '6' },
+                ],
+            },
+            default: '3',
+        },
+        {
+            key: 'showExcerpt',
+            label: 'Show excerpt',
+            type: { kind: 'boolean' },
+            default: true,
+        },
+        {
+            key: 'showDate',
+            label: 'Show publication date',
+            type: { kind: 'boolean' },
+            default: true,
+        },
+        {
+            key: 'showTags',
+            label: 'Show tags',
+            type: { kind: 'boolean' },
+            default: true,
+        },
+        {
+            key: 'showViewAll',
+            label: 'Show "View all" link',
+            type: { kind: 'boolean' },
+            default: true,
+        },
+        {
+            key: 'viewAllLabel',
+            label: '"View all" link label',
+            type: { kind: 'text' },
+            default: 'View All Posts',
+            showIf: { input: 'showViewAll', equals: true },
+        },
+    ],
+};
+
+/**
+ * CTA (Call to Action) — a conversion-focused section prompting visitor action.
+ *
+ * Repeatable so that a landing page can have a mid-page CTA and a bottom CTA
+ * with different messaging. `backgroundStyle` is a token input — the renderer
+ * maps the chosen token to the appropriate CSS class (e.g. `bg-primary`).
+ */
+const cta: ComponentSchema = {
+    key: 'cta',
+    label: 'Call to Action',
+    isGlobal: false,
+    repeatable: true,
+    removable: true,
+    variants: [
+        { key: 'default', label: 'Default' },
+        { key: 'split', label: 'Split' },
+        { key: 'card', label: 'Card' },
+        { key: 'banner', label: 'Banner' },
+    ],
+    defaultVariant: 'default',
+    inputs: [
+        {
+            key: 'headline',
+            label: 'Headline',
+            type: { kind: 'text' },
+            default: "Let's Work Together",
+        },
+        {
+            key: 'subtext',
+            label: 'Subtext',
+            type: { kind: 'text' },
+            default: '',
+        },
+        {
+            key: 'primaryCtaLabel',
+            label: 'Primary CTA label',
+            type: { kind: 'text' },
+            default: 'Get In Touch',
+        },
+        {
+            key: 'primaryCtaUrl',
+            label: 'Primary CTA URL',
+            type: { kind: 'text' },
+            default: '/contact',
+        },
+        {
+            key: 'secondaryCtaLabel',
+            label: 'Secondary CTA label',
+            type: { kind: 'text' },
+            default: '',
+        },
+        {
+            key: 'secondaryCtaUrl',
+            label: 'Secondary CTA URL',
+            type: { kind: 'text' },
+            default: '',
+        },
+        {
+            key: 'backgroundStyle',
+            label: 'Background color token',
+            type: { kind: 'token', category: 'color' },
+        },
+    ],
+};
+
+/**
+ * Testimonials — social proof from clients, colleagues, or collaborators.
+ *
+ * Non-repeatable (one testimonials section per page). `maxItems` controls how
+ * many testimonials are shown before a "load more" or pagination trigger.
+ */
+const testimonials: ComponentSchema = {
+    key: 'testimonials',
+    label: 'Testimonials',
+    isGlobal: false,
+    repeatable: false,
+    removable: true,
+    variants: [
+        { key: 'carousel', label: 'Carousel' },
+        { key: 'grid', label: 'Grid' },
+        { key: 'single_featured', label: 'Single Featured' },
+        { key: 'masonry', label: 'Masonry' },
+    ],
+    defaultVariant: 'carousel',
+    inputs: [
+        {
+            key: 'sectionTitle',
+            label: 'Section title',
+            type: { kind: 'text' },
+            default: 'What People Say',
+        },
+        {
+            key: 'maxItems',
+            label: 'Max items to show',
+            type: {
+                kind: 'select',
+                options: [
+                    { label: '3', value: '3' },
+                    { label: '6', value: '6' },
+                    { label: 'All', value: 'all' },
+                ],
+            },
+            default: '6',
+        },
+        {
+            key: 'showAvatar',
+            label: 'Show avatar',
+            type: { kind: 'boolean' },
+            default: true,
+        },
+        {
+            key: 'showCompany',
+            label: 'Show company name',
+            type: { kind: 'boolean' },
+            default: true,
+        },
+    ],
+};
+
+/**
+ * Services — describes what the user offers professionally.
+ *
+ * `showPricing` toggles whether price information (from the services data model)
+ * is rendered. `pricing_table` variant requires `showPricing: true` to be useful.
+ */
+const services: ComponentSchema = {
+    key: 'services',
+    label: 'Services',
+    isGlobal: false,
+    repeatable: false,
+    removable: true,
+    variants: [
+        { key: 'card_grid', label: 'Card Grid' },
+        { key: 'icon_list', label: 'Icon List' },
+        { key: 'pricing_table', label: 'Pricing Table' },
+        { key: 'horizontal_scroll', label: 'Horizontal Scroll' },
+    ],
+    defaultVariant: 'card_grid',
+    inputs: [
+        {
+            key: 'sectionTitle',
+            label: 'Section title',
+            type: { kind: 'text' },
+            default: 'Services',
+        },
+        {
+            key: 'showPricing',
+            label: 'Show pricing',
+            type: { kind: 'boolean' },
+            default: false,
+        },
+        {
+            key: 'columns',
+            label: 'Number of columns',
+            type: {
+                kind: 'select',
+                options: [
+                    { label: '2', value: '2' },
+                    { label: '3', value: '3' },
+                    { label: '4', value: '4' },
+                ],
+            },
+            default: '3',
+        },
+    ],
+};
+
+/**
+ * Experience — work history, education, and certifications.
+ *
+ * The `showEducation`, `showWork`, and `showCertifications` toggles allow users
+ * to mix and match which experience types appear in this section. `sortOrder`
+ * controls chronological vs reverse-chronological ordering.
+ */
+const experience: ComponentSchema = {
+    key: 'experience',
+    label: 'Experience',
+    isGlobal: false,
+    repeatable: false,
+    removable: true,
+    variants: [
+        { key: 'timeline', label: 'Timeline' },
+        { key: 'card_list', label: 'Card List' },
+        { key: 'compact_list', label: 'Compact List' },
+    ],
+    defaultVariant: 'timeline',
+    inputs: [
+        {
+            key: 'sectionTitle',
+            label: 'Section title',
+            type: { kind: 'text' },
+            default: 'Experience',
+        },
+        {
+            key: 'showEducation',
+            label: 'Show education',
+            type: { kind: 'boolean' },
+            default: true,
+        },
+        {
+            key: 'showWork',
+            label: 'Show work experience',
+            type: { kind: 'boolean' },
+            default: true,
+        },
+        {
+            key: 'showCertifications',
+            label: 'Show certifications',
+            type: { kind: 'boolean' },
+            default: false,
+        },
+        {
+            key: 'sortOrder',
+            label: 'Sort order',
+            type: {
+                kind: 'select',
+                options: [
+                    { label: 'Newest First', value: 'desc' },
+                    { label: 'Oldest First', value: 'asc' },
+                ],
+            },
+            default: 'desc',
+        },
+    ],
+};
+
+/**
+ * Contact — contact form and/or contact info section.
+ *
+ * `formFields` controls the complexity of the contact form — from a minimal
+ * name+email+message to a fuller form including subject and phone number.
+ * `showMap` is off by default as it requires additional API configuration.
+ */
+const contact: ComponentSchema = {
+    key: 'contact',
+    label: 'Contact',
+    isGlobal: false,
+    repeatable: false,
+    removable: true,
+    variants: [
+        { key: 'form_only', label: 'Form Only' },
+        { key: 'split_with_info', label: 'Split with Info' },
+        { key: 'card', label: 'Card' },
+        { key: 'minimal', label: 'Minimal' },
+    ],
+    defaultVariant: 'split_with_info',
+    inputs: [
+        {
+            key: 'sectionTitle',
+            label: 'Section title',
+            type: { kind: 'text' },
+            default: 'Get In Touch',
+        },
+        {
+            key: 'showForm',
+            label: 'Show contact form',
+            type: { kind: 'boolean' },
+            default: true,
+        },
+        {
+            key: 'showEmail',
+            label: 'Show email address',
+            type: { kind: 'boolean' },
+            default: true,
+        },
+        {
+            key: 'showPhone',
+            label: 'Show phone number',
+            type: { kind: 'boolean' },
+            default: false,
+        },
+        {
+            key: 'showSocialLinks',
+            label: 'Show social links',
+            type: { kind: 'boolean' },
+            default: true,
+        },
+        {
+            key: 'showMap',
+            label: 'Show map',
+            type: { kind: 'boolean' },
+            default: false,
+        },
+        {
+            key: 'formFields',
+            label: 'Form fields',
+            type: {
+                kind: 'select',
+                options: [
+                    { label: 'Name + Email + Message', value: 'basic' },
+                    { label: '+ Subject', value: 'with_subject' },
+                    { label: '+ Phone', value: 'with_phone' },
+                ],
+            },
+            default: 'basic',
+        },
+    ],
+};
+
+/**
+ * Stats — animated counters or metric highlights (e.g. "50+ projects", "5 years").
+ *
+ * `sectionTitle` defaults to empty because many designs render stats without a
+ * visible heading, relying on the numbers themselves to communicate. `animateCounters`
+ * enables the count-up animation on scroll into view.
+ */
+const stats: ComponentSchema = {
+    key: 'stats',
+    label: 'Stats',
+    isGlobal: false,
+    repeatable: false,
+    removable: true,
+    variants: [
+        { key: 'counter_row', label: 'Counter Row' },
+        { key: 'card_grid', label: 'Card Grid' },
+        { key: 'minimal_list', label: 'Minimal List' },
+    ],
+    defaultVariant: 'counter_row',
+    inputs: [
+        {
+            key: 'sectionTitle',
+            label: 'Section title',
+            type: { kind: 'text' },
+            default: '',
+        },
+        {
+            key: 'animateCounters',
+            label: 'Animate counters on scroll',
+            type: { kind: 'boolean' },
+            default: true,
+        },
+        {
+            key: 'showIcons',
+            label: 'Show icons',
+            type: { kind: 'boolean' },
+            default: true,
+        },
+    ],
+};
+
+/**
+ * Social Feed — embeds a live or cached feed from a social platform.
+ *
+ * Repeatable so users can show feeds from multiple platforms (e.g. Instagram
+ * photos + Dribbble shots on the same page). `sectionTitle` defaults to empty
+ * because many designs show the platform logo as the heading instead of text.
+ * Only platforms with an embeddable grid layout are included; Twitter/X and
+ * LinkedIn feeds are excluded due to their embed restrictions.
+ */
+const social_feed: ComponentSchema = {
+    key: 'social_feed',
+    label: 'Social Feed',
+    isGlobal: false,
+    repeatable: true,
+    removable: true,
+    variants: [
+        { key: 'grid', label: 'Grid' },
+        { key: 'carousel', label: 'Carousel' },
+        { key: 'masonry', label: 'Masonry' },
+    ],
+    defaultVariant: 'grid',
+    inputs: [
+        {
+            key: 'sectionTitle',
+            label: 'Section title',
+            type: { kind: 'text' },
+            default: '',
+        },
+        {
+            key: 'platform',
+            label: 'Platform',
+            type: {
+                kind: 'select',
+                options: [
+                    { label: 'Instagram', value: 'instagram' },
+                    { label: 'Dribbble', value: 'dribbble' },
+                    { label: 'Behance', value: 'behance' },
+                    { label: 'YouTube', value: 'youtube' },
+                ],
+            },
+            default: 'instagram',
+        },
+        {
+            key: 'maxItems',
+            label: 'Max items to show',
+            type: {
+                kind: 'select',
+                options: [
+                    { label: '6', value: '6' },
+                    { label: '9', value: '9' },
+                    { label: '12', value: '12' },
+                ],
+            },
+            default: '9',
+        },
+    ],
+};
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Registry export
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * ComponentRegistry — the central map of all available portfolio section components.
+ *
+ * Keyed by stable component key strings. Consumed by:
+ * - `registry.ts`  — template definitions reference component keys and allowed variants
+ * - `merge.ts`     — resolves input defaults during SSR
+ * - The editor UI  — renders the correct input controls per component
+ * - The renderer   — dynamically imports the correct variant component file
+ *
+ * Invariant: every `componentKey` referenced in `registry.ts` must exist here.
+ */
+export const ComponentRegistry: Record<string, ComponentSchema> = {
+    header,
+    footer,
+    cookie_banner,
+    hero,
+    about,
+    skills,
+    featured_projects,
+    media_gallery,
+    latest_blogs,
+    cta,
+    testimonials,
+    services,
+    experience,
+    contact,
+    stats,
+    social_feed,
+};

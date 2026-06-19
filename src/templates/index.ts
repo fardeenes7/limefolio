@@ -1,77 +1,65 @@
 /**
- * Template Registry
+ * Template Registry — barrel re-export
  *
- * Central registry for all theme templates.
+ * This file is the public entry point for the templating system.
+ * It re-exports everything from the new schema-driven registry so that
+ * existing import paths (`@/templates`) continue to resolve correctly.
  *
- * To add a new theme:
- * 1. Create a new folder in /templates/ (e.g., /templates/modern/)
- * 2. Create page components (home.tsx, single-project.tsx, etc.)
- * 3. Create an index.ts that exports the ThemeTemplate object
- * 4. Import and register it here
+ * The old React-component-bundle approach (ThemeTemplate / TemplateRegistry)
+ * has been replaced by a three-layer schema system:
  *
- * Usage:
- * import { Templates } from "@/templates";
- * const HomeComponent = Templates[theme].home;
- * <HomeComponent data={siteData} />
+ *   1. Schema layer   — `components.ts`, `registry.ts`  (static, authored by devs)
+ *   2. User config    — Django DB via `UserPortfolioConfig` (sparse deltas only)
+ *   3. Resolved layer — `merge.ts` resolvePortfolioConfig() (SSR only, never persisted)
+ *
+ * ## Typical import patterns
+ *
+ * ```ts
+ * // Template registry (to look up a template by key)
+ * import { TemplateRegistry, getTemplate } from '@/templates'
+ *
+ * // Type-only imports
+ * import type { Template, UserPortfolioConfig } from '@/templates/types'
+ *
+ * // SSR merge utility
+ * import { resolvePortfolioConfig, emptyUserConfig } from '@/templates/merge'
+ *
+ * // Component registry (editor UI, merge internals)
+ * import { ComponentRegistry } from '@/templates/components'
+ * ```
  */
 
-import { TemplateRegistry } from "@/lib/template-types";
-import { defaultTemplate } from "./default";
-import { modernTemplate } from "./modern";
-import { minimalTemplate } from "./minimal";
-import { prismTemplate } from "./prism";
+// ── Template registry ──────────────────────────────────────────────────────
 
-// Import additional themes here:
-// import { minimalTemplate } from "./minimal";
+export {
+    TemplateRegistry,
+    getTemplate,
+    templateExists,
+    getAvailableTemplates,
+} from './registry';
 
-/**
- * Template Registry
- * Maps theme IDs to their template components
- */
-export const Templates: TemplateRegistry = {
-    default: defaultTemplate,
-    modern: modernTemplate,
-    minimal: minimalTemplate,
-    prism: prismTemplate,
-};
+// ── Component registry ──────────────────────────────────────────────────────
 
-/**
- * Get template for a theme
- * Falls back to default template if theme not found
- */
-export function getTemplate(themeId: string | undefined | null) {
-    if (!themeId || !Templates[themeId]) {
-        if (themeId && !Templates[themeId]) {
-            console.warn(
-                `Template for theme "${themeId}" not found. Falling back to default.`,
-            );
-        }
-        return Templates.default;
-    }
-    return Templates[themeId];
-}
+export { ComponentRegistry } from './components';
 
-/**
- * Check if a template exists for a theme
- */
-export function templateExists(themeId: string): boolean {
-    return themeId in Templates;
-}
+// ── SSR merge utilities ─────────────────────────────────────────────────────
 
-/**
- * Get all available theme IDs
- */
-export function getAvailableThemes(): string[] {
-    return Object.keys(Templates);
-}
+export { resolvePortfolioConfig, emptyUserConfig } from './merge';
 
-/**
- * Get metadata for all available templates
- */
-export function getTemplateMetadata() {
-    return Object.entries(Templates).map(([slug, template]) => ({
-        name: template.name,
-        slug: template.slug,
-        description: template.description,
-    }));
-}
+// ── Types ────────────────────────────────────────────────────────────────────
+
+export type {
+    Template,
+    TemplatePage,
+    SectionInstance,
+    ComponentSchema,
+    ComponentVariant,
+    ComponentInput,
+    ComponentInputType,
+    SelectOption,
+    UserPortfolioConfig,
+    SectionOverride,
+    ResolvedPortfolioConfig,
+    ResolvedPage,
+    ResolvedSection,
+} from './types';

@@ -75,3 +75,18 @@ export async function getProject(domain: string, slug: string) {
     });
     return res;
 }
+
+export async function getTemplateConfig(domain: string) {
+    if (isPreview(domain)) {
+        return null;
+    }
+
+    const res = await fetcher("/template-config/", {
+        headers: domainHeaders(domain),
+        next: {
+            revalidate: REVALIDATE_TIME,
+            tags: [`${domain}-template-config`]
+        }
+    });
+    return res;
+}

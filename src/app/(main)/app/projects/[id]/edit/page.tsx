@@ -15,7 +15,7 @@ import { IconChevronLeft } from "@tabler/icons-react";
 
 export default async function EditProjectPage({
     params,
-}: PageProps<"/app/projects/[id]/edit">) {
+}: { params: Promise<{ id: string }> }) {
     const projectId = parseInt((await params).id);
     const project = await getProjectDetail(projectId);
 

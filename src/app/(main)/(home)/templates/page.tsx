@@ -9,7 +9,7 @@ import {
     IconLayoutGrid,
     IconArrowRight,
 } from "@tabler/icons-react";
-import { TEMPLATES_META } from "@/lib/templates-meta";
+import { getAvailableTemplates, getTemplate } from "@/templates/registry";
 
 export const metadata: Metadata = {
     title: "Templates",
@@ -27,7 +27,17 @@ const ACCENT: Record<string, string> = {
     modern: "from-violet-500/20 via-violet-500/10 to-transparent",
 };
 
+// Marketing copy for templates
+const TEMPLATE_COPY: Record<string, { description: string, tags: string[] }> = {
+    default: {
+        description: "The standard Limefolio portfolio. Clean, professional, and full-featured.",
+        tags: ["Professional", "Full-Featured", "Clean"]
+    }
+};
+
 export default function TemplatesPage() {
+    const templateKeys = getAvailableTemplates();
+
     return (
         <div className="py-16 md:py-24">
             <div className="container px-6 mx-auto max-w-6xl">
@@ -54,13 +64,15 @@ export default function TemplatesPage() {
 
                 {/* ── Grid ── */}
                 <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-                    {TEMPLATES_META.map((tmpl) => {
-                        const accent = ACCENT[tmpl.slug] ?? ACCENT.default;
-                        const previewUrl = `${PREVIEW_BASE_URL}?template=${tmpl.slug}`;
+                    {templateKeys.map((key) => {
+                        const tmpl = getTemplate(key);
+                        const accent = ACCENT[key] ?? ACCENT.default;
+                        const previewUrl = `${PREVIEW_BASE_URL}?template=${key}`;
+                        const copy = TEMPLATE_COPY[key] || { description: "A beautifully crafted template.", tags: ["Customisable"] };
 
                         return (
                             <Card
-                                key={tmpl.slug}
+                                key={key}
                                 className="group relative flex flex-col overflow-hidden border border-border transition-shadow duration-300 hover:shadow-lg pt-0"
                             >
                                 {/* Colour strip */}
@@ -68,7 +80,7 @@ export default function TemplatesPage() {
                                     className={`h-auto aspect-video w-full bg-linear-to-br ${accent} flex items-center justify-center`}
                                 >
                                     <span className="text-4xl font-black tracking-tight text-foreground/10 select-none uppercase">
-                                        {tmpl.name}
+                                        {tmpl.label}
                                     </span>
                                 </div>
 
@@ -76,16 +88,16 @@ export default function TemplatesPage() {
                                 <div className="flex flex-1 flex-col gap-4 px-6">
                                     <div className="space-y-1.5">
                                         <h2 className="text-lg font-semibold text-foreground">
-                                            {tmpl.name}
+                                            {tmpl.label}
                                         </h2>
                                         <p className="text-sm text-muted-foreground leading-relaxed">
-                                            {tmpl.description}
+                                            {copy.description}
                                         </p>
                                     </div>
 
                                     {/* Tags */}
                                     <div className="flex flex-wrap gap-1.5">
-                                        {tmpl.tags.map((tag) => (
+                                        {copy.tags.map((tag) => (
                                             <Badge
                                                 key={tag}
                                                 variant="secondary"
@@ -97,25 +109,26 @@ export default function TemplatesPage() {
                                     </div>
 
                                     {/* Actions */}
-                                    <div className="mt-auto flex gap-2 pt-2">
+                                    <div className="mt-auto flex gap-2 pt-2 pb-6">
                                         <Link
                                             href={previewUrl}
                                             target="_blank"
                                             rel="noopener noreferrer"
+                                            className="flex-1"
                                         >
                                             <Button
                                                 variant="outline"
                                                 size="sm"
-                                                className="flex-1 gap-1.5"
+                                                className="w-full gap-1.5"
                                             >
                                                 <IconExternalLink className="size-3.5" />
                                                 Preview
                                             </Button>
                                         </Link>
-                                        <Link href="/login">
+                                        <Link href="/login" className="flex-1">
                                             <Button
                                                 size="sm"
-                                                className="flex-1 gap-1.5"
+                                                className="w-full gap-1.5"
                                             >
                                                 Use this
                                                 <IconArrowRight className="size-3.5" />

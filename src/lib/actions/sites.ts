@@ -2,6 +2,7 @@
 
 import { api } from "../fetcher";
 import type { Site, SiteFormData } from "../../types";
+import type { UserPortfolioConfig } from "@/templates/types";
 import { revalidatePath } from "next/cache";
 
 /**
@@ -30,4 +31,25 @@ export async function updateSite(data: SiteFormData) {
  */
 export async function toggleSitePublish(isPublished: boolean) {
     return updateSite({ is_published: isPublished });
+}
+
+/**
+ * Get user's template config
+ */
+export async function getTemplateConfig() {
+    const response = await api.get<any>("/api/dashboard/template-config/");
+    return response;
+}
+
+/**
+ * Update user's template config
+ */
+export async function updateTemplateConfig(data: any) {
+    const response = await api.patch<any>("/api/dashboard/template-config/", data);
+
+    if (response.ok) {
+        revalidatePath("/dashboard");
+    }
+
+    return response;
 }

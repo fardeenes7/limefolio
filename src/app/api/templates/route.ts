@@ -1,14 +1,20 @@
 import { NextResponse } from "next/server";
-import { getTemplateMetadata } from "@/templates";
+import { TemplateRegistry } from "@/templates/registry";
 
 /**
  * GET /api/templates
- * Returns list of all available templates with their metadata
- * This automatically reads from the Templates registry
+ * Returns list of all available templates with their metadata.
+ * Derived from the live TemplateRegistry — any registered template automatically appears.
  */
 export async function GET() {
     try {
-        const templates = getTemplateMetadata();
+        const templates = Object.values(TemplateRegistry).map((t) => ({
+            key: t.key,
+            label: t.label,
+            version: t.version,
+            defaultTheme: t.defaultTheme,
+            defaultFont: t.defaultFont,
+        }));
 
         return NextResponse.json(templates, {
             status: 200,

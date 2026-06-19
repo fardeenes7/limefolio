@@ -1,4 +1,4 @@
-import getSite from "@/lib/api";
+import getSite, { getTemplateConfig } from "@/lib/api";
 import "../../globals.css";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
@@ -6,7 +6,10 @@ import { ThemeProvider } from "next-themes";
 import { getFont, getAllFontVariables } from "@/lib/fonts";
 import { readFile } from "fs/promises";
 import path from "path";
-import { DynamicLayout } from "@/components/dynamic-layout";
+import { LayoutPageRenderer } from "@/components/sections/_renderer/PageRenderer";
+import { resolvePortfolioConfig, emptyUserConfig } from "@/templates/merge";
+import { getTemplate } from "@/templates/registry";
+import { LivePreviewProvider } from "@/components/preview/LivePreviewProvider";
 
 export const metadata: Metadata = {
     title: "Create Next App",
@@ -15,20 +18,9 @@ export const metadata: Metadata = {
 
 /**
  * Reads a single theme CSS file from disk and returns its contents.
- * Falls back to an empty string if the file can't be found.
- *
- * This runs server-side only, so the CSS for unused themes is never
- * shipped to the browser — each visitor receives only their site's theme.
  */
 async function loadThemeCSS(slug: string): Promise<string> {
-    // The slug may correspond to a base theme file (e.g. "amethyst-haze-dark"
-    // lives inside "amethyst-haze.css"). Strip the "-dark" suffix to find
-    // the right file, which contains both variants.
     const baseSlug = slug.endsWith("-dark") ? slug.slice(0, -5) : slug;
-
-    // Resolve against the themes directory at src/themes/<base>.css.
-    // __dirname is not available in ESM / Next.js app-dir, so we use
-    // process.cwd() + the known relative path.
     const cssPath = path.join(
         process.cwd(),
         "src",
@@ -40,7 +32,6 @@ async function loadThemeCSS(slug: string): Promise<string> {
         return await readFile(cssPath, "utf-8");
     } catch {
         console.warn(`Theme CSS file not found: ${cssPath}`);
-        // Fallback to default if the requested file is missing
         if (baseSlug !== "default") {
             const fallbackPath = path.join(
                 process.cwd(),
@@ -73,7 +64,7 @@ export default async function DomainLayout({
     // Get configuration from site data or use defaults
     const colorThemeSlug = siteData?.theme || "default";
     const templateSlug = siteData?.template || "default";
-    const fontSlug = siteData?.font || "outfit";
+    const fontSlug = siteData?.font || "inter"; // changed default to inter
     const selectedFont = getFont(fontSlug);
 
     if (!siteData || siteData.error) {
@@ -91,21 +82,34 @@ export default async function DomainLayout({
         );
     }
 
-    // Get the selected font configuration
+    // 1. Fetch user's template config (or use defaults if missing/preview)
+    const rawConfig = await getTemplateConfig(domain);
+    const templateDef = getTemplate(templateSlug);
+    
+    const userConfig = rawConfig && !rawConfig.error ? {
+        templateKey: templateSlug,
+        themeKey: colorThemeSlug,
+        fontKey: fontSlug,
+        templateVersion: rawConfig.template_version || '1.0.0',
+        overrides: rawConfig.config_overrides || { layout: {}, pages: {} },
+        additions: rawConfig.config_additions || { layout: [], pages: {} },
+        removals: rawConfig.config_removals || { layout: [], pages: {} },
+        ordering: rawConfig.config_ordering || {},
+    } : emptyUserConfig(templateSlug, colorThemeSlug, fontSlug, templateDef.version);
+
+    // 2. Resolve the config (SSR merge)
+    const resolvedConfig = resolvePortfolioConfig(templateDef, userConfig);
+
+    // 3. Get the selected font configuration
     const allFontVariables = getAllFontVariables();
 
-    // Load only this site's theme CSS — runs on the server, zero bundle cost
+    // 4. Load only this site's theme CSS
     const themeCSS = await loadThemeCSS(colorThemeSlug);
-
-    // Resolve the template's layout wrapper
-    // The wrapper is dynamic for the preview functionality
-    // const template = getTemplate(templateSlug);
-    // const TemplateLayout = template.layout;
 
     return (
         <html lang="en" className={`${allFontVariables} ${colorThemeSlug}`}>
             <head>
-                {/* Inject only the active theme's CSS — ~4KB vs ~150KB for all themes */}
+                {/* Inject only the active theme's CSS */}
                 <style
                     dangerouslySetInnerHTML={{ __html: themeCSS }}
                     data-theme={colorThemeSlug}
@@ -123,9 +127,14 @@ export default async function DomainLayout({
                     enableSystem={false}
                     disableTransitionOnChange
                 >
-                    <DynamicLayout data={siteData} domain={domain}>
+                    <LivePreviewProvider
+                        templateDef={templateDef}
+                        initialUserConfig={userConfig}
+                        initialLayoutSections={resolvedConfig.layout}
+                        siteData={siteData}
+                    >
                         {children}
-                    </DynamicLayout>
+                    </LivePreviewProvider>
                 </ThemeProvider>
             </body>
         </html>

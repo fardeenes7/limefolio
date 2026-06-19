@@ -1,4 +1,4 @@
-import { getSiteDetail } from "@/lib/actions/sites";
+import { getSiteDetail, getTemplateConfig } from "@/lib/actions/sites";
 import { AppearanceClient } from "./appearance-client";
 import type { Metadata } from "next";
 
@@ -9,11 +9,14 @@ export const metadata: Metadata = {
 };
 
 export default async function AppearancePage() {
-    const response = await getSiteDetail();
+    const [siteResponse, configResponse] = await Promise.all([
+        getSiteDetail(),
+        getTemplateConfig()
+    ]);
 
-    if (!response.ok || !response.data) {
-        return <div>Something went wrong</div>;
+    if (!siteResponse.ok || !siteResponse.data || !configResponse.ok || !configResponse.data) {
+        return <div>Something went wrong loading appearance settings</div>;
     }
 
-    return <AppearanceClient initialSite={response.data} />;
+    return <AppearanceClient initialSite={siteResponse.data} initialConfigRaw={configResponse.data} />;
 }
