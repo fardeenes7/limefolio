@@ -36,7 +36,7 @@ export function PageRail({ pages, activePage, onPageChange }: PageRailProps) {
     // If it is, it's filtered above. We always add it manually at the end.
     
     return (
-        <div className="w-12 shrink-0 border-r border-border bg-background flex flex-col items-center py-2 gap-2 h-full overflow-y-auto">
+        <div className="w-14 shrink-0 border-r border-border bg-background flex flex-col items-center py-4 gap-3 h-full overflow-y-auto">
             {regularPages.map((page) => {
                 const Icon = PAGE_ICONS[page.key] || IconFile;
                 const isActive = activePage === page.key;
@@ -47,13 +47,14 @@ export function PageRail({ pages, activePage, onPageChange }: PageRailProps) {
                         title={page.label}
                         onClick={() => onPageChange(page.key)}
                         className={cn(
-                            "w-9 h-9 rounded-lg flex flex-col items-center justify-center transition-colors group relative",
+                            "w-10 h-10 rounded-xl flex flex-col items-center justify-center transition-all group relative",
                             isActive 
-                                ? "bg-accent text-accent-foreground" 
-                                : "text-muted-foreground hover:bg-accent/50 hover:text-foreground"
+                                ? "bg-primary text-primary-foreground shadow-sm" 
+                                : "text-muted-foreground hover:bg-accent hover:text-foreground"
                         )}
                     >
-                        <Icon className="w-4 h-4" />
+                        <Icon className="w-5 h-5" />
+
                         {/* We could add an 8px label here, but at 36x36px a 16px icon and 8px text is very tight.
                             The brief asks for "Icon label: 8px, truncated, below the icon" 
                             Wait, w-9 h-9 is 36px. Let's make it 100% compliant with brief: */}
@@ -67,13 +68,13 @@ export function PageRail({ pages, activePage, onPageChange }: PageRailProps) {
                 title="Global Layout"
                 onClick={() => onPageChange("layout")}
                 className={cn(
-                    "w-9 h-9 rounded-lg flex items-center justify-center transition-colors",
+                    "w-10 h-10 rounded-xl flex items-center justify-center transition-all",
                     activePage === "layout" 
-                        ? "bg-accent text-accent-foreground" 
-                        : "text-muted-foreground hover:bg-accent/50 hover:text-foreground"
+                        ? "bg-primary text-primary-foreground shadow-sm" 
+                        : "text-muted-foreground hover:bg-accent hover:text-foreground"
                 )}
             >
-                <IconLayoutNavbar className="w-4 h-4" />
+                <IconLayoutNavbar className="w-5 h-5" />
             </button>
         </div>
     );

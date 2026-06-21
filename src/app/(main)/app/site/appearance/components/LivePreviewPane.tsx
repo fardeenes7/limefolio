@@ -1,16 +1,75 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState, useLayoutEffect } from "react";
 import { UserPortfolioConfig } from "@/templates/types";
+import { cn } from "@/lib/utils";
 
 const PREVIEW_BASE_URL = process.env.NEXT_PUBLIC_PREVIEW_URL ?? "http://preview.localhost:3000";
+
+const DEVICE_WIDTHS = {
+    desktop: '100%',
+    tablet: '768px',
+    mobile: '390px',
+};
 
 interface LivePreviewPaneProps {
     tenant: string;
     draftConfig: Partial<UserPortfolioConfig>;
     activePage: string;
+    selectedInstanceId: string | null;
+    onSelectInstance: (instanceId: string) => void;
+    deviceSize: 'desktop' | 'tablet' | 'mobile';
 }
 
-export function LivePreviewPane({ tenant, draftConfig, activePage }: LivePreviewPaneProps) {
+export function LivePreviewPane({ 
+    tenant, 
+    draftConfig, 
+    activePage, 
+    selectedInstanceId,
+    onSelectInstance,
+    deviceSize
+}: LivePreviewPaneProps) {
     const iframeRef = useRef<HTMLIFrameElement>(null);
+    const containerRef = useRef<HTMLDivElement>(null);
+    const mockupRef = useRef<HTMLDivElement>(null);
+    const [scale, setScale] = useState(1);
+
+    useLayoutEffect(() => {
+        const calculateScale = () => {
+            if (!containerRef.current || !mockupRef.current || deviceSize === 'desktop') {
+                setScale(1);
+                return;
+            }
+
+            const containerHeight = containerRef.current.offsetHeight;
+            const containerWidth = containerRef.current.offsetWidth;
+            
+            // The mockup needs a fixed height to scale against if it's not filling
+            // For tablet/mobile, we want it to be "natural" or at least visible.
+            // Let's assume a standard preview height of 800px or use the container height.
+            const mockupHeight = 840; // browser mockup height
+            const mockupWidth = parseInt(DEVICE_WIDTHS[deviceSize]);
+
+            const verticalScale = (containerHeight - 40) / mockupHeight;
+            const horizontalScale = (containerWidth - 40) / mockupWidth;
+
+            const newScale = Math.min(verticalScale, horizontalScale, 1);
+            setScale(newScale);
+        };
+
+        calculateScale();
+        window.addEventListener('resize', calculateScale);
+        return () => window.removeEventListener('resize', calculateScale);
+    }, [deviceSize]);
+
+    useEffect(() => {
+        const handleMessage = (event: MessageEvent) => {
+            if (event.data?.type === 'SELECT_SECTION' && event.data.instanceId) {
+                onSelectInstance(event.data.instanceId);
+            }
+        };
+
+        window.addEventListener('message', handleMessage);
+        return () => window.removeEventListener('message', handleMessage);
+    }, [onSelectInstance]);
 
     // Sync draft config to iframe on change
     useEffect(() => {
@@ -39,19 +98,32 @@ export function LivePreviewPane({ tenant, draftConfig, activePage }: LivePreview
     }, [activePage]);
 
     return (
-        <div className="flex-1 overflow-auto p-4 md:p-6 lg:p-8 flex items-start justify-center bg-muted/20 relative w-full h-full">
-            <div className="bg-background shadow-lg rounded-t-xl rounded-b-lg border border-border overflow-hidden flex flex-col w-full h-full max-h-[900px] max-w-6xl">
+        <div 
+            ref={containerRef}
+            className="flex-1 overflow-hidden p-8 md:p-12 lg:p-16 flex items-center justify-center bg-muted/30 relative w-full h-full"
+        >
+            <div 
+                ref={mockupRef}
+                className={cn(
+                    "bg-background shadow-[0_32px_64px_-16px_rgba(0,0,0,0.2)] rounded-t-2xl rounded-b-xl border border-border/50 overflow-hidden flex flex-col transition-all duration-500 ease-in-out origin-center",
+                    deviceSize === 'desktop' ? "w-full h-full max-h-[1000px] max-w-7xl" : "h-[840px] shrink-0"
+                )}
+                style={{ 
+                    width: deviceSize !== 'desktop' ? DEVICE_WIDTHS[deviceSize] : undefined,
+                    transform: `scale(${scale})`,
+                }}
+            >
                 {/* Browser Chrome Mockup */}
-                <div className="h-10 bg-muted border-b border-border flex items-center px-4 gap-2 shrink-0">
-                    <div className="flex items-center gap-1.5">
-                        <div className="w-3 h-3 rounded-full bg-destructive/80" />
-                        <div className="w-3 h-3 rounded-full bg-amber-500/80" />
-                        <div className="w-3 h-3 rounded-full bg-green-500/80" />
+                <div className="h-12 bg-muted/50 border-b border-border/50 flex items-center px-6 gap-3 shrink-0">
+                    <div className="flex items-center gap-2">
+                        <div className="w-3.5 h-3.5 rounded-full bg-destructive/60" />
+                        <div className="w-3.5 h-3.5 rounded-full bg-amber-500/60" />
+                        <div className="w-3.5 h-3.5 rounded-full bg-green-500/60" />
                     </div>
-                    <div className="mx-auto bg-background border border-border rounded-md px-3 py-1 text-[10px] text-muted-foreground flex items-center justify-center w-full max-w-[200px] truncate">
+                    <div className="mx-auto bg-background/80 backdrop-blur-sm border border-border/50 rounded-lg px-4 py-1.5 text-[11px] font-medium text-muted-foreground flex items-center justify-center w-full max-w-[280px] truncate shadow-sm">
                         {tenant}.limefolio.com
                     </div>
-                    <div className="w-11" /> {/* spacer to balance traffic lights */}
+                    <div className="w-14" /> {/* spacer to balance traffic lights */}
                 </div>
 
                 {/* Iframe */}
@@ -62,9 +134,40 @@ export function LivePreviewPane({ tenant, draftConfig, activePage }: LivePreview
                         className="w-full h-full border-0"
                         title="Portfolio preview"
                     />
-                    {/* TODO: section highlight overlay — waiting on preview app postMessage support */}
+                    
+                    {/* Section selection syncing */}
+                    <SyncSelectedInstance 
+                        iframeRef={iframeRef} 
+                        selectedInstanceId={selectedInstanceId} 
+                    />
                 </div>
             </div>
+
+            {/* Zoom Indicator */}
+            {scale < 1 && (
+                <div className="absolute bottom-4 right-4 bg-background/80 backdrop-blur-sm border border-border rounded-full px-3 py-1 text-[10px] font-medium text-muted-foreground shadow-sm">
+                    {Math.round(scale * 100)}% zoom
+                </div>
+            )}
         </div>
     );
+}
+
+function SyncSelectedInstance({ 
+    iframeRef, 
+    selectedInstanceId 
+}: { 
+    iframeRef: React.RefObject<HTMLIFrameElement | null>;
+    selectedInstanceId: string | null;
+}) {
+    useEffect(() => {
+        if (iframeRef.current?.contentWindow) {
+            iframeRef.current.contentWindow.postMessage({
+                type: 'SET_SELECTED_INSTANCE',
+                instanceId: selectedInstanceId
+            }, '*');
+        }
+    }, [selectedInstanceId, iframeRef]);
+
+    return null;
 }

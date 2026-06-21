@@ -8,6 +8,8 @@ interface ThemeSwatchProps {
 }
 
 export function ThemeSwatch({ theme, isSelected, onClick }: ThemeSwatchProps) {
+    const [bg, primary, accent] = theme.swatches;
+
     return (
         <button
             type="button"
@@ -17,13 +19,13 @@ export function ThemeSwatch({ theme, isSelected, onClick }: ThemeSwatchProps) {
             <div
                 className={`w-full aspect-[3/2] rounded-md overflow-hidden transition-transform duration-200 motion-safe:group-hover:scale-105 ${
                     isSelected ? "ring-2 ring-ring ring-offset-1 ring-offset-background" : "border border-border"
-                } ${theme.slug}`}
+                }`}
             >
-                <div className="w-full h-full bg-background flex flex-col">
-                    <div className="flex-1 bg-background" />
+                <div className="w-full h-full flex flex-col" style={{ backgroundColor: bg }}>
+                    <div className="flex-1" style={{ backgroundColor: bg }} />
                     <div className="flex-1 flex">
-                        <div className="flex-1 bg-primary" />
-                        <div className="flex-1 bg-accent" />
+                        <div className="flex-1" style={{ backgroundColor: primary }} />
+                        <div className="flex-1" style={{ backgroundColor: accent }} />
                     </div>
                 </div>
             </div>

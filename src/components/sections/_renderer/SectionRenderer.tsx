@@ -18,10 +18,13 @@
  * component registry.
  */
 
+"use client";
+
 import type { ResolvedSection } from '@/templates/types';
 import type { SiteData } from '@/types/site';
 import dynamic from 'next/dynamic';
-import { ComponentType, memo } from 'react';
+import { ComponentType, memo, useMemo, useContext } from 'react';
+import { PreviewContext } from '@/components/preview/LivePreviewProvider';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Public section component contract
@@ -118,6 +121,9 @@ export const SectionRenderer = memo(function SectionRenderer({
     section,
     siteData,
 }: SectionRendererProps) {
+    const { selectedInstanceId } = useContext(PreviewContext);
+    const isSelected = selectedInstanceId === section.instanceId;
+
     const Component = getComponent(section.componentKey, section.resolvedVariant);
     
     // Interpolate template variables in inputs
@@ -132,5 +138,24 @@ export const SectionRenderer = memo(function SectionRenderer({
     
     const interpolatedSection = { ...section, resolvedInputs: interpolatedInputs };
 
-    return <Component section={interpolatedSection} siteData={siteData} />;
+    const handleClick = useMemo(() => {
+        return () => {
+            if (window.parent && window.parent !== window) {
+                window.parent.postMessage({
+                    type: 'SELECT_SECTION',
+                    instanceId: section.instanceId,
+                }, '*');
+            }
+        };
+    }, [section.instanceId]);
+
+    return (
+        <div 
+            onClick={handleClick}
+            className={`group/section relative cursor-pointer ${isSelected ? 'ring-2 ring-primary ring-inset z-10' : ''}`}
+        >
+            <Component section={interpolatedSection} siteData={siteData} />
+            <div className={`absolute inset-0 border-2 border-transparent group-hover/section:border-primary/50 pointer-events-none transition-colors ${isSelected ? 'border-primary/50' : ''}`} />
+        </div>
+    );
 });

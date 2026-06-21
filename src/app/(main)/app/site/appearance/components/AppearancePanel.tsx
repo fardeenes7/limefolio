@@ -58,18 +58,18 @@ export function AppearancePanel({
     const selectedOverride = selectedInstanceId ? (overridesSource[selectedInstanceId] || {}) : {};
 
     return (
-        <div className="w-[272px] shrink-0 border-l border-border bg-card flex flex-col h-full overflow-hidden z-10">
+        <div className="w-[320px] shrink-0 border-l border-border bg-card flex flex-col h-full overflow-hidden z-10">
             {/* Tab Strip */}
-            <div className="h-8 flex shrink-0 border-b border-border bg-background">
+            <div className="h-10 flex shrink-0 border-b border-border bg-background">
                 {TABS.map(tab => (
                     <button
                         key={tab.key}
                         onClick={() => onTabChange(tab.key)}
                         className={cn(
-                            "flex-1 text-[11px] font-medium transition-colors",
+                            "flex-1 text-[12px] font-medium transition-colors",
                             activeTab === tab.key 
-                                ? "border-b-[1.5px] border-foreground text-foreground" 
-                                : "text-muted-foreground hover:text-foreground"
+                                ? "border-b-2 border-primary text-foreground" 
+                                : "text-muted-foreground hover:text-foreground hover:bg-muted/30"
                         )}
                     >
                         {tab.label}

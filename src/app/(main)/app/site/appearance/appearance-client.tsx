@@ -77,7 +77,7 @@ export function AppearanceClient({ initialSite, initialConfigRaw }: AppearanceCl
 
     return (
         <div 
-            className="flex flex-col -mx-6 -my-10 lg:-my-20 bg-muted/20 overflow-hidden" 
+            className="flex flex-col -mx-6 -my-10 lg:-my-20 bg-muted/30 overflow-hidden" 
             style={{ height: 'calc(100vh - 0px)' }}
         >
             <AppearanceTopbar
@@ -101,6 +101,9 @@ export function AppearanceClient({ initialSite, initialConfigRaw }: AppearanceCl
                     tenant={initialSite.subdomain || "demo"}
                     draftConfig={debouncedConfig}
                     activePage={activePage}
+                    selectedInstanceId={selectedInstanceId}
+                    onSelectInstance={setSelectedInstanceId}
+                    deviceSize={deviceSize}
                 />
 
                 <AppearancePanel

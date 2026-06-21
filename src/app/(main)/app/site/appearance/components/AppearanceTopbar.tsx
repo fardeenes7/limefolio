@@ -28,17 +28,17 @@ export function AppearanceTopbar({
     onDiscard
 }: AppearanceTopbarProps) {
     return (
-        <div className="h-[44px] shrink-0 border-b border-border bg-background flex items-center justify-between px-4 z-10 w-full relative">
+        <div className="h-14 shrink-0 border-b border-border bg-background flex items-center justify-between px-6 z-10 w-full relative">
             {/* Left */}
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-4">
                 <Link 
                     href="/app/site/" 
-                    className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+                    className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors flex items-center gap-2"
                 >
-                    &larr; Dashboard
+                    <span>&larr;</span> Dashboard
                 </Link>
-                <div className="h-4 w-px bg-border" />
-                <span className="text-sm font-medium">Appearance</span>
+                <div className="h-6 w-px bg-border" />
+                <span className="text-base font-semibold tracking-tight">Appearance</span>
             </div>
 
             {/* Center */}

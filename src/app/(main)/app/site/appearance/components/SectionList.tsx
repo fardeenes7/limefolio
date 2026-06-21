@@ -116,56 +116,56 @@ function SortableSectionRow({
             style={style}
             onClick={onSelect}
             className={cn(
-                "flex items-center px-2 h-10 transition-colors cursor-pointer group select-none",
-                isSelected ? "bg-accent/50 rounded-lg" : "hover:bg-muted/50 rounded-lg",
-                isDragging && "opacity-50 ring-1 ring-primary bg-background",
+                "flex items-center px-3 h-12 transition-all cursor-pointer group select-none border border-transparent",
+                isSelected ? "bg-accent/60 rounded-xl border-accent-foreground/10 shadow-sm" : "hover:bg-muted/50 rounded-xl",
+                isDragging && "opacity-50 ring-2 ring-primary bg-background shadow-lg",
                 isRemoved && "opacity-40"
             )}
         >
             {/* Drag Handle or Lock */}
-            <div className="flex items-center justify-center w-6 h-6 mr-1 shrink-0">
+            <div className="flex items-center justify-center w-8 h-8 mr-1 shrink-0">
                 {section.fixed ? (
-                    <IconLock className="w-2.5 h-2.5 text-muted-foreground/40" />
+                    <IconLock className="w-3 h-3 text-muted-foreground/40" />
                 ) : (
                     <div 
-                        className="text-muted-foreground/40 hover:text-foreground cursor-grab active:cursor-grabbing p-1 opacity-0 group-hover:opacity-100 focus:opacity-100 transition-opacity"
+                        className="text-muted-foreground/40 hover:text-foreground cursor-grab active:cursor-grabbing p-1.5 opacity-0 group-hover:opacity-100 focus:opacity-100 transition-opacity"
                         {...attributes}
                         {...listeners}
                     >
-                        <IconGripVertical className="w-3.5 h-3.5" />
+                        <IconGripVertical className="w-4 h-4" />
                     </div>
                 )}
             </div>
 
             {/* Component Icon */}
-            <div className="w-5 h-5 rounded-md bg-muted flex items-center justify-center shrink-0 mr-2">
-                <Icon className="w-3.5 h-3.5 text-foreground" />
+            <div className="w-6 h-6 rounded-lg bg-muted flex items-center justify-center shrink-0 mr-3">
+                <Icon className="w-4 h-4 text-foreground/80" />
             </div>
 
             {/* Label */}
-            <span className="text-[12px] font-medium flex-1 truncate">
+            <span className="text-[13px] font-semibold flex-1 truncate text-foreground/90">
                 {schema.label}
             </span>
 
             {/* Variant Pill */}
             {schema.variants.length > 1 && (
                 <span className={cn(
-                    "text-[10px] ml-2 truncate max-w-[80px]",
-                    isVariantModified ? "text-primary font-medium" : "text-muted-foreground"
+                    "text-[10px] ml-2 truncate max-w-[90px] px-1.5 py-0.5 rounded-md bg-muted/50",
+                    isVariantModified ? "text-primary font-bold bg-primary/10" : "text-muted-foreground font-medium"
                 )}>
                     {schema.variants.find(v => v.key === section.resolvedVariant)?.label || section.resolvedVariant}
                 </span>
             )}
 
             {/* Actions */}
-            <div className="flex items-center ml-2 w-6 justify-end shrink-0">
+            <div className="flex items-center ml-2 w-8 justify-end shrink-0">
                 {(schema.removable || section.removable) && !section.fixed && (
                     <button
                         onClick={(e) => { e.stopPropagation(); onToggleVisibility(); }}
-                        className="p-1 text-muted-foreground hover:text-foreground opacity-0 group-hover:opacity-100 focus:opacity-100 transition-opacity"
+                        className="p-1.5 text-muted-foreground hover:text-foreground opacity-0 group-hover:opacity-100 focus:opacity-100 transition-opacity"
                         title={isRemoved ? "Restore section" : "Hide section"}
                     >
-                        {isRemoved ? <IconEyeOff className="w-3.5 h-3.5" /> : <IconEye className="w-3.5 h-3.5" />}
+                        {isRemoved ? <IconEyeOff className="w-4 h-4" /> : <IconEye className="w-4 h-4" />}
                     </button>
                 )}
             </div>
@@ -239,11 +239,11 @@ export function SectionList({
 
     return (
         <div className="flex flex-col h-full flex-1 min-h-0 overflow-hidden">
-            <p className="text-[9px] font-medium uppercase tracking-widest text-muted-foreground px-4 py-3 shrink-0">
+            <p className="text-[10px] font-bold uppercase tracking-[0.15em] text-muted-foreground/70 px-6 pt-6 pb-4 shrink-0">
                 {activePageLabel}
             </p>
 
-            <div className="flex-1 overflow-y-auto px-2 pb-4">
+            <div className="flex-1 overflow-y-auto px-3 pb-6">
                 <DndContext
                     sensors={sensors}
                     collisionDetection={closestCenter}
@@ -253,7 +253,7 @@ export function SectionList({
                         items={sectionsToRender.map(s => s.instanceId)}
                         strategy={verticalListSortingStrategy}
                     >
-                        <div className="flex flex-col gap-0.5">
+                        <div className="flex flex-col gap-1.5">
                             {sectionsToRender.map((section) => {
                                 const isRemoved = removalsSource.includes(section.instanceId);
                                 const override = overridesSource[section.instanceId] || {};
@@ -275,10 +275,10 @@ export function SectionList({
                 </DndContext>
 
                 {uniqueRepeatables.length > 0 && (
-                    <div className="mt-2 pt-2 border-t border-border/50">
+                    <div className="mt-4 pt-4 border-t border-border/60">
                         {/* For simplicity, if there's only 1 repeatable, add it directly, or show a dialog. */}
                         <button 
-                            className="w-full text-[11px] text-muted-foreground hover:text-foreground flex items-center gap-1.5 px-2 py-2 rounded-md hover:bg-accent/50 transition-colors"
+                            className="w-full text-[12px] font-medium text-muted-foreground hover:text-foreground flex items-center justify-center gap-2 px-3 py-3 rounded-xl border-2 border-dashed border-border hover:border-primary/50 hover:bg-primary/5 transition-all"
                             onClick={() => {
                                 // For now just add the first repeatable as a demo, a proper dialog could be added
                                 if (uniqueRepeatables.length > 0) {
@@ -286,7 +286,7 @@ export function SectionList({
                                 }
                             }}
                         >
-                            <IconPlus className="w-3 h-3" /> Add section
+                            <IconPlus className="w-4 h-4" /> Add section
                         </button>
                     </div>
                 )}

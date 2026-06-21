@@ -18,6 +18,10 @@ import { useTheme } from "next-themes";
 import { getFont } from "@/lib/fonts";
 import { getTemplate } from "@/templates/registry";
 
+export const PreviewContext = React.createContext<{
+    selectedInstanceId: string | null;
+}>({ selectedInstanceId: null });
+
 export function LivePreviewProvider({
     templateDef,
     initialUserConfig,
@@ -28,6 +32,7 @@ export function LivePreviewProvider({
     const [previewConfig, setPreviewConfig] = useState<Partial<UserPortfolioConfig> | null>(null);
     const [previewPageKey, setPreviewPageKey] = useState<string>("landing");
     const [isPreviewMode, setIsPreviewMode] = useState(false);
+    const [selectedInstanceId, setSelectedInstanceId] = useState<string | null>(null);
     
     const { setTheme } = useTheme();
 
@@ -41,6 +46,8 @@ export function LivePreviewProvider({
                 if (event.data.pageKey) {
                     setPreviewPageKey(event.data.pageKey);
                 }
+            } else if (event.data?.type === "SET_SELECTED_INSTANCE") {
+                setSelectedInstanceId(event.data.instanceId);
             }
         };
 
@@ -104,8 +111,10 @@ export function LivePreviewProvider({
     const page = resolvedConfig.pages.find((p) => p.key === previewPageKey) || resolvedConfig.pages[0];
 
     return (
-        <LayoutPageRenderer layoutSections={resolvedConfig.layout} siteData={siteData}>
-            <PageRenderer sections={page.sections} siteData={siteData} />
-        </LayoutPageRenderer>
+        <PreviewContext.Provider value={{ selectedInstanceId }}>
+            <LayoutPageRenderer layoutSections={resolvedConfig.layout} siteData={siteData}>
+                <PageRenderer sections={page.sections} siteData={siteData} />
+            </LayoutPageRenderer>
+        </PreviewContext.Provider>
     );
 }

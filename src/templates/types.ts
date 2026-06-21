@@ -74,6 +74,7 @@ export type ComponentInputType =
  *               does not equal the specified value. Only affects the editor UI;
  *               the input's `default` is still applied during SSR merge even
  *               when the condition is not met.
+ * - `group`   — logical grouping for the editor UI (e.g. "Content", "Style", "Layout")
  */
 export type ComponentInput = {
     key: string;
@@ -81,6 +82,7 @@ export type ComponentInput = {
     type: ComponentInputType;
     default?: unknown;
     showIf?: { input: string; equals: unknown };
+    group?: string;
 };
 
 // ─────────────────────────────────────────────────────────────────────────────
