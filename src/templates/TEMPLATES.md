@@ -316,11 +316,9 @@ no harm. When the user next saves their config, the orphaned key can be cleaned 
 3. **Build the React components** under `src/components/sections/[componentKey]/`.
    Name each file after its variant: `default.tsx`, `grid.tsx`, `masonry.tsx`, etc.
 
-4. **Create a barrel export** in `src/components/sections/[componentKey]/index.ts`
-   that the renderer can dynamically import from:
+4. **Update `SectionRenderer.tsx`** — add your new component key to the `switch (componentKey)` block in `src/components/sections/_renderer/SectionRenderer.tsx` so the dynamic importer knows where to find the variants:
    ```ts
-   export { default as default } from './default'
-   export { default as grid } from './grid'
+   case 'timeline_feed': return await import(`../timeline_feed/${targetVariant}`);
    ```
 
 5. **Update this document** — add the new component to the Component Reference Table

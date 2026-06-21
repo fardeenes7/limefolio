@@ -9,8 +9,9 @@ import { IconCode } from '@tabler/icons-react';
 
 export default function SkillsIconGrid({ section, siteData }: SectionProps) {
     const i = section.resolvedInputs as Record<string, unknown>;
-    const headline = (i.headline as string) || 'Core Technologies';
-    const showCategories = i.showCategories !== false;
+    const sectionTitle = (i.sectionTitle as string) || 'Skills';
+    const showProficiencyLevel = i.showProficiencyLevel === true;
+    const layout = (i.layout as string) || 'compact';
 
     const skills = siteData.skills || [];
 
@@ -25,61 +26,27 @@ export default function SkillsIconGrid({ section, siteData }: SectionProps) {
                 <div className="flex items-center gap-3 justify-center mb-12">
                     <IconCode className="text-primary" size={32} />
                     <h2 className="text-3xl font-bold text-foreground">
-                        {headline}
+                        {sectionTitle}
                     </h2>
                 </div>
 
-                {showCategories && featuredSkills.length > 0 ? (
-                    <div className="space-y-12">
-                        {/* Featured */}
-                        <div>
-                            <div className="flex flex-wrap justify-center gap-4">
-                                {featuredSkills.map((skill) => (
-                                    <div
-                                        key={skill.id}
-                                        className="px-6 py-3 rounded-full bg-background border border-border shadow-sm hover:shadow-md transition-all hover:-translate-y-1 cursor-default"
-                                    >
-                                        <span className="font-semibold text-foreground">
-                                            {skill.name}
-                                        </span>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-
-                        {/* Others */}
-                        {otherSkills.length > 0 && (
-                            <div>
-                                <h3 className="text-center text-sm font-semibold uppercase tracking-widest text-muted-foreground mb-6">
-                                    Familiar With
-                                </h3>
-                                <div className="flex flex-wrap justify-center gap-3">
-                                    {otherSkills.map((skill) => (
-                                        <div
-                                            key={skill.id}
-                                            className="px-4 py-2 rounded-full bg-muted text-sm text-muted-foreground cursor-default hover:bg-background hover:text-foreground transition-colors border border-transparent hover:border-border"
-                                        >
-                                            {skill.name}
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                        )}
-                    </div>
-                ) : (
-                    <div className="flex flex-wrap justify-center gap-4">
-                        {skills.map((skill) => (
-                            <div
-                                key={skill.id}
-                                className="px-5 py-2.5 rounded-full bg-background border border-border shadow-sm hover:border-primary transition-colors cursor-default"
-                            >
-                                <span className="font-medium text-foreground">
-                                    {skill.name}
+                <div className={`flex flex-wrap justify-center ${layout === 'spacious' ? 'gap-6' : 'gap-4'}`}>
+                    {skills.map((skill) => (
+                        <div
+                            key={skill.id}
+                            className={`rounded-full bg-background border border-border shadow-sm hover:shadow-md transition-all hover:-translate-y-1 cursor-default flex items-center gap-2 ${layout === 'spacious' ? 'px-8 py-4 text-lg' : 'px-6 py-3'}`}
+                        >
+                            <span className="font-semibold text-foreground">
+                                {skill.name}
+                            </span>
+                            {showProficiencyLevel && skill.proficiency_percentage && (
+                                <span className="text-xs font-bold px-2 py-1 rounded-full bg-primary/10 text-primary ml-2">
+                                    {skill.proficiency_percentage}%
                                 </span>
-                            </div>
-                        ))}
-                    </div>
-                )}
+                            )}
+                        </div>
+                    ))}
+                </div>
             </div>
         </section>
     );

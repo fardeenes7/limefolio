@@ -9,38 +9,38 @@ import Link from 'next/link';
 
 export default function FeaturedProjectsGrid({ section, siteData }: SectionProps) {
     const i = section.resolvedInputs as Record<string, unknown>;
-    const headline = (i.headline as string) || 'Featured Projects';
-    const subheadline = (i.subheadline as string) || 'Some of my recent work';
-    const maxItems = (i.maxItems as number) || 3;
-    const columns = (i.columns as number) || 3;
-    const showTags = i.showTags !== false;
-    const viewAllLink = i.viewAllLink !== false;
+    const sectionTitle = (i.sectionTitle as string) || 'Projects';
+    const maxItemsStr = (i.maxItems as string) || '6';
+    const maxItems = maxItemsStr === 'all' ? Infinity : parseInt(maxItemsStr, 10);
+    const filterByTag = (i.filterByTag as string) || '';
+    const showViewAll = i.showViewAll !== false;
+    const viewAllLabel = (i.viewAllLabel as string) || 'View All Projects';
 
     // In siteData, 'projects' contains all projects. The backend returns them ordered.
-    const allProjects = siteData.projects || [];
+    let allProjects = siteData.projects || [];
+    if (filterByTag) {
+        const tags = filterByTag.split(',').map((t) => t.trim().toLowerCase());
+        allProjects = allProjects.filter((p) => 
+            p.technologies && p.technologies.some((tech) => tags.includes(tech.toLowerCase()))
+        );
+    }
+
     if (allProjects.length === 0) return null;
 
     // Filter to featured first, then fallback to just the first few
     const featuredOnly = allProjects.filter((p) => p.featured);
     const displayProjects = (featuredOnly.length > 0 ? featuredOnly : allProjects).slice(0, maxItems);
 
-    const gridCols = {
-        2: 'md:grid-cols-2',
-        3: 'md:grid-cols-2 lg:grid-cols-3',
-        4: 'md:grid-cols-2 lg:grid-cols-4',
-    }[columns] || 'md:grid-cols-2 lg:grid-cols-3';
+    const gridCols = 'md:grid-cols-2 lg:grid-cols-3';
 
     return (
         <section id="projects" className="py-24 bg-background">
             <div className="container max-w-7xl mx-auto px-6">
                 <div className="text-center mb-16">
-                    <h2 className="text-3xl md:text-5xl font-bold text-foreground mb-4">
-                        {headline}
-                    </h2>
-                    {subheadline && (
-                        <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                            {subheadline}
-                        </p>
+                    {sectionTitle && (
+                        <h2 className="text-3xl md:text-5xl font-bold text-foreground mb-4">
+                            {sectionTitle}
+                        </h2>
                     )}
                 </div>
 
@@ -92,7 +92,7 @@ export default function FeaturedProjectsGrid({ section, siteData }: SectionProps
                                 )}
 
                                 {/* Tags pushed to bottom */}
-                                {showTags && project.technologies && project.technologies.length > 0 && (
+                                {project.technologies && project.technologies.length > 0 && (
                                     <div className="mt-auto flex flex-wrap gap-2 pt-2">
                                         {project.technologies.slice(0, 3).map((tech, idx) => (
                                             <span
@@ -114,13 +114,13 @@ export default function FeaturedProjectsGrid({ section, siteData }: SectionProps
                     ))}
                 </div>
 
-                {viewAllLink && allProjects.length > maxItems && (
+                {showViewAll && allProjects.length > displayProjects.length && (
                     <div className="text-center mt-16">
                         <Link
                             href="/projects"
                             className="inline-flex items-center gap-2 px-6 py-3 rounded-lg border-2 border-border hover:border-primary text-foreground hover:text-primary font-semibold transition-all"
                         >
-                            View All Projects
+                            {viewAllLabel}
                             <IconArrowRight size={20} />
                         </Link>
                     </div>

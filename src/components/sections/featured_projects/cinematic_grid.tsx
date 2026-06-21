@@ -13,14 +13,21 @@ gsap.registerPlugin(ScrollTrigger);
 
 export default function FeaturedProjectsCinematicGrid({ section, siteData }: SectionProps) {
     const i = section.resolvedInputs as Record<string, unknown>;
-    const headline = (i.headline as string) || 'Featured Works';
-    const subheadline = (i.subheadline as string) || 'Selected directorial and editing pieces';
-    const maxItems = (i.maxItems as number) || 4;
+    const sectionTitle = (i.sectionTitle as string) || 'Featured Works';
+    const maxItemsStr = (i.maxItems as string) || '4';
+    const maxItems = maxItemsStr === 'all' ? Infinity : parseInt(maxItemsStr, 10);
+    const filterByTag = (i.filterByTag as string) || '';
     const hoverToPlay = i.hoverToPlay !== false;
-    const viewAllLink = i.viewAllLink !== false;
+    const showViewAll = i.showViewAll !== false;
     const viewAllLabel = (i.viewAllLabel as string) || 'View All Projects';
 
-    const allProjects = siteData.projects || [];
+    let allProjects = siteData.projects || [];
+    if (filterByTag) {
+        const tags = filterByTag.split(',').map((t) => t.trim().toLowerCase());
+        allProjects = allProjects.filter((p) => 
+            p.technologies && p.technologies.some((tech) => tags.includes(tech.toLowerCase()))
+        );
+    }
     if (allProjects.length === 0) return null;
 
     const featuredOnly = allProjects.filter((p) => p.featured);
@@ -50,24 +57,21 @@ export default function FeaturedProjectsCinematicGrid({ section, siteData }: Sec
                 }
             }
         );
-    }, { scope: containerRef, dependencies: [displayProjects, headline, subheadline] });
+    }, { scope: containerRef, dependencies: [displayProjects, sectionTitle] });
 
     return (
         <section id="projects" className="py-32 bg-background relative z-10">
             <div className="container max-w-7xl mx-auto px-6">
                 <div className="flex flex-col md:flex-row md:items-end justify-between mb-20 gap-8">
                     <div>
-                        <h2 className="text-4xl md:text-6xl font-black text-foreground uppercase tracking-tighter mb-4">
-                            {headline}
-                        </h2>
-                        {subheadline && (
-                            <p className="text-xl text-muted-foreground font-light max-w-xl">
-                                {subheadline}
-                            </p>
+                        {sectionTitle && (
+                            <h2 className="text-4xl md:text-6xl font-black text-foreground uppercase tracking-tighter mb-4">
+                                {sectionTitle}
+                            </h2>
                         )}
                     </div>
                     
-                    {viewAllLink && allProjects.length > maxItems && (
+                    {showViewAll && allProjects.length > displayProjects.length && (
                         <div className="shrink-0">
                             <Link
                                 href="/projects"

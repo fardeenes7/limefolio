@@ -10,22 +10,21 @@ import { IconDownload } from '@tabler/icons-react';
 export default function AboutDefault({ section, siteData }: SectionProps) {
     const i = section.resolvedInputs as Record<string, unknown>;
 
-    const headline = (i.headline as string) || 'About Me';
-    const body = (i.body as string) || siteData.description;
-    const showImage = i.showImage !== false;
+    const bio = (i.bio as string) || siteData.description;
+    const showProfileImage = i.showProfileImage !== false;
     const showResumeButton = i.showResumeButton !== false;
-    const resumeLink = (i.resumeLink as string) || '#';
+    const resumeFile = (i.resumeFile as string) || '#';
     const resumeLabel = (i.resumeLabel as string) || 'Download Resume';
 
     // In a real app, this would be a dedicated about image from the DB
-    const imageUrl = siteData.logo; // fallback for now
+    const imageUrl = (i.profileImage as string) || siteData.logo; // fallback for now
 
     return (
         <section id="about" className="py-24 bg-background">
             <div className="container max-w-6xl mx-auto px-6">
                 <div className="grid md:grid-cols-[1fr_2fr] gap-12 items-center">
                     {/* Image Column */}
-                    {showImage && (
+                    {showProfileImage && (
                         <div className="relative aspect-square md:aspect-4/5 rounded-2xl overflow-hidden bg-muted order-2 md:order-1">
                             {imageUrl ? (
                                 <img
@@ -43,15 +42,15 @@ export default function AboutDefault({ section, siteData }: SectionProps) {
                     )}
 
                     {/* Text Column */}
-                    <div className={`order-1 ${showImage ? 'md:order-2' : 'col-span-full max-w-3xl mx-auto text-center'}`}>
+                    <div className={`order-1 ${showProfileImage ? 'md:order-2' : 'col-span-full max-w-3xl mx-auto text-center'}`}>
                         <h2 className="text-3xl md:text-5xl font-bold tracking-tight text-foreground mb-8">
-                            {headline}
+                            About Me
                         </h2>
 
-                        {body ? (
+                        {bio ? (
                             <div className="space-y-6 text-lg text-muted-foreground leading-relaxed">
                                 {/* Split body by double newlines into paragraphs */}
-                                {body.split(/\n\s*\n/).map((paragraph, idx) => (
+                                {bio.split(/\n\s*\n/).map((paragraph, idx) => (
                                     <p key={idx}>{paragraph.trim()}</p>
                                 ))}
                             </div>
@@ -62,9 +61,9 @@ export default function AboutDefault({ section, siteData }: SectionProps) {
                         )}
 
                         {showResumeButton && (
-                            <div className={`mt-10 ${!showImage ? 'flex justify-center' : ''}`}>
+                            <div className={`mt-10 ${!showProfileImage ? 'flex justify-center' : ''}`}>
                                 <a
-                                    href={resumeLink}
+                                    href={resumeFile}
                                     className="inline-flex items-center gap-2 px-6 py-3 rounded-lg border-2 border-primary text-primary font-semibold hover:bg-primary hover:text-primary-foreground transition-colors"
                                 >
                                     <IconDownload size={20} />

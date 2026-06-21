@@ -488,6 +488,173 @@ const cinematicTemplate: Template = {
     ],
 };
 
+/**
+ * "Terminal" template — tailored for developers who love the CLI.
+ *
+ * Uses a monospace font, dark background, and typing animations to simulate
+ * a command-line interface.
+ */
+const terminalTemplate: Template = {
+    key: 'terminal',
+    label: 'Terminal',
+    version: '1.0.0',
+    defaultTheme: 'darkmatter',
+    defaultFont: 'fira-code',
+
+    layout: [
+        {
+            instanceId: 'header_1',
+            componentKey: 'header',
+            allowedVariants: allVariants('header'),
+            defaultVariant: 'compact',
+            fixed: true,
+        },
+        {
+            instanceId: 'footer_1',
+            componentKey: 'footer',
+            allowedVariants: allVariants('footer'),
+            defaultVariant: 'compact',
+            fixed: true,
+        },
+        {
+            instanceId: 'cookie_banner_1',
+            componentKey: 'cookie_banner',
+            allowedVariants: allVariants('cookie_banner'),
+            defaultVariant: 'bar',
+            fixed: false,
+        },
+    ] satisfies SectionInstance[],
+
+    pages: [
+        {
+            key: 'landing',
+            label: 'Landing Page',
+            sections: [
+                {
+                    instanceId: 'hero_1',
+                    componentKey: 'hero',
+                    allowedVariants: allVariants('hero'),
+                    defaultVariant: 'typing_animation',
+                    fixed: true,
+                    removable: false,
+                },
+                {
+                    instanceId: 'about_1',
+                    componentKey: 'about',
+                    allowedVariants: allVariants('about'),
+                    defaultVariant: 'default',
+                    fixed: false,
+                    removable: true,
+                },
+                {
+                    instanceId: 'skills_1',
+                    componentKey: 'skills',
+                    allowedVariants: allVariants('skills'),
+                    defaultVariant: 'tag_cloud',
+                    fixed: false,
+                    removable: true,
+                },
+                {
+                    instanceId: 'featured_projects_1',
+                    componentKey: 'featured_projects',
+                    allowedVariants: allVariants('featured_projects'),
+                    defaultVariant: 'table',
+                    fixed: false,
+                    removable: true,
+                },
+                {
+                    instanceId: 'latest_blogs_1',
+                    componentKey: 'latest_blogs',
+                    allowedVariants: allVariants('latest_blogs'),
+                    defaultVariant: 'grid',
+                    fixed: false,
+                    removable: true,
+                },
+                {
+                    instanceId: 'cta_1',
+                    componentKey: 'cta',
+                    allowedVariants: allVariants('cta'),
+                    defaultVariant: 'minimal',
+                    fixed: false,
+                    removable: true,
+                },
+            ],
+        },
+        {
+            key: 'all_projects',
+            label: 'All Projects',
+            sections: [
+                {
+                    instanceId: 'featured_projects_1',
+                    componentKey: 'featured_projects',
+                    allowedVariants: allVariants('featured_projects'),
+                    defaultVariant: 'table',
+                    fixed: true,
+                },
+            ],
+        },
+        {
+            key: 'project_details',
+            label: 'Project Details',
+            sections: [
+                {
+                    instanceId: 'media_gallery_1',
+                    componentKey: 'media_gallery',
+                    allowedVariants: allVariants('media_gallery'),
+                    defaultVariant: 'grid',
+                    fixed: false,
+                },
+                {
+                    instanceId: 'cta_1',
+                    componentKey: 'cta',
+                    allowedVariants: allVariants('cta'),
+                    defaultVariant: 'minimal',
+                    fixed: false,
+                },
+            ],
+        },
+        {
+            key: 'all_blog',
+            label: 'All Blog Posts',
+            sections: [
+                {
+                    instanceId: 'latest_blogs_1',
+                    componentKey: 'latest_blogs',
+                    allowedVariants: allVariants('latest_blogs'),
+                    defaultVariant: 'grid',
+                    fixed: true,
+                },
+            ],
+        },
+        {
+            key: 'blog_details',
+            label: 'Blog Post',
+            sections: [
+                {
+                    instanceId: 'cta_1',
+                    componentKey: 'cta',
+                    allowedVariants: allVariants('cta'),
+                    defaultVariant: 'minimal',
+                    fixed: false,
+                },
+            ],
+        },
+        {
+            key: 'contact',
+            label: 'Contact',
+            sections: [
+                {
+                    instanceId: 'contact_1',
+                    componentKey: 'contact',
+                    allowedVariants: allVariants('contact'),
+                    defaultVariant: 'minimal',
+                    fixed: true,
+                },
+            ],
+        },
+    ],
+};
+
 // ─────────────────────────────────────────────────────────────────────────────
 // Registry export
 // ─────────────────────────────────────────────────────────────────────────────
@@ -501,6 +668,7 @@ const cinematicTemplate: Template = {
 export const TemplateRegistry: Record<string, Template> = {
     default: defaultTemplate,
     cinematic: cinematicTemplate,
+    terminal: terminalTemplate,
 };
 
 /**

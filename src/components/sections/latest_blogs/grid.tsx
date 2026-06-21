@@ -9,36 +9,37 @@ import Link from 'next/link';
 
 export default function LatestBlogsGrid({ section, siteData }: SectionProps) {
     const i = section.resolvedInputs as Record<string, unknown>;
-    const headline = (i.headline as string) || 'Latest Writing';
-    const subheadline = (i.subheadline as string) || 'Thoughts, tutorials, and insights';
-    const maxPosts = (i.maxPosts as number) || 3;
-    const viewAllLink = i.viewAllLink !== false;
+    const sectionTitle = (i.sectionTitle as string) || 'Latest Posts';
+    const maxItemsStr = (i.maxItems as string) || '3';
+    const maxItems = parseInt(maxItemsStr, 10);
+    const showExcerpt = i.showExcerpt !== false;
+    const showDate = i.showDate !== false;
+    const showTags = i.showTags !== false;
+    const showViewAll = i.showViewAll !== false;
+    const viewAllLabel = (i.viewAllLabel as string) || 'View All Posts';
 
     const allPosts = siteData.blog_posts || [];
     if (allPosts.length === 0) return null;
 
-    const displayPosts = allPosts.slice(0, maxPosts);
+    const displayPosts = allPosts.slice(0, maxItems);
 
     return (
         <section id="blog" className="py-24 bg-muted/30">
             <div className="container max-w-7xl mx-auto px-6">
                 <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16">
                     <div>
-                        <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-                            {headline}
-                        </h2>
-                        {subheadline && (
-                            <p className="text-lg text-muted-foreground">
-                                {subheadline}
-                            </p>
+                        {sectionTitle && (
+                            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+                                {sectionTitle}
+                            </h2>
                         )}
                     </div>
-                    {viewAllLink && allPosts.length > maxPosts && (
+                    {showViewAll && allPosts.length > maxItems && (
                         <Link
                             href="/blog"
                             className="shrink-0 inline-flex items-center gap-2 text-primary font-semibold hover:gap-3 transition-all"
                         >
-                            View All Posts
+                            {viewAllLabel}
                             <IconArrowRight size={20} />
                         </Link>
                     )}
@@ -63,7 +64,7 @@ export default function LatestBlogsGrid({ section, siteData }: SectionProps) {
 
                             <div className="p-6 md:p-8 flex flex-col grow">
                                 <div className="flex items-center gap-4 text-xs font-medium text-muted-foreground mb-4">
-                                    {post.published_at && (
+                                    {showDate && post.published_at && (
                                         <div className="flex items-center gap-1.5">
                                             <IconCalendar size={14} />
                                             {new Date(post.published_at).toLocaleDateString('en-US', {
@@ -85,10 +86,20 @@ export default function LatestBlogsGrid({ section, siteData }: SectionProps) {
                                     {post.title}
                                 </h3>
 
-                                {post.excerpt && (
+                                {showExcerpt && post.excerpt && (
                                     <p className="text-muted-foreground line-clamp-3 mb-6">
                                         {post.excerpt}
                                     </p>
+                                )}
+
+                                {showTags && post.tags && post.tags.length > 0 && (
+                                    <div className="flex flex-wrap gap-2 mb-6">
+                                        {post.tags.slice(0, 3).map((tag, idx) => (
+                                            <span key={idx} className="text-xs px-2 py-1 bg-muted rounded-md text-muted-foreground">
+                                                {tag}
+                                            </span>
+                                        ))}
+                                    </div>
                                 )}
 
                                 <div className="mt-auto flex items-center gap-1.5 text-sm font-semibold text-primary">

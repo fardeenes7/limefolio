@@ -31,16 +31,16 @@ export default function HeroDefault({ section, siteData }: SectionProps) {
     const showScrollIndicator = i.showScrollIndicator !== false;
 
     // CTAs
-    const primaryCtaText = (i.primaryCtaText as string) || 'View My Work';
-    const primaryCtaLink = (i.primaryCtaLink as string) || '#projects';
-    const secondaryCtaText = (i.secondaryCtaText as string) || 'Get In Touch';
-    const secondaryCtaLink = (i.secondaryCtaLink as string) || '#contact';
+    const primaryCtaLabel = (i.primaryCtaLabel as string) || 'View My Work';
+    const primaryCtaUrl = (i.primaryCtaUrl as string) || '#projects';
+    const secondaryCtaLabel = (i.secondaryCtaLabel as string) || 'Get In Touch';
+    const secondaryCtaUrl = (i.secondaryCtaUrl as string) || '#contact';
 
     // Socials
     const socialLinks = siteData.social_links || [];
 
     // Avatar (fallback to an abstract gradient if none)
-    const avatarUrl = siteData.logo; // For now we'll use logo as avatar if present
+    const avatarUrl = (i.avatarImage as string) || siteData.logo;
 
     return (
         <section className="relative min-h-[90vh] flex items-center overflow-hidden bg-background">
@@ -81,21 +81,21 @@ export default function HeroDefault({ section, siteData }: SectionProps) {
 
                 {/* CTAs */}
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
-                    {primaryCtaText && (
+                    {primaryCtaLabel && (
                         <a
-                            href={primaryCtaLink}
+                            href={primaryCtaUrl}
                             className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-primary text-primary-foreground font-semibold hover:bg-primary/90 hover:scale-105 transition-all shadow-lg"
                         >
-                            {primaryCtaText}
+                            {primaryCtaLabel}
                             <IconArrowRight size={20} />
                         </a>
                     )}
-                    {secondaryCtaText && (
+                    {secondaryCtaLabel && (
                         <a
-                            href={secondaryCtaLink}
+                            href={secondaryCtaUrl}
                             className="w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 rounded-full border-2 border-border bg-background text-foreground font-semibold hover:bg-muted transition-all"
                         >
-                            {secondaryCtaText}
+                            {secondaryCtaLabel}
                         </a>
                     )}
                 </div>

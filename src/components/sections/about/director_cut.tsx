@@ -8,11 +8,10 @@ import { useParallax, useFadeUp } from '@/lib/animations';
 export default function AboutDirectorCut({ section, siteData }: SectionProps) {
     const i = section.resolvedInputs as Record<string, unknown>;
 
-    const headline = (i.headline as string) || 'The Director';
-    const body = (i.body as string) || siteData.description;
-    const showImage = i.showImage !== false;
+    const bio = (i.bio as string) || siteData.description;
+    const showProfileImage = i.showProfileImage !== false;
     const showResumeButton = i.showResumeButton !== false;
-    const resumeLink = (i.resumeLink as string) || '#';
+    const resumeFile = (i.resumeFile as string) || '#';
     const resumeLabel = (i.resumeLabel as string) || 'Download Resume';
 
     const imageUrl = (i.profileImage as string) || siteData.logo; // fallback for now
@@ -21,7 +20,7 @@ export default function AboutDirectorCut({ section, siteData }: SectionProps) {
     const contentRef = useRef<HTMLDivElement>(null);
 
     useParallax(imageRef, 0.15, [imageUrl]); // Slight parallax scroll on the image
-    useFadeUp(contentRef, 60, 0.1, [headline, body]); // Fade up text content
+    useFadeUp(contentRef, 60, 0.1, [bio]); // Fade up text content
 
     return (
         <section id="about" className="py-32 bg-background relative overflow-hidden">
@@ -29,7 +28,7 @@ export default function AboutDirectorCut({ section, siteData }: SectionProps) {
                 <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-center">
                     
                     {/* Image Column */}
-                    {showImage && (
+                    {showProfileImage && (
                         <div className="relative order-2 lg:order-1 h-[60vh] lg:h-[80vh] w-full overflow-hidden rounded-md border border-border bg-secondary">
                             {imageUrl ? (
                                 <div 
@@ -51,17 +50,17 @@ export default function AboutDirectorCut({ section, siteData }: SectionProps) {
                     )}
 
                     {/* Text Column */}
-                    <div ref={contentRef} className={`order-1 lg:order-2 ${!showImage ? 'col-span-full max-w-4xl mx-auto text-center' : ''}`}>
+                    <div ref={contentRef} className={`order-1 lg:order-2 ${!showProfileImage ? 'col-span-full max-w-4xl mx-auto text-center' : ''}`}>
                         <h2 className="text-sm tracking-[0.3em] text-primary uppercase font-bold mb-4">
                             Director's Cut
                         </h2>
                         <h3 className="text-4xl lg:text-6xl font-black text-foreground mb-8 leading-tight tracking-tighter uppercase">
-                            {headline}
+                            About Me
                         </h3>
 
-                        {body ? (
+                        {bio ? (
                             <div className="space-y-6 text-xl lg:text-2xl text-muted-foreground font-light leading-relaxed">
-                                {body.split(/\n\s*\n/).map((paragraph, idx) => (
+                                {bio.split(/\n\s*\n/).map((paragraph, idx) => (
                                     <p key={idx}>{paragraph.trim()}</p>
                                 ))}
                             </div>
@@ -72,9 +71,9 @@ export default function AboutDirectorCut({ section, siteData }: SectionProps) {
                         )}
 
                         {showResumeButton && (
-                            <div className={`mt-16 ${!showImage ? 'flex justify-center' : ''}`}>
+                            <div className={`mt-16 ${!showProfileImage ? 'flex justify-center' : ''}`}>
                                 <a
-                                    href={resumeLink}
+                                    href={resumeFile}
                                     className="group inline-flex items-center gap-3 px-8 py-4 rounded-full border border-border bg-card text-foreground font-semibold hover:border-primary hover:text-primary transition-all shadow-sm"
                                 >
                                     <IconDownload size={22} className="group-hover:-translate-y-1 transition-transform" />
