@@ -2,6 +2,7 @@ import React from "react";
 import { ComponentRegistry } from "@/templates/components";
 import type { ResolvedSection, SectionOverride, ComponentInput } from "@/templates/types";
 import { InputEditor } from "./InputEditor";
+import { VariantIcon } from "./VariantIcon";
 import { cn } from "@/lib/utils";
 import { 
     Accordion, 
@@ -80,10 +81,7 @@ export function SectionDetail({
                         <span className="text-[10px] font-bold tracking-[0.12em] text-muted-foreground/70 uppercase">
                             Visual Variant
                         </span>
-                        <div className={cn(
-                            "flex gap-2",
-                            schema.variants.length >= 6 ? "overflow-x-auto flex-nowrap pb-2 scrollbar-hide" : "flex-wrap"
-                        )}>
+                        <div className="grid grid-cols-2 gap-1">
                             {schema.variants.map((v) => {
                                 const isActive = v.key === section.resolvedVariant;
                                 const isAllowed = section.allowedVariants?.includes(v.key) ?? true;
@@ -94,13 +92,19 @@ export function SectionDetail({
                                         key={v.key}
                                         onClick={() => onVariantChange(v.key)}
                                         className={cn(
-                                            "text-[11px] font-medium px-3 py-1.5 rounded-[6px] border transition-all whitespace-nowrap",
+                                            "flex flex-col items-center gap-1.5 pt-1 pb-2 px-1 rounded-md transition-all text-center group select-none border border-transparent",
                                             isActive 
-                                                ? "bg-background text-foreground border-border shadow-sm ring-1 ring-black/5 dark:ring-white/5" 
-                                                : "bg-muted/40 border-transparent text-muted-foreground hover:text-foreground hover:bg-muted/60"
+                                                ? "bg-primary/5 text-primary border-primary/20" 
+                                                : "text-muted-foreground hover:text-foreground hover:bg-muted"
                                         )}
                                     >
-                                        {variantKeyToLabel(v.key)}
+                                        <VariantIcon 
+                                            variantKey={v.key} 
+                                            className={cn("size-10 transition-opacity", isActive ? "opacity-100" : "opacity-50 group-hover:opacity-100")} 
+                                        />
+                                        <span className="text-[10px] font-medium leading-tight line-clamp-1">
+                                            {variantKeyToLabel(v.key)}
+                                        </span>
                                     </button>
                                 );
                             })}
