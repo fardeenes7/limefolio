@@ -72,8 +72,8 @@ export function SectionDetail({
     });
 
     return (
-        <div className="flex flex-col border-t-2 border-border bg-card overflow-y-auto max-h-[70vh] shadow-inner">
-            <div className="p-6 space-y-8">
+        <div className="flex flex-col bg-background">
+            <div className="p-4 space-y-5">
                 {/* Variants */}
                 {schema.variants.length > 1 && (
                     <div className="flex flex-col gap-3">
@@ -94,10 +94,10 @@ export function SectionDetail({
                                         key={v.key}
                                         onClick={() => onVariantChange(v.key)}
                                         className={cn(
-                                            "text-[11px] font-medium px-3.5 py-2 rounded-lg border-2 transition-all whitespace-nowrap",
+                                            "text-[11px] font-medium px-3 py-1.5 rounded-[6px] border transition-all whitespace-nowrap",
                                             isActive 
-                                                ? "bg-primary text-primary-foreground border-primary shadow-sm" 
-                                                : "border-border text-muted-foreground bg-background hover:border-primary/40 hover:text-foreground"
+                                                ? "bg-background text-foreground border-border shadow-sm ring-1 ring-black/5 dark:ring-white/5" 
+                                                : "bg-muted/40 border-transparent text-muted-foreground hover:text-foreground hover:bg-muted/60"
                                         )}
                                     >
                                         {variantKeyToLabel(v.key)}
@@ -110,15 +110,15 @@ export function SectionDetail({
 
                 {/* Inputs */}
                 {groupKeys.length > 0 && (
-                    <Accordion type="multiple" defaultValue={['Content']} className="w-full space-y-2">
+                    <Accordion type="multiple" defaultValue={['Content']} className="w-full space-y-1">
                         {groupKeys.map((groupKey) => (
                             <AccordionItem key={groupKey} value={groupKey} className="border-b-2 border-border/40 last:border-0">
-                                <AccordionTrigger className="py-4 hover:no-underline">
+                                <AccordionTrigger className="py-2.5 hover:no-underline">
                                     <span className="text-[10px] font-bold tracking-[0.12em] text-muted-foreground/70 uppercase">
                                         {groupKey}
                                     </span>
                                 </AccordionTrigger>
-                                <AccordionContent className="pt-2 pb-6 space-y-4">
+                                <AccordionContent className="pt-1.5 pb-4 space-y-3">
                                     {groups[groupKey].map((input) => {
                                         const isModified = userOverride.inputs !== undefined && input.key in userOverride.inputs;
                                         const defaultValue = section.inputDefaults?.[input.key] ?? input.default;

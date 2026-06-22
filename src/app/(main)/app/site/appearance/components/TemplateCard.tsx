@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 import type { Template } from "@/templates/types";
@@ -10,52 +10,47 @@ interface TemplateCardProps {
 }
 
 export function TemplateCard({ template, isActive, onClick }: TemplateCardProps) {
-    // Attempt to load the thumbnail, otherwise fallback to placeholder
-    // Thumbnails live at /public/templates/[templateKey]/thumbnail.png
     const thumbnailPath = `/templates/${template.key}/thumbnail.png`;
+    const [imgError, setImgError] = useState(false);
 
     return (
         <button
             type="button"
             onClick={onClick}
             className={cn(
-                "group relative shrink-0 flex flex-col text-left transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 w-48",
-                isActive ? "opacity-100" : "opacity-70 hover:opacity-100"
+                "group w-full flex flex-col items-start px-6 py-4 transition-opacity text-left select-none relative",
+                isActive ? "opacity-100 bg-primary/5" : "opacity-60 hover:opacity-80 hover:bg-muted cursor-pointer"
             )}
         >
-            <div className={cn(
-                "relative h-32 w-full rounded-md overflow-hidden border bg-muted/50 mb-2 transition-all",
-                isActive ? "ring-2 ring-ring ring-offset-2 border-primary" : "border-border group-hover:border-primary/50"
-            )}>
-                {/* Image component can handle missing images if we use a try/catch or handleError, 
-                    but a simple img with onError might be easier for local public files that may not exist. 
-                    Next.js Image requires width/height. */}
-                <Image
-                    src={thumbnailPath}
-                    alt={template.label}
-                    fill
-                    className="object-cover"
-                    onError={(e) => {
-                        // Fallback to placeholder on error
-                        e.currentTarget.style.display = 'none';
-                        const parent = e.currentTarget.parentElement;
-                        if (parent && !parent.querySelector('.fallback-text')) {
-                            const div = document.createElement('div');
-                            div.className = 'fallback-text absolute inset-0 flex items-center justify-center text-sm font-medium text-muted-foreground bg-muted';
-                            div.innerText = template.label;
-                            parent.appendChild(div);
-                        }
-                    }}
-                />
-                
-                {isActive && (
-                    <div className="absolute top-2 right-2 bg-primary text-primary-foreground text-[10px] font-bold px-1.5 py-0.5 rounded shadow-sm">
-                        Current
+            {isActive && (
+                <div className="absolute left-0 top-0 bottom-0 w-0.5 bg-primary rounded-r-full" />
+            )}
+
+            {/* Thumbnail */}
+            <div className="relative w-full aspect-16/10 rounded-md overflow-hidden bg-muted mb-3 border border-border transition-colors group-hover:border-border">
+                {!imgError ? (
+                    <Image
+                        src={thumbnailPath}
+                        alt={template.label}
+                        fill
+                        className="object-cover"
+                        onError={() => setImgError(true)}
+                    />
+                ) : (
+                    <div className="absolute inset-0 flex items-center justify-center text-[10px] font-medium text-muted-foreground uppercase tracking-widest">
+                        {template.label}
                     </div>
                 )}
             </div>
-            <div className="font-medium text-sm text-foreground">{template.label}</div>
-            {/* If template had description, it would go here */}
+
+            {/* Label */}
+            <div className="w-full flex items-center justify-between">
+                <span className="text-[13px] font-medium tracking-tight text-foreground">{template.label}</span>
+                {isActive && (
+                    <span className="text-[10px] text-primary font-bold uppercase tracking-wider">Active</span>
+                )}
+            </div>
         </button>
     );
 }
+

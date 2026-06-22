@@ -18,6 +18,7 @@ import {
 import { CSS } from "@dnd-kit/utilities";
 
 import { cn } from "@/lib/utils";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { ComponentRegistry } from "@/templates/components";
 import type { ResolvedSection, SectionOverride, UserPortfolioConfig } from "@/templates/types";
 import { 
@@ -116,56 +117,62 @@ function SortableSectionRow({
             style={style}
             onClick={onSelect}
             className={cn(
-                "flex items-center px-3 h-12 transition-all cursor-pointer group select-none border border-transparent",
-                isSelected ? "bg-accent/60 rounded-xl border-accent-foreground/10 shadow-sm" : "hover:bg-muted/50 rounded-xl",
-                isDragging && "opacity-50 ring-2 ring-primary bg-background shadow-lg",
+                "flex items-center px-2 h-9 transition-all cursor-pointer group select-none border border-transparent",
+                isSelected ? "bg-primary/10 text-primary shadow-sm ring-1 ring-primary/20" : "hover:bg-muted/70 text-foreground/80",
+                isDragging && "opacity-60 ring-2 ring-primary bg-background shadow-xl z-50",
                 isRemoved && "opacity-40"
             )}
         >
             {/* Drag Handle or Lock */}
-            <div className="flex items-center justify-center w-8 h-8 mr-1 shrink-0">
+            <div className="flex items-center justify-center w-6 h-6 mr-0.5 shrink-0 -ml-1">
                 {section.fixed ? (
-                    <IconLock className="w-3 h-3 text-muted-foreground/40" />
+                    <IconLock className="w-3.5 h-3.5 text-muted-foreground/40" />
                 ) : (
                     <div 
-                        className="text-muted-foreground/40 hover:text-foreground cursor-grab active:cursor-grabbing p-1.5 opacity-0 group-hover:opacity-100 focus:opacity-100 transition-opacity"
+                        className="text-muted-foreground/40 hover:text-foreground cursor-grab active:cursor-grabbing p-1 opacity-0 group-hover:opacity-100 focus:opacity-100 transition-opacity"
                         {...attributes}
                         {...listeners}
                     >
-                        <IconGripVertical className="w-4 h-4" />
+                        <IconGripVertical className="w-3.5 h-3.5" />
                     </div>
                 )}
             </div>
 
             {/* Component Icon */}
-            <div className="w-6 h-6 rounded-lg bg-muted flex items-center justify-center shrink-0 mr-3">
-                <Icon className="w-4 h-4 text-foreground/80" />
+            <div className="flex items-center justify-center shrink-0 mr-2.5">
+                <Icon className={cn("w-[15px] h-[15px]", isSelected ? "text-primary" : "text-muted-foreground")} />
             </div>
 
             {/* Label */}
-            <span className="text-[13px] font-semibold flex-1 truncate text-foreground/90">
+            <span className="text-[12px] font-medium flex-1 truncate">
                 {schema.label}
             </span>
 
             {/* Variant Pill */}
             {schema.variants.length > 1 && (
                 <span className={cn(
-                    "text-[10px] ml-2 truncate max-w-[90px] px-1.5 py-0.5 rounded-md bg-muted/50",
-                    isVariantModified ? "text-primary font-bold bg-primary/10" : "text-muted-foreground font-medium"
+                    "text-[10px] ml-2 truncate max-w-[80px] px-1.5 py-px rounded-[4px] border",
+                    isVariantModified 
+                        ? "border-primary/30 bg-primary/5 text-primary font-semibold" 
+                        : "border-border/50 bg-muted/30 text-muted-foreground font-medium"
                 )}>
                     {schema.variants.find(v => v.key === section.resolvedVariant)?.label || section.resolvedVariant}
                 </span>
             )}
 
             {/* Actions */}
-            <div className="flex items-center ml-2 w-8 justify-end shrink-0">
+            <div className="flex items-center ml-2 w-6 justify-end shrink-0">
                 {(schema.removable || section.removable) && !section.fixed && (
                     <button
                         onClick={(e) => { e.stopPropagation(); onToggleVisibility(); }}
-                        className="p-1.5 text-muted-foreground hover:text-foreground opacity-0 group-hover:opacity-100 focus:opacity-100 transition-opacity"
+                        className={cn(
+                            "p-1 hover:text-foreground transition-opacity",
+                            isSelected || isRemoved ? "opacity-100" : "opacity-0 group-hover:opacity-100 focus:opacity-100",
+                            isSelected ? "text-primary/70 hover:text-primary" : "text-muted-foreground"
+                        )}
                         title={isRemoved ? "Restore section" : "Hide section"}
                     >
-                        {isRemoved ? <IconEyeOff className="w-4 h-4" /> : <IconEye className="w-4 h-4" />}
+                        {isRemoved ? <IconEyeOff className="w-[15px] h-[15px]" /> : <IconEye className="w-[15px] h-[15px]" />}
                     </button>
                 )}
             </div>
@@ -239,11 +246,7 @@ export function SectionList({
 
     return (
         <div className="flex flex-col h-full flex-1 min-h-0 overflow-hidden">
-            <p className="text-[10px] font-bold uppercase tracking-[0.15em] text-muted-foreground/70 px-6 pt-6 pb-4 shrink-0">
-                {activePageLabel}
-            </p>
-
-            <div className="flex-1 overflow-y-auto px-3 pb-6">
+            <div className="flex-1 overflow-y-auto pb-4">
                 <DndContext
                     sensors={sensors}
                     collisionDetection={closestCenter}
@@ -275,19 +278,22 @@ export function SectionList({
                 </DndContext>
 
                 {uniqueRepeatables.length > 0 && (
-                    <div className="mt-4 pt-4 border-t border-border/60">
-                        {/* For simplicity, if there's only 1 repeatable, add it directly, or show a dialog. */}
-                        <button 
-                            className="w-full text-[12px] font-medium text-muted-foreground hover:text-foreground flex items-center justify-center gap-2 px-3 py-3 rounded-xl border-2 border-dashed border-border hover:border-primary/50 hover:bg-primary/5 transition-all"
-                            onClick={() => {
-                                // For now just add the first repeatable as a demo, a proper dialog could be added
-                                if (uniqueRepeatables.length > 0) {
-                                    customizer.addSection(uniqueRepeatables[0]);
-                                }
-                            }}
-                        >
-                            <IconPlus className="w-4 h-4" /> Add section
-                        </button>
+                    <div className="mt-2 pt-2 border-t border-border/40">
+                        <Dialog>
+                            <DialogTrigger asChild>
+                                <button 
+                                    className="w-full h-[32px] text-[12px] font-medium text-muted-foreground hover:text-foreground flex items-center justify-center gap-1.5 rounded-[6px] hover:bg-muted/50 transition-colors"
+                                >
+                                    <IconPlus className="w-[14px] h-[14px]" /> Add section
+                                </button>
+                            </DialogTrigger>
+                            <DialogContent>
+                                <DialogHeader>
+                                    <DialogTitle>Section Gallery</DialogTitle>
+                                </DialogHeader>
+                                {/* TODO: add section gallery */}
+                            </DialogContent>
+                        </Dialog>
                     </div>
                 )}
             </div>

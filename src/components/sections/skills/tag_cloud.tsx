@@ -39,9 +39,9 @@ export default function SkillsTagCloud({ section, siteData }: SectionProps) {
                                 <span className="font-medium">
                                     {skill.name}
                                 </span>
-                                {showProficiencyLevel && skill.proficiency_percentage && (
-                                    <span className="text-xs opacity-50 ml-1">
-                                        [{skill.proficiency_percentage}%]
+                                {showProficiencyLevel && skill.proficiency && (
+                                    <span className="text-xs opacity-50 ml-1 capitalize">
+                                        [{skill.proficiency}]
                                     </span>
                                 )}
                             </div>

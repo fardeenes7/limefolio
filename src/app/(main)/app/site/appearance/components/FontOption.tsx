@@ -1,6 +1,6 @@
 import React from "react";
 import { FontMeta } from "@/lib/themes-meta";
-import { IconCheck } from "@tabler/icons-react";
+import { cn } from "@/lib/utils";
 
 interface FontOptionProps {
     font: FontMeta;
@@ -13,24 +13,29 @@ export function FontOption({ font, isSelected, onClick }: FontOptionProps) {
         <button
             type="button"
             onClick={onClick}
-            className={`w-full flex items-center justify-between p-3 rounded-md transition-colors text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-ring ${
-                isSelected ? "bg-accent text-accent-foreground" : "hover:bg-muted/50"
-            }`}
-        >
-            <div className="flex flex-col gap-1 overflow-hidden">
-                <span
-                    className="text-sm truncate"
-                    style={{ fontFamily: font.previewStack }}
-                >
-                    Aa — The quick brown fox
-                </span>
-                <span className="text-xs opacity-70 truncate">{font.name}</span>
-            </div>
-            {isSelected && (
-                <div className="shrink-0 ml-3">
-                    <IconCheck className="w-4 h-4" />
-                </div>
+            className={cn(
+                "w-full flex flex-col items-start px-6 py-3 transition-opacity text-left select-none relative",
+                isSelected ? "opacity-100 bg-primary/10" : "opacity-70 hover:opacity-90 hover:bg-muted"
             )}
+        >
+            {isSelected && (
+                <div className="absolute left-0 top-0 bottom-0 w-0.5 bg-primary rounded-r-full" />
+            )}
+            <span className="text-[10px] font-medium tracking-widest text-muted-foreground uppercase mb-1.5">
+                {font.name}
+            </span>
+            <span 
+                className="text-lg truncate w-full text-foreground leading-none"
+                style={{ fontFamily: font.previewStack }}
+            >
+                {font.name}
+            </span>
+            <span 
+                className="text-[13px] truncate w-full text-muted-foreground mt-1.5"
+                style={{ fontFamily: font.previewStack }}
+            >
+                Aa Bb Cc Dd Ee Ff Gg
+            </span>
         </button>
     );
 }

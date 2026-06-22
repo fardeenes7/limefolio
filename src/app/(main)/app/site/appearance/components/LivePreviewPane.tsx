@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState, useLayoutEffect } from "react";
 import { UserPortfolioConfig } from "@/templates/types";
 import { cn } from "@/lib/utils";
+import { IconDeviceDesktop, IconDeviceTablet, IconDeviceMobile } from "@tabler/icons-react";
 
 const PREVIEW_BASE_URL = process.env.NEXT_PUBLIC_PREVIEW_URL ?? "http://preview.localhost:3000";
 
@@ -17,6 +18,7 @@ interface LivePreviewPaneProps {
     selectedInstanceId: string | null;
     onSelectInstance: (instanceId: string) => void;
     deviceSize: 'desktop' | 'tablet' | 'mobile';
+    onDeviceChange: (size: 'desktop' | 'tablet' | 'mobile') => void;
 }
 
 export function LivePreviewPane({ 
@@ -25,7 +27,8 @@ export function LivePreviewPane({
     activePage, 
     selectedInstanceId,
     onSelectInstance,
-    deviceSize
+    deviceSize,
+    onDeviceChange
 }: LivePreviewPaneProps) {
     const iframeRef = useRef<HTMLIFrameElement>(null);
     const containerRef = useRef<HTMLDivElement>(null);
@@ -100,13 +103,13 @@ export function LivePreviewPane({
     return (
         <div 
             ref={containerRef}
-            className="flex-1 overflow-hidden p-8 md:p-12 lg:p-16 flex items-center justify-center bg-muted/30 relative w-full h-full"
+            className="borderflex-1 overflow-hidden p-4 md:p-6 lg:p-8 flex items-center justify-center bg-muted/30 relative w-full h-full"
         >
             <div 
                 ref={mockupRef}
                 className={cn(
-                    "bg-background shadow-[0_32px_64px_-16px_rgba(0,0,0,0.2)] rounded-t-2xl rounded-b-xl border border-border/50 overflow-hidden flex flex-col transition-all duration-500 ease-in-out origin-center",
-                    deviceSize === 'desktop' ? "w-full h-full max-h-[1000px] max-w-7xl" : "h-[840px] shrink-0"
+                    "bg-background shadow-[0_32px_64px_-16px_rgba(0,0,0,0.2)] rounded-t-2xl rounded-b-xl border overflow-hidden flex flex-col transition-all duration-500 ease-in-out origin-center",
+                    deviceSize === 'desktop' ? "w-full h-full max-w-[1600px]" : "h-[840px] shrink-0"
                 )}
                 style={{ 
                     width: deviceSize !== 'desktop' ? DEVICE_WIDTHS[deviceSize] : undefined,
@@ -114,16 +117,40 @@ export function LivePreviewPane({
                 }}
             >
                 {/* Browser Chrome Mockup */}
-                <div className="h-12 bg-muted/50 border-b border-border/50 flex items-center px-6 gap-3 shrink-0">
-                    <div className="flex items-center gap-2">
+                <div className="h-12 bg-muted/50 border-b flex items-center justify-between px-6 gap-3 shrink-0">
+                    <div className="flex items-center gap-2 w-20">
                         <div className="w-3.5 h-3.5 rounded-full bg-destructive/60" />
                         <div className="w-3.5 h-3.5 rounded-full bg-amber-500/60" />
                         <div className="w-3.5 h-3.5 rounded-full bg-green-500/60" />
                     </div>
-                    <div className="mx-auto bg-background/80 backdrop-blur-sm border border-border/50 rounded-lg px-4 py-1.5 text-[11px] font-medium text-muted-foreground flex items-center justify-center w-full max-w-[280px] truncate shadow-sm">
-                        {tenant}.limefolio.com
+                    <div className="flex-1 max-w-[280px]">
+                        <div className="bg-background/80 backdrop-blur-sm border border-border/50 rounded-lg px-4 py-1.5 text-[11px] font-medium text-muted-foreground flex items-center justify-center truncate shadow-sm">
+                            {tenant}.limefolio.com
+                        </div>
                     </div>
-                    <div className="w-14" /> {/* spacer to balance traffic lights */}
+                    <div className="flex items-center justify-end w-auto min-w-20">
+                        <div className="flex items-center gap-0.5 bg-background/50 border border-border/40 rounded-[8px] p-[3px] shadow-sm">
+                            {(["desktop", "tablet", "mobile"] as const).map((size) => {
+                                const Icon = size === "desktop" ? IconDeviceDesktop : size === "tablet" ? IconDeviceTablet : IconDeviceMobile;
+                                const isActive = deviceSize === size;
+                                return (
+                                    <button
+                                        key={size}
+                                        onClick={() => onDeviceChange(size)}
+                                        title={size.charAt(0).toUpperCase() + size.slice(1)}
+                                        className={cn(
+                                            "w-[26px] h-[26px] rounded-[5px] flex items-center justify-center transition-all duration-150",
+                                            isActive
+                                                ? "bg-background text-foreground shadow-sm ring-1 ring-black/5 dark:ring-white/5"
+                                                : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
+                                        )}
+                                    >
+                                        <Icon className="w-3.5 h-3.5" />
+                                    </button>
+                                );
+                            })}
+                        </div>
+                    </div>
                 </div>
 
                 {/* Iframe */}

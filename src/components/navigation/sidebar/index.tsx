@@ -8,7 +8,7 @@ import {
     SidebarHeader,
     SidebarMenu,
     SidebarMenuButton,
-    SidebarMenuItem,
+    SidebarMenuItem
 } from "@/components/ui/sidebar";
 import Link from "next/link";
 import { LimefolioLIcon } from "@/lib/icons";

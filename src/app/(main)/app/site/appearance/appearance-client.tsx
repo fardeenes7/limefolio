@@ -4,12 +4,14 @@ import { useState } from "react";
 import { useAppearanceState } from "./hooks/useAppearanceState";
 import { useSaveAppearance } from "./hooks/useSaveAppearance";
 import { useDebouncedConfig } from "./hooks/useDebouncedConfig";
+import { useResolvedSections } from "./hooks/useResolvedSections";
 import { getTemplate } from "@/templates/registry";
 
 import { AppearanceTopbar } from "./components/AppearanceTopbar";
-import { PageRail } from "./components/PageRail";
-import { AppearancePanel } from "./components/AppearancePanel";
+import { AppearanceLeftSidebar } from "./components/AppearanceLeftSidebar";
+import { AppearanceRightSidebar } from "./components/AppearanceRightSidebar";
 import { LivePreviewPane } from "./components/LivePreviewPane";
+import type { LeftTab } from "./components/AppearanceLeftSidebar";
 import { Site } from "@/types";
 
 interface AppearanceClientProps {
@@ -18,103 +20,111 @@ interface AppearanceClientProps {
 }
 
 export function AppearanceClient({ initialSite, initialConfigRaw }: AppearanceClientProps) {
-    // Manage local UI state with the expanded hook
     const stateHelpers = useAppearanceState({ initialConfigRaw });
+    const { save, isSaving } = useSaveAppearance({ onSuccess: () => {} });
 
-    // Handle PATCH updates
-    const { save, isSaving } = useSaveAppearance({
-        onSuccess: () => {
-            // onSuccess handles nothing now since state is mostly derived or we can reset isDirty manually.
-        }
-    });
-
-    // Construct draft config to send to iframe and to save
     const draftConfig = {
         templateKey: stateHelpers.selectedTemplate,
-        themeKey: stateHelpers.selectedTheme,
-        fontKey: stateHelpers.selectedFont,
-        overrides: stateHelpers.overrides,
-        additions: stateHelpers.additions,
-        removals: stateHelpers.removals,
-        ordering: stateHelpers.ordering,
+        themeKey:    stateHelpers.selectedTheme,
+        fontKey:     stateHelpers.selectedFont,
+        overrides:   stateHelpers.overrides,
+        additions:   stateHelpers.additions,
+        removals:    stateHelpers.removals,
+        ordering:    stateHelpers.ordering,
     };
 
-    // Debounce the draft config for the iframe to prevent jitter
     const debouncedConfig = useDebouncedConfig(draftConfig, 400);
+    const handleSave    = () => save(draftConfig);
+    const handleDiscard = () => stateHelpers.resetToSaved();
 
-    const handleSave = () => {
-        save(draftConfig);
-    };
-
-    const handleDiscard = () => {
-        stateHelpers.resetToSaved();
-    };
-
-    // Layout and Navigation State
+    // Page navigation
     const template = getTemplate(stateHelpers.selectedTemplate);
-    
-    // Add "layout" as the global pseudo-page at the end
-    const pagesForRail = [
+    const pagesForNav = [
         ...template.pages.map(p => ({ key: p.key, label: p.label })),
-        { key: "layout", label: "Global Layout" }
+        { key: "layout", label: "Global" },
     ];
 
-    const [activePage, setActivePage] = useState<string>("landing");
-    const [activeTab, setActiveTab] = useState<"sections" | "theme" | "font" | "template">("sections");
+    const [activePage,         setActivePage]         = useState<string>("landing");
+    const [activeLeftTab,      setActiveLeftTab]      = useState<LeftTab>("sections");
     const [selectedInstanceId, setSelectedInstanceId] = useState<string | null>(null);
-    const [deviceSize, setDeviceSize] = useState<"desktop" | "tablet" | "mobile">("desktop");
+    const [deviceSize,         setDeviceSize]         = useState<"desktop" | "tablet" | "mobile">("desktop");
 
-    // We must reset selectedInstanceId when page changes
     const handlePageChange = (key: string) => {
         setActivePage(key);
         setSelectedInstanceId(null);
-        if (activeTab !== "sections") {
-            setActiveTab("sections");
-        }
+        // Switch back to sections tab when page changes
+        if (activeLeftTab !== "sections") setActiveLeftTab("sections");
     };
 
-    const activePageLabel = pagesForRail.find(p => p.key === activePage)?.label || "Page";
+    const handleSelectInstance = (id: string | null) => {
+        setSelectedInstanceId(id);
+    };
+
+    const activePageLabel = pagesForNav.find(p => p.key === activePage)?.label ?? "Page";
+
+    // Resolve selected section for the right sidebar
+    const resolvedConfig   = useResolvedSections(draftConfig);
+    const isGlobal         = activePage === "layout";
+    const sectionsToRender = isGlobal
+        ? resolvedConfig.layout
+        : resolvedConfig.pages.find(p => p.key === activePage)?.sections ?? [];
+    const overridesSource  = isGlobal
+        ? stateHelpers.overrides.layout
+        : (stateHelpers.overrides.pages[activePage] ?? {});
+
+    const selectedSection  = sectionsToRender.find(s => s.instanceId === selectedInstanceId) ?? null;
+    const selectedOverride = selectedInstanceId ? (overridesSource[selectedInstanceId] ?? {}) : {};
 
     return (
-        <div 
-            className="flex flex-col -mx-6 -my-10 lg:-my-20 bg-muted/30 overflow-hidden" 
-            style={{ height: 'calc(100vh - 0px)' }}
+        <div
+            className="flex flex-col -mx-6 -my-10 lg:-my-20 overflow-hidden bg-muted/20"
+            style={{ height: "calc(100vh - 0px)" }}
         >
+            {/* Topbar: back link + page selector + device + save */}
             <AppearanceTopbar
                 siteDomain={initialSite.subdomain || "demo"}
-                deviceSize={deviceSize}
-                onDeviceChange={setDeviceSize}
                 isDirty={stateHelpers.isDirty}
                 isSaving={isSaving}
                 onSave={handleSave}
                 onDiscard={handleDiscard}
+                pages={pagesForNav}
+                activePage={activePage}
+                onPageChange={handlePageChange}
             />
 
+            {/* Body: left sidebar | preview | right sidebar */}
             <div className="flex flex-1 overflow-hidden">
-                <PageRail
-                    pages={pagesForRail}
-                    activePage={activePage}
-                    onPageChange={handlePageChange}
+
+                {/* Left: full-width sidebar — Sections / Theme / Font / Template */}
+                <AppearanceLeftSidebar
+                    activeTab={activeLeftTab}
+                    onTabChange={setActiveLeftTab}
+                    activePageKey={activePage}
+                    activePageLabel={activePageLabel}
+                    selectedInstanceId={selectedInstanceId}
+                    onSelectInstance={handleSelectInstance}
+                    draftConfig={draftConfig}
+                    stateHelpers={stateHelpers}
                 />
 
+                {/* Center: live preview */}
                 <LivePreviewPane
                     tenant={initialSite.subdomain || "demo"}
                     draftConfig={debouncedConfig}
                     activePage={activePage}
                     selectedInstanceId={selectedInstanceId}
-                    onSelectInstance={setSelectedInstanceId}
+                    onSelectInstance={handleSelectInstance}
                     deviceSize={deviceSize}
+                    onDeviceChange={setDeviceSize}
                 />
 
-                <AppearancePanel
-                    activeTab={activeTab}
-                    onTabChange={setActiveTab}
+                {/* Right: section detail options */}
+                <AppearanceRightSidebar
                     activePageKey={activePage}
-                    activePageLabel={activePageLabel}
-                    selectedInstanceId={selectedInstanceId}
-                    onSelectInstance={setSelectedInstanceId}
-                    draftConfig={draftConfig}
+                    selectedSection={selectedSection}
+                    selectedOverride={selectedOverride}
                     stateHelpers={stateHelpers}
+                    onClose={() => setSelectedInstanceId(null)}
                 />
             </div>
         </div>
