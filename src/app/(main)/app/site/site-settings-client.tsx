@@ -126,7 +126,7 @@ export function SiteSettingsClient({ initialSite }: SiteSettingsClientProps) {
                 <PageHeading>
                     <PageTitle>Site Settings</PageTitle>
                     <PageDescription>
-                        Configure your portfolio site's basic information and
+                        Configure your portfolio site&apos;s basic information and
                         SEO settings
                     </PageDescription>
                 </PageHeading>
@@ -186,7 +186,7 @@ export function SiteSettingsClient({ initialSite }: SiteSettingsClientProps) {
                                             Basic Information
                                         </h2>
                                         <p className="text-sm text-muted-foreground">
-                                            Your site's core identity and
+                                            Your site&apos;s core identity and
                                             branding
                                         </p>
                                     </div>

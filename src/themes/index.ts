@@ -274,10 +274,10 @@ export const ColorThemes: Record<string, ColorThemeConfig> = {
         hasDark: true,
         category: "brand",
     },
-    vercel: {
-        name: "Vercel",
-        slug: "vercel",
-        description: "Vercel's own high-contrast black/white brand",
+    limefolio: {
+        name: "Limefolio",
+        slug: "limefolio",
+        description: "Official Limefolio theme with vibrant lime green",
         hasDark: true,
         category: "brand",
     },

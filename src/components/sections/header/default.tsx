@@ -39,22 +39,22 @@ export default function HeaderDefault({ section, siteData }: SectionProps) {
                         <Link href="/projects" className="transition-colors hover:text-foreground">
                             Projects
                         </Link>
-                        <a href="/#experience" className="transition-colors hover:text-foreground">
+                        <Link href="/#experience" className="transition-colors hover:text-foreground">
                             Experience
-                        </a>
-                        <a href="/#skills" className="transition-colors hover:text-foreground">
+                        </Link>
+                        <Link href="/#skills" className="transition-colors hover:text-foreground">
                             Skills
-                        </a>
-                        <a href="/#contact" className="transition-colors hover:text-foreground">
+                        </Link>
+                        <Link href="/#contact" className="transition-colors hover:text-foreground">
                             Contact
-                        </a>
+                        </Link>
                         {ctaButton && (
-                            <a
+                            <Link
                                 href="/#contact"
                                 className="inline-flex items-center gap-1.5 rounded-full bg-primary px-4 py-1.5 text-primary-foreground transition-all hover:bg-primary/90"
                             >
                                 {ctaLabel}
-                            </a>
+                            </Link>
                         )}
                     </nav>
                 )}
@@ -67,12 +67,12 @@ export default function HeaderDefault({ section, siteData }: SectionProps) {
                     >
                         Projects
                     </Link>
-                    <a
+                    <Link
                         href="/#contact"
                         className="inline-flex items-center gap-1 rounded-full bg-primary px-4 py-1.5 text-sm font-medium text-primary-foreground"
                     >
                         {ctaLabel}
-                    </a>
+                    </Link>
                 </div>
             </div>
         </header>

@@ -7,7 +7,8 @@ import { ComponentRegistry } from "@/templates/components";
 import type { ResolvedSection, SectionOverride } from "@/templates/types";
 import { useAppearanceState } from "../hooks/useAppearanceState";
 import { useSectionCustomizer } from "../hooks/useSectionCustomizer";
-import { IconX, IconChevronLeft } from "@tabler/icons-react";
+import { useResolvedSections } from "../hooks/useResolvedSections";
+import { IconSettings, IconLayoutList, IconX, IconChevronLeft } from "@tabler/icons-react";
 
 interface SectionDetailPanelProps {
     activePageKey: string;
@@ -24,7 +25,8 @@ export function SectionDetailPanel({
     stateHelpers,
     onClose,
 }: SectionDetailPanelProps) {
-    const customizer = useSectionCustomizer(activePageKey, stateHelpers);
+    const resolvedConfig = useResolvedSections({ overrides: stateHelpers.overrides, additions: stateHelpers.additions, removals: stateHelpers.removals, ordering: stateHelpers.ordering } as any);
+    const customizer = useSectionCustomizer(activePageKey, stateHelpers, resolvedConfig.layout);
     const schema = selectedSection ? ComponentRegistry[selectedSection.componentKey] : null;
 
     const isEmpty = !selectedSection;

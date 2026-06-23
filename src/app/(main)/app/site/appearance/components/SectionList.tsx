@@ -70,41 +70,33 @@ const COMPONENT_ICONS: Record<string, React.ElementType> = {
     cookie_banner: IconCookie,
 };
 
-interface SortableSectionRowProps {
+interface SectionRowBaseProps {
     section: ResolvedSection;
     userOverride: SectionOverride;
     isRemoved: boolean;
     isSelected: boolean;
     onSelect: () => void;
     onToggleVisibility: () => void;
+    style?: React.CSSProperties;
+    setNodeRef?: (node: HTMLElement | null) => void;
+    attributes?: any;
+    listeners?: any;
+    isDragging?: boolean;
 }
 
-function SortableSectionRow({
+function SectionRowBase({
     section,
     userOverride,
     isRemoved,
     isSelected,
     onSelect,
     onToggleVisibility,
-}: SortableSectionRowProps) {
-    const {
-        attributes,
-        listeners,
-        setNodeRef,
-        transform,
-        transition,
-        isDragging,
-    } = useSortable({ 
-        id: section.instanceId,
-        disabled: section.fixed 
-    });
-
-    const style = {
-        transform: CSS.Transform.toString(transform),
-        transition,
-        zIndex: isDragging ? 10 : 1,
-    };
-
+    style,
+    setNodeRef,
+    attributes,
+    listeners,
+    isDragging,
+}: SectionRowBaseProps) {
     const schema = ComponentRegistry[section.componentKey];
     if (!schema) return null;
 
@@ -180,6 +172,32 @@ function SortableSectionRow({
     );
 }
 
+function SortableSectionRow(props: Omit<SectionRowBaseProps, 'style' | 'setNodeRef' | 'attributes' | 'listeners' | 'isDragging'>) {
+    const {
+        attributes,
+        listeners,
+        setNodeRef,
+        transform,
+        transition,
+        isDragging,
+    } = useSortable({ 
+        id: props.section.instanceId,
+        disabled: props.section.fixed 
+    });
+
+    const style = {
+        transform: CSS.Transform.toString(transform),
+        transition,
+        zIndex: isDragging ? 10 : 1,
+    };
+
+    return <SectionRowBase {...props} style={style} setNodeRef={setNodeRef} attributes={attributes} listeners={listeners} isDragging={isDragging} />;
+}
+
+function StaticSectionRow(props: Omit<SectionRowBaseProps, 'style' | 'setNodeRef' | 'attributes' | 'listeners' | 'isDragging'>) {
+    return <SectionRowBase {...props} />;
+}
+
 interface SectionListProps {
     draftConfig: Partial<UserPortfolioConfig>;
     stateHelpers: ReturnType<typeof useAppearanceState>;
@@ -199,20 +217,15 @@ export function SectionList({
 }: SectionListProps) {
     const template = getTemplate(draftConfig.templateKey);
     const resolvedConfig = useResolvedSections(draftConfig);
-    const customizer = useSectionCustomizer(activePageKey, stateHelpers);
+    const customizer = useSectionCustomizer(activePageKey, stateHelpers, resolvedConfig.layout);
 
-    const isGlobal = activePageKey === 'layout';
-    const sectionsToRender = isGlobal 
-        ? resolvedConfig.layout 
-        : resolvedConfig.pages.find(p => p.key === activePageKey)?.sections || [];
+    const layoutSections = resolvedConfig.layout;
+    const pageSections = resolvedConfig.pages.find(p => p.key === activePageKey)?.sections || [];
 
-    const overridesSource = isGlobal 
-        ? stateHelpers.overrides.layout 
-        : (stateHelpers.overrides.pages[activePageKey] || {});
+    // Assuming 'header' is the top layout section, everything else is at the bottom.
+    const topLayoutSections = layoutSections.filter(s => s.componentKey === 'header');
+    const bottomLayoutSections = layoutSections.filter(s => s.componentKey !== 'header');
 
-    const removalsSource = isGlobal 
-        ? stateHelpers.removals.layout 
-        : (stateHelpers.removals.pages[activePageKey] || []);
 
     const sensors = useSensors(
         useSensor(PointerSensor, {
@@ -227,17 +240,21 @@ export function SectionList({
         const { active, over } = event;
 
         if (over && active.id !== over.id) {
-            const oldIndex = sectionsToRender.findIndex(s => s.instanceId === active.id);
-            const newIndex = sectionsToRender.findIndex(s => s.instanceId === over.id);
+            // Find the active section's true index inside pageSections, not sectionsToRender
+            const activePageIdx = pageSections.findIndex(s => s.instanceId === active.id);
+            const overPageIdx = pageSections.findIndex(s => s.instanceId === over.id);
 
-            const newArray = arrayMove(sectionsToRender, oldIndex, newIndex);
+            // Ignore drags involving layout sections
+            if (activePageIdx === -1 || overPageIdx === -1) return;
+
+            const newArray = arrayMove(pageSections, activePageIdx, overPageIdx);
             const newOrdering = newArray.filter(s => !s.fixed).map(s => s.instanceId);
             customizer.reorderSections(newOrdering);
         }
     };
 
     // Find repeatable components for this page
-    const allowedRepeatables = isGlobal ? [] : (template.pages.find(p => p.key === activePageKey)?.sections || [])
+    const allowedRepeatables = (template.pages.find(p => p.key === activePageKey)?.sections || [])
         .map(s => ComponentRegistry[s.componentKey])
         .filter(schema => schema?.repeatable);
     
@@ -247,22 +264,42 @@ export function SectionList({
     return (
         <div className="flex flex-col h-full flex-1 min-h-0 overflow-hidden">
             <div className="flex-1 overflow-y-auto pb-4">
+                <div className="flex flex-col">
+                    {topLayoutSections.map((section) => {
+                        const isRemoved = stateHelpers.removals.layout.includes(section.instanceId);
+                        const override = stateHelpers.overrides.layout[section.instanceId] || {};
+                        return (
+                            <StaticSectionRow
+                                key={section.instanceId}
+                                section={section}
+                                userOverride={override}
+                                isRemoved={isRemoved}
+                                isSelected={selectedInstanceId === section.instanceId}
+                                onSelect={() => onSelectInstance(section.instanceId)}
+                                onToggleVisibility={() => customizer.toggleVisibility(section.instanceId)}
+                            />
+                        );
+                    })}
+                </div>
+
                 <DndContext
                     sensors={sensors}
                     collisionDetection={closestCenter}
                     onDragEnd={handleDragEnd}
                 >
                     <SortableContext
-                        items={sectionsToRender.map(s => s.instanceId)}
+                        items={pageSections.filter(s => !s.fixed).map(s => s.instanceId)}
                         strategy={verticalListSortingStrategy}
                     >
                         <div className="flex flex-col">
-                            {sectionsToRender.map((section) => {
-                                const isRemoved = removalsSource.includes(section.instanceId);
-                                const override = overridesSource[section.instanceId] || {};
+                            {pageSections.map((section) => {
+                                const isRemoved = (stateHelpers.removals.pages[activePageKey] || []).includes(section.instanceId);
+                                const override = ((stateHelpers.overrides.pages[activePageKey] || {})[section.instanceId] || {});
+                                
+                                const RowComponent = section.fixed ? StaticSectionRow : SortableSectionRow;
                                 
                                 return (
-                                    <SortableSectionRow
+                                    <RowComponent
                                         key={section.instanceId}
                                         section={section}
                                         userOverride={override}
@@ -276,6 +313,24 @@ export function SectionList({
                         </div>
                     </SortableContext>
                 </DndContext>
+
+                <div className="flex flex-col border-t border-border/40 mt-2 pt-2">
+                    {bottomLayoutSections.map((section) => {
+                        const isRemoved = stateHelpers.removals.layout.includes(section.instanceId);
+                        const override = stateHelpers.overrides.layout[section.instanceId] || {};
+                        return (
+                            <StaticSectionRow
+                                key={section.instanceId}
+                                section={section}
+                                userOverride={override}
+                                isRemoved={isRemoved}
+                                isSelected={selectedInstanceId === section.instanceId}
+                                onSelect={() => onSelectInstance(section.instanceId)}
+                                onToggleVisibility={() => customizer.toggleVisibility(section.instanceId)}
+                            />
+                        );
+                    })}
+                </div>
 
                 {uniqueRepeatables.length > 0 && (
                     <div className="mt-2 pt-2 border-t border-border/40">

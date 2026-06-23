@@ -52,7 +52,7 @@ export default function AboutDirectorCut({ section, siteData }: SectionProps) {
                     {/* Text Column */}
                     <div ref={contentRef} className={`order-1 lg:order-2 ${!showProfileImage ? 'col-span-full max-w-4xl mx-auto text-center' : ''}`}>
                         <h2 className="text-sm tracking-[0.3em] text-primary uppercase font-bold mb-4">
-                            Director's Cut
+                            Director&apos;s Cut
                         </h2>
                         <h3 className="text-4xl lg:text-6xl font-black text-foreground mb-8 leading-tight tracking-tighter uppercase">
                             About Me

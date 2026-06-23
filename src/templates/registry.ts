@@ -124,9 +124,8 @@ const defaultTemplate: Template = {
         /**
          * Landing page — the portfolio home page.
          *
-         * The hero is pinned (fixed: true, removable: false) because every landing
-         * page needs a hero. All other sections can be removed, reordered, or
-         * supplemented with user additions (for repeatable components).
+         * All sections can be removed, reordered, or supplemented with user 
+         * additions (for repeatable components).
          */
         {
             key: 'landing',
@@ -137,8 +136,8 @@ const defaultTemplate: Template = {
                     componentKey: 'hero',
                     allowedVariants: allVariants('hero'),
                     defaultVariant: 'default',
-                    fixed: true,
-                    removable: false,
+                    fixed: false,
+                    removable: true,
                 },
                 {
                     instanceId: 'about_1',
@@ -368,8 +367,8 @@ const cinematicTemplate: Template = {
                     componentKey: 'hero',
                     allowedVariants: allVariants('hero'),
                     defaultVariant: 'video_reel',
-                    fixed: true,
-                    removable: false,
+                    fixed: false,
+                    removable: true,
                 },
                 {
                     instanceId: 'about_1',
@@ -535,8 +534,8 @@ const terminalTemplate: Template = {
                     componentKey: 'hero',
                     allowedVariants: allVariants('hero'),
                     defaultVariant: 'typing_animation',
-                    fixed: true,
-                    removable: false,
+                    fixed: false,
+                    removable: true,
                 },
                 {
                     instanceId: 'about_1',

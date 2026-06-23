@@ -7,17 +7,16 @@
 
 import type { SectionProps } from '@/components/sections/_renderer/SectionRenderer';
 import { IconQuote } from '@tabler/icons-react';
-import { useState, useRef } from 'react';
+import { useRef } from 'react';
 
 export default function TestimonialsCarousel({ section, siteData }: SectionProps) {
     const i = section.resolvedInputs as Record<string, unknown>;
     const headline = (i.headline as string) || 'What People Say';
     const subheadline = (i.subheadline as string) || '';
+    const scrollContainerRef = useRef<HTMLDivElement>(null);
 
     const testimonials = siteData.testimonials || [];
     if (testimonials.length === 0) return null;
-
-    const scrollContainerRef = useRef<HTMLDivElement>(null);
 
     const scroll = (direction: 'left' | 'right') => {
         if (!scrollContainerRef.current) return;
@@ -75,7 +74,7 @@ export default function TestimonialsCarousel({ section, siteData }: SectionProps
                         >
                             <IconQuote className="text-primary/20 mb-6" size={40} />
                             <p className="text-lg text-foreground italic mb-8 grow leading-relaxed">
-                                "{t.body}"
+                                &quot;{t.body}&quot;
                             </p>
                             <div className="flex items-center gap-4 mt-auto">
                                 {t.avatar_url ? (

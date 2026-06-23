@@ -21,6 +21,8 @@ export default function FeaturedProjectsCinematicGrid({ section, siteData }: Sec
     const showViewAll = i.showViewAll !== false;
     const viewAllLabel = (i.viewAllLabel as string) || 'View All Projects';
 
+    const containerRef = useRef<HTMLDivElement>(null);
+
     let allProjects = siteData.projects || [];
     if (filterByTag) {
         const tags = filterByTag.split(',').map((t) => t.trim().toLowerCase());
@@ -28,12 +30,9 @@ export default function FeaturedProjectsCinematicGrid({ section, siteData }: Sec
             p.technologies && p.technologies.some((tech) => tags.includes(tech.toLowerCase()))
         );
     }
-    if (allProjects.length === 0) return null;
 
     const featuredOnly = allProjects.filter((p) => p.featured);
     const displayProjects = (featuredOnly.length > 0 ? featuredOnly : allProjects).slice(0, maxItems);
-
-    const containerRef = useRef<HTMLDivElement>(null);
 
     useGSAP(() => {
         if (!containerRef.current || prefersReducedMotion()) return;
@@ -58,6 +57,8 @@ export default function FeaturedProjectsCinematicGrid({ section, siteData }: Sec
             }
         );
     }, { scope: containerRef, dependencies: [displayProjects, sectionTitle] });
+
+    if (allProjects.length === 0) return null;
 
     return (
         <section id="projects" className="py-32 bg-background relative z-10">

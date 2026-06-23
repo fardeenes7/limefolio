@@ -15,10 +15,6 @@ interface SectionEditorProps {
 export function SectionEditor({ instance, override = {}, onChange }: SectionEditorProps) {
     const schema = ComponentRegistry[instance.componentKey];
 
-    if (!schema) {
-        return <div className="p-4 text-destructive">Unknown component: {instance.componentKey}</div>;
-    }
-
     const currentVariant = override.variant || instance.defaultVariant;
     const currentInputs = override.inputs || {};
 
@@ -36,13 +32,9 @@ export function SectionEditor({ instance, override = {}, onChange }: SectionEdit
         });
     };
 
-    // Filter variants based on allowedVariants
-    const availableVariants = schema.variants.filter(
-        (v) => instance.allowedVariants.includes("all") || instance.allowedVariants.includes(v.key)
-    );
-
     // Evaluate showIf constraints
     const visibleInputs = useMemo(() => {
+        if (!schema) return [];
         return schema.inputs.filter((input) => {
             if (!input.showIf) return true;
             
@@ -53,7 +45,16 @@ export function SectionEditor({ instance, override = {}, onChange }: SectionEdit
 
             return conditionValue === input.showIf.equals;
         });
-    }, [schema.inputs, currentVariant, currentInputs]);
+    }, [schema, currentVariant, currentInputs]);
+
+    if (!schema) {
+        return <div className="p-4 text-destructive">Unknown component: {instance.componentKey}</div>;
+    }
+
+    // Filter variants based on allowedVariants
+    const availableVariants = schema.variants.filter(
+        (v) => instance.allowedVariants.includes("all") || instance.allowedVariants.includes(v.key)
+    );
 
     return (
         <div className="space-y-6">

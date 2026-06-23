@@ -11,6 +11,7 @@ export function UnsavedBanner({ isDirty }: UnsavedBannerProps) {
     // Re-show banner if dirty state changes to true
     useEffect(() => {
         if (isDirty) {
+            // eslint-disable-next-line react-hooks/set-state-in-effect
             setIsDismissed(false);
         }
     }, [isDirty]);

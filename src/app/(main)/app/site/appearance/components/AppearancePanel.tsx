@@ -44,7 +44,7 @@ export function AppearancePanel({
 
     // For SectionDetail: we need the resolved section and its overrides
     const resolvedConfig = useResolvedSections(draftConfig);
-    const customizer = useSectionCustomizer(activePageKey, stateHelpers);
+    const customizer = useSectionCustomizer(activePageKey, stateHelpers, resolvedConfig.layout);
     const isGlobal = activePageKey === "layout";
     const sectionsToRender = isGlobal 
         ? resolvedConfig.layout 

@@ -14,7 +14,7 @@ const socialIconsMap: Record<string, any> = {
     twitter: IconBrandTwitter,
 };
 
-export default function HeroDefault({ section, siteData }: SectionProps) {
+export default function HeroCentered({ section, siteData }: SectionProps) {
     const i = section.resolvedInputs as Record<string, unknown>;
 
     // Inputs
@@ -34,38 +34,39 @@ export default function HeroDefault({ section, siteData }: SectionProps) {
     // Socials
     const socialLinks = siteData.social_links || [];
 
-    // Avatar (fallback to an abstract gradient if none)
+    // Avatar
     const avatarUrl = (i.avatarImage as string) || siteData.logo;
 
     return (
-        <section className="relative min-h-[90vh] flex items-center overflow-hidden bg-background">
+        <section className="relative min-h-[80vh] flex items-center justify-center overflow-hidden bg-background">
             <HeroBackground section={section} />
 
-            <div className="container max-w-4xl mx-auto px-6 py-20 relative z-10 text-center">
+            <div className="container max-w-3xl mx-auto px-6 py-20 relative z-10 flex flex-col items-center text-center">
+                
                 {/* Avatar */}
                 {showAvatar && avatarUrl && (
-                    <div className="mb-8 inline-block">
+                    <div className="mb-8">
                         <img
                             src={avatarUrl}
                             alt={siteData.title}
-                            className="w-24 h-24 rounded-full object-cover border-4 border-background shadow-xl ring-2 ring-border"
+                            className="w-28 h-28 rounded-full object-cover shadow-xl border-2 border-border"
                         />
                     </div>
                 )}
                 {!avatarUrl && showAvatar && (
-                    <div className="mb-8 inline-block w-24 h-24 rounded-full bg-linear-to-br from-primary/20 to-primary/5 border-4 border-background shadow-xl ring-2 ring-border" />
+                    <div className="mb-8 w-28 h-28 rounded-full bg-linear-to-br from-primary/20 to-primary/5 shadow-xl border-2 border-border" />
                 )}
 
                 {/* Typography */}
-                <h1 className="text-5xl sm:text-7xl font-extrabold tracking-tight text-foreground mb-6 leading-tight">
+                {subheadline && (
+                    <span className="inline-block py-1 px-3 rounded-full bg-primary/10 text-primary text-sm font-semibold tracking-wide uppercase mb-6">
+                        {subheadline}
+                    </span>
+                )}
+
+                <h1 className="text-4xl sm:text-6xl font-extrabold tracking-tight text-foreground mb-6 leading-tight">
                     {headline}
                 </h1>
-
-                {subheadline && (
-                    <p className="text-xl sm:text-2xl text-primary font-medium mb-6">
-                        {subheadline}
-                    </p>
-                )}
 
                 {body && (
                     <p className="text-lg sm:text-xl text-muted-foreground mb-10 max-w-2xl mx-auto leading-relaxed">
@@ -74,20 +75,20 @@ export default function HeroDefault({ section, siteData }: SectionProps) {
                 )}
 
                 {/* CTAs */}
-                <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
+                <div className="flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto mb-10">
                     {primaryCtaLabel && (
                         <a
                             href={primaryCtaUrl}
-                            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-primary text-primary-foreground font-semibold hover:bg-primary/90 hover:scale-105 transition-all shadow-lg"
+                            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full bg-primary text-primary-foreground font-semibold hover:bg-primary/90 transition-all shadow-md"
                         >
                             {primaryCtaLabel}
-                            <IconArrowRight size={20} />
+                            <IconArrowRight size={18} />
                         </a>
                     )}
                     {secondaryCtaLabel && (
                         <a
                             href={secondaryCtaUrl}
-                            className="w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 rounded-full border-2 border-border bg-background text-foreground font-semibold hover:bg-muted transition-all"
+                            className="w-full sm:w-auto inline-flex items-center justify-center px-8 py-3.5 rounded-full border-2 border-border bg-background text-foreground font-semibold hover:bg-muted transition-all"
                         >
                             {secondaryCtaLabel}
                         </a>
@@ -105,10 +106,10 @@ export default function HeroDefault({ section, siteData }: SectionProps) {
                                     href={link.url}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="p-3 rounded-full bg-muted text-muted-foreground hover:bg-primary hover:text-primary-foreground hover:scale-110 transition-all shadow-sm"
+                                    className="p-2.5 rounded-full text-muted-foreground hover:text-foreground transition-all hover:bg-muted"
                                     aria-label={link.platform}
                                 >
-                                    <Icon size={20} />
+                                    <Icon size={22} />
                                 </a>
                             );
                         })}
@@ -118,9 +119,8 @@ export default function HeroDefault({ section, siteData }: SectionProps) {
 
             {/* Scroll Indicator */}
             {showScrollIndicator && (
-                <div className="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce flex flex-col items-center gap-2 text-muted-foreground">
-                    <span className="text-xs font-medium tracking-widest uppercase">Scroll</span>
-                    <div className="w-px h-6 bg-muted-foreground" />
+                <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce flex flex-col items-center gap-2 text-muted-foreground/50">
+                    <div className="w-px h-8 bg-muted-foreground/50" />
                 </div>
             )}
         </section>

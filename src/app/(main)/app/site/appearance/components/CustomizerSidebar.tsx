@@ -100,7 +100,7 @@ export function CustomizerSidebar({
         const removalSet = new Set(removals);
         
         // We need the order
-        let ordering = context === 'layout' 
+        const ordering = context === 'layout' 
             ? draftConfig.ordering.layout 
             : draftConfig.ordering.pages?.[selectedPageKey];
             

@@ -18,6 +18,7 @@
  * component registry.
  */
 
+/* eslint-disable react-hooks/static-components */
 "use client";
 
 import type { ResolvedSection } from '@/templates/types';
@@ -124,6 +125,7 @@ export const SectionRenderer = memo(function SectionRenderer({
     const { selectedInstanceId } = useContext(PreviewContext);
     const isSelected = selectedInstanceId === section.instanceId;
 
+    // eslint-disable-next-line react-hooks/static-components
     const Component = getComponent(section.componentKey, section.resolvedVariant);
     
     // Interpolate template variables in inputs

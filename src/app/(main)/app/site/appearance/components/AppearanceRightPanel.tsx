@@ -70,7 +70,7 @@ export function AppearanceRightPanel({
     const selectedSection = sectionsToRender.find(s => s.instanceId === selectedInstanceId) ?? null;
     const selectedOverride = selectedInstanceId ? (overridesSource[selectedInstanceId] || {}) : {};
     const schema = selectedSection ? ComponentRegistry[selectedSection.componentKey] : null;
-    const customizer = useSectionCustomizer(activePageKey, stateHelpers);
+    const customizer = useSectionCustomizer(activePageKey, stateHelpers, resolvedConfig.layout);
 
     const hasSection = !!selectedSection;
     const hasDesign = !!activeDesignTab;

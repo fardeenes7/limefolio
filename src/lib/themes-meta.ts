@@ -401,12 +401,12 @@ export const THEMES_META: ThemeMeta[] = [
         ],
     },
     {
-        name: "Vercel",
-        slug: "vercel",
-        description: "Vercel's high-contrast black/white brand",
+        name: "Limefolio",
+        slug: "limefolio",
+        description: "Official Limefolio theme with vibrant lime green",
         category: "brand",
         hasDark: true,
-        swatches: ["oklch(0.99 0 0)", "oklch(0 0 0)", "oklch(0.94 0 0)"],
+        swatches: ["oklch(0.99 0 0)", "oklch(0.8 0.18 135)", "oklch(0.94 0.05 135)"],
     },
 ];
 

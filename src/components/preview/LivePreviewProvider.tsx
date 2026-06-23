@@ -46,6 +46,10 @@ export function LivePreviewProvider({
                 if (event.data.pageKey) {
                     setPreviewPageKey(event.data.pageKey);
                 }
+            } else if (event.data?.type === "NAVIGATE") {
+                if (event.data.page) {
+                    setPreviewPageKey(event.data.page);
+                }
             } else if (event.data?.type === "SET_SELECTED_INSTANCE") {
                 setSelectedInstanceId(event.data.instanceId);
             }

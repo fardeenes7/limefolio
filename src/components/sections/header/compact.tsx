@@ -18,7 +18,7 @@ export default function HeaderCompact({ section, siteData }: SectionProps) {
                 </Link>
                 <nav className="flex items-center gap-5 text-xs font-medium text-muted-foreground">
                     <Link href="/projects" className="hover:text-foreground transition-colors">Projects</Link>
-                    <a href="/#contact" className="hover:text-foreground transition-colors">Contact</a>
+                    <Link href="/#contact" className="hover:text-foreground transition-colors">Contact</Link>
                 </nav>
             </div>
         </header>

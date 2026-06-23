@@ -1,6 +1,7 @@
 import { useCallback } from "react";
 import type { UserPortfolioConfig, SectionInstance } from "@/templates/types";
 import { ComponentRegistry } from "@/templates/components";
+import { useResolvedSections } from "./useResolvedSections";
 
 export function useSectionCustomizer(
     pageKey: string,
@@ -13,14 +14,15 @@ export function useSectionCustomizer(
         setAdditions: React.Dispatch<React.SetStateAction<UserPortfolioConfig['additions']>>;
         setRemovals: React.Dispatch<React.SetStateAction<UserPortfolioConfig['removals']>>;
         setOrdering: React.Dispatch<React.SetStateAction<UserPortfolioConfig['ordering']>>;
-    }
+    },
+    resolvedLayoutSections: SectionInstance[]
 ) {
-    const isGlobal = pageKey === 'layout';
+    const isGlobal = (instanceId: string) => resolvedLayoutSections.some(s => s.instanceId === instanceId);
 
     const updateVariant = useCallback((instanceId: string, variant: string) => {
         state.setOverrides(prev => {
             const next = { ...prev };
-            if (isGlobal) {
+            if (isGlobal(instanceId)) {
                 next.layout = { ...next.layout, [instanceId]: { ...next.layout[instanceId], variant } };
             } else {
                 next.pages = { ...next.pages };
@@ -28,12 +30,12 @@ export function useSectionCustomizer(
             }
             return next;
         });
-    }, [pageKey, isGlobal, state]);
+    }, [pageKey, resolvedLayoutSections, state]);
 
     const updateInput = useCallback((instanceId: string, inputKey: string, value: unknown) => {
         state.setOverrides(prev => {
             const next = { ...prev };
-            if (isGlobal) {
+            if (isGlobal(instanceId)) {
                 const existing = next.layout[instanceId] || {};
                 next.layout = { ...next.layout, [instanceId]: { ...existing, inputs: { ...existing.inputs, [inputKey]: value } } };
             } else {
@@ -44,12 +46,12 @@ export function useSectionCustomizer(
             }
             return next;
         });
-    }, [pageKey, isGlobal, state]);
+    }, [pageKey, resolvedLayoutSections, state]);
 
     const toggleVisibility = useCallback((instanceId: string) => {
         state.setRemovals(prev => {
             const next = { ...prev };
-            if (isGlobal) {
+            if (isGlobal(instanceId)) {
                 if (next.layout.includes(instanceId)) {
                     next.layout = next.layout.filter(id => id !== instanceId);
                 } else {
@@ -66,27 +68,23 @@ export function useSectionCustomizer(
             }
             return next;
         });
-    }, [pageKey, isGlobal, state]);
+    }, [pageKey, resolvedLayoutSections, state]);
 
     const reorderSections = useCallback((newOrdering: string[]) => {
         state.setOrdering(prev => {
             const next = { ...prev };
-            if (isGlobal) {
-                next.layout = newOrdering;
-            } else {
-                next.pages = { ...next.pages, [pageKey]: newOrdering };
-            }
+            // Note: reordering unified list is tricky. We'll only reorder page sections.
+            // newOrdering passed here will only contain page sections.
+            next.pages = { ...next.pages, [pageKey]: newOrdering };
             return next;
         });
-    }, [pageKey, isGlobal, state]);
+    }, [pageKey, state]);
 
     const addSection = useCallback((componentKey: string) => {
         state.setAdditions(prev => {
             const next = { ...prev };
-            const existingAdditions = isGlobal ? next.layout : (next.pages[pageKey] || []);
+            const existingAdditions = next.pages[pageKey] || [];
             
-            // Calculate a new instance ID
-            // Find highest counter for this component key
             let maxCount = 0;
             existingAdditions.forEach(inst => {
                 if (inst.componentKey === componentKey) {
@@ -96,8 +94,6 @@ export function useSectionCustomizer(
                     }
                 }
             });
-            // If the max count was 0, let's start at 2 since the template likely has "hero_1" etc.
-            // A safer approach: just generate a random short id or timestamp to ensure uniqueness.
             const newIdSuffix = Math.max(maxCount + 1, Date.now() % 10000);
             const instanceId = `${componentKey}_added_${newIdSuffix}`;
 
@@ -112,14 +108,10 @@ export function useSectionCustomizer(
                 fixed: false,
             };
 
-            if (isGlobal) {
-                next.layout = [...next.layout, newInstance];
-            } else {
-                next.pages = { ...next.pages, [pageKey]: [...existingAdditions, newInstance] };
-            }
+            next.pages = { ...next.pages, [pageKey]: [...existingAdditions, newInstance] };
             return next;
         });
-    }, [pageKey, isGlobal, state]);
+    }, [pageKey, state]);
 
     return {
         updateVariant,

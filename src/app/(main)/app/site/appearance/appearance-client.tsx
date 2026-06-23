@@ -41,7 +41,6 @@ export function AppearanceClient({ initialSite, initialConfigRaw }: AppearanceCl
     const template = getTemplate(stateHelpers.selectedTemplate);
     const pagesForNav = [
         ...template.pages.map(p => ({ key: p.key, label: p.label })),
-        { key: "layout", label: "Global" },
     ];
 
     const [activePage,         setActivePage]         = useState<string>("landing");
@@ -64,15 +63,18 @@ export function AppearanceClient({ initialSite, initialConfigRaw }: AppearanceCl
 
     // Resolve selected section for the right sidebar
     const resolvedConfig   = useResolvedSections(draftConfig);
-    const isGlobal         = activePage === "layout";
-    const sectionsToRender = isGlobal
-        ? resolvedConfig.layout
-        : resolvedConfig.pages.find(p => p.key === activePage)?.sections ?? [];
-    const overridesSource  = isGlobal
+    const pageSections = resolvedConfig.pages.find(p => p.key === activePage)?.sections ?? [];
+    const layoutSections = resolvedConfig.layout;
+
+    const allSections = [...layoutSections, ...pageSections];
+    const selectedSection = allSections.find(s => s.instanceId === selectedInstanceId) ?? null;
+
+    const isLayoutSection = selectedSection ? layoutSections.some(s => s.instanceId === selectedSection.instanceId) : false;
+    
+    const overridesSource = isLayoutSection
         ? stateHelpers.overrides.layout
         : (stateHelpers.overrides.pages[activePage] ?? {});
 
-    const selectedSection  = sectionsToRender.find(s => s.instanceId === selectedInstanceId) ?? null;
     const selectedOverride = selectedInstanceId ? (overridesSource[selectedInstanceId] ?? {}) : {};
 
     return (

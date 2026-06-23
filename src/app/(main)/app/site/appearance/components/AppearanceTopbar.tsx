@@ -1,28 +1,8 @@
 import React from "react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
-import { 
-    IconLoader2,
-    IconHome,
-    IconBriefcase,
-    IconFileDescription,
-    IconWriting,
-    IconArticle,
-    IconMail,
-    IconLayoutNavbar,
-    IconFile,
-} from "@tabler/icons-react";
+import { IconLoader2 } from "@tabler/icons-react";
 import { Button } from "@/components/ui/button";
-
-const PAGE_ICONS: Record<string, React.ElementType> = {
-    landing: IconHome,
-    all_projects: IconBriefcase,
-    project_details: IconFileDescription,
-    all_blog: IconWriting,
-    blog_details: IconArticle,
-    contact: IconMail,
-    layout: IconLayoutNavbar,
-};
 
 interface AppearanceTopbarProps {
     siteDomain: string;
@@ -63,30 +43,28 @@ export function AppearanceTopbar({
             </div>
 
             {/* Center: Page Selector */}
-            <div className="absolute left-1/2 -translate-x-1/2 flex items-center gap-4">
-                {/* Page Selector Pills */}
-                <div className="flex items-center gap-0.5 bg-muted/40 border border-border/40 rounded-[8px] p-[3px]">
-                    {pages.map((page) => {
-                        const Icon = PAGE_ICONS[page.key] || IconFile;
-                        const isActive = activePage === page.key;
-                        return (
-                            <button
-                                key={page.key}
-                                title={page.label}
-                                onClick={() => onPageChange(page.key)}
-                                className={cn(
-                                    "flex items-center gap-1.5 px-2.5 h-[26px] rounded-[5px] text-[11px] font-medium transition-all duration-150 whitespace-nowrap",
-                                    isActive
-                                        ? "bg-background text-foreground shadow-sm ring-1 ring-black/5 dark:ring-white/5"
-                                        : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
-                                )}
-                            >
-                                <Icon className="w-[14px] h-[14px] shrink-0" />
-                                <span className="hidden sm:inline">{page.label}</span>
-                            </button>
-                        );
-                    })}
-                </div>
+            <div className="absolute left-1/2 -translate-x-1/2 flex items-center gap-2">
+                {pages.map((page) => {
+                    const isActive = activePage === page.key;
+                    return (
+                        <button
+                            key={page.key}
+                            title={page.label}
+                            onClick={() => onPageChange(page.key)}
+                            className={cn(
+                                "relative px-3 h-11 flex items-center justify-center text-[12px] font-medium transition-colors whitespace-nowrap",
+                                isActive
+                                    ? "text-foreground"
+                                    : "text-muted-foreground hover:text-foreground"
+                            )}
+                        >
+                            {page.label}
+                            {isActive && (
+                                <span className="absolute bottom-0 inset-x-0 h-[2px] bg-primary rounded-t-full" />
+                            )}
+                        </button>
+                    );
+                })}
             </div>
 
             {/* Right: Dirty indicator + Actions */}

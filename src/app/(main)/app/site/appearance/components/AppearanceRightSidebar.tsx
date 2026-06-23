@@ -6,6 +6,7 @@ import { ComponentRegistry } from "@/templates/components";
 import type { ResolvedSection, SectionOverride } from "@/templates/types";
 import { useAppearanceState } from "../hooks/useAppearanceState";
 import { useSectionCustomizer } from "../hooks/useSectionCustomizer";
+import { useResolvedSections } from "../hooks/useResolvedSections";
 import { IconChevronLeft, IconAdjustments } from "@tabler/icons-react";
 
 interface AppearanceRightSidebarProps {
@@ -23,7 +24,8 @@ export function AppearanceRightSidebar({
     stateHelpers,
     onClose,
 }: AppearanceRightSidebarProps) {
-    const customizer = useSectionCustomizer(activePageKey, stateHelpers);
+    const resolvedConfig = useResolvedSections({ overrides: stateHelpers.overrides, additions: stateHelpers.additions, removals: stateHelpers.removals, ordering: stateHelpers.ordering } as any);
+    const customizer = useSectionCustomizer(activePageKey, stateHelpers, resolvedConfig.layout);
     const schema = selectedSection ? ComponentRegistry[selectedSection.componentKey] : null;
 
     return (
