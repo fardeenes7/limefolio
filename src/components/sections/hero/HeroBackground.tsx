@@ -175,7 +175,7 @@ export function HeroBackground({ section }: { section: ResolvedSection }) {
             case 'spotlight':
                 return (
                     <div className="absolute inset-0 w-full h-full pointer-events-none opacity-50">
-                        <Spotlight fill="white" />
+                        <Spotlight />
                     </div>
                 );
             case 'lamp':
@@ -188,12 +188,12 @@ export function HeroBackground({ section }: { section: ResolvedSection }) {
                 );
             default:
                 return (
-                    <div className="absolute inset-0 w-full h-full pointer-events-none bg-[url('https://res.cloudinary.com/djpkr1qhw/image/upload/v1727850239/noise_u5wz3y.png')] opacity-10 bg-repeat bg-[length:100px]" />
+                    <div className="absolute inset-0 w-full h-full pointer-events-none bg-[url('https://res.cloudinary.com/djpkr1qhw/image/upload/v1727850239/noise_u5wz3y.png')] opacity-10 bg-repeat bg-size-[100px]" />
                 );
         }
     }
 
     return (
-        <div className="absolute inset-0 w-full h-full pointer-events-none bg-[url('https://res.cloudinary.com/djpkr1qhw/image/upload/v1727850239/noise_u5wz3y.png')] opacity-10 bg-repeat bg-[length:100px]" />
+        <div className="absolute inset-0 w-full h-full pointer-events-none bg-[url('https://res.cloudinary.com/djpkr1qhw/image/upload/v1727850239/noise_u5wz3y.png')] opacity-10 bg-repeat bg-size-[100px]" />
     );
 }
