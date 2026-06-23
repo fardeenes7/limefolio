@@ -12,7 +12,7 @@ export const SAMPLE_DATA = {
     title: "Alex Rivera",
     tagline: "Senior Full-Stack Engineer · Building products people love",
     description:
-        "I design and ship full-stack web applications — from zero-to-one SaaS products to large-scale distributed systems. Currently focused on developer tools, AI-powered workflows, and everything that makes engineers faster.",
+        "I design and ship full-stack web applications — from zero-to-one SaaS products to large-scale distributed systems.",
     template: "default",
     theme: "default",
     font: "outfit",
