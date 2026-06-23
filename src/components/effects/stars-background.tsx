@@ -111,12 +111,22 @@ export const StarsBackground: React.FC<StarBackgroundProps> = ({
         let animationFrameId: number;
 
         const render = () => {
+            // Resolve the --foreground CSS variable to an actual color the canvas can use.
+            // We do this by asking the browser to compute the color on a temporary element.
+            const resolvedFg = getComputedStyle(document.documentElement)
+                .getPropertyValue("--foreground")
+                .trim();
+            // --foreground is an oklch(...) value; wrap it so canvas can parse it.
+            const starColor = resolvedFg ? `oklch(${resolvedFg})` : "#ffffff";
+
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             stars.forEach((star) => {
                 ctx.beginPath();
                 ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
-                ctx.fillStyle = `rgba(255, 255, 255, ${star.opacity})`;
+                ctx.globalAlpha = star.opacity;
+                ctx.fillStyle = starColor;
                 ctx.fill();
+                ctx.globalAlpha = 1;
 
                 if (star.twinkleSpeed !== null) {
                     star.opacity =

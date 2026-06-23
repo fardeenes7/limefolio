@@ -167,21 +167,21 @@ export function HeroBackground({ section }: { section: ResolvedSection }) {
                 );
             case 'stars_background':
                 return (
-                    <div className="absolute inset-0 w-full h-full pointer-events-none bg-slate-950 opacity-80">
+                    <div className="absolute inset-0 w-full h-full pointer-events-none overflow-hidden">
                         <StarsBackground />
                         <ShootingStars />
                     </div>
                 );
             case 'spotlight':
                 return (
-                    <div className="absolute inset-0 w-full h-full pointer-events-none opacity-50">
-                        <Spotlight />
+                    <div className="absolute inset-0 w-full h-full pointer-events-none overflow-hidden">
+                        <Spotlight className="-top-40 left-0 md:left-60 md:-top-20" fill="white" />
                     </div>
                 );
             case 'lamp':
                 return (
-                    <div className="absolute inset-0 w-full h-full pointer-events-none opacity-50">
-                        <LampContainer className="h-full pt-0 bg-transparent">
+                    <div className="absolute inset-0 w-full h-full pointer-events-none overflow-hidden">
+                        <LampContainer className="h-full min-h-full bg-transparent">
                             <div />
                         </LampContainer>
                     </div>
