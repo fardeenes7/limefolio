@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { ColorTokenSelect } from "./ColorTokenSelect";
+import { BackgroundTypePicker, BackgroundEffectPicker } from "./BackgroundPicker";
 import { IconUpload, IconX, IconRotate } from "@tabler/icons-react";
 import type { ComponentInput } from "@/templates/types";
 import { cn } from "@/lib/utils";
@@ -70,6 +71,15 @@ export function InputEditor({ input, value, defaultValue, isModified, onChange, 
 
         if (input.type.kind === "select") {
             const strValue = typeof value === 'string' ? value : '';
+
+            // Special visual pickers for hero background controls
+            if (input.key === "backgroundType") {
+                return <BackgroundTypePicker value={strValue} onChange={onChange} />;
+            }
+            if (input.key === "backgroundEffect") {
+                return <BackgroundEffectPicker value={strValue} onChange={onChange} />;
+            }
+
             return (
                 <Select value={strValue} onValueChange={onChange}>
                     <SelectTrigger className="h-8 text-[10px] md:text-[10px]">
