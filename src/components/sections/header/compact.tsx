@@ -1,6 +1,6 @@
 /**
  * Header — Compact Variant
- * Minimal single-line bar — no CTA pill, tighter padding, smaller font.
+ * Minimal single-line bar — tighter padding, smaller font.
  */
 import type { SectionProps } from '@/components/sections/_renderer/SectionRenderer';
 import Link from 'next/link';
@@ -8,18 +8,40 @@ import Link from 'next/link';
 export default function HeaderCompact({ section, siteData }: SectionProps) {
     const i = section.resolvedInputs as Record<string, unknown>;
     const sticky = i.sticky !== false;
+    const showNav = i.showNav !== false;
+    const ctaButton = i.ctaButton !== false;
+    const ctaLabel = (i.ctaLabel as string) || 'Hire Me';
+    const bottomBorder = i.bottomBorder === true;
     const title = siteData.title || 'Portfolio';
 
     return (
-        <header className={`${sticky ? 'sticky top-0 z-50' : 'relative'} border-b border-border bg-background`}>
+        <header className={`${sticky ? 'sticky top-0 z-50' : 'relative'} ${bottomBorder ? 'border-b border-border' : ''} bg-background transition-all`}>
             <div className="container max-w-7xl mx-auto flex items-center justify-between px-6 py-3">
-                <Link href="/" className="text-sm font-semibold text-foreground hover:text-primary transition-colors">
-                    {title}
+                <Link href="/" className="text-sm font-semibold text-foreground hover:text-primary transition-colors flex-shrink-0">
+                    {siteData.logo ? (
+                        <img src={siteData.logo} alt={title} className="h-6 w-auto" />
+                    ) : (
+                        title
+                    )}
                 </Link>
-                <nav className="flex items-center gap-5 text-xs font-medium text-muted-foreground">
-                    <Link href="/projects" className="hover:text-foreground transition-colors">Projects</Link>
-                    <Link href="/#contact" className="hover:text-foreground transition-colors">Contact</Link>
-                </nav>
+                <div className="flex items-center gap-5">
+                    {showNav && (
+                        <nav className="hidden items-center gap-5 text-xs font-medium text-muted-foreground sm:flex">
+                            <Link href="/projects" className="hover:text-foreground transition-colors">Projects</Link>
+                            <Link href="/#experience" className="hover:text-foreground transition-colors">Experience</Link>
+                            <Link href="/#skills" className="hover:text-foreground transition-colors">Skills</Link>
+                            <Link href="/#contact" className="hover:text-foreground transition-colors">Contact</Link>
+                        </nav>
+                    )}
+                    {ctaButton && (
+                        <Link
+                            href="/#contact"
+                            className="inline-flex items-center gap-1.5 rounded-full bg-primary px-3 py-1 text-xs font-medium text-primary-foreground transition-all hover:bg-primary/90"
+                        >
+                            {ctaLabel}
+                        </Link>
+                    )}
+                </div>
             </div>
         </header>
     );

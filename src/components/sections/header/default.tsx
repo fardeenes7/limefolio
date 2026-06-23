@@ -14,11 +14,12 @@ export default function HeaderDefault({ section, siteData }: SectionProps) {
     const showNav = i.showNav !== false;
     const ctaButton = i.ctaButton !== false;
     const ctaLabel = (i.ctaLabel as string) || 'Hire Me';
+    const bottomBorder = i.bottomBorder === true;
     const title = siteData.title || 'Portfolio';
 
     return (
         <header
-            className={`${sticky ? 'sticky top-0 z-50' : 'relative'} border-b border-border/60 bg-background/80 backdrop-blur-xl transition-all`}
+            className={`${sticky ? 'sticky top-0 z-50' : 'relative'} ${bottomBorder ? 'border-b border-border/60' : ''} bg-background/80 backdrop-blur-xl transition-all`}
         >
             <div className="container max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
                 {/* Logo / Site name */}

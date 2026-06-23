@@ -67,7 +67,7 @@ const header: ComponentSchema = {
         { key: 'default', label: 'Default' },
         { key: 'compact', label: 'Compact' },
         { key: 'centered', label: 'Centered' },
-        { key: 'split', label: 'Split' },
+        { key: 'editorial', label: 'Editorial' },
     ],
     defaultVariant: 'default',
     inputs: [
@@ -112,6 +112,25 @@ const header: ComponentSchema = {
             label: 'Transparent when at top of page',
             type: { kind: 'boolean' },
             default: false,
+        },
+        {
+            key: 'bottomBorder',
+            label: 'Show bottom border',
+            type: { kind: 'boolean' },
+            default: false,
+        },
+        {
+            key: 'bottomRowLayout',
+            label: 'Bottom row layout',
+            type: {
+                kind: 'select',
+                options: [
+                    { label: 'Centered', value: 'center' },
+                    { label: 'Space Between', value: 'between' },
+                ],
+            },
+            default: 'center',
+            showIf: { input: 'variant', equals: 'editorial' },
         },
     ],
 };
