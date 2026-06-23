@@ -41,7 +41,7 @@ export function InputEditor({ input, value, defaultValue, isModified, onChange, 
                         value={strValue} 
                         onChange={(e) => onChange(e.target.value)} 
                         placeholder={typeof defaultValue === 'string' ? defaultValue : ''}
-                        className="resize-y min-h-[80px] text-xs"
+                        className="resize-y min-h-[64px] text-[10px] md:text-xs"
                     />
                 );
             }
@@ -50,7 +50,7 @@ export function InputEditor({ input, value, defaultValue, isModified, onChange, 
                     value={strValue} 
                     onChange={(e) => onChange(e.target.value)} 
                     placeholder={typeof defaultValue === 'string' ? defaultValue : ''}
-                    className="h-8 text-xs"
+                    className="h-8 text-[10px] md:text-xs"
                 />
             );
         }
@@ -62,7 +62,7 @@ export function InputEditor({ input, value, defaultValue, isModified, onChange, 
                         checked={!!value} 
                         onCheckedChange={onChange} 
                         id={`input-${input.key}`}
-                        className="scale-75 origin-right"
+                        className="scale-90 origin-right"
                     />
                 </div>
             );
@@ -72,12 +72,12 @@ export function InputEditor({ input, value, defaultValue, isModified, onChange, 
             const strValue = typeof value === 'string' ? value : '';
             return (
                 <Select value={strValue} onValueChange={onChange}>
-                    <SelectTrigger className="h-8 text-xs">
+                    <SelectTrigger className="h-8 text-[10px] md:text-[10px]">
                         <SelectValue placeholder="Select..." />
                     </SelectTrigger>
                     <SelectContent>
                         {input.type.options.map((opt) => (
-                            <SelectItem key={opt.value} value={opt.value} className="text-xs">
+                            <SelectItem key={opt.value} value={opt.value} className="text-[10px] md:text-[10px]">
                                 {opt.label}
                             </SelectItem>
                         ))}
@@ -96,7 +96,7 @@ export function InputEditor({ input, value, defaultValue, isModified, onChange, 
                     value={strValue} 
                     onChange={(e) => onChange(e.target.value)} 
                     placeholder="e.g. var(--radius)"
-                    className="h-8 text-xs"
+                    className="h-8 text-[10px] md:text-[10px]"
                 />
             );
         }
@@ -112,11 +112,11 @@ export function InputEditor({ input, value, defaultValue, isModified, onChange, 
                             )}
                         </div>
                     )}
-                    <Button variant="outline" size="sm" className="w-full h-8 text-xs px-2" onClick={() => {
+                    <Button variant="outline" size="sm" className="w-full h-8 text-[10px] md:text-[10px] px-2" onClick={() => {
                         const promptVal = prompt("Enter file URL", strValue);
                         if (promptVal !== null) onChange(promptVal);
                     }}>
-                        <IconUpload className="w-3 h-3 mr-1.5" />
+                        <IconUpload className="w-3.5 h-3.5 mr-1" />
                         {strValue ? "Change" : "Upload"}
                     </Button>
                 </div>
@@ -131,7 +131,7 @@ export function InputEditor({ input, value, defaultValue, isModified, onChange, 
             <Label 
                 htmlFor={`input-${input.key}`} 
                 className={cn(
-                    "text-[11px] font-medium text-muted-foreground truncate",
+                    "text-[10px] md:text-[10px] font-medium text-foreground/80 truncate",
                     isModified && "text-foreground"
                 )}
             >
@@ -139,19 +139,19 @@ export function InputEditor({ input, value, defaultValue, isModified, onChange, 
             </Label>
             {isModified && (
                 <div 
-                    className="w-1 h-1 rounded-full bg-primary shrink-0" 
+                    className="w-1.5 h-1.5 rounded-full bg-primary shrink-0" 
                     title="Modified"
                 />
             )}
         </div>
     );
 
-    if (compact && (isBoolean || isSmallText)) {
+    if (compact && isBoolean) {
         return (
-            <div className="flex items-center justify-between gap-4 py-1 border-b border-border/50 last:border-0">
+            <div className="flex items-center justify-between gap-3 py-1 border-b border-border/40 last:border-0">
                 {labelContent}
                 <div className="flex items-center gap-2 shrink-0">
-                    <div className={cn(isBoolean ? "w-10" : "w-32")}>
+                    <div className="w-10">
                         {renderControl()}
                     </div>
                     {isModified && (
@@ -160,7 +160,7 @@ export function InputEditor({ input, value, defaultValue, isModified, onChange, 
                             className="text-muted-foreground hover:text-foreground transition-colors"
                             title="Reset to default"
                         >
-                            <IconRotate className="w-3 h-3" />
+                            <IconRotate className="w-3.5 h-3.5" />
                         </button>
                     )}
                 </div>
@@ -169,7 +169,7 @@ export function InputEditor({ input, value, defaultValue, isModified, onChange, 
     }
 
     return (
-        <div className="flex flex-col gap-1.5 py-1">
+        <div className="flex flex-col gap-1.5 py-1.5">
             <div className="flex items-center justify-between">
                 {labelContent}
                 {isModified && (
@@ -178,7 +178,7 @@ export function InputEditor({ input, value, defaultValue, isModified, onChange, 
                         className="text-muted-foreground hover:text-foreground p-1 rounded-full hover:bg-muted transition-colors"
                         title="Reset to default"
                     >
-                        <IconRotate className="w-3.5 h-3.5" />
+                        <IconRotate className="w-4 h-4" />
                     </button>
                 )}
             </div>

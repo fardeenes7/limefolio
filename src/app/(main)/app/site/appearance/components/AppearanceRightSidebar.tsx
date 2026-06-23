@@ -29,19 +29,19 @@ export function AppearanceRightSidebar({
     return (
         <div
             className="flex flex-col h-full border-l border-border bg-background shrink-0"
-            style={{ width: 260 }}
+            style={{ width: 280 }}
         >
             {selectedSection ? (
                 <>
                     {/* Header with breadcrumb back */}
-                    <div className="flex items-center gap-1.5 px-3 h-11 border-b border-border bg-muted/20 shrink-0">
+                    <div className="flex items-center gap-2 px-3 h-12 border-b border-border bg-background shrink-0">
                         <button
                             onClick={onClose}
-                            className="flex items-center justify-center w-6 h-6 rounded-md text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
+                            className="flex items-center justify-center w-7 h-7 rounded-md text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
                         >
                             <IconChevronLeft className="w-4 h-4" />
                         </button>
-                        <span className="text-[12px] font-semibold text-foreground tracking-tight truncate ml-1">
+                        <span className="text-[13px] font-medium text-foreground tracking-tight truncate">
                             {schema?.label ?? selectedSection.componentKey}
                         </span>
                     </div>
@@ -65,13 +65,13 @@ export function AppearanceRightSidebar({
                 </>
             ) : (
                 /* Empty state */
-                <div className="flex flex-col items-center justify-center h-full gap-3 p-6 text-center">
-                    <div className="w-9 h-9 rounded-xl bg-muted flex items-center justify-center">
-                        <IconAdjustments className="w-4 h-4 text-muted-foreground" />
+                <div className="flex flex-col items-center justify-center h-full gap-2 p-4 text-center">
+                    <div className="w-7 h-7 rounded-lg bg-muted flex items-center justify-center">
+                        <IconAdjustments className="w-3.5 h-3.5 text-muted-foreground" />
                     </div>
                     <div>
-                        <p className="text-[12px] font-medium text-foreground">Section options</p>
-                        <p className="text-[11px] text-muted-foreground mt-0.5 leading-snug">
+                        <p className="text-[11px] font-medium text-foreground">Section options</p>
+                        <p className="text-[10px] text-muted-foreground mt-0.5 leading-snug">
                             Select a section from the left to edit its options
                         </p>
                     </div>

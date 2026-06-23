@@ -117,8 +117,8 @@ function SortableSectionRow({
             style={style}
             onClick={onSelect}
             className={cn(
-                "flex items-center px-2 h-9 transition-all cursor-pointer group select-none border border-transparent",
-                isSelected ? "bg-primary/10 text-primary shadow-sm ring-1 ring-primary/20" : "hover:bg-muted/70 text-foreground/80",
+                "flex items-center px-2 h-10 transition-all cursor-pointer group select-none border border-transparent",
+                isSelected ? "bg-primary/10 text-primary" : "hover:bg-muted/70 text-foreground/80",
                 isDragging && "opacity-60 ring-2 ring-primary bg-background shadow-xl z-50",
                 isRemoved && "opacity-40"
             )}
@@ -256,7 +256,7 @@ export function SectionList({
                         items={sectionsToRender.map(s => s.instanceId)}
                         strategy={verticalListSortingStrategy}
                     >
-                        <div className="flex flex-col gap-1.5">
+                        <div className="flex flex-col">
                             {sectionsToRender.map((section) => {
                                 const isRemoved = removalsSource.includes(section.instanceId);
                                 const override = overridesSource[section.instanceId] || {};
