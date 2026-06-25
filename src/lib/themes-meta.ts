@@ -24,6 +24,8 @@ export interface ThemeMeta {
     swatches: [string, string, string];
     /** Default radius for this theme */
     radius?: number;
+    /** Default mode if the theme works better in a specific mode */
+    defaultMode?: "light" | "dark";
     /** Array of suggested primary hex colors for this theme */
     suggestedPrimaryColors?: string[];
 }
@@ -38,19 +40,9 @@ export const THEMES_META: ThemeMeta[] = [
         category: "minimal",
         hasDark: true,
         suggestedPrimaryColors: ["#000000", "#2563eb", "#16a34a", "#dc2626"],
-        swatches: ["oklch(1 0 0)", "oklch(0.205 0 0)", "oklch(0.97 0 0)"],
+        swatches: ["oklch(1 0 0)", "oklch(0.205 0 0)", "oklch(0.97 0 0)"]
     },
-    {
-        name: "Dark",
-        slug: "dark",
-        radius: 0.5,
-        description: "High-contrast dark theme",
-        category: "minimal",
-        hasDark: false,
-        suggestedPrimaryColors: ["#ffffff", "#3b82f6", "#10b981", "#ef4444"],
-        swatches: ["oklch(0.145 0 0)", "oklch(0.87 0 0)", "oklch(0.371 0 0)"],
-    },
-
+   
     // ── Minimal / Professional ────────────────────────────────────────────────
     {
         name: "Caffeine",
@@ -63,8 +55,8 @@ export const THEMES_META: ThemeMeta[] = [
         swatches: [
             "oklch(0.9821 0 0)",
             "oklch(0.4341 0.0392 41.9938)",
-            "oklch(0.9310 0 0)",
-        ],
+            "oklch(0.9310 0 0)"
+        ]
     },
 
     {
@@ -78,8 +70,8 @@ export const THEMES_META: ThemeMeta[] = [
         swatches: [
             "oklch(0.9551 0 0)",
             "oklch(0.4891 0 0)",
-            "oklch(0.8078 0 0)",
-        ],
+            "oklch(0.8078 0 0)"
+        ]
     },
 
     {
@@ -93,8 +85,8 @@ export const THEMES_META: ThemeMeta[] = [
         swatches: [
             "oklch(0.9529 0.0146 102.4597)",
             "oklch(0.6083 0.0623 44.3588)",
-            "oklch(0.8502 0.0389 49.0874)",
-        ],
+            "oklch(0.8502 0.0389 49.0874)"
+        ]
     },
     {
         name: "Tangerine",
@@ -107,8 +99,8 @@ export const THEMES_META: ThemeMeta[] = [
         swatches: [
             "oklch(0.9383 0.0042 236.4993)",
             "oklch(0.6397 0.1720 36.4421)",
-            "oklch(0.9119 0.0222 243.8174)",
-        ],
+            "oklch(0.9119 0.0222 243.8174)"
+        ]
     },
 
     // ── Colorful / Playful ────────────────────────────────────────────────────
@@ -123,8 +115,8 @@ export const THEMES_META: ThemeMeta[] = [
         swatches: [
             "oklch(0.9777 0.0041 301.4256)",
             "oklch(0.6104 0.0767 299.7335)",
-            "oklch(0.7889 0.0802 359.9375)",
-        ],
+            "oklch(0.7889 0.0802 359.9375)"
+        ]
     },
     {
         name: "Bubblegum",
@@ -137,8 +129,8 @@ export const THEMES_META: ThemeMeta[] = [
         swatches: [
             "oklch(0.9399 0.0203 345.6985)",
             "oklch(0.6209 0.1801 348.1385)",
-            "oklch(0.9195 0.0801 87.667)",
-        ],
+            "oklch(0.9195 0.0801 87.667)"
+        ]
     },
 
     {
@@ -152,8 +144,8 @@ export const THEMES_META: ThemeMeta[] = [
         swatches: [
             "oklch(0.9689 0.0090 314.7819)",
             "oklch(0.7090 0.1592 293.5412)",
-            "oklch(0.9376 0.0260 321.9388)",
-        ],
+            "oklch(0.9376 0.0260 321.9388)"
+        ]
     },
     {
         name: "Soft Pop",
@@ -166,8 +158,8 @@ export const THEMES_META: ThemeMeta[] = [
         swatches: [
             "oklch(0.9789 0.0082 121.6272)",
             "oklch(0.5106 0.2301 276.9656)",
-            "oklch(0.7686 0.1647 70.0804)",
-        ],
+            "oklch(0.7686 0.1647 70.0804)"
+        ]
     },
 
     // ── Nature ────────────────────────────────────────────────────────────────
@@ -182,8 +174,8 @@ export const THEMES_META: ThemeMeta[] = [
         swatches: [
             "oklch(0.9711 0.0074 80.7211)",
             "oklch(0.5234 0.1347 144.1672)",
-            "oklch(0.8952 0.0504 146.0366)",
-        ],
+            "oklch(0.8952 0.0504 146.0366)"
+        ]
     },
 
     {
@@ -197,8 +189,8 @@ export const THEMES_META: ThemeMeta[] = [
         swatches: [
             "oklch(0.9885 0.0057 84.5659)",
             "oklch(0.5553 0.1455 48.9975)",
-            "oklch(0.9000 0.0500 74.9889)",
-        ],
+            "oklch(0.9000 0.0500 74.9889)"
+        ]
     },
     {
         name: "Midnight Bloom",
@@ -211,8 +203,8 @@ export const THEMES_META: ThemeMeta[] = [
         swatches: [
             "oklch(0.9821 0 0)",
             "oklch(0.5676 0.2021 283.0838)",
-            "oklch(0.6475 0.0642 117.4260)",
-        ],
+            "oklch(0.6475 0.0642 117.4260)"
+        ]
     },
 
     // ── Retro / Stylized ──────────────────────────────────────────────────────
@@ -227,8 +219,8 @@ export const THEMES_META: ThemeMeta[] = [
         swatches: [
             "oklch(0.9578 0.0058 264.5321)",
             "oklch(0.5547 0.2503 297.0156)",
-            "oklch(0.6820 0.1448 235.3822)",
-        ],
+            "oklch(0.6820 0.1448 235.3822)"
+        ]
     },
     {
         name: "Claymorphism",
@@ -241,8 +233,8 @@ export const THEMES_META: ThemeMeta[] = [
         swatches: [
             "oklch(0.9232 0.0026 48.7171)",
             "oklch(0.5854 0.2041 277.1173)",
-            "oklch(0.9376 0.0260 321.9388)",
-        ],
+            "oklch(0.9376 0.0260 321.9388)"
+        ]
     },
     {
         name: "Cosmic Night",
@@ -251,12 +243,13 @@ export const THEMES_META: ThemeMeta[] = [
         description: "Deep space indigo with violet glow",
         category: "retro",
         hasDark: true,
+        defaultMode: "dark",
         suggestedPrimaryColors: ["#8b5cf6", "#a855f7", "#c084fc", "#3b82f6"],
         swatches: [
             "oklch(0.9730 0.0133 286.1503)",
             "oklch(0.5417 0.1790 288.0332)",
-            "oklch(0.9221 0.0373 262.1410)",
-        ],
+            "oklch(0.9221 0.0373 262.1410)"
+        ]
     },
     {
         name: "Cyberpunk",
@@ -265,12 +258,13 @@ export const THEMES_META: ThemeMeta[] = [
         description: "Neon pink and cyber-green on dark navy",
         category: "retro",
         hasDark: true,
+        defaultMode: "dark",
         suggestedPrimaryColors: ["#fdf001", "#ff003c", "#00ff00", "#00f0ff"],
         swatches: [
             "oklch(0.9816 0.0017 247.8390)",
             "oklch(0.6726 0.2904 341.4084)",
-            "oklch(0.8903 0.1739 171.2690)",
-        ],
+            "oklch(0.8903 0.1739 171.2690)"
+        ]
     },
     {
         name: "Darkmatter",
@@ -279,25 +273,28 @@ export const THEMES_META: ThemeMeta[] = [
         description: "Near-black with amber terminal accents",
         category: "retro",
         hasDark: true,
+        defaultMode: "dark",
         suggestedPrimaryColors: ["#f59e0b", "#fbbf24", "#d97706", "#ea580c"],
         swatches: [
             "oklch(1 0 0)",
             "oklch(0.6716 0.1368 48.5130)",
-            "oklch(0.9491 0 0)",
-        ],
+            "oklch(0.9491 0 0)"
+        ]
     },
     {
         name: "Doom 64",
         slug: "doom-64",
+        radius: 0,
         description: "Grey pixel palette with blood-orange",
         category: "retro",
         hasDark: true,
+        defaultMode: "dark",
         suggestedPrimaryColors: ["#dc2626", "#b91c1c", "#991b1b", "#7f1d1d"],
         swatches: [
             "oklch(0.8452 0 0)",
             "oklch(0.5016 0.1887 27.4816)",
-            "oklch(0.5880 0.0993 245.7394)",
-        ],
+            "oklch(0.5880 0.0993 245.7394)"
+        ]
     },
     {
         name: "Starry Night",
@@ -306,12 +303,13 @@ export const THEMES_META: ThemeMeta[] = [
         description: "Van Gogh midnight blue with golden accents",
         category: "retro",
         hasDark: true,
+        defaultMode: "dark",
         suggestedPrimaryColors: ["#facc15", "#eab308", "#ca8a04", "#a16207"],
         swatches: [
             "oklch(0.9755 0.0045 258.3245)",
             "oklch(0.4815 0.1178 263.3758)",
-            "oklch(0.6896 0.0714 234.0387)",
-        ],
+            "oklch(0.6896 0.0714 234.0387)"
+        ]
     },
     {
         name: "Vintage Paper",
@@ -324,8 +322,8 @@ export const THEMES_META: ThemeMeta[] = [
         swatches: [
             "oklch(0.9582 0.0152 90.2357)",
             "oklch(0.6180 0.0778 65.5444)",
-            "oklch(0.8348 0.0426 88.8064)",
-        ],
+            "oklch(0.8348 0.0426 88.8064)"
+        ]
     },
     // ── Brand-inspired ────────────────────────────────────────────────────────
     {
@@ -339,8 +337,8 @@ export const THEMES_META: ThemeMeta[] = [
         swatches: [
             "oklch(1 0 0)",
             "oklch(0.6056 0.2189 292.7172)",
-            "oklch(0.9319 0.0316 255.5855)",
-        ],
+            "oklch(0.9319 0.0316 255.5855)"
+        ]
     },
     {
         name: "Claude",
@@ -353,8 +351,8 @@ export const THEMES_META: ThemeMeta[] = [
         swatches: [
             "oklch(0.9818 0.0054 95.0986)",
             "oklch(0.6171 0.1375 39.0427)",
-            "oklch(0.9245 0.0138 92.9892)",
-        ],
+            "oklch(0.9245 0.0138 92.9892)"
+        ]
     },
     {
         name: "Elegant Luxury",
@@ -367,8 +365,8 @@ export const THEMES_META: ThemeMeta[] = [
         swatches: [
             "oklch(0.9779 0.0042 56.3756)",
             "oklch(0.4650 0.1470 24.9381)",
-            "oklch(0.9619 0.0580 95.6174)",
-        ],
+            "oklch(0.9619 0.0580 95.6174)"
+        ]
     },
     {
         name: "Twitter",
@@ -381,8 +379,8 @@ export const THEMES_META: ThemeMeta[] = [
         swatches: [
             "oklch(1 0 0)",
             "oklch(0.6723 0.1606 244.9955)",
-            "oklch(0.9392 0.0166 250.8453)",
-        ],
+            "oklch(0.9392 0.0166 250.8453)"
+        ]
     },
     {
         name: "Limefolio",
@@ -392,8 +390,12 @@ export const THEMES_META: ThemeMeta[] = [
         category: "brand",
         hasDark: true,
         suggestedPrimaryColors: ["#65a30d", "#84cc16", "#4d7c0f", "#3f6212"],
-        swatches: ["oklch(0.99 0 0)", "oklch(0.8 0.18 135)", "oklch(0.94 0.05 135)"],
-    },
+        swatches: [
+            "oklch(0.99 0 0)",
+            "oklch(0.8 0.18 135)",
+            "oklch(0.94 0.05 135)"
+        ]
+    }
 ];
 
 // ── Fonts ─────────────────────────────────────────────────────────────────────
@@ -412,79 +414,79 @@ export const FONTS_META: FontMeta[] = [
         name: "Inter",
         slug: "inter",
         category: "sans",
-        previewStack: "'Inter', sans-serif",
+        previewStack: "'Inter', sans-serif"
     },
     {
         name: "Figtree",
         slug: "figtree",
         category: "sans",
-        previewStack: "'Figtree', sans-serif",
+        previewStack: "'Figtree', sans-serif"
     },
     {
         name: "Outfit",
         slug: "outfit",
         category: "sans",
-        previewStack: "'Outfit', sans-serif",
+        previewStack: "'Outfit', sans-serif"
     },
     {
         name: "Plus Jakarta Sans",
         slug: "plus-jakarta-sans",
         category: "sans",
-        previewStack: "'Plus Jakarta Sans', sans-serif",
+        previewStack: "'Plus Jakarta Sans', sans-serif"
     },
     {
         name: "DM Sans",
         slug: "dm-sans",
         category: "sans",
-        previewStack: "'DM Sans', sans-serif",
+        previewStack: "'DM Sans', sans-serif"
     },
     {
         name: "Nunito",
         slug: "nunito",
         category: "sans",
-        previewStack: "'Nunito', sans-serif",
+        previewStack: "'Nunito', sans-serif"
     },
     {
         name: "Raleway",
         slug: "raleway",
         category: "sans",
-        previewStack: "'Raleway', sans-serif",
+        previewStack: "'Raleway', sans-serif"
     },
     {
         name: "Lato",
         slug: "lato",
         category: "sans",
-        previewStack: "'Lato', sans-serif",
+        previewStack: "'Lato', sans-serif"
     },
     {
         name: "Poppins",
         slug: "poppins",
         category: "sans",
-        previewStack: "'Poppins', sans-serif",
+        previewStack: "'Poppins', sans-serif"
     },
     {
         name: "Space Grotesk",
         slug: "space-grotesk",
         category: "sans",
-        previewStack: "'Space Grotesk', sans-serif",
+        previewStack: "'Space Grotesk', sans-serif"
     },
     {
         name: "Sora",
         slug: "sora",
         category: "sans",
-        previewStack: "'Sora', sans-serif",
+        previewStack: "'Sora', sans-serif"
     },
     {
         name: "Manrope",
         slug: "manrope",
         category: "sans",
-        previewStack: "'Manrope', sans-serif",
+        previewStack: "'Manrope', sans-serif"
     },
     {
         name: "Geist Sans",
         slug: "geist-sans",
         category: "sans",
-        previewStack: "'Geist', 'GeistSans', sans-serif",
+        previewStack: "'Geist', 'GeistSans', sans-serif"
     },
 
     // ── Display ───────────────────────────────────────────────────────────────
@@ -492,19 +494,19 @@ export const FONTS_META: FontMeta[] = [
         name: "Bricolage Grotesque",
         slug: "bricolage-grotesque",
         category: "display",
-        previewStack: "'Bricolage Grotesque', sans-serif",
+        previewStack: "'Bricolage Grotesque', sans-serif"
     },
     {
         name: "Playfair Display",
         slug: "playfair-display",
         category: "display",
-        previewStack: "'Playfair Display', Georgia, serif",
+        previewStack: "'Playfair Display', Georgia, serif"
     },
     {
         name: "DM Serif Display",
         slug: "dm-serif-display",
         category: "display",
-        previewStack: "'DM Serif Display', Georgia, serif",
+        previewStack: "'DM Serif Display', Georgia, serif"
     },
 
     // ── Serif ─────────────────────────────────────────────────────────────────
@@ -512,13 +514,13 @@ export const FONTS_META: FontMeta[] = [
         name: "Lora",
         slug: "lora",
         category: "serif",
-        previewStack: "'Lora', Georgia, serif",
+        previewStack: "'Lora', Georgia, serif"
     },
     {
         name: "Cormorant Garamond",
         slug: "cormorant-garamond",
         category: "serif",
-        previewStack: "'Cormorant Garamond', Georgia, serif",
+        previewStack: "'Cormorant Garamond', Georgia, serif"
     },
 
     // ── Mono ──────────────────────────────────────────────────────────────────
@@ -526,24 +528,24 @@ export const FONTS_META: FontMeta[] = [
         name: "Geist Mono",
         slug: "geist-mono",
         category: "mono",
-        previewStack: "'Geist Mono', 'GeistMono', monospace",
+        previewStack: "'Geist Mono', 'GeistMono', monospace"
     },
     {
         name: "JetBrains Mono",
         slug: "jetbrains-mono",
         category: "mono",
-        previewStack: "'JetBrains Mono', monospace",
+        previewStack: "'JetBrains Mono', monospace"
     },
     {
         name: "Fira Code",
         slug: "fira-code",
         category: "mono",
-        previewStack: "'Fira Code', monospace",
+        previewStack: "'Fira Code', monospace"
     },
     {
         name: "Source Code Pro",
         slug: "source-code-pro",
         category: "mono",
-        previewStack: "'Source Code Pro', monospace",
-    },
+        previewStack: "'Source Code Pro', monospace"
+    }
 ];

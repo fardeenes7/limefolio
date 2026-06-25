@@ -112,8 +112,14 @@ export function AppearanceSidebar({
                                                 <ThemeSwatch
                                                     key={theme.slug}
                                                     theme={theme}
-                                                    isSelected={stateHelpers.selectedTheme === theme.slug}
-                                                    onClick={() => stateHelpers.setTheme(theme.slug)}
+                                                    isSelected={stateHelpers.selectedTheme === theme.slug || stateHelpers.selectedTheme === `${theme.slug}-dark`}
+                                                    onClick={() => {
+                                                        if (theme.defaultMode === "dark" && theme.hasDark !== false) {
+                                                            stateHelpers.setTheme(`${theme.slug}-dark`);
+                                                        } else {
+                                                            stateHelpers.setTheme(theme.slug);
+                                                        }
+                                                    }}
                                                 />
                                             ))}
                                         </div>

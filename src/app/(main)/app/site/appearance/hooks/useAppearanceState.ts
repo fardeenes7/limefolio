@@ -138,6 +138,11 @@ export function useAppearanceState({ initialConfigRaw }: UseAppearanceStateProps
         setOrdering({});
     }, []);
 
+    const handleThemeSwitch = useCallback((newThemeKey: string) => {
+        setSelectedTheme(newThemeKey);
+        setThemeOverrides({});
+    }, []);
+
     return {
         selectedTemplate,
         selectedTheme,
@@ -148,7 +153,7 @@ export function useAppearanceState({ initialConfigRaw }: UseAppearanceStateProps
         removals,
         ordering,
         setTemplate: handleTemplateSwitch,
-        setTheme: setSelectedTheme,
+        setTheme: handleThemeSwitch,
         setFont: setSelectedFont,
         setThemeOverrides,
         setOverrides,

@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { useAppearanceState } from "../hooks/useAppearanceState";
 import { IconPalette, IconWand } from "@tabler/icons-react";
 import { THEMES_META } from "@/lib/themes-meta";
+import { Switch } from "@/components/ui/switch";
 
 interface ThemeCustomizerProps {
     stateHelpers: ReturnType<typeof useAppearanceState>;
@@ -26,8 +27,10 @@ const CUSTOMIZABLE_VARIABLES = [
 ];
 
 export function ThemeCustomizer({ stateHelpers }: ThemeCustomizerProps) {
-    const { themeOverrides, setThemeOverrides, selectedTheme } = stateHelpers;
-    const currentThemeMeta = THEMES_META.find(t => t.slug === selectedTheme);
+    const { themeOverrides, setThemeOverrides, selectedTheme, setTheme } = stateHelpers;
+    const isDarkActive = selectedTheme.endsWith("-dark");
+    const baseSlug = isDarkActive ? selectedTheme.replace("-dark", "") : selectedTheme;
+    const currentThemeMeta = THEMES_META.find(t => t.slug === baseSlug);
     const [activeColors, setActiveColors] = useState<Record<string, string>>({});
 
     useEffect(() => {
@@ -54,8 +57,30 @@ export function ThemeCustomizer({ stateHelpers }: ThemeCustomizerProps) {
 
 
 
+    const handleDarkModeToggle = (checked: boolean) => {
+        if (checked) {
+            setTheme(`${baseSlug}-dark`);
+        } else {
+            setTheme(baseSlug);
+        }
+    };
+
+    const supportsDark = currentThemeMeta?.hasDark !== false;
+
     return (
         <div className="p-3 space-y-4">
+            {supportsDark && (
+                <div className="flex items-center justify-between pb-3 border-b border-border">
+                    <label className="text-xs font-medium text-foreground">
+                        Dark Mode
+                    </label>
+                    <Switch
+                        checked={isDarkActive}
+                        onCheckedChange={handleDarkModeToggle}
+                        className="scale-75"
+                    />
+                </div>
+            )}
             <div className="flex items-center justify-between">
                 <span className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground/70">
                     Customize Colors

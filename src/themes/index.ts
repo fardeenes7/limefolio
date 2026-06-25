@@ -40,13 +40,6 @@ export const ColorThemes: Record<string, ColorThemeConfig> = {
         hasDark: true,
         category: "minimal",
     },
-    dark: {
-        name: "Dark",
-        slug: "dark",
-        description: "High-contrast dark theme",
-        hasDark: false,
-        category: "minimal",
-    },
 
     // ── Colorful / Playful ───────────────────────────────────────────────────
     "amethyst-haze": {

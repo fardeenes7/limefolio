@@ -11,6 +11,9 @@ import { LayoutPageRenderer } from "@/components/sections/_renderer/PageRenderer
 import { resolvePortfolioConfig, emptyUserConfig } from "@/templates/merge";
 import { getTemplate } from "@/templates/registry";
 import { LivePreviewProvider } from "@/components/preview/LivePreviewProvider";
+import { THEMES_META } from "@/lib/themes-meta";
+
+const allThemes = THEMES_META.flatMap(t => [t.slug, `${t.slug}-dark`]);
 
 export const metadata: Metadata = {
     title: "Create Next App",
@@ -75,6 +78,7 @@ export default async function DomainLayout({
             <ThemeProvider
                 attribute="class"
                 defaultTheme="default"
+                themes={allThemes}
                 enableSystem={false}
                 disableTransitionOnChange
             >
@@ -135,6 +139,7 @@ export default async function DomainLayout({
                 <ThemeProvider
                     attribute="class"
                     defaultTheme={colorThemeSlug}
+                    themes={allThemes}
                     enableSystem={false}
                     disableTransitionOnChange
                 >
