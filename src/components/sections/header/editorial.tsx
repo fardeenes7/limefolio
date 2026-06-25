@@ -62,7 +62,7 @@ export default function HeaderEditorial({ section, siteData }: SectionProps) {
                         <div className="flex items-center">
                             <Link
                                 href="/#contact"
-                                className="inline-flex items-center gap-1.5 rounded-full bg-primary px-5 py-1.5 text-xs font-semibold uppercase tracking-wider text-primary-foreground transition-all hover:bg-primary/90"
+                                className="inline-flex items-center gap-1.5 rounded-[var(--radius-button)] bg-primary px-5 py-1.5 text-xs font-semibold uppercase tracking-wider text-primary-foreground transition-all hover:bg-primary/90"
                             >
                                 {ctaLabel}
                             </Link>

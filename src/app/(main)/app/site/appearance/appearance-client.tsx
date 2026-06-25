@@ -25,13 +25,14 @@ export function AppearanceClient({ initialSite, initialConfigRaw }: AppearanceCl
     const { save, isSaving } = useSaveAppearance({ onSuccess: () => {} });
 
     const draftConfig = {
-        templateKey: stateHelpers.selectedTemplate,
-        themeKey:    stateHelpers.selectedTheme,
-        fontKey:     stateHelpers.selectedFont,
-        overrides:   stateHelpers.overrides,
-        additions:   stateHelpers.additions,
-        removals:    stateHelpers.removals,
-        ordering:    stateHelpers.ordering,
+        templateKey:    stateHelpers.selectedTemplate,
+        themeKey:       stateHelpers.selectedTheme,
+        fontKey:        stateHelpers.selectedFont,
+        themeOverrides: stateHelpers.themeOverrides,
+        overrides:      stateHelpers.overrides,
+        additions:      stateHelpers.additions,
+        removals:       stateHelpers.removals,
+        ordering:       stateHelpers.ordering,
     };
 
     const debouncedConfig = useDebouncedConfig(draftConfig, 400);
@@ -125,6 +126,7 @@ export function AppearanceClient({ initialSite, initialConfigRaw }: AppearanceCl
 
                 {/* Right: section detail options */}
                 <AppearanceRightSidebar
+                    activeLeftTab={activeLeftTab}
                     activePageKey={activePage}
                     selectedSection={selectedSection}
                     selectedOverride={selectedOverride}

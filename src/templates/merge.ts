@@ -72,6 +72,7 @@ export function resolvePortfolioConfig(
 ): ResolvedPortfolioConfig {
     const themeKey = userConfig.themeKey ?? template.defaultTheme;
     const fontKey = userConfig.fontKey ?? template.defaultFont;
+    const themeOverrides = userConfig.themeOverrides ?? {};
 
     // Resolve layout sections (rendered by layout.tsx)
     const resolvedLayout = resolveContext(
@@ -109,6 +110,7 @@ export function resolvePortfolioConfig(
         templateKey: userConfig.templateKey ?? template.key,
         themeKey,
         fontKey,
+        themeOverrides,
         layout: resolvedLayout,
         pages: resolvedPages,
     };
@@ -137,6 +139,7 @@ export function emptyUserConfig(
         themeKey,
         fontKey,
         templateVersion,
+        themeOverrides: {},
         overrides: { layout: {}, pages: {} },
         additions: { layout: [], pages: {} },
         removals: { layout: [], pages: {} },

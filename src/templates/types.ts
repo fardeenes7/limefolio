@@ -251,6 +251,7 @@ export type UserPortfolioConfig = {
     themeKey: string;
     fontKey: string;
     templateVersion: string;
+    themeOverrides: Record<string, string>;
     overrides: {
         /** keyed by instanceId */
         layout: Record<string, SectionOverride>;
@@ -320,6 +321,7 @@ export type ResolvedPortfolioConfig = {
     templateKey: string;
     themeKey: string;
     fontKey: string;
+    themeOverrides: Record<string, string>;
     layout: ResolvedSection[];
     pages: ResolvedPage[];
 };

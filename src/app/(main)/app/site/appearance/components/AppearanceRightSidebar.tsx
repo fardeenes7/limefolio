@@ -7,9 +7,12 @@ import type { ResolvedSection, SectionOverride } from "@/templates/types";
 import { useAppearanceState } from "../hooks/useAppearanceState";
 import { useSectionCustomizer } from "../hooks/useSectionCustomizer";
 import { useResolvedSections } from "../hooks/useResolvedSections";
-import { IconChevronLeft, IconAdjustments } from "@tabler/icons-react";
+import { IconChevronLeft, IconAdjustments, IconPalette } from "@tabler/icons-react";
+import { ThemeCustomizer } from "./ThemeCustomizer";
+import type { LeftTab } from "./AppearanceLeftSidebar";
 
 interface AppearanceRightSidebarProps {
+    activeLeftTab: LeftTab;
     activePageKey: string;
     selectedSection: ResolvedSection | null;
     selectedOverride: SectionOverride;
@@ -18,6 +21,7 @@ interface AppearanceRightSidebarProps {
 }
 
 export function AppearanceRightSidebar({
+    activeLeftTab,
     activePageKey,
     selectedSection,
     selectedOverride,
@@ -33,7 +37,19 @@ export function AppearanceRightSidebar({
             className="flex flex-col h-full border-l border-border bg-background shrink-0"
             style={{ width: 280 }}
         >
-            {selectedSection ? (
+            {activeLeftTab === "theme" ? (
+                <>
+                    <div className="flex items-center gap-2 px-3 h-12 border-b border-border bg-background shrink-0">
+                        <IconPalette className="w-4 h-4 text-muted-foreground" />
+                        <span className="text-[13px] font-medium text-foreground tracking-tight truncate">
+                            Theme Customizer
+                        </span>
+                    </div>
+                    <div className="flex-1 overflow-y-auto min-h-0">
+                        <ThemeCustomizer stateHelpers={stateHelpers} />
+                    </div>
+                </>
+            ) : selectedSection ? (
                 <>
                     {/* Header with breadcrumb back */}
                     <div className="flex items-center gap-2 px-3 h-12 border-b border-border bg-background shrink-0">

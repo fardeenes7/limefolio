@@ -115,6 +115,16 @@ export default async function DomainLayout({
                     dangerouslySetInnerHTML={{ __html: themeCSS }}
                     data-theme={colorThemeSlug}
                 />
+                {resolvedConfig.themeOverrides && Object.keys(resolvedConfig.themeOverrides).length > 0 && (
+                    <style dangerouslySetInnerHTML={{
+                        __html: `:root {
+                            ${Object.entries(resolvedConfig.themeOverrides)
+                                .filter(([_, v]) => v)
+                                .map(([k, v]) => `${k}: ${v};`)
+                                .join('\n                            ')}
+                        }`
+                    }} />
+                )}
             </head>
             <body
                 className={`antialiased font-${fontSlug}`}

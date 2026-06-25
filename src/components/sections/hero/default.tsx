@@ -84,7 +84,7 @@ export default function HeroDefault({ section, siteData }: SectionProps) {
                     {primaryCtaLabel && (
                         <a
                             href={primaryCtaUrl}
-                            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-primary text-primary-foreground font-semibold hover:bg-primary/90 hover:scale-105 transition-all shadow-lg"
+                            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 rounded-[var(--radius-button)] bg-primary text-primary-foreground font-semibold hover:bg-primary/90 hover:scale-105 transition-all shadow-lg"
                         >
                             {primaryCtaLabel}
                             <IconArrowRight size={20} />
@@ -93,7 +93,7 @@ export default function HeroDefault({ section, siteData }: SectionProps) {
                     {secondaryCtaLabel && (
                         <a
                             href={secondaryCtaUrl}
-                            className="w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 rounded-full border-2 border-border bg-background text-foreground font-semibold hover:bg-muted transition-all"
+                            className="w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 rounded-[var(--radius-button)] border-2 border-border bg-background text-foreground font-semibold hover:bg-muted transition-all"
                         >
                             {secondaryCtaLabel}
                         </a>

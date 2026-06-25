@@ -122,12 +122,65 @@ function LivePreviewProviderInner({
                 })
                 .catch(err => console.error("Failed to load theme css:", err));
         }
+    }, [previewConfig?.themeKey, setTheme]);
 
-        if (previewConfig?.fontKey) {
-            const font = getFont(previewConfig.fontKey);
+    // Apply active font and theme
+    useEffect(() => {
+        if (!isPreviewMode) return;
+
+        const fontToApply = previewConfig?.fontKey || initialUserConfig.fontKey;
+        const font = getFont(fontToApply || templateDef.defaultFont);
+        if (font && font.variable) {
             document.body.style.fontFamily = `var(${font.variable})`;
         }
-    }, [previewConfig?.themeKey, previewConfig?.fontKey, setTheme]);
+
+        const themeToApply = previewConfig?.themeKey || initialUserConfig.themeKey;
+        if (themeToApply) {
+            setTheme(themeToApply);
+        }
+    }, [previewConfig?.fontKey, previewConfig?.themeKey, isPreviewMode, initialUserConfig.fontKey, initialUserConfig.themeKey, templateDef.defaultFont, setTheme]);
+
+    // Send computed hex colors back to the customizer
+    useEffect(() => {
+        if (!isPreviewMode) return;
+        
+        const sendColors = () => {
+            const computed = getComputedStyle(document.body);
+            const canvas = document.createElement("canvas");
+            canvas.width = 1;
+            canvas.height = 1;
+            const ctx = canvas.getContext("2d", { willReadFrequently: true });
+            
+            if (!ctx) return;
+
+            const vars = [
+                "--background", "--foreground", "--card", "--popover", 
+                "--primary", "--primary-foreground", "--secondary", 
+                "--muted", "--accent", "--destructive", "--border", "--ring"
+            ];
+            
+            const colors: Record<string, string> = {};
+            
+            vars.forEach(v => {
+                const raw = computed.getPropertyValue(v).trim();
+                if (!raw) return;
+                
+                ctx.clearRect(0, 0, 1, 1);
+                // raw might be "oklch(0.5 0 0)"
+                ctx.fillStyle = raw;
+                ctx.fillRect(0, 0, 1, 1);
+                const [r, g, b] = ctx.getImageData(0, 0, 1, 1).data;
+                colors[v] = "#" + [r, g, b].map(x => x.toString(16).padStart(2, "0")).join("");
+            });
+            
+            if (window.parent && window.parent !== window) {
+                window.parent.postMessage({ type: "THEME_COLORS", colors }, "*");
+            }
+        };
+
+        const timeout = setTimeout(sendColors, 150);
+        return () => clearTimeout(timeout);
+    }, [previewConfig?.themeKey, previewConfig?.themeOverrides, isPreviewMode]);
 
     // If not actively previewing via postMessage, just render the normal SSR tree
     if (!isPreviewMode) {
@@ -151,6 +204,19 @@ function LivePreviewProviderInner({
 
     return (
         <PreviewContext.Provider value={{ selectedInstanceId, isPreviewMode: true }}>
+            {previewConfig?.themeOverrides && Object.keys(previewConfig.themeOverrides).length > 0 && (
+                <style dangerouslySetInnerHTML={{
+                    __html: `:root, .dark, .default, body, html {
+                        ${Object.entries(previewConfig.themeOverrides)
+                            .filter(([_, v]) => v)
+                            .map(([k, v]) => `${k}: ${v};`)
+                            .join('\n                        ')}
+                    }
+                    * {
+                        ${previewConfig.themeOverrides['--radius'] ? `--radius: ${previewConfig.themeOverrides['--radius']};` : ''}
+                    }`
+                }} />
+            )}
             <LayoutPageRenderer layoutSections={resolvedConfig.layout} siteData={siteData}>
                 <PageRenderer sections={page.sections} siteData={siteData} />
             </LayoutPageRenderer>

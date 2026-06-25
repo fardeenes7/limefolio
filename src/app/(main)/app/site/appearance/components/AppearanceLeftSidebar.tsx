@@ -93,7 +93,7 @@ export function AppearanceLeftSidebar({
                 {/* Theme */}
                 {activeTab === "theme" && (
                     <div className="flex-1 overflow-y-auto p-3">
-                        <div className="grid grid-cols-3 gap-2.5">
+                        <div className="grid grid-cols-3 gap-2.5 mb-6">
                             {THEMES_META.map((theme) => (
                                 <ThemeSwatch
                                     key={theme.slug}

@@ -105,9 +105,14 @@ export function LivePreviewPane({
         return () => window.removeEventListener("message", handleMessage);
     }, [onSelectInstance]);
 
-    // Sync draft config to iframe on change
+    // Reset ready state when template changes
     useEffect(() => {
-        if (iframeRef.current?.contentWindow) {
+        setIsIframeReady(false);
+    }, [draftConfig.templateKey]);
+
+    // Sync draft config to iframe on change or when iframe becomes ready
+    useEffect(() => {
+        if (isIframeReady && iframeRef.current?.contentWindow) {
             iframeRef.current.contentWindow.postMessage(
                 {
                     type: "UPDATE_CONFIG",
@@ -116,7 +121,7 @@ export function LivePreviewPane({
                 "*"
             );
         }
-    }, [draftConfig]);
+    }, [draftConfig, isIframeReady]);
 
     // Sync active page
     useEffect(() => {
@@ -130,7 +135,6 @@ export function LivePreviewPane({
             );
         }
     }, [activePage]);
-
     return (
         <div
             ref={containerRef}
@@ -204,7 +208,7 @@ export function LivePreviewPane({
                     )}
                     <iframe
                         ref={iframeRef}
-                        src={`${PREVIEW_BASE_URL}?preview=true&template=${draftConfig.templateKey}&theme=${draftConfig.themeKey}&font=${draftConfig.fontKey}`}
+                        src={`${PREVIEW_BASE_URL}?preview=true&template=${draftConfig.templateKey}`}
                         className={cn("w-full h-full border-0 transition-opacity duration-500", isIframeReady ? "opacity-100" : "opacity-0")}
                         title="Portfolio preview"
                     />

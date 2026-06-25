@@ -10,12 +10,14 @@ import { TemplatePicker } from "./TemplatePicker";
 import { SectionList } from "./SectionList";
 import { SectionDetail } from "./SectionDetail";
 
+import { ThemeCustomizer } from "./ThemeCustomizer";
 import { THEMES_META, FONTS_META } from "@/lib/themes-meta";
 import type { UserPortfolioConfig } from "@/templates/types";
 import { useAppearanceState } from "../hooks/useAppearanceState";
 import { useResolvedSections } from "../hooks/useResolvedSections";
 import { useSectionCustomizer } from "../hooks/useSectionCustomizer";
 import { ComponentRegistry } from "@/templates/components";
+import { Slider } from "@/components/ui/slider";
 
 import {
     IconChevronLeft,
@@ -132,32 +134,8 @@ export function AppearanceRightPanel({
                     {/* Design panel content */}
                     <div className="flex-1 overflow-y-auto min-h-0">
                         {activeDesignTab === "theme" && (
-                            <div className="p-3 space-y-4">
-                                {([
-                                    { cat: "minimal",  label: "Minimal" },
-                                    { cat: "colorful", label: "Colorful" },
-                                    { cat: "nature",   label: "Nature" },
-                                    { cat: "retro",    label: "Retro" },
-                                    { cat: "brand",    label: "Brand" },
-                                ] as const).map(({ cat, label }) => {
-                                    const group = THEMES_META.filter(t => t.category === cat);
-                                    if (!group.length) return null;
-                                    return (
-                                        <div key={cat} className="flex flex-col gap-2">
-                                            <span className="text-[9px] font-semibold uppercase tracking-widest text-muted-foreground/70 px-0.5">{label}</span>
-                                            <div className="grid grid-cols-3 gap-2">
-                                                {group.map((theme) => (
-                                                    <ThemeSwatch
-                                                        key={theme.slug}
-                                                        theme={theme}
-                                                        isSelected={stateHelpers.selectedTheme === theme.slug}
-                                                        onClick={() => stateHelpers.setTheme(theme.slug)}
-                                                    />
-                                                ))}
-                                            </div>
-                                        </div>
-                                    );
-                                })}
+                            <div className="flex flex-col h-full overflow-y-auto">
+                                <ThemeCustomizer stateHelpers={stateHelpers} />
                             </div>
                         )}
 

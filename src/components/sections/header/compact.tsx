@@ -37,12 +37,12 @@ export default function HeaderCompact({ section, siteData }: SectionProps) {
                             <Link href="/projects" className="hover:text-foreground transition-colors">Projects</Link>
                             <Link href="/#experience" className="hover:text-foreground transition-colors">Experience</Link>
                             <Link href="/#skills" className="hover:text-foreground transition-colors">Skills</Link>
-                            <Link href="/#contact" className="hover:text-foreground transition-colors">Contact</Link>
+                            <Link href="/contact" className="hover:text-foreground transition-colors">Contact</Link>
                         </nav>
                     )}
                     {ctaButton && (
                         <Link
-                            href="/#contact"
+                            href="/contact"
                             className="inline-flex items-center gap-1.5 rounded-full bg-primary px-3 py-1 text-xs font-medium text-primary-foreground transition-all hover:bg-primary/90"
                         >
                             {ctaLabel}

@@ -22,6 +22,8 @@ export interface ThemeMeta {
     hasDark?: boolean;
     /** Representative CSS color swatches [background, primary, accent] */
     swatches: [string, string, string];
+    /** Default radius for this theme */
+    radius?: number;
 }
 
 export const THEMES_META: ThemeMeta[] = [
@@ -29,6 +31,7 @@ export const THEMES_META: ThemeMeta[] = [
     {
         name: "Default",
         slug: "default",
+        radius: 0.625,
         description: "Clean and minimal light theme",
         category: "minimal",
         hasDark: true,
@@ -37,6 +40,7 @@ export const THEMES_META: ThemeMeta[] = [
     {
         name: "Dark",
         slug: "dark",
+        radius: 0.5,
         description: "High-contrast dark theme",
         category: "minimal",
         hasDark: false,
@@ -47,6 +51,7 @@ export const THEMES_META: ThemeMeta[] = [
     {
         name: "Caffeine",
         slug: "caffeine",
+        radius: 0.5,
         description: "Warm off-white with coffee brown accents",
         category: "minimal",
         hasDark: true,
@@ -59,6 +64,7 @@ export const THEMES_META: ThemeMeta[] = [
     {
         name: "Clean Slate",
         slug: "clean-slate",
+        radius: 0.5,
         description: "Pure blue-tinted professional white",
         category: "minimal",
         hasDark: true,
@@ -71,6 +77,7 @@ export const THEMES_META: ThemeMeta[] = [
     {
         name: "Graphite",
         slug: "graphite",
+        radius: 0.35,
         description: "Monochrome grey with subtle shadows",
         category: "minimal",
         hasDark: true,
@@ -83,6 +90,7 @@ export const THEMES_META: ThemeMeta[] = [
     {
         name: "Modern Minimal",
         slug: "modern-minimal",
+        radius: 0.375,
         description: "Crisp white with blue-tinted accents",
         category: "minimal",
         hasDark: true,
@@ -95,6 +103,7 @@ export const THEMES_META: ThemeMeta[] = [
     {
         name: "Mocha Mousse",
         slug: "mocha-mousse",
+        radius: 0.5,
         description: "Rich warm browns, Pantone color of 2025",
         category: "minimal",
         hasDark: true,
@@ -107,6 +116,7 @@ export const THEMES_META: ThemeMeta[] = [
     {
         name: "Tangerine",
         slug: "tangerine",
+        radius: 0.75,
         description: "Warm orange on cool blue-gray",
         category: "minimal",
         hasDark: true,
@@ -121,6 +131,7 @@ export const THEMES_META: ThemeMeta[] = [
     {
         name: "Amethyst Haze",
         slug: "amethyst-haze",
+        radius: 0.5,
         description: "Soft purple-tinted with elegant shadows",
         category: "colorful",
         hasDark: true,
@@ -133,6 +144,7 @@ export const THEMES_META: ThemeMeta[] = [
     {
         name: "Bubblegum",
         slug: "bubblegum",
+        radius: 0.4,
         description: "Playful pink theme with bold shadows",
         category: "colorful",
         hasDark: true,
@@ -145,6 +157,7 @@ export const THEMES_META: ThemeMeta[] = [
     {
         name: "Candyland",
         slug: "candyland",
+        radius: 0.5,
         description: "Sweet pastel tones inspired by candy",
         category: "colorful",
         hasDark: true,
@@ -157,6 +170,7 @@ export const THEMES_META: ThemeMeta[] = [
     {
         name: "Pastel Dreams",
         slug: "pastel-dreams",
+        radius: 1.5,
         description: "Dreamy lavender-pink palette with large radius",
         category: "colorful",
         hasDark: true,
@@ -169,6 +183,7 @@ export const THEMES_META: ThemeMeta[] = [
     {
         name: "Soft Pop",
         slug: "soft-pop",
+        radius: 1,
         description: "Bold but soft popping colors",
         category: "colorful",
         hasDark: true,
@@ -183,6 +198,7 @@ export const THEMES_META: ThemeMeta[] = [
     {
         name: "Nature",
         slug: "nature",
+        radius: 0.5,
         description: "Forest greens with earthy warmth",
         category: "nature",
         hasDark: true,
@@ -195,6 +211,7 @@ export const THEMES_META: ThemeMeta[] = [
     {
         name: "Northern Lights",
         slug: "northern-lights",
+        radius: 0.5,
         description: "Aurora-inspired greens and blues",
         category: "nature",
         hasDark: true,
@@ -207,6 +224,7 @@ export const THEMES_META: ThemeMeta[] = [
     {
         name: "Ocean Breeze",
         slug: "ocean-breeze",
+        radius: 0.5,
         description: "Coastal greens on clean blue-white",
         category: "nature",
         hasDark: true,
@@ -219,6 +237,7 @@ export const THEMES_META: ThemeMeta[] = [
     {
         name: "Solar Dusk",
         slug: "solar-dusk",
+        radius: 0.3,
         description: "Warm sunset amber palette",
         category: "nature",
         hasDark: true,
@@ -231,6 +250,7 @@ export const THEMES_META: ThemeMeta[] = [
     {
         name: "Midnight Bloom",
         slug: "midnight-bloom",
+        radius: 0.5,
         description: "Indigo purples with a floral softness",
         category: "nature",
         hasDark: true,
@@ -245,6 +265,7 @@ export const THEMES_META: ThemeMeta[] = [
     {
         name: "Catppuccin",
         slug: "catppuccin",
+        radius: 0.35,
         description: "The beloved pastel dev theme",
         category: "retro",
         hasDark: true,
@@ -257,6 +278,7 @@ export const THEMES_META: ThemeMeta[] = [
     {
         name: "Claymorphism",
         slug: "claymorphism",
+        radius: 1.25,
         description: "Puffy clay-look cards with large radius",
         category: "retro",
         hasDark: true,
@@ -269,6 +291,7 @@ export const THEMES_META: ThemeMeta[] = [
     {
         name: "Cosmic Night",
         slug: "cosmic-night",
+        radius: 0.5,
         description: "Deep space indigo with violet glow",
         category: "retro",
         hasDark: true,
@@ -281,6 +304,7 @@ export const THEMES_META: ThemeMeta[] = [
     {
         name: "Cyberpunk",
         slug: "cyberpunk",
+        radius: 0.5,
         description: "Neon pink and cyber-green on dark navy",
         category: "retro",
         hasDark: true,
@@ -293,6 +317,7 @@ export const THEMES_META: ThemeMeta[] = [
     {
         name: "Darkmatter",
         slug: "darkmatter",
+        radius: 0.75,
         description: "Near-black with amber terminal accents",
         category: "retro",
         hasDark: true,
@@ -317,6 +342,7 @@ export const THEMES_META: ThemeMeta[] = [
     {
         name: "Starry Night",
         slug: "starry-night",
+        radius: 0.5,
         description: "Van Gogh midnight blue with golden accents",
         category: "retro",
         hasDark: true,
@@ -329,6 +355,7 @@ export const THEMES_META: ThemeMeta[] = [
     {
         name: "Vintage Paper",
         slug: "vintage-paper",
+        radius: 0.25,
         description: "Aged parchment with ink-brown text",
         category: "retro",
         hasDark: true,
@@ -341,6 +368,7 @@ export const THEMES_META: ThemeMeta[] = [
     {
         name: "Violet Bloom",
         slug: "violet-bloom",
+        radius: 1.4,
         description: "Vibrant violet with bloom gradients",
         category: "retro",
         hasDark: true,
@@ -355,6 +383,7 @@ export const THEMES_META: ThemeMeta[] = [
     {
         name: "Bold Tech",
         slug: "bold-tech",
+        radius: 0.625,
         description: "Electric violet inspired by dev tools",
         category: "brand",
         hasDark: true,
@@ -367,6 +396,7 @@ export const THEMES_META: ThemeMeta[] = [
     {
         name: "Claude",
         slug: "claude",
+        radius: 0.5,
         description: "Warm sand tones inspired by the Claude AI",
         category: "brand",
         hasDark: true,
@@ -379,6 +409,7 @@ export const THEMES_META: ThemeMeta[] = [
     {
         name: "Elegant Luxury",
         slug: "elegant-luxury",
+        radius: 0.375,
         description: "Deep crimson and gold luxury palette",
         category: "brand",
         hasDark: true,
@@ -391,6 +422,7 @@ export const THEMES_META: ThemeMeta[] = [
     {
         name: "Twitter",
         slug: "twitter",
+        radius: 1.3,
         description: "Clean X / Twitter blue with pill radius",
         category: "brand",
         hasDark: true,
@@ -403,6 +435,7 @@ export const THEMES_META: ThemeMeta[] = [
     {
         name: "Limefolio",
         slug: "limefolio",
+        radius: 0.5,
         description: "Official Limefolio theme with vibrant lime green",
         category: "brand",
         hasDark: true,
