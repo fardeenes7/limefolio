@@ -2,6 +2,7 @@ import { useState, useCallback, useMemo } from "react";
 import type { UserPortfolioConfig } from "@/templates/types";
 import { getTemplate } from "@/templates/registry";
 import { ComponentRegistry } from "@/templates/components";
+import { getColorTheme } from "@/themes/index";
 
 interface UseAppearanceStateProps {
     initialConfigRaw: Record<string, any>;
@@ -141,6 +142,11 @@ export function useAppearanceState({ initialConfigRaw }: UseAppearanceStateProps
     const handleThemeSwitch = useCallback((newThemeKey: string) => {
         setSelectedTheme(newThemeKey);
         setThemeOverrides({});
+        
+        const theme = getColorTheme(newThemeKey);
+        if (theme.defaultFont) {
+            setSelectedFont(theme.defaultFont);
+        }
     }, []);
 
     return {

@@ -21,6 +21,18 @@ import {
     Source_Code_Pro,
     Manrope,
     Bricolage_Grotesque,
+    Silkscreen,
+    Share_Tech_Mono,
+    Syne,
+    Cinzel,
+    Libre_Baskerville,
+    Fraunces,
+    Fredoka,
+    Lexend,
+    Righteous,
+    Schibsted_Grotesk,
+    Onest,
+    Work_Sans,
 } from "next/font/google";
 
 /**
@@ -35,6 +47,30 @@ export interface FontConfig {
 }
 
 // ── Sans-serif ────────────────────────────────────────────────────────────────
+
+const silkscreen = Silkscreen({ subsets: ["latin"], weight: ["400"], variable: "--font-silkscreen" });
+
+const shareTechMono = Share_Tech_Mono({ subsets: ["latin"], weight: ["400"], variable: "--font-share-tech-mono" });
+
+const syne = Syne({ subsets: ["latin"], variable: "--font-syne" });
+
+const cinzel = Cinzel({ subsets: ["latin"], variable: "--font-cinzel" });
+
+const libreBaskerville = Libre_Baskerville({ subsets: ["latin"], weight: ["400", "700"], variable: "--font-libre-baskerville" });
+
+const fraunces = Fraunces({ subsets: ["latin"], variable: "--font-fraunces", axes: ["SOFT", "WONK", "opsz", "wght"] });
+
+const fredoka = Fredoka({ subsets: ["latin"], variable: "--font-fredoka" });
+
+const lexend = Lexend({ subsets: ["latin"], variable: "--font-lexend" });
+
+const righteous = Righteous({ subsets: ["latin"], weight: ["400"], variable: "--font-righteous" });
+
+const schibstedGrotesk = Schibsted_Grotesk({ subsets: ["latin"], variable: "--font-schibsted-grotesk" });
+
+const onest = Onest({ subsets: ["latin"], variable: "--font-onest" });
+
+const workSans = Work_Sans({ subsets: ["latin"], variable: "--font-work-sans" });
 
 const inter = Inter({
     subsets: ["latin"],
@@ -159,6 +195,90 @@ const sourceCodePro = Source_Code_Pro({
  * Maps font slugs to their configurations
  */
 export const Fonts: Record<string, FontConfig> = {
+    "silkscreen": {
+        name: "Silkscreen",
+        slug: "silkscreen",
+        variable: "--font-silkscreen",
+        font: silkscreen,
+        category: "mono",
+    },
+    "share-tech-mono": {
+        name: "Share Tech Mono",
+        slug: "share-tech-mono",
+        variable: "--font-share-tech-mono",
+        font: shareTechMono,
+        category: "mono",
+    },
+    "syne": {
+        name: "Syne",
+        slug: "syne",
+        variable: "--font-syne",
+        font: syne,
+        category: "sans",
+    },
+    "cinzel": {
+        name: "Cinzel",
+        slug: "cinzel",
+        variable: "--font-cinzel",
+        font: cinzel,
+        category: "serif",
+    },
+    "libre-baskerville": {
+        name: "Libre Baskerville",
+        slug: "libre-baskerville",
+        variable: "--font-libre-baskerville",
+        font: libreBaskerville,
+        category: "serif",
+    },
+    "fraunces": {
+        name: "Fraunces",
+        slug: "fraunces",
+        variable: "--font-fraunces",
+        font: fraunces,
+        category: "serif",
+    },
+    "fredoka": {
+        name: "Fredoka",
+        slug: "fredoka",
+        variable: "--font-fredoka",
+        font: fredoka,
+        category: "sans",
+    },
+    "lexend": {
+        name: "Lexend",
+        slug: "lexend",
+        variable: "--font-lexend",
+        font: lexend,
+        category: "sans",
+    },
+    "righteous": {
+        name: "Righteous",
+        slug: "righteous",
+        variable: "--font-righteous",
+        font: righteous,
+        category: "display",
+    },
+    "schibsted-grotesk": {
+        name: "Schibsted Grotesk",
+        slug: "schibsted-grotesk",
+        variable: "--font-schibsted-grotesk",
+        font: schibstedGrotesk,
+        category: "sans",
+    },
+    "onest": {
+        name: "Onest",
+        slug: "onest",
+        variable: "--font-onest",
+        font: onest,
+        category: "sans",
+    },
+    "work-sans": {
+        name: "Work Sans",
+        slug: "work-sans",
+        variable: "--font-work-sans",
+        font: workSans,
+        category: "sans",
+    },
     // ── Sans ──────────────────────────────────────────────────────────────────
     inter: {
         name: "Inter",

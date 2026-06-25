@@ -28,6 +28,8 @@ export interface ColorThemeConfig {
         | "nature"
         | "brand"
         | "dark-only";
+    /** Default font for this theme */
+    defaultFont?: string;
 }
 
 /** Full registry — keyed by slug */
@@ -36,6 +38,7 @@ export const ColorThemes: Record<string, ColorThemeConfig> = {
     default: {
         name: "Default",
         slug: "default",
+        defaultFont: "work-sans",
         description: "Clean neutral light theme",
         hasDark: true,
         category: "minimal",
@@ -45,6 +48,7 @@ export const ColorThemes: Record<string, ColorThemeConfig> = {
     "amethyst-haze": {
         name: "Amethyst Haze",
         slug: "amethyst-haze",
+        defaultFont: "righteous",
         description: "Soft purple-tinted with elegant shadows",
         hasDark: true,
         category: "colorful",
@@ -52,6 +56,7 @@ export const ColorThemes: Record<string, ColorThemeConfig> = {
     bubblegum: {
         name: "Bubblegum",
         slug: "bubblegum",
+        defaultFont: "fredoka",
         description: "Playful pink theme with bold shadows",
         hasDark: true,
         category: "colorful",
@@ -59,6 +64,7 @@ export const ColorThemes: Record<string, ColorThemeConfig> = {
     "pastel-dreams": {
         name: "Pastel Dreams",
         slug: "pastel-dreams",
+        defaultFont: "nunito",
         description: "Dreamy lavender-pink palette with large radius",
         hasDark: true,
         category: "colorful",
@@ -66,6 +72,7 @@ export const ColorThemes: Record<string, ColorThemeConfig> = {
     "soft-pop": {
         name: "Soft Pop",
         slug: "soft-pop",
+        defaultFont: "lexend",
         description: "Bold but soft popping colors",
         hasDark: true,
         category: "colorful",
@@ -73,6 +80,7 @@ export const ColorThemes: Record<string, ColorThemeConfig> = {
     bubblegum2: {
         name: "Bubblegum II",
         slug: "bubblegum-dark",
+        defaultFont: "bricolage-grotesque",
         description: "Dark bubblegum with neon accents",
         hasDark: false,
         category: "colorful",
@@ -82,6 +90,7 @@ export const ColorThemes: Record<string, ColorThemeConfig> = {
     caffeine: {
         name: "Caffeine",
         slug: "caffeine",
+        defaultFont: "fraunces",
         description: "Warm off-white with coffee brown accents",
         hasDark: true,
         category: "minimal",
@@ -89,6 +98,7 @@ export const ColorThemes: Record<string, ColorThemeConfig> = {
     graphite: {
         name: "Graphite",
         slug: "graphite",
+        defaultFont: "schibsted-grotesk",
         description: "Monochrome grey with subtle shadows",
         hasDark: true,
         category: "minimal",
@@ -96,6 +106,7 @@ export const ColorThemes: Record<string, ColorThemeConfig> = {
     tangerine: {
         name: "Tangerine",
         slug: "tangerine",
+        defaultFont: "sora",
         description: "Warm orange on cool blue-gray",
         hasDark: true,
         category: "minimal",
@@ -103,6 +114,7 @@ export const ColorThemes: Record<string, ColorThemeConfig> = {
     "mocha-mousse": {
         name: "Mocha Mousse",
         slug: "mocha-mousse",
+        defaultFont: "outfit",
         description: "Rich warm browns, Pantone color of 2025",
         hasDark: true,
         category: "minimal",
@@ -112,6 +124,7 @@ export const ColorThemes: Record<string, ColorThemeConfig> = {
     "cinematic-dark": {
         name: "Cinematic",
         slug: "cinematic-dark",
+        defaultFont: "inter",
         description: "Deep dark tones to let video content pop",
         hasDark: false,
         category: "dark-only",
@@ -119,6 +132,7 @@ export const ColorThemes: Record<string, ColorThemeConfig> = {
     nature: {
         name: "Nature",
         slug: "nature",
+        defaultFont: "work-sans",
         description: "Forest greens with earthy warmth",
         hasDark: true,
         category: "nature",
@@ -126,6 +140,7 @@ export const ColorThemes: Record<string, ColorThemeConfig> = {
     "solar-dusk": {
         name: "Solar Dusk",
         slug: "solar-dusk",
+        defaultFont: "dm-sans",
         description: "Warm sunset amber palette",
         hasDark: true,
         category: "nature",
@@ -133,6 +148,7 @@ export const ColorThemes: Record<string, ColorThemeConfig> = {
     "midnight-bloom": {
         name: "Midnight Bloom",
         slug: "midnight-bloom",
+        defaultFont: "raleway",
         description: "Indigo purples with a floral softness",
         hasDark: true,
         category: "nature",
@@ -142,6 +158,7 @@ export const ColorThemes: Record<string, ColorThemeConfig> = {
     catppuccin: {
         name: "Catppuccin",
         slug: "catppuccin",
+        defaultFont: "jetbrains-mono",
         description: "The beloved pastel dev theme",
         hasDark: true,
         category: "retro",
@@ -149,6 +166,7 @@ export const ColorThemes: Record<string, ColorThemeConfig> = {
     claymorphism: {
         name: "Claymorphism",
         slug: "claymorphism",
+        defaultFont: "space-grotesk",
         description: "Puffy clay-look cards with large radius",
         hasDark: true,
         category: "retro",
@@ -156,6 +174,7 @@ export const ColorThemes: Record<string, ColorThemeConfig> = {
     "cosmic-night": {
         name: "Cosmic Night",
         slug: "cosmic-night",
+        defaultFont: "fira-code",
         description: "Deep space indigo with violet glow",
         hasDark: true,
         category: "retro",
@@ -163,6 +182,7 @@ export const ColorThemes: Record<string, ColorThemeConfig> = {
     cyberpunk: {
         name: "Cyberpunk",
         slug: "cyberpunk",
+        defaultFont: "syne",
         description: "Neon pink and cyber-green on dark navy",
         hasDark: true,
         category: "retro",
@@ -170,6 +190,7 @@ export const ColorThemes: Record<string, ColorThemeConfig> = {
     darkmatter: {
         name: "Darkmatter",
         slug: "darkmatter",
+        defaultFont: "share-tech-mono",
         description: "Near-black with amber terminal accents",
         hasDark: true,
         category: "retro",
@@ -177,6 +198,7 @@ export const ColorThemes: Record<string, ColorThemeConfig> = {
     "doom-64": {
         name: "Doom 64",
         slug: "doom-64",
+        defaultFont: "silkscreen",
         description: "Grey pixel palette with blood-orange",
         hasDark: true,
         category: "retro",
@@ -184,6 +206,7 @@ export const ColorThemes: Record<string, ColorThemeConfig> = {
     "starry-night": {
         name: "Starry Night",
         slug: "starry-night",
+        defaultFont: "lora",
         description: "Van Gogh midnight blue with golden accents",
         hasDark: true,
         category: "retro",
@@ -191,6 +214,7 @@ export const ColorThemes: Record<string, ColorThemeConfig> = {
     "vintage-paper": {
         name: "Vintage Paper",
         slug: "vintage-paper",
+        defaultFont: "libre-baskerville",
         description: "Aged parchment with ink-brown text",
         hasDark: true,
         category: "retro",
@@ -199,6 +223,7 @@ export const ColorThemes: Record<string, ColorThemeConfig> = {
     "bold-tech": {
         name: "Bold Tech",
         slug: "bold-tech",
+        defaultFont: "space-grotesk",
         description: "Electric violet inspired by dev tools",
         hasDark: true,
         category: "brand",
@@ -206,6 +231,7 @@ export const ColorThemes: Record<string, ColorThemeConfig> = {
     claude: {
         name: "Claude",
         slug: "claude",
+        defaultFont: "lora",
         description: "Warm sand tones inspired by the Claude AI",
         hasDark: true,
         category: "brand",
@@ -213,6 +239,7 @@ export const ColorThemes: Record<string, ColorThemeConfig> = {
     "elegant-luxury": {
         name: "Elegant Luxury",
         slug: "elegant-luxury",
+        defaultFont: "cinzel",
         description: "Deep crimson and gold luxury palette",
         hasDark: true,
         category: "brand",
@@ -220,6 +247,7 @@ export const ColorThemes: Record<string, ColorThemeConfig> = {
     twitter: {
         name: "Twitter",
         slug: "twitter",
+        defaultFont: "dm-sans",
         description: "Clean X / Twitter blue with pill radius",
         hasDark: true,
         category: "brand",
@@ -227,6 +255,7 @@ export const ColorThemes: Record<string, ColorThemeConfig> = {
     limefolio: {
         name: "Limefolio",
         slug: "limefolio",
+        defaultFont: "onest",
         description: "Official Limefolio theme with vibrant lime green",
         hasDark: true,
         category: "brand",
@@ -237,11 +266,23 @@ export const ColorThemes: Record<string, ColorThemeConfig> = {
 export function getColorTheme(
     slug: string | null | undefined,
 ): ColorThemeConfig {
-    if (slug && ColorThemes[slug]) return ColorThemes[slug];
-    if (slug)
-        console.warn(
-            `Color theme "${slug}" not found, falling back to default.`,
-        );
+    if (!slug) return ColorThemes.default;
+
+    if (ColorThemes[slug]) return ColorThemes[slug];
+
+    // Handle -dark variants by looking up the base theme
+    if (slug.endsWith("-dark")) {
+        const baseSlug = slug.replace("-dark", "");
+        if (ColorThemes[baseSlug]) return ColorThemes[baseSlug];
+    }
+
+    // Handle cases where key != slug
+    const themeBySlug = Object.values(ColorThemes).find(t => t.slug === slug);
+    if (themeBySlug) return themeBySlug;
+
+    console.warn(
+        `Color theme "${slug}" not found, falling back to default.`,
+    );
     return ColorThemes.default;
 }
 

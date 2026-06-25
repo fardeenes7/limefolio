@@ -28,6 +28,8 @@ export interface ThemeMeta {
     defaultMode?: "light" | "dark";
     /** Array of suggested primary hex colors for this theme */
     suggestedPrimaryColors?: string[];
+    /** Default font for this theme */
+    defaultFont?: string;
 }
 
 export const THEMES_META: ThemeMeta[] = [
@@ -35,6 +37,7 @@ export const THEMES_META: ThemeMeta[] = [
     {
         name: "Default",
         slug: "default",
+        defaultFont: "work-sans",
         radius: 0.625,
         description: "Clean and minimal light theme",
         category: "minimal",
@@ -47,6 +50,7 @@ export const THEMES_META: ThemeMeta[] = [
     {
         name: "Caffeine",
         slug: "caffeine",
+        defaultFont: "fraunces",
         radius: 0.5,
         description: "Warm off-white with coffee brown accents",
         category: "minimal",
@@ -62,6 +66,7 @@ export const THEMES_META: ThemeMeta[] = [
     {
         name: "Graphite",
         slug: "graphite",
+        defaultFont: "schibsted-grotesk",
         radius: 0.35,
         description: "Monochrome grey with subtle shadows",
         category: "minimal",
@@ -77,6 +82,7 @@ export const THEMES_META: ThemeMeta[] = [
     {
         name: "Mocha Mousse",
         slug: "mocha-mousse",
+        defaultFont: "outfit",
         radius: 0.5,
         description: "Rich warm browns, Pantone color of 2025",
         category: "minimal",
@@ -91,6 +97,7 @@ export const THEMES_META: ThemeMeta[] = [
     {
         name: "Tangerine",
         slug: "tangerine",
+        defaultFont: "sora",
         radius: 0.75,
         description: "Warm orange on cool blue-gray",
         category: "minimal",
@@ -107,6 +114,7 @@ export const THEMES_META: ThemeMeta[] = [
     {
         name: "Amethyst Haze",
         slug: "amethyst-haze",
+        defaultFont: "righteous",
         radius: 0.5,
         description: "Soft purple-tinted with elegant shadows",
         category: "colorful",
@@ -121,6 +129,7 @@ export const THEMES_META: ThemeMeta[] = [
     {
         name: "Bubblegum",
         slug: "bubblegum",
+        defaultFont: "fredoka",
         radius: 0.4,
         description: "Playful pink theme with bold shadows",
         category: "colorful",
@@ -136,6 +145,7 @@ export const THEMES_META: ThemeMeta[] = [
     {
         name: "Pastel Dreams",
         slug: "pastel-dreams",
+        defaultFont: "nunito",
         radius: 1.5,
         description: "Dreamy lavender-pink palette with large radius",
         category: "colorful",
@@ -150,6 +160,7 @@ export const THEMES_META: ThemeMeta[] = [
     {
         name: "Soft Pop",
         slug: "soft-pop",
+        defaultFont: "lexend",
         radius: 1,
         description: "Bold but soft popping colors",
         category: "colorful",
@@ -166,6 +177,7 @@ export const THEMES_META: ThemeMeta[] = [
     {
         name: "Nature",
         slug: "nature",
+        defaultFont: "work-sans",
         radius: 0.5,
         description: "Forest greens with earthy warmth",
         category: "nature",
@@ -181,6 +193,7 @@ export const THEMES_META: ThemeMeta[] = [
     {
         name: "Solar Dusk",
         slug: "solar-dusk",
+        defaultFont: "dm-sans",
         radius: 0.3,
         description: "Warm sunset amber palette",
         category: "nature",
@@ -195,6 +208,7 @@ export const THEMES_META: ThemeMeta[] = [
     {
         name: "Midnight Bloom",
         slug: "midnight-bloom",
+        defaultFont: "raleway",
         radius: 0.5,
         description: "Indigo purples with a floral softness",
         category: "nature",
@@ -211,6 +225,7 @@ export const THEMES_META: ThemeMeta[] = [
     {
         name: "Catppuccin",
         slug: "catppuccin",
+        defaultFont: "jetbrains-mono",
         radius: 0.35,
         description: "The beloved pastel dev theme",
         category: "retro",
@@ -225,6 +240,7 @@ export const THEMES_META: ThemeMeta[] = [
     {
         name: "Claymorphism",
         slug: "claymorphism",
+        defaultFont: "space-grotesk",
         radius: 1.25,
         description: "Puffy clay-look cards with large radius",
         category: "retro",
@@ -239,6 +255,7 @@ export const THEMES_META: ThemeMeta[] = [
     {
         name: "Cosmic Night",
         slug: "cosmic-night",
+        defaultFont: "fira-code",
         radius: 0.5,
         description: "Deep space indigo with violet glow",
         category: "retro",
@@ -254,6 +271,7 @@ export const THEMES_META: ThemeMeta[] = [
     {
         name: "Cyberpunk",
         slug: "cyberpunk",
+        defaultFont: "syne",
         radius: 0.5,
         description: "Neon pink and cyber-green on dark navy",
         category: "retro",
@@ -269,6 +287,7 @@ export const THEMES_META: ThemeMeta[] = [
     {
         name: "Darkmatter",
         slug: "darkmatter",
+        defaultFont: "share-tech-mono",
         radius: 0.75,
         description: "Near-black with amber terminal accents",
         category: "retro",
@@ -284,6 +303,7 @@ export const THEMES_META: ThemeMeta[] = [
     {
         name: "Doom 64",
         slug: "doom-64",
+        defaultFont: "silkscreen",
         radius: 0,
         description: "Grey pixel palette with blood-orange",
         category: "retro",
@@ -299,6 +319,7 @@ export const THEMES_META: ThemeMeta[] = [
     {
         name: "Starry Night",
         slug: "starry-night",
+        defaultFont: "lora",
         radius: 0.5,
         description: "Van Gogh midnight blue with golden accents",
         category: "retro",
@@ -314,6 +335,7 @@ export const THEMES_META: ThemeMeta[] = [
     {
         name: "Vintage Paper",
         slug: "vintage-paper",
+        defaultFont: "libre-baskerville",
         radius: 0.25,
         description: "Aged parchment with ink-brown text",
         category: "retro",
@@ -329,6 +351,7 @@ export const THEMES_META: ThemeMeta[] = [
     {
         name: "Bold Tech",
         slug: "bold-tech",
+        defaultFont: "space-grotesk",
         radius: 0.625,
         description: "Electric violet inspired by dev tools",
         category: "brand",
@@ -343,6 +366,7 @@ export const THEMES_META: ThemeMeta[] = [
     {
         name: "Claude",
         slug: "claude",
+        defaultFont: "lora",
         radius: 0.5,
         description: "Warm sand tones inspired by the Claude AI",
         category: "brand",
@@ -357,6 +381,7 @@ export const THEMES_META: ThemeMeta[] = [
     {
         name: "Elegant Luxury",
         slug: "elegant-luxury",
+        defaultFont: "cinzel",
         radius: 0.375,
         description: "Deep crimson and gold luxury palette",
         category: "brand",
@@ -371,6 +396,7 @@ export const THEMES_META: ThemeMeta[] = [
     {
         name: "Twitter",
         slug: "twitter",
+        defaultFont: "dm-sans",
         radius: 1.3,
         description: "Clean X / Twitter blue with pill radius",
         category: "brand",
@@ -385,6 +411,7 @@ export const THEMES_META: ThemeMeta[] = [
     {
         name: "Limefolio",
         slug: "limefolio",
+        defaultFont: "onest",
         radius: 0.5,
         description: "Official Limefolio theme with vibrant lime green",
         category: "brand",
@@ -409,6 +436,78 @@ export interface FontMeta {
 }
 
 export const FONTS_META: FontMeta[] = [
+    {
+        name: "Silkscreen",
+        slug: "silkscreen",
+        category: "display",
+        previewStack: "'Silkscreen', monospace"
+    },
+    {
+        name: "Share Tech Mono",
+        slug: "share-tech-mono",
+        category: "mono",
+        previewStack: "'Share Tech Mono', monospace"
+    },
+    {
+        name: "Syne",
+        slug: "syne",
+        category: "display",
+        previewStack: "'Syne', sans-serif"
+    },
+    {
+        name: "Cinzel",
+        slug: "cinzel",
+        category: "serif",
+        previewStack: "'Cinzel', serif"
+    },
+    {
+        name: "Libre Baskerville",
+        slug: "libre-baskerville",
+        category: "serif",
+        previewStack: "'Libre Baskerville', serif"
+    },
+    {
+        name: "Fraunces",
+        slug: "fraunces",
+        category: "serif",
+        previewStack: "'Fraunces', serif"
+    },
+    {
+        name: "Fredoka",
+        slug: "fredoka",
+        category: "sans",
+        previewStack: "'Fredoka', sans-serif"
+    },
+    {
+        name: "Lexend",
+        slug: "lexend",
+        category: "sans",
+        previewStack: "'Lexend', sans-serif"
+    },
+    {
+        name: "Righteous",
+        slug: "righteous",
+        category: "display",
+        previewStack: "'Righteous', sans-serif"
+    },
+    {
+        name: "Schibsted Grotesk",
+        slug: "schibsted-grotesk",
+        category: "sans",
+        previewStack: "'Schibsted Grotesk', sans-serif"
+    },
+    {
+        name: "Onest",
+        slug: "onest",
+        category: "sans",
+        previewStack: "'Onest', sans-serif"
+    },
+    {
+        name: "Work Sans",
+        slug: "work-sans",
+        category: "sans",
+        previewStack: "'Work Sans', sans-serif"
+    },
     // ── Sans ──────────────────────────────────────────────────────────────────
     {
         name: "Inter",
