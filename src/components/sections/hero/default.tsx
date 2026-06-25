@@ -23,7 +23,10 @@ export default function HeroDefault({ section, siteData }: SectionProps) {
     const body = (i.body as string) || siteData.description;
     const showAvatar = i.showAvatar !== false;
     const showSocialLinks = i.showSocialLinks !== false;
-    const showScrollIndicator = i.showScrollIndicator !== false;
+    
+    // Layout
+    const paddingTop = (i.paddingTop as number) || 0;
+    const paddingBottom = (i.paddingBottom as number) || 0;
 
     // CTAs
     const primaryCtaLabel = (i.primaryCtaLabel as string) || 'View My Work';
@@ -38,7 +41,10 @@ export default function HeroDefault({ section, siteData }: SectionProps) {
     const avatarUrl = (i.avatarImage as string) || siteData.logo;
 
     return (
-        <section className="relative min-h-[90vh] flex items-center overflow-hidden bg-background">
+        <section 
+            className="relative min-h-[90vh] flex items-center overflow-hidden bg-background"
+            style={{ paddingTop: `${paddingTop}px`, paddingBottom: `${paddingBottom}px` }}
+        >
             <HeroBackground section={section} />
 
             <div className="container max-w-4xl mx-auto px-6 py-20 relative z-10 text-center">
@@ -116,13 +122,6 @@ export default function HeroDefault({ section, siteData }: SectionProps) {
                 )}
             </div>
 
-            {/* Scroll Indicator */}
-            {showScrollIndicator && (
-                <div className="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce flex flex-col items-center gap-2 text-muted-foreground">
-                    <span className="text-xs font-medium tracking-widest uppercase">Scroll</span>
-                    <div className="w-px h-6 bg-muted-foreground" />
-                </div>
-            )}
         </section>
     );
 }

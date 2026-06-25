@@ -1,6 +1,7 @@
 import { useState, useCallback, useMemo } from "react";
 import type { UserPortfolioConfig } from "@/templates/types";
 import { getTemplate } from "@/templates/registry";
+import { ComponentRegistry } from "@/templates/components";
 
 interface UseAppearanceStateProps {
     initialConfigRaw: Record<string, any>;
@@ -35,9 +36,9 @@ export function useAppearanceState({ initialConfigRaw }: UseAppearanceStateProps
             templateKey,
             themeKey: initialConfigRaw.theme_key || template.defaultTheme,
             fontKey: initialConfigRaw.font_key || template.defaultFont,
-            overrides: initialConfigRaw.config_overrides || { layout: {}, pages: {} },
-            additions: initialConfigRaw.config_additions || { layout: [], pages: {} },
-            removals: initialConfigRaw.config_removals || { layout: [], pages: {} },
+            overrides: { layout: {}, pages: {}, ...(initialConfigRaw.config_overrides || {}) },
+            additions: { layout: [], pages: {}, ...(initialConfigRaw.config_additions || {}) },
+            removals: { layout: [], pages: {}, ...(initialConfigRaw.config_removals || {}) },
             ordering: initialConfigRaw.config_ordering || {},
         };
     }, [initialConfigRaw]);
@@ -76,11 +77,58 @@ export function useAppearanceState({ initialConfigRaw }: UseAppearanceStateProps
     }, [savedState]);
 
     const handleTemplateSwitch = useCallback((newTemplateKey: string) => {
-        const template = getTemplate(newTemplateKey);
+        const newTemplate = getTemplate(newTemplateKey);
+
+        const newInstanceMap = new Map<string, string>();
+        newTemplate.layout.forEach(s => newInstanceMap.set(s.instanceId, s.componentKey));
+        newTemplate.pages.forEach(p => p.sections.forEach(s => newInstanceMap.set(s.instanceId, s.componentKey)));
+
+        setOverrides(currentOverrides => {
+            const newOverrides: UserPortfolioConfig['overrides'] = { layout: {}, pages: {} };
+
+            const migrateOverrides = (oldGroup: Record<string, any>, newGroup: Record<string, any>) => {
+                Object.entries(oldGroup).forEach(([instanceId, override]) => {
+                    const componentKey = newInstanceMap.get(instanceId);
+                    if (!componentKey) return; 
+
+                    const schema = ComponentRegistry[componentKey as keyof typeof ComponentRegistry];
+                    if (!schema) return;
+
+                    const validInputKeys = new Set(schema.inputs.map(i => i.key));
+                    
+                    const newInputs: Record<string, any> = {};
+                    if (override.inputs) {
+                        Object.entries(override.inputs).forEach(([k, v]) => {
+                            if (validInputKeys.has(k)) {
+                                newInputs[k] = v;
+                            }
+                        });
+                    }
+
+                    if (Object.keys(newInputs).length > 0) {
+                        newGroup[instanceId] = { inputs: newInputs };
+                    }
+                });
+            };
+
+            if (currentOverrides?.layout) {
+                migrateOverrides(currentOverrides.layout, newOverrides.layout!);
+            }
+
+            if (currentOverrides?.pages) {
+                Object.entries(currentOverrides.pages).forEach(([pageKey, pageOverrides]) => {
+                    newOverrides.pages![pageKey] = {};
+                    migrateOverrides(pageOverrides, newOverrides.pages![pageKey]);
+                });
+            }
+            
+            return newOverrides;
+        });
+
         setSelectedTemplate(newTemplateKey);
-        setSelectedTheme(template.defaultTheme);
-        setSelectedFont(template.defaultFont);
-        setOverrides({ layout: {}, pages: {} });
+        setSelectedTheme(newTemplate.defaultTheme);
+        setSelectedFont(newTemplate.defaultFont);
+        
         setAdditions({ layout: [], pages: {} });
         setRemovals({ layout: [], pages: {} });
         setOrdering({});

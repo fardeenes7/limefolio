@@ -44,4 +44,5 @@ export interface MediaUploaderProps {
     maxFiles?: number;
     mode?: "dialog" | "inline";
     buttonLabel?: string;
+    accepts?: "image" | "video" | "both";
 }

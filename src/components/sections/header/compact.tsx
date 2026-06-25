@@ -1,9 +1,12 @@
+"use client";
+
 /**
  * Header — Compact Variant
  * Minimal single-line bar — tighter padding, smaller font.
  */
 import type { SectionProps } from '@/components/sections/_renderer/SectionRenderer';
 import Link from 'next/link';
+import { useHeaderState } from './useHeaderState';
 
 export default function HeaderCompact({ section, siteData }: SectionProps) {
     const i = section.resolvedInputs as Record<string, unknown>;
@@ -12,10 +15,14 @@ export default function HeaderCompact({ section, siteData }: SectionProps) {
     const ctaButton = i.ctaButton !== false;
     const ctaLabel = (i.ctaLabel as string) || 'Hire Me';
     const bottomBorder = i.bottomBorder === true;
+    const transparentOnTop = i.transparentOnTop === true;
+    const backgroundStyle = (i.backgroundStyle as string) || 'frosted';
     const title = siteData.title || 'Portfolio';
 
+    const { headerClass } = useHeaderState(sticky, transparentOnTop, bottomBorder, backgroundStyle, section.instanceId);
+
     return (
-        <header className={`${sticky ? 'sticky top-0 z-50' : 'relative'} ${bottomBorder ? 'border-b border-border' : ''} bg-background transition-all`}>
+        <header className={headerClass}>
             <div className="container max-w-7xl mx-auto flex items-center justify-between px-6 py-3">
                 <Link href="/" className="text-sm font-semibold text-foreground hover:text-primary transition-colors flex-shrink-0">
                     {siteData.logo ? (

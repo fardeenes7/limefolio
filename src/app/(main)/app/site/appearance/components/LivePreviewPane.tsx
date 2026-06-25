@@ -38,39 +38,55 @@ export function LivePreviewPane({
     const iframeRef = useRef<HTMLIFrameElement>(null);
     const containerRef = useRef<HTMLDivElement>(null);
     const mockupRef = useRef<HTMLDivElement>(null);
-    const [scale, setScale] = useState(1);
+    const [mockupLayout, setMockupLayout] = useState({ scale: 1, width: '100%', height: '100%' });
+    const [isIframeReady, setIsIframeReady] = useState(false);
 
     useLayoutEffect(() => {
-        const calculateScale = () => {
-            if (!containerRef.current || !mockupRef.current) {
-                setScale(1);
-                return;
-            }
+        let animationFrameId: number;
+        const resizeObserver = new ResizeObserver((entries) => {
+            if (!entries.length) return;
+            const entry = entries[0];
+            const contentWidth = entry.contentRect.width;
+            const contentHeight = entry.contentRect.height;
+            
+            animationFrameId = requestAnimationFrame(() => {
+                if (deviceSize === "desktop") {
+                    if (contentWidth < 1440) {
+                        const newScale = contentWidth / 1440;
+                        setMockupLayout({
+                            scale: newScale,
+                            width: '1440px',
+                            height: `${contentHeight / newScale}px`
+                        });
+                    } else {
+                        setMockupLayout({ scale: 1, width: '100%', height: '100%' });
+                    }
+                    return;
+                }
 
-            if (deviceSize === "desktop") {
-                setScale(1);
-                return;
-            }
+                const mockupHeight = 840;
+                const mockupWidth = parseInt(DEVICE_WIDTHS[deviceSize]);
 
-            const containerHeight = containerRef.current.offsetHeight;
-            const containerWidth = containerRef.current.offsetWidth;
+                const verticalScale = contentHeight / mockupHeight;
+                const horizontalScale = contentWidth / mockupWidth;
 
-            // The mockup needs a fixed height to scale against if it's not filling
-            // For tablet/mobile, we want it to be "natural" or at least visible.
-            // Let's assume a standard preview height of 800px or use the container height.
-            const mockupHeight = 840; // browser mockup height
-            const mockupWidth = parseInt(DEVICE_WIDTHS[deviceSize]);
+                const newScale = Math.min(verticalScale, horizontalScale, 1);
+                setMockupLayout({
+                    scale: newScale,
+                    width: DEVICE_WIDTHS[deviceSize],
+                    height: '840px'
+                });
+            });
+        });
 
-            const verticalScale = (containerHeight - 40) / mockupHeight;
-            const horizontalScale = (containerWidth - 40) / mockupWidth;
+        if (containerRef.current) {
+            resizeObserver.observe(containerRef.current);
+        }
 
-            const newScale = Math.min(verticalScale, horizontalScale, 1);
-            setScale(newScale);
+        return () => {
+            if (animationFrameId) cancelAnimationFrame(animationFrameId);
+            resizeObserver.disconnect();
         };
-
-        calculateScale();
-        window.addEventListener("resize", calculateScale);
-        return () => window.removeEventListener("resize", calculateScale);
     }, [deviceSize]);
 
     useEffect(() => {
@@ -80,6 +96,8 @@ export function LivePreviewPane({
                 event.data.instanceId
             ) {
                 onSelectInstance(event.data.instanceId);
+            } else if (event.data?.type === "PREVIEW_READY") {
+                setIsIframeReady(true);
             }
         };
 
@@ -121,17 +139,13 @@ export function LivePreviewPane({
             <div
                 ref={mockupRef}
                 className={cn(
-                    "bg-background shadow-[0_32px_64px_-16px_rgba(0,0,0,0.2)] rounded-t-2xl rounded-b-xl border overflow-hidden flex flex-col transition-all duration-500 ease-in-out origin-center",
-                    deviceSize === "desktop"
-                        ? "w-full h-full max-w-[1600px]"
-                        : "h-[840px] shrink-0"
+                    "bg-background shadow-[0_32px_64px_-16px_rgba(0,0,0,0.2)] rounded-t-2xl rounded-b-xl border overflow-hidden flex flex-col transition-all duration-500 ease-in-out shrink-0",
+                    deviceSize === "desktop" && mockupLayout.scale === 1 && "max-w-[1440px]"
                 )}
                 style={{
-                    width:
-                        deviceSize !== "desktop"
-                            ? DEVICE_WIDTHS[deviceSize]
-                            : undefined,
-                    transform: `scale(${scale})`
+                    width: mockupLayout.width,
+                    height: mockupLayout.height,
+                    zoom: mockupLayout.scale
                 }}
             >
                 {/* Browser Chrome Mockup */}
@@ -183,10 +197,15 @@ export function LivePreviewPane({
 
                 {/* Iframe */}
                 <div className="flex-1 relative bg-background">
+                    {!isIframeReady && (
+                        <div className="absolute inset-0 flex items-center justify-center bg-background z-10">
+                            <div className="animate-spin w-6 h-6 border-2 border-primary border-t-transparent rounded-full" />
+                        </div>
+                    )}
                     <iframe
                         ref={iframeRef}
-                        src={PREVIEW_BASE_URL}
-                        className="w-full h-full border-0"
+                        src={`${PREVIEW_BASE_URL}?preview=true&template=${draftConfig.templateKey}&theme=${draftConfig.themeKey}&font=${draftConfig.fontKey}`}
+                        className={cn("w-full h-full border-0 transition-opacity duration-500", isIframeReady ? "opacity-100" : "opacity-0")}
                         title="Portfolio preview"
                     />
 
@@ -199,9 +218,9 @@ export function LivePreviewPane({
             </div>
 
             {/* Zoom Indicator */}
-            {scale < 1 && (
+            {mockupLayout.scale < 1 && (
                 <div className="absolute bottom-4 right-4 bg-background/80 backdrop-blur-sm border border-border rounded-full px-3 py-1 text-[10px] font-medium text-muted-foreground shadow-sm">
-                    {Math.round(scale * 100)}% zoom
+                    {Math.round(mockupLayout.scale * 100)}% zoom
                 </div>
             )}
         </div>

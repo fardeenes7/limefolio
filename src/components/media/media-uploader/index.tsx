@@ -37,6 +37,7 @@ export function MediaUploader({
     maxFiles = 10,
     mode = "dialog",
     buttonLabel = "Upload Media",
+    accepts = "both",
 }: MediaUploaderProps) {
     const [staged, setStaged] = useState<StagedFile[]>([]);
     const [uploads, setUploads] = useState<UploadStatus[]>([]);
@@ -279,7 +280,7 @@ export function MediaUploader({
 
     const uploadZone = (
         <div className="space-y-4">
-            <DropZone onFiles={handleAllFiles} />
+            <DropZone onFiles={handleAllFiles} accepts={accepts} />
 
             {staged.length > 0 && (
                 <div className="space-y-3">

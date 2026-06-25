@@ -30,8 +30,9 @@ export function useSaveAppearance({ onSuccess }: UseSaveAppearanceProps = {}) {
             };
 
             const configPromise = updateTemplateConfig(dataToSave);
-            // Only update theme and font on the Site model for top-level access
+            // Only update theme, font, and template on the Site model for top-level access
             const sitePromise = updateSite({
+                template: draftConfig.templateKey,
                 theme: draftConfig.themeKey,
                 font: draftConfig.fontKey,
             });

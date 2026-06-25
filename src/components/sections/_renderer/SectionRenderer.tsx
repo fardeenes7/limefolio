@@ -122,7 +122,7 @@ export const SectionRenderer = memo(function SectionRenderer({
     section,
     siteData,
 }: SectionRendererProps) {
-    const { selectedInstanceId } = useContext(PreviewContext);
+    const { selectedInstanceId, isPreviewMode } = useContext(PreviewContext);
     const isSelected = selectedInstanceId === section.instanceId;
 
     // eslint-disable-next-line react-hooks/static-components
@@ -150,6 +150,18 @@ export const SectionRenderer = memo(function SectionRenderer({
             }
         };
     }, [section.instanceId]);
+
+    if (!isPreviewMode) {
+        return <Component section={interpolatedSection} siteData={siteData} />;
+    }
+
+    if (section.componentKey === 'header') {
+        return (
+            <div className="contents" onClick={handleClick}>
+                <Component section={interpolatedSection} siteData={siteData} />
+            </div>
+        );
+    }
 
     return (
         <div 

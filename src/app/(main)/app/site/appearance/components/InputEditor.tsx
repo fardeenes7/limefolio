@@ -2,6 +2,7 @@ import React from "react";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
+import { Slider } from "@/components/ui/slider";
 import { Label } from "@/components/ui/label";
 import {
     Select,
@@ -13,9 +14,10 @@ import {
 import { Button } from "@/components/ui/button";
 import { ColorTokenSelect } from "./ColorTokenSelect";
 import { BackgroundTypePicker, BackgroundEffectPicker } from "./BackgroundPicker";
-import { IconUpload, IconX, IconRotate } from "@tabler/icons-react";
+import { IconUpload, IconX, IconRotate, IconPhoto } from "@tabler/icons-react";
 import type { ComponentInput } from "@/templates/types";
 import { cn } from "@/lib/utils";
+import { MediaGalleryDialog } from "./MediaGalleryDialog";
 
 interface InputEditorProps {
     input: ComponentInput;
@@ -30,6 +32,7 @@ interface InputEditorProps {
 export function InputEditor({ input, value, defaultValue, isModified, onChange, onReset, compact }: InputEditorProps) {
     const isBoolean = input.type.kind === "boolean";
     const isSmallText = input.type.kind === "text" && !/bio|description|summary/.test(input.label.toLowerCase());
+    const [isGalleryOpen, setIsGalleryOpen] = React.useState(false);
 
     const renderControl = () => {
         if (input.type.kind === "text") {
@@ -82,7 +85,7 @@ export function InputEditor({ input, value, defaultValue, isModified, onChange, 
 
             return (
                 <Select value={strValue} onValueChange={onChange}>
-                    <SelectTrigger className="h-8 text-[10px] md:text-[10px]">
+                    <SelectTrigger className="h-8 w-full text-[10px] md:text-[10px]">
                         <SelectValue placeholder="Select..." />
                     </SelectTrigger>
                     <SelectContent>
@@ -114,21 +117,46 @@ export function InputEditor({ input, value, defaultValue, isModified, onChange, 
         if (input.type.kind === "file") {
             const strValue = typeof value === 'string' ? value : '';
             return (
-                <div className="flex items-center gap-2">
-                    {strValue && (
-                        <div className="h-8 w-8 shrink-0 rounded overflow-hidden bg-muted border">
-                            {input.type.accepts === 'image' && (
-                                <img src={strValue} alt="" className="h-full w-full object-cover" />
-                            )}
-                        </div>
-                    )}
-                    <Button variant="outline" size="sm" className="w-full h-8 text-[10px] md:text-[10px] px-2" onClick={() => {
-                        const promptVal = prompt("Enter file URL", strValue);
-                        if (promptVal !== null) onChange(promptVal);
-                    }}>
-                        <IconUpload className="w-3.5 h-3.5 mr-1" />
-                        {strValue ? "Change" : "Upload"}
-                    </Button>
+                <div className="flex flex-col gap-2">
+                    <div className="flex items-center gap-2">
+                        {strValue && (
+                            <div className="h-8 w-8 shrink-0 rounded overflow-hidden bg-muted border">
+                                {input.type.accepts === 'image' && (
+                                    <img src={strValue} alt="" className="h-full w-full object-cover" />
+                                )}
+                            </div>
+                        )}
+                        <Button variant="outline" size="sm" className="flex-1 h-8 text-[10px] md:text-[10px] px-2" onClick={() => setIsGalleryOpen(true)}>
+                            <IconPhoto className="w-3.5 h-3.5 mr-1" />
+                            {strValue ? "Change Media" : "Select Media"}
+                        </Button>
+                    </div>
+                    <MediaGalleryDialog
+                        open={isGalleryOpen}
+                        onOpenChange={setIsGalleryOpen}
+                        onSelect={(url) => {
+                            onChange(url);
+                            setIsGalleryOpen(false);
+                        }}
+                        accepts={input.type.accepts as 'image' | 'video' | undefined}
+                    />
+                </div>
+            );
+        }
+
+        if (input.type.kind === "slider") {
+            const numValue = typeof value === 'number' ? value : (input.default as number) || 0;
+            return (
+                <div className="flex items-center gap-4">
+                    <Slider
+                        value={[numValue]}
+                        onValueChange={(vals) => onChange(vals[0])}
+                        min={input.type.min}
+                        max={input.type.max}
+                        step={input.type.step}
+                        className="flex-1"
+                    />
+                    <span className="text-[10px] w-8 text-right font-medium">{numValue}</span>
                 </div>
             );
         }

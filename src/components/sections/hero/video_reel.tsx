@@ -12,6 +12,10 @@ export default function HeroVideoReel({ section, siteData }: SectionProps) {
     const backgroundVideo = (i.backgroundVideo as string) || '';
     const showPlayButton = i.showPlayButton !== false;
     
+    // Layout
+    const paddingTop = (i.paddingTop as number) || 0;
+    const paddingBottom = (i.paddingBottom as number) || 0;
+    
     const headlineRef = useRef<HTMLHeadingElement>(null);
 
     // Prepare text for staggered reveal by splitting into words
@@ -24,7 +28,10 @@ export default function HeroVideoReel({ section, siteData }: SectionProps) {
     useStaggeredReveal(headlineRef, 0.2, [headline]);
 
     return (
-        <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-background">
+        <section 
+            className="relative min-h-screen flex items-center justify-center overflow-hidden bg-background"
+            style={{ paddingTop: paddingTop ? `${paddingTop}px` : undefined, paddingBottom: paddingBottom ? `${paddingBottom}px` : undefined }}
+        >
             {/* Background Video */}
             {backgroundVideo ? (
                 <video 

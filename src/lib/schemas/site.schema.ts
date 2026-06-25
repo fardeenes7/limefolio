@@ -20,8 +20,6 @@ export const siteSchema = z.object({
     theme: z.string(),
     template: z.string(),
     font: z.string(),
-    meta_title: z.string().max(60),
-    meta_description: z.string().max(160),
     is_published: z.boolean(),
     is_active: z.boolean(),
     available_for_hire: z.boolean(),
@@ -64,14 +62,6 @@ export const siteFormSchema = z.object({
     theme: z.string().optional(),
     template: z.string().optional(),
     font: z.string().optional(),
-    meta_title: z
-        .string()
-        .max(60, "Meta title must be at most 60 characters")
-        .optional(),
-    meta_description: z
-        .string()
-        .max(160, "Meta description must be at most 160 characters")
-        .optional(),
     is_published: z.boolean().optional(),
     is_active: z.boolean().optional(),
     available_for_hire: z.boolean().optional(),

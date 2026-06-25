@@ -15,13 +15,29 @@ export async function generateMetadata({
 
     if (!siteData) return {};
 
+    const seo = siteData.seo;
+    const pageMeta = seo?.page_meta?.["landing"];
+
+    const title = pageMeta?.meta_title || seo?.default_meta_title || siteData.title;
+    const description = pageMeta?.meta_description || seo?.default_meta_description || siteData.description;
+    const ogImage = pageMeta?.og_image || seo?.og_image || siteData.logo;
+    const robotsStr = pageMeta?.robots || seo?.robots_default || "index,follow";
+    
+    // Parse robots "index,follow" to { index: true, follow: true }
+    const index = robotsStr.includes("index") && !robotsStr.includes("noindex");
+    const follow = robotsStr.includes("follow") && !robotsStr.includes("nofollow");
+
     return {
-        title: siteData.meta_title || siteData.title,
-        description: siteData.meta_description || siteData.description,
+        title,
+        description,
         openGraph: {
-            title: siteData.title,
-            description: siteData.description || undefined,
-            images: siteData.logo ? [siteData.logo] : []
+            title,
+            description: description || undefined,
+            images: ogImage ? [ogImage] : [],
+        },
+        robots: {
+            index,
+            follow,
         }
     };
 }

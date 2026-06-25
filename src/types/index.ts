@@ -6,6 +6,25 @@ export interface APIResponse<T> {
     ok: boolean;
 }
 
+export interface SiteSEO {
+    id: number;
+    default_meta_title: string;
+    default_meta_description: string;
+    og_image: string | null;
+    google_analytics_id: string;
+    google_tag_manager_id: string;
+    facebook_pixel_id: string;
+    robots_default: "index,follow" | "noindex,follow" | "index,nofollow" | "noindex,nofollow";
+    page_meta: Record<string, {
+        meta_title?: string;
+        meta_description?: string;
+        og_image?: string | null;
+        robots?: "index,follow" | "noindex,follow" | "index,nofollow" | "noindex,nofollow";
+    }>;
+    created_at: string;
+    updated_at: string;
+}
+
 // Site types
 export interface Site {
     id: number;
@@ -19,12 +38,11 @@ export interface Site {
     theme: string;
     template: string;
     font: string;
-    meta_title: string;
-    meta_description: string;
     is_published: boolean;
     is_active: boolean;
     available_for_hire: boolean;
     custom_domains?: CustomDomain[];
+    seo?: SiteSEO;
     created_at: string;
     updated_at: string;
 }

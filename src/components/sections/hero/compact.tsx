@@ -23,6 +23,10 @@ export default function HeroCompact({ section, siteData }: SectionProps) {
     const body = (i.body as string) || siteData.description;
     const showAvatar = i.showAvatar !== false;
     const showSocialLinks = i.showSocialLinks !== false;
+    
+    // Layout
+    const paddingTop = (i.paddingTop as number) || 0;
+    const paddingBottom = (i.paddingBottom as number) || 0;
 
     // CTAs
     const primaryCtaLabel = (i.primaryCtaLabel as string) || 'View My Work';
@@ -37,7 +41,10 @@ export default function HeroCompact({ section, siteData }: SectionProps) {
     const avatarUrl = (i.avatarImage as string) || siteData.logo;
 
     return (
-        <section className="relative py-12 md:py-20 flex items-center overflow-hidden bg-background">
+        <section 
+            className="relative py-12 md:py-20 flex items-center overflow-hidden bg-background"
+            style={{ paddingTop: paddingTop ? `${paddingTop}px` : undefined, paddingBottom: paddingBottom ? `${paddingBottom}px` : undefined }}
+        >
             <HeroBackground section={section} />
 
             <div className="container max-w-5xl mx-auto px-6 relative z-10 flex flex-col md:flex-row items-center gap-8">

@@ -23,7 +23,7 @@ export function NavSecondary({
                         const isActive = isItemActive(item.url);
                         return (
                             <SidebarMenuItem key={item.title}>
-                                <SidebarMenuButton asChild size="sm" isActive={isActive}>
+                                <SidebarMenuButton asChild size="sm" isActive={isActive} tooltip={item.title}>
                                     <Link href={item.url}>
                                         <item.icon />
                                         <span>{item.title}</span>

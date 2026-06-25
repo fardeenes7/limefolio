@@ -6,9 +6,10 @@ import { IconFileUpload } from "@tabler/icons-react";
 
 export interface DropZoneProps {
     onFiles: (files: FileList) => void;
+    accepts?: "image" | "video" | "both";
 }
 
-export function DropZone({ onFiles }: DropZoneProps) {
+export function DropZone({ onFiles, accepts = "both" }: DropZoneProps) {
     const [isDragging, setIsDragging] = useState(false);
     const inputRef = useRef<HTMLInputElement>(null);
 
@@ -37,7 +38,9 @@ export function DropZone({ onFiles }: DropZoneProps) {
                         <IconFileUpload className="w-8 h-8 text-primary" />
                     </div>
                 </div>
-                <h3 className="font-semibold mb-2">Upload Images or Videos</h3>
+                <h3 className="font-semibold mb-2">
+                    {accepts === "image" ? "Upload Images" : accepts === "video" ? "Upload Videos" : "Upload Images or Videos"}
+                </h3>
                 <p className="text-sm text-muted-foreground mb-1">
                     Drag and drop here, or click to browse
                 </p>
@@ -48,7 +51,7 @@ export function DropZone({ onFiles }: DropZoneProps) {
                 <input
                     ref={inputRef}
                     type="file"
-                    accept="image/*,video/*"
+                    accept={accepts === "image" ? "image/*" : accepts === "video" ? "video/*" : "image/*,video/*"}
                     multiple
                     className="hidden"
                     onChange={(e) => {

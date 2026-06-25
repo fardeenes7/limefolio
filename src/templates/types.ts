@@ -59,7 +59,8 @@ export type ComponentInputType =
     | { kind: 'boolean' }
     | { kind: 'select'; options: SelectOption[] }
     | { kind: 'file'; accepts: 'image' | 'video' | 'doc' }
-    | { kind: 'token'; category: 'color' | 'radius' | 'shadow' };
+    | { kind: 'token'; category: 'color' | 'radius' | 'shadow' }
+    | { kind: 'slider'; min: number; max: number; step: number };
 
 /**
  * A single configurable input on a component.

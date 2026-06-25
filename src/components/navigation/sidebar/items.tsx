@@ -7,7 +7,6 @@ import {
     IconArticle,
     IconBriefcase,
     IconPhoto,
-    IconGlobe,
     IconSearch,
     IconKey,
     IconCreditCard,
@@ -81,14 +80,9 @@ export const primaryNavItems = [
         url: "/app/site",
         items: [
             {
-                title: "Site",
+                title: "Site Settings",
                 url: "/app/site",
                 icon: IconWorld,
-            },
-            {
-                title: "Domains",
-                url: "/app/site/domains",
-                icon: IconGlobe,
             },
             {
                 title: "Appearance",
@@ -97,6 +91,7 @@ export const primaryNavItems = [
             },
         ],
     },
+
     {
         title: "Account",
         url: "/app/account",

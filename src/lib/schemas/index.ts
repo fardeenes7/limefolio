@@ -19,6 +19,7 @@ export * from "./skill.schema";
 
 // Blog schemas
 export * from "./blog.schema";
+export * from "./site-seo.schema";
 
 // Social link schemas
 export * from "./social-link.schema";

@@ -1,9 +1,12 @@
+"use client";
+
 /**
  * Header — Editorial Variant
  * Two-row stacked layout: centered logo on top, navigation and CTA on the bottom row.
  */
 import type { SectionProps } from '@/components/sections/_renderer/SectionRenderer';
 import Link from 'next/link';
+import { useHeaderState } from './useHeaderState';
 
 export default function HeaderEditorial({ section, siteData }: SectionProps) {
     const i = section.resolvedInputs as Record<string, unknown>;
@@ -12,14 +15,16 @@ export default function HeaderEditorial({ section, siteData }: SectionProps) {
     const ctaButton = i.ctaButton !== false;
     const ctaLabel = (i.ctaLabel as string) || 'Hire Me';
     const bottomBorder = i.bottomBorder === true;
+    const transparentOnTop = i.transparentOnTop === true;
+    const backgroundStyle = (i.backgroundStyle as string) || 'frosted';
     const bottomRowLayout = (i.bottomRowLayout as string) || 'center';
     const isBetween = bottomRowLayout === 'between';
     const title = siteData.title || 'Portfolio';
 
+    const { headerClass } = useHeaderState(sticky, transparentOnTop, bottomBorder, backgroundStyle, section.instanceId);
+
     return (
-        <header
-            className={`${sticky ? 'sticky top-0 z-50' : 'relative'} ${bottomBorder ? 'border-b border-border/60' : ''} bg-background/80 backdrop-blur-xl transition-all`}
-        >
+        <header className={headerClass}>
             <div className="container max-w-7xl mx-auto px-6 pt-6 pb-4 flex flex-col items-center gap-5">
                 {/* Top Row: Logo / Site name */}
                 <div className="w-full flex justify-center">

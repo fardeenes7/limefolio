@@ -29,6 +29,7 @@ export function NavMain() {
                                             asChild
                                             isActive={isActive}
                                             className="h-8"
+                                            tooltip={item.title}
                                         >
                                             <Link href={item.url}>
                                                 <item.icon />

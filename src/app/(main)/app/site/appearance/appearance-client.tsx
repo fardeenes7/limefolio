@@ -13,6 +13,7 @@ import { AppearanceRightSidebar } from "./components/AppearanceRightSidebar";
 import { LivePreviewPane } from "./components/LivePreviewPane";
 import type { LeftTab } from "./components/AppearanceLeftSidebar";
 import { Site } from "@/types";
+import { SidebarAutoCollapse } from "@/components/navigation/sidebar/sidebar-auto-collapse";
 
 interface AppearanceClientProps {
     initialSite: Site;
@@ -72,8 +73,8 @@ export function AppearanceClient({ initialSite, initialConfigRaw }: AppearanceCl
     const isLayoutSection = selectedSection ? layoutSections.some(s => s.instanceId === selectedSection.instanceId) : false;
     
     const overridesSource = isLayoutSection
-        ? stateHelpers.overrides.layout
-        : (stateHelpers.overrides.pages[activePage] ?? {});
+        ? (stateHelpers.overrides?.layout ?? {})
+        : (stateHelpers.overrides?.pages?.[activePage] ?? {});
 
     const selectedOverride = selectedInstanceId ? (overridesSource[selectedInstanceId] ?? {}) : {};
 
@@ -82,6 +83,8 @@ export function AppearanceClient({ initialSite, initialConfigRaw }: AppearanceCl
             className="flex flex-col -mx-6 -my-10 lg:-my-20 overflow-hidden bg-muted/20"
             style={{ height: "calc(100vh - 0px)" }}
         >
+            {/* Collapses the app sidebar to icon-only while the appearance editor is open */}
+            <SidebarAutoCollapse />
             {/* Topbar: back link + page selector + device + save */}
             <AppearanceTopbar
                 siteDomain={initialSite.subdomain || "demo"}

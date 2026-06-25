@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import { resolvePortfolioConfig } from "@/templates/merge";
 import type { Template, UserPortfolioConfig, ResolvedSection } from "@/templates/types";
 import type { SiteData } from "@/types/site";
@@ -20,7 +21,8 @@ import { getTemplate } from "@/templates/registry";
 
 export const PreviewContext = React.createContext<{
     selectedInstanceId: string | null;
-}>({ selectedInstanceId: null });
+    isPreviewMode: boolean;
+}>({ selectedInstanceId: null, isPreviewMode: false });
 
 export function LivePreviewProvider({
     templateDef,
@@ -29,9 +31,42 @@ export function LivePreviewProvider({
     siteData,
     children,
 }: LivePreviewProviderProps) {
-    const [previewConfig, setPreviewConfig] = useState<Partial<UserPortfolioConfig> | null>(null);
+    return (
+        <Suspense fallback={<LayoutPageRenderer layoutSections={initialLayoutSections} siteData={siteData}>{children}</LayoutPageRenderer>}>
+            <LivePreviewProviderInner
+                templateDef={templateDef}
+                initialUserConfig={initialUserConfig}
+                initialLayoutSections={initialLayoutSections}
+                siteData={siteData}
+            >
+                {children}
+            </LivePreviewProviderInner>
+        </Suspense>
+    );
+}
+
+function LivePreviewProviderInner({
+    templateDef,
+    initialUserConfig,
+    initialLayoutSections,
+    siteData,
+    children,
+}: LivePreviewProviderProps) {
+    const searchParams = useSearchParams();
+    const isUrlPreview = searchParams.get("preview") === "true";
+
+    const [previewConfig, setPreviewConfig] = useState<Partial<UserPortfolioConfig> | null>(() => {
+        if (isUrlPreview) {
+            return {
+                templateKey: searchParams.get("template") || undefined,
+                themeKey: searchParams.get("theme") || undefined,
+                fontKey: searchParams.get("font") || undefined,
+            };
+        }
+        return null;
+    });
     const [previewPageKey, setPreviewPageKey] = useState<string>("landing");
-    const [isPreviewMode, setIsPreviewMode] = useState(false);
+    const [isPreviewMode, setIsPreviewMode] = useState(isUrlPreview);
     const [selectedInstanceId, setSelectedInstanceId] = useState<string | null>(null);
     
     const { setTheme } = useTheme();
@@ -115,7 +150,7 @@ export function LivePreviewProvider({
     const page = resolvedConfig.pages.find((p) => p.key === previewPageKey) || resolvedConfig.pages[0];
 
     return (
-        <PreviewContext.Provider value={{ selectedInstanceId }}>
+        <PreviewContext.Provider value={{ selectedInstanceId, isPreviewMode: true }}>
             <LayoutPageRenderer layoutSections={resolvedConfig.layout} siteData={siteData}>
                 <PageRenderer sections={page.sections} siteData={siteData} />
             </LayoutPageRenderer>

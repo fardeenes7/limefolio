@@ -18,6 +18,10 @@ export default function HeroTypingAnimation({ section, siteData }: SectionProps)
     const secondaryCtaLabel = (i.secondaryCtaLabel as string) || 'Contact Me';
     const secondaryCtaUrl = (i.secondaryCtaUrl as string) || '#contact';
 
+    // Layout
+    const paddingTop = (i.paddingTop as number) || 0;
+    const paddingBottom = (i.paddingBottom as number) || 0;
+
     const [currentStringIndex, setCurrentStringIndex] = useState(0);
     const [currentText, setCurrentText] = useState('');
     const [isDeleting, setIsDeleting] = useState(false);
@@ -47,7 +51,10 @@ export default function HeroTypingAnimation({ section, siteData }: SectionProps)
     }, [currentText, isDeleting, currentStringIndex, typingStrings]);
 
     return (
-        <section className="relative min-h-screen flex flex-col bg-background font-mono overflow-hidden py-8 sm:py-12">
+        <section 
+            className="relative min-h-screen flex flex-col bg-background font-mono overflow-hidden py-8 sm:py-12"
+            style={{ paddingTop: paddingTop ? `${paddingTop}px` : undefined, paddingBottom: paddingBottom ? `${paddingBottom}px` : undefined }}
+        >
             {/* Terminal Background Effect */}
             <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-primary/5 via-background to-background pointer-events-none" />
             

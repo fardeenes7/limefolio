@@ -78,6 +78,19 @@ const header: ComponentSchema = {
             default: true,
         },
         {
+            key: 'backgroundStyle',
+            label: 'Background Style',
+            type: {
+                kind: 'select',
+                options: [
+                    { label: 'Frosted Glass', value: 'frosted' },
+                    { label: 'Solid Color', value: 'solid' },
+                    { label: 'Transparent', value: 'transparent' },
+                ],
+            },
+            default: 'frosted',
+        },
+        {
             key: 'showNav',
             label: 'Show navigation',
             type: { kind: 'boolean' },
@@ -254,6 +267,30 @@ const hero: ComponentSchema = {
     defaultVariant: 'default',
     inputs: [
         {
+            key: 'paddingTop',
+            label: 'Top Padding (px)',
+            type: {
+                kind: 'slider',
+                min: 0,
+                max: 300,
+                step: 10,
+            },
+            default: 0,
+            group: 'Layout',
+        },
+        {
+            key: 'paddingBottom',
+            label: 'Bottom Padding (px)',
+            type: {
+                kind: 'slider',
+                min: 0,
+                max: 300,
+                step: 10,
+            },
+            default: 0,
+            group: 'Layout',
+        },
+        {
             key: 'headline',
             label: 'Headline',
             type: { kind: 'text' },
@@ -349,18 +386,24 @@ const hero: ComponentSchema = {
             showIf: { input: 'backgroundType', equals: 'effect' },
         },
         {
+            key: 'backgroundOpacity',
+            label: 'Background Opacity (%)',
+            type: {
+                kind: 'slider',
+                min: 0,
+                max: 100,
+                step: 5,
+            },
+            default: 50,
+        },
+        {
             key: 'typingStrings',
             label: 'Typing animation strings (comma-separated)',
             type: { kind: 'text' },
             default: 'Developer, Designer, Creator',
             showIf: { input: 'variant', equals: 'typing_animation' },
         },
-        {
-            key: 'showScrollIndicator',
-            label: 'Show scroll indicator',
-            type: { kind: 'boolean' },
-            default: true,
-        },
+
         {
             key: 'avatarImage',
             label: 'Avatar image',

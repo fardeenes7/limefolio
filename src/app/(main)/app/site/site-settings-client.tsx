@@ -1,37 +1,52 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { siteFormSchema, type SiteFormData } from "@/lib/schemas/site.schema";
 import { updateSite, toggleSitePublish } from "@/lib/actions/sites";
-import { Site } from "@/types";
-import { Button } from "@/components/ui/button";
+import { Site, CustomDomain } from "@/types";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
+import { Badge } from "@/components/ui/badge";
+import { Separator } from "@/components/ui/separator";
+import { cn } from "@/lib/utils";
+import { useSeoForm } from "./seo-tab";
+import { SeoTab } from "./seo-tab";
 import {
     Field,
     FieldDescription,
     FieldError,
     FieldGroup,
-    FieldTitle
+    FieldTitle,
 } from "@/components/ui/field";
-import { Card } from "@/components/ui/card";
+import {
+    InputGroup,
+    InputGroupAddon,
+    InputGroupInput,
+} from "@/components/ui/input-group";
+import { DomainsClient } from "./domains/domains-client";
+import { CreateDomainDialog } from "./domains/create-domain-dialog";
+import Link from "next/link";
 import {
     IconDeviceFloppy,
-    IconWorld,
     IconEye,
     IconEyeOff,
     IconSparkles,
     IconSearch,
-    IconInfoCircle,
+    IconWorld,
+    IconGlobe,
+    IconPalette,
     IconCheck,
-    IconX
+    IconX,
+    IconArrowRight,
+    IconInfoCircle,
+    IconTemplate,
+    IconTypography,
 } from "@tabler/icons-react";
-import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
-import { cn } from "@/lib/utils";
 import {
     Page,
     PageAction,
@@ -39,19 +54,66 @@ import {
     PageDescription,
     PageHeader,
     PageHeading,
-    PageTitle
+    PageTitle,
 } from "@/components/ui/page";
-import {
-    InputGroup,
-    InputGroupAddon,
-    InputGroupInput
-} from "@/components/ui/input-group";
+
+// ─── Types ──────────────────────────────────────────────────────────────────
+
+type TabId = "general" | "seo" | "domains" | "appearance";
+
+interface Tab {
+    id: TabId;
+    label: string;
+    icon: React.ElementType;
+    description: string;
+}
+
+const TABS: Tab[] = [
+    {
+        id: "general",
+        label: "General",
+        icon: IconWorld,
+        description: "Basic info",
+    },
+    {
+        id: "seo",
+        label: "SEO",
+        icon: IconSearch,
+        description: "Search visibility",
+    },
+    {
+        id: "domains",
+        label: "Domains",
+        icon: IconGlobe,
+        description: "Custom domains",
+    },
+    {
+        id: "appearance",
+        label: "Appearance",
+        icon: IconPalette,
+        description: "Template & theme",
+    },
+];
+
+// ─── Props ───────────────────────────────────────────────────────────────────
 
 interface SiteSettingsClientProps {
     initialSite: Site;
+    initialDomains: CustomDomain[];
 }
 
-export function SiteSettingsClient({ initialSite }: SiteSettingsClientProps) {
+// ─── Root component ──────────────────────────────────────────────────────────
+
+export function SiteSettingsClient({
+    initialSite,
+    initialDomains,
+}: SiteSettingsClientProps) {
+    const router = useRouter();
+    const searchParams = useSearchParams();
+    const rawTab = searchParams.get("tab") as TabId | null;
+    const activeTab: TabId =
+        rawTab && TABS.some((t) => t.id === rawTab) ? rawTab : "general";
+
     const [site, setSite] = useState(initialSite);
     const [isTogglingPublish, setIsTogglingPublish] = useState(false);
     const [saveSuccess, setSaveSuccess] = useState(false);
@@ -62,7 +124,7 @@ export function SiteSettingsClient({ initialSite }: SiteSettingsClientProps) {
         control,
         formState: { errors, isDirty, isSubmitting },
         reset,
-        setError
+        setError,
     } = useForm<SiteFormData>({
         resolver: zodResolver(siteFormSchema),
         defaultValues: {
@@ -70,15 +132,14 @@ export function SiteSettingsClient({ initialSite }: SiteSettingsClientProps) {
             title: site.title,
             tagline: site.tagline,
             description: site.description,
-            meta_title: site.meta_title,
-            meta_description: site.meta_description,
-            available_for_hire: site.available_for_hire
-        }
+            available_for_hire: site.available_for_hire,
+        },
     });
+
+    const seoFormProps = useSeoForm(site.seo);
 
     const onSubmit = async (data: SiteFormData) => {
         setSaveSuccess(false);
-
         try {
             const response = await updateSite(data);
             if (response.ok && response.data) {
@@ -92,12 +153,11 @@ export function SiteSettingsClient({ initialSite }: SiteSettingsClientProps) {
                         if (value) {
                             setError(key as keyof SiteFormData, {
                                 type: "custom",
-                                message: value[0]
+                                message: (value as string[])[0],
                             });
                         }
                     });
                 }
-                alert("Failed to update site");
             }
         } catch (error) {
             console.error("Failed to update site:", error);
@@ -118,410 +178,524 @@ export function SiteSettingsClient({ initialSite }: SiteSettingsClientProps) {
         }
     };
 
+    const setTab = (id: TabId) => {
+        const params = new URLSearchParams(searchParams.toString());
+        params.set("tab", id);
+        router.push(`?${params.toString()}`, { scroll: false });
+    };
+
     const siteUrl = `https://${site.subdomain}.limefolio.com`;
 
     return (
         <Page>
+            {/* ── Page header ──────────────────────────────────────────── */}
             <PageHeader>
                 <PageHeading>
                     <PageTitle>Site Settings</PageTitle>
                     <PageDescription>
-                        Configure your portfolio site&apos;s basic information and
-                        SEO settings
+                        Manage your portfolio's configuration, domains, and appearance.
                     </PageDescription>
                 </PageHeading>
+
                 <PageAction>
                     <div className="flex items-center gap-3">
-                        {isDirty && (
-                            <Button
-                                type="button"
+                        {/* Publish status */}
+                        <div className="flex items-center gap-2">
+                            <Badge
                                 variant="outline"
-                                onClick={() => reset()}
-                                className="gap-2"
+                                className={cn(
+                                    "gap-1.5 transition-all duration-300 text-xs py-0.5",
+                                    site.is_published
+                                        ? "border-green-500/30 bg-green-500/8 text-green-700 dark:text-green-400"
+                                        : "border-border text-muted-foreground"
+                                )}
                             >
-                                <IconX className="w-4 h-4" />
-                                Discard
+                                <span
+                                    className={cn(
+                                        "inline-block w-1.5 h-1.5 rounded-full",
+                                        site.is_published
+                                            ? "bg-green-500"
+                                            : "bg-muted-foreground/50"
+                                    )}
+                                />
+                                {site.is_published ? "Published" : "Draft"}
+                            </Badge>
+
+                            <Button
+                                variant={site.is_published ? "outline" : "default"}
+                                size="sm"
+                                onClick={handleTogglePublish}
+                                disabled={isTogglingPublish}
+                                className="gap-1.5 transition-all duration-200"
+                            >
+                                {isTogglingPublish ? (
+                                    <>
+                                        <div className="w-3.5 h-3.5 border-2 border-current border-t-transparent rounded-full animate-spin" />
+                                        Updating…
+                                    </>
+                                ) : site.is_published ? (
+                                    <>
+                                        <IconEyeOff className="w-3.5 h-3.5" />
+                                        Unpublish
+                                    </>
+                                ) : (
+                                    <>
+                                        <IconEye className="w-3.5 h-3.5" />
+                                        Publish Site
+                                    </>
+                                )}
                             </Button>
+                        </div>
+
+                        {/* General tab save actions */}
+                        {activeTab === "general" && (
+                            <div className="flex items-center gap-2 animate-in fade-in slide-in-from-right-2 duration-200">
+                                {isDirty && (
+                                    <Button
+                                        type="button"
+                                        variant="ghost"
+                                        size="sm"
+                                        onClick={() => reset()}
+                                        className="gap-1.5"
+                                    >
+                                        <IconX className="w-3.5 h-3.5" />
+                                        Discard
+                                    </Button>
+                                )}
+                                <Button
+                                    type="submit"
+                                    form="site-settings-form"
+                                    size="sm"
+                                    disabled={!isDirty || isSubmitting}
+                                    loading={isSubmitting}
+                                    className="gap-1.5 transition-all duration-200"
+                                >
+                                    {saveSuccess ? (
+                                        <>
+                                            <IconCheck className="w-3.5 h-3.5" />
+                                            Saved!
+                                        </>
+                                    ) : (
+                                        <>
+                                            <IconDeviceFloppy className="w-3.5 h-3.5" />
+                                            Save Changes
+                                        </>
+                                    )}
+                                </Button>
+                            </div>
                         )}
-                        <Button
-                            type="submit"
-                            form="site-settings-form"
-                            disabled={!isDirty || isSubmitting}
-                            loading={isSubmitting}
-                            className="gap-2 transition-all duration-200"
-                        >
-                            {saveSuccess ? (
-                                <>
-                                    <IconCheck className="w-4 h-4" />
-                                    Saved!
-                                </>
-                            ) : (
-                                <>
-                                    <IconDeviceFloppy className="w-4 h-4" />
-                                    Save Changes
-                                </>
-                            )}
-                        </Button>
+
+                        {/* SEO tab save actions */}
+                        {activeTab === "seo" && (
+                            <div className="flex items-center gap-2 animate-in fade-in slide-in-from-right-2 duration-200">
+                                {seoFormProps.isDirty && (
+                                    <Button
+                                        type="button"
+                                        variant="ghost"
+                                        size="sm"
+                                        onClick={() => seoFormProps.reset()}
+                                        className="gap-1.5"
+                                    >
+                                        <IconX className="w-3.5 h-3.5" />
+                                        Discard
+                                    </Button>
+                                )}
+                                <Button
+                                    type="submit"
+                                    form="site-seo-form"
+                                    size="sm"
+                                    disabled={!seoFormProps.isDirty || seoFormProps.isSubmitting}
+                                    loading={seoFormProps.isSubmitting}
+                                    className="gap-1.5 transition-all duration-200"
+                                >
+                                    {seoFormProps.saveSuccess ? (
+                                        <>
+                                            <IconCheck className="w-3.5 h-3.5" />
+                                            Saved!
+                                        </>
+                                    ) : (
+                                        <>
+                                            <IconDeviceFloppy className="w-3.5 h-3.5" />
+                                            Save Changes
+                                        </>
+                                    )}
+                                </Button>
+                            </div>
+                        )}
+
+                        {/* Domains tab add domain action */}
+                        {activeTab === "domains" && (
+                            <div className="animate-in fade-in slide-in-from-right-2 duration-200">
+                                <CreateDomainDialog />
+                            </div>
+                        )}
                     </div>
                 </PageAction>
             </PageHeader>
 
             <PageBody>
-                <div className="grid gap-6 lg:grid-cols-3 items-start">
-                    {/* Main Form */}
-                    <div className="lg:col-span-2 space-y-6">
-                        <form
-                            id="site-settings-form"
-                            onSubmit={handleSubmit(onSubmit)}
-                            className="space-y-6"
-                        >
-                            {/* Basic Information Card */}
-                            <Card className="p-6 space-y-6 shadow-sm border">
-                                <div className="flex items-center gap-3">
-                                    <div className="p-2 rounded-lg bg-primary/10">
-                                        <IconWorld className="w-5 h-5 text-primary" />
-                                    </div>
-                                    <div>
-                                        <h2 className="text-lg font-semibold">
-                                            Basic Information
-                                        </h2>
-                                        <p className="text-sm text-muted-foreground">
-                                            Your site&apos;s core identity and
-                                            branding
-                                        </p>
-                                    </div>
-                                </div>
-
-                                <Separator />
-
-                                <FieldGroup>
-                                    <Field>
-                                        <FieldTitle>Site Title</FieldTitle>
-                                        <FieldDescription>
-                                            The main title of your portfolio
-                                            site
-                                        </FieldDescription>
-                                        <Input
-                                            {...register("title")}
-                                            placeholder="John Doe - Full Stack Developer"
-                                        />
-                                        <FieldError errors={[errors.title]} />
-                                    </Field>
-
-                                    <Field>
-                                        <FieldTitle>Tagline</FieldTitle>
-                                        <FieldDescription>
-                                            A short, catchy description of what
-                                            you do
-                                        </FieldDescription>
-                                        <Input
-                                            {...register("tagline")}
-                                            placeholder="Building exceptional digital experiences"
-                                        />
-                                        <FieldError errors={[errors.tagline]} />
-                                    </Field>
-
-                                    <Field>
-                                        <FieldTitle>Subdomain</FieldTitle>
-                                        <FieldDescription>
-                                            Your unique portfolio URL. Only
-                                            lowercase letters, numbers, and
-                                            hyphens allowed.
-                                        </FieldDescription>
-                                        <InputGroup>
-                                            <InputGroupInput
-                                                {...register("subdomain")}
-                                                placeholder="johndoe"
-                                            />
-                                            <InputGroupAddon align="inline-end">
-                                                .limefolio.com
-                                            </InputGroupAddon>
-                                        </InputGroup>
-                                        <FieldError
-                                            errors={[errors.subdomain]}
-                                        />
-                                    </Field>
-
-                                    <Field>
-                                        <FieldTitle>Description</FieldTitle>
-                                        <FieldDescription>
-                                            A detailed description of your
-                                            portfolio and professional
-                                            background
-                                        </FieldDescription>
-                                        <Textarea
-                                            {...register("description")}
-                                            placeholder="I'm a passionate full-stack developer with 5+ years of experience..."
-                                            rows={4}
-                                            className="resize-none"
-                                        />
-                                        <FieldError
-                                            errors={[errors.description]}
-                                        />
-                                    </Field>
-
-                                    <Field className="flex flex-row items-center justify-between rounded-lg border border-border/40 p-4 bg-muted/20">
-                                        <div className="space-y-0.5">
-                                            <FieldTitle>
-                                                Available for Hire
-                                            </FieldTitle>
-                                            <FieldDescription>
-                                                Show a badge indicating that you
-                                                are open to new opportunities
-                                            </FieldDescription>
-                                        </div>
-                                        <Controller
-                                            control={control}
-                                            name="available_for_hire"
-                                            render={({ field }) => (
-                                                <Switch
-                                                    checked={field.value}
-                                                    onCheckedChange={
-                                                        field.onChange
-                                                    }
-                                                />
-                                            )}
-                                        />
-                                    </Field>
-                                </FieldGroup>
-                            </Card>
-
-                            {/* SEO Settings Card */}
-                            <Card className="p-6 space-y-6 shadow-sm border">
-                                <div className="flex items-center gap-3">
-                                    <div className="p-2 rounded-lg bg-primary/10">
-                                        <IconSearch className="w-5 h-5 text-primary" />
-                                    </div>
-                                    <div>
-                                        <h2 className="text-lg font-semibold">
-                                            SEO Settings
-                                        </h2>
-                                        <p className="text-sm text-muted-foreground">
-                                            Optimize your site for search
-                                            engines
-                                        </p>
-                                    </div>
-                                </div>
-
-                                <Separator />
-
-                                <FieldGroup>
-                                    <Field>
-                                        <FieldTitle>Meta Title</FieldTitle>
-                                        <FieldDescription>
-                                            The title that appears in search
-                                            results (max 60 characters)
-                                        </FieldDescription>
-                                        <Input
-                                            {...register("meta_title")}
-                                            placeholder="John Doe | Full Stack Developer & Designer"
-                                            maxLength={60}
-                                            className="max-w-xl"
-                                        />
-                                        <FieldError
-                                            errors={[errors.meta_title]}
-                                        />
-                                    </Field>
-
-                                    <Field>
-                                        <FieldTitle>
-                                            Meta Description
-                                        </FieldTitle>
-                                        <FieldDescription>
-                                            The description that appears in
-                                            search results (max 160 characters)
-                                        </FieldDescription>
-                                        <Textarea
-                                            {...register("meta_description")}
-                                            placeholder="Experienced full-stack developer specializing in React, Node.js, and cloud technologies..."
-                                            rows={3}
-                                            maxLength={160}
-                                            className="resize-none"
-                                        />
-                                        <FieldError
-                                            errors={[errors.meta_description]}
-                                        />
-                                    </Field>
-                                </FieldGroup>
-                            </Card>
-                        </form>
-                    </div>
-
-                    {/* Sidebar */}
-                    <div className="space-y-6 lg:sticky lg:top-6">
-                        {/* Site Status Card */}
-                        <Card className="p-6 space-y-4 shadow-sm border">
-                            <div className="flex items-center gap-3">
-                                <div className="p-2 rounded-lg bg-primary/10">
-                                    <IconSparkles className="w-5 h-5 text-primary" />
-                                </div>
-                                <div>
-                                    <h3 className="font-semibold">
-                                        Site Status
-                                    </h3>
-                                </div>
-                            </div>
-
-                            <Separator />
-
-                            <div className="space-y-4">
-                                <div className="flex items-center justify-between">
-                                    <span className="text-sm text-muted-foreground">
-                                        Visibility
-                                    </span>
-                                    <Badge
-                                        variant={
-                                            site.is_published
-                                                ? "default"
-                                                : "secondary"
-                                        }
+                <div className="flex gap-8 items-start">
+                    {/* ── Left nav ─────────────────────────────────────── */}
+                    <nav className="w-52 shrink-0 sticky top-6 space-y-0.5">
+                        {TABS.map((tab) => {
+                            const Icon = tab.icon;
+                            const isActive = activeTab === tab.id;
+                            return (
+                                <button
+                                    key={tab.id}
+                                    id={`site-settings-tab-${tab.id}`}
+                                    onClick={() => setTab(tab.id)}
+                                    className={cn(
+                                        "w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left transition-all duration-150 group",
+                                        isActive
+                                            ? "bg-primary/8 text-primary"
+                                            : "text-muted-foreground hover:bg-muted/60 hover:text-foreground"
+                                    )}
+                                >
+                                    <div
                                         className={cn(
-                                            "gap-1.5 transition-all duration-200",
-                                            site.is_published &&
-                                                "bg-green-500/10 text-green-700 dark:text-green-400 hover:bg-green-500/20"
+                                            "w-7 h-7 rounded-md flex items-center justify-center shrink-0 transition-all duration-150",
+                                            isActive
+                                                ? "bg-primary/15 text-primary"
+                                                : "bg-muted text-muted-foreground group-hover:bg-muted/80 group-hover:text-foreground"
                                         )}
                                     >
-                                        {site.is_published ? (
-                                            <>
-                                                <IconEye className="w-3 h-3" />
-                                                Published
-                                            </>
-                                        ) : (
-                                            <>
-                                                <IconEyeOff className="w-3 h-3" />
-                                                Draft
-                                            </>
-                                        )}
-                                    </Badge>
-                                </div>
-
-                                <Button
-                                    onClick={handleTogglePublish}
-                                    disabled={isTogglingPublish}
-                                    variant={
-                                        site.is_published
-                                            ? "outline"
-                                            : "default"
-                                    }
-                                    className="w-full gap-2 transition-all duration-200"
-                                >
-                                    {isTogglingPublish ? (
-                                        <>
-                                            <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
-                                            Updating...
-                                        </>
-                                    ) : site.is_published ? (
-                                        <>
-                                            <IconEyeOff className="w-4 h-4" />
-                                            Unpublish Site
-                                        </>
-                                    ) : (
-                                        <>
-                                            <IconEye className="w-4 h-4" />
-                                            Publish Site
-                                        </>
-                                    )}
-                                </Button>
-
-                                {site.is_published && (
-                                    <div className="p-3 rounded-lg bg-muted/50 space-y-2 animate-in fade-in slide-in-from-top-2 duration-300">
-                                        <p className="text-xs text-muted-foreground">
-                                            Your site is live at:
-                                        </p>
-                                        <a
-                                            href={siteUrl}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className="text-sm font-medium text-primary hover:underline break-all transition-colors duration-200"
-                                        >
-                                            {siteUrl}
-                                        </a>
+                                        <Icon className="w-3.5 h-3.5" />
                                     </div>
-                                )}
-                            </div>
-                        </Card>
+                                    <div className="min-w-0">
+                                        <div
+                                            className={cn(
+                                                "text-sm font-medium leading-tight",
+                                                isActive
+                                                    ? "text-primary"
+                                                    : "text-foreground"
+                                            )}
+                                        >
+                                            {tab.label}
+                                        </div>
+                                        <div className="text-xs text-muted-foreground truncate mt-0.5">
+                                            {tab.description}
+                                        </div>
+                                    </div>
+                                    {isActive && (
+                                        <div className="ml-auto w-1 h-4 bg-primary rounded-full shrink-0" />
+                                    )}
+                                </button>
+                            );
+                        })}
 
-                        {/* Info Card */}
-                        <Card className="p-6 space-y-4 border border-blue-500/20 bg-blue-500/5 shadow-sm">
-                            <div className="flex items-start gap-3">
-                                <IconInfoCircle className="w-5 h-5 text-blue-500 mt-0.5 shrink-0" />
-                                <div className="space-y-2">
-                                    <h3 className="font-semibold text-sm">
-                                        Quick Tips
-                                    </h3>
-                                    <ul className="text-xs text-muted-foreground space-y-2">
-                                        <li className="flex items-start gap-2">
-                                            <span className="text-blue-500 mt-0.5">
-                                                •
-                                            </span>
-                                            <span>
-                                                Keep your title concise and
-                                                professional
-                                            </span>
-                                        </li>
-                                        <li className="flex items-start gap-2">
-                                            <span className="text-blue-500 mt-0.5">
-                                                •
-                                            </span>
-                                            <span>
-                                                Use keywords in your meta
-                                                description for better SEO
-                                            </span>
-                                        </li>
-                                        <li className="flex items-start gap-2">
-                                            <span className="text-blue-500 mt-0.5">
-                                                •
-                                            </span>
-                                            <span>
-                                                Your subdomain cannot be changed
-                                                once set
-                                            </span>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </Card>
+                        <Separator className="my-3" />
 
-                        {/* Site Stats Card */}
-                        <Card className="p-6 space-y-4 shadow-sm border">
-                            <h3 className="font-semibold text-sm">
-                                Site Information
-                            </h3>
-                            <Separator />
-                            <div className="space-y-3 text-sm">
-                                <div className="flex justify-between items-center">
-                                    <span className="text-muted-foreground">
-                                        Created
-                                    </span>
-                                    <span className="font-medium">
-                                        {new Date(
-                                            site.created_at
-                                        ).toLocaleDateString()}
-                                    </span>
+                        {/* Live site link */}
+                        {site.is_published && (
+                            <a
+                                href={siteUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left transition-all duration-150 group text-muted-foreground hover:bg-muted/60 hover:text-foreground"
+                            >
+                                <div className="w-7 h-7 rounded-md flex items-center justify-center shrink-0 bg-green-500/10 text-green-600 dark:text-green-400">
+                                    <IconEye className="w-3.5 h-3.5" />
                                 </div>
-                                <div className="flex justify-between items-center">
-                                    <span className="text-muted-foreground">
-                                        Last Updated
-                                    </span>
-                                    <span className="font-medium">
-                                        {new Date(
-                                            site.updated_at
-                                        ).toLocaleDateString()}
-                                    </span>
+                                <div className="min-w-0">
+                                    <div className="text-sm font-medium leading-tight text-foreground">
+                                        View Live Site
+                                    </div>
+                                    <div className="text-xs text-muted-foreground truncate mt-0.5">
+                                        {site.subdomain}.limefolio.com
+                                    </div>
                                 </div>
-                                <div className="flex justify-between items-center">
-                                    <span className="text-muted-foreground">
-                                        Site ID
-                                    </span>
-                                    <span className="font-mono text-xs">
-                                        {site.uuid.split("-")[0]}
-                                    </span>
-                                </div>
-                            </div>
-                        </Card>
+                                <IconArrowRight className="ml-auto w-3.5 h-3.5 opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all shrink-0" />
+                            </a>
+                        )}
+                    </nav>
+
+                    {/* ── Content area ─────────────────────────────────── */}
+                    <div className="flex-1 min-w-0">
+                        {activeTab === "general" && (
+                            <GeneralTab
+                                register={register}
+                                control={control}
+                                errors={errors}
+                                handleSubmit={handleSubmit}
+                                onSubmit={onSubmit}
+                            />
+                        )}
+                        {activeTab === "seo" && (
+                            <SeoTab formProps={seoFormProps} site={site} />
+                        )}
+                        {activeTab === "domains" && (
+                            <DomainsTab initialDomains={initialDomains} />
+                        )}
+                        {activeTab === "appearance" && (
+                            <AppearanceTab site={site} />
+                        )}
                     </div>
                 </div>
             </PageBody>
         </Page>
+    );
+}
+
+// ─── General Tab ─────────────────────────────────────────────────────────────
+
+function GeneralTab({
+    register,
+    control,
+    errors,
+    handleSubmit,
+    onSubmit,
+}: {
+    register: ReturnType<typeof useForm<SiteFormData>>["register"];
+    control: ReturnType<typeof useForm<SiteFormData>>["control"];
+    errors: ReturnType<typeof useForm<SiteFormData>>["formState"]["errors"];
+    handleSubmit: ReturnType<typeof useForm<SiteFormData>>["handleSubmit"];
+    onSubmit: (data: SiteFormData) => Promise<void>;
+}) {
+    return (
+        <form
+            id="site-settings-form"
+            onSubmit={handleSubmit(onSubmit)}
+            className="space-y-6"
+        >
+            {/* Basic Information Card */}
+            <div className="rounded-xl border border-border/60 bg-card p-6 shadow-sm">
+                <div className="mb-6">
+                    <h2 className="text-lg font-semibold flex items-center gap-2">
+                        <IconWorld className="w-5 h-5 text-primary" />
+                        Site Identity
+                    </h2>
+                    <p className="text-sm text-muted-foreground mt-1">Your site's core identity shown to visitors.</p>
+                </div>
+                
+                <div className="space-y-5">
+                    <Field>
+                        <FieldTitle>Site Title</FieldTitle>
+                        <FieldDescription>The main title of your portfolio site.</FieldDescription>
+                        <Input {...register("title")} placeholder="John Doe – Full Stack Developer" className="max-w-xl" />
+                        <FieldError errors={[errors.title]} />
+                    </Field>
+
+                    <Field>
+                        <FieldTitle>Tagline</FieldTitle>
+                        <FieldDescription>A short, catchy description of what you do.</FieldDescription>
+                        <Input {...register("tagline")} placeholder="Building exceptional digital experiences" className="max-w-xl" />
+                        <FieldError errors={[errors.tagline]} />
+                    </Field>
+
+                    <Field>
+                        <FieldTitle>Subdomain</FieldTitle>
+                        <FieldDescription>Your unique portfolio URL. Only lowercase letters, numbers, and hyphens.</FieldDescription>
+                        <InputGroup className="max-w-xl">
+                            <InputGroupInput {...register("subdomain")} placeholder="johndoe" />
+                            <InputGroupAddon align="inline-end">.limefolio.com</InputGroupAddon>
+                        </InputGroup>
+                        <FieldError errors={[errors.subdomain]} />
+                    </Field>
+                </div>
+            </div>
+
+            {/* About Card */}
+            <div className="rounded-xl border border-border/60 bg-card p-6 shadow-sm">
+                <div className="mb-6">
+                    <h2 className="text-lg font-semibold flex items-center gap-2">
+                        <IconPalette className="w-5 h-5 text-primary" />
+                        About
+                    </h2>
+                    <p className="text-sm text-muted-foreground mt-1">A detailed description of your portfolio and professional background.</p>
+                </div>
+                
+                <Field>
+                    <FieldTitle>Description</FieldTitle>
+                    <Textarea
+                        {...register("description")}
+                        placeholder="I'm a passionate full-stack developer with 5+ years of experience…"
+                        rows={5}
+                        className="resize-y"
+                    />
+                    <FieldError errors={[errors.description]} />
+                </Field>
+            </div>
+
+            {/* Availability Card */}
+            <div className="rounded-xl border border-border/60 bg-card p-6 shadow-sm">
+                <div className="mb-6">
+                    <h2 className="text-lg font-semibold flex items-center gap-2">
+                        <IconSparkles className="w-5 h-5 text-primary" />
+                        Availability
+                    </h2>
+                    <p className="text-sm text-muted-foreground mt-1">Signal your openness to new work opportunities.</p>
+                </div>
+                <div className="flex items-center justify-between rounded-xl border border-border/60 bg-muted/20 px-4 py-3.5 gap-6">
+                    <div>
+                        <p className="text-sm font-medium">Available for Hire</p>
+                        <p className="text-xs text-muted-foreground mt-0.5">
+                            Show a badge on your portfolio indicating you're open to new
+                            opportunities.
+                        </p>
+                    </div>
+                    <Controller
+                        control={control}
+                        name="available_for_hire"
+                        render={({ field }) => (
+                            <Switch
+                                checked={field.value}
+                                onCheckedChange={field.onChange}
+                            />
+                        )}
+                    />
+                </div>
+            </div>
+        </form>
+    );
+}
+
+// ─── Domains Tab ──────────────────────────────────────────────────────────────
+
+function DomainsTab({ initialDomains }: { initialDomains: CustomDomain[] }) {
+    return (
+        <div className="space-y-0 divide-y divide-border/60">
+            <SettingsSection
+                icon={IconGlobe}
+                title="Custom Domains"
+                description="Connect your own professional domain name to your portfolio."
+            >
+                <DomainsClient initialDomains={initialDomains} />
+            </SettingsSection>
+        </div>
+    );
+}
+
+// ─── Appearance Tab ───────────────────────────────────────────────────────────
+
+function AppearanceTab({ site }: { site: Site }) {
+    return (
+        <div className="space-y-0 divide-y divide-border/60">
+            <SettingsSection
+                icon={IconPalette}
+                title="Site Appearance"
+                description="Customize your portfolio's look and feel with templates, themes, and fonts."
+            >
+                <div className="grid gap-4 sm:grid-cols-3">
+                    {/* Template */}
+                    <AppearanceSummaryCard
+                        icon={IconTemplate}
+                        label="Template"
+                        value={site.template || "Default"}
+                    />
+                    {/* Theme */}
+                    <AppearanceSummaryCard
+                        icon={IconPalette}
+                        label="Color Theme"
+                        value={site.theme || "Default"}
+                    />
+                    {/* Font */}
+                    <AppearanceSummaryCard
+                        icon={IconTypography}
+                        label="Typography"
+                        value={site.font || "Default"}
+                    />
+                </div>
+
+                <div className="mt-6 rounded-xl border border-primary/20 bg-primary/5 p-5 flex items-center justify-between gap-4">
+                    <div className="space-y-1">
+                        <p className="text-sm font-semibold">Open Appearance Editor</p>
+                        <p className="text-xs text-muted-foreground">
+                            Use the visual editor to customize templates, colors, fonts, and
+                            page sections with a live preview.
+                        </p>
+                    </div>
+                    <Link
+                        href="/app/site/appearance"
+                        className={buttonVariants({ variant: "default", size: "default" }) + " shrink-0"}
+                    >
+                        Open Editor
+                        <IconArrowRight className="w-4 h-4" />
+                    </Link>
+                </div>
+
+                <div className="mt-4 rounded-xl border border-blue-500/20 bg-blue-500/5 p-4 flex items-start gap-3">
+                    <IconInfoCircle className="w-4 h-4 text-blue-500 shrink-0 mt-0.5" />
+                    <p className="text-xs text-muted-foreground leading-relaxed">
+                        The appearance editor opens in a full-screen mode with a live
+                        preview of your site. Changes are saved separately from general
+                        site settings.
+                    </p>
+                </div>
+            </SettingsSection>
+        </div>
+    );
+}
+
+// ─── Shared sub-components ────────────────────────────────────────────────────
+
+function SettingsSection({
+    icon: Icon,
+    title,
+    description,
+    children,
+}: {
+    icon: React.ElementType;
+    title: string;
+    description: string;
+    children: React.ReactNode;
+}) {
+    return (
+        <section className="py-8 first:pt-0 last:pb-0">
+            <div className="mb-6 flex items-start gap-3">
+                <div className="w-8 h-8 rounded-lg bg-muted flex items-center justify-center shrink-0 mt-0.5">
+                    <Icon className="w-4 h-4 text-muted-foreground" />
+                </div>
+                <div>
+                    <h2 className="text-sm font-semibold">{title}</h2>
+                    <p className="text-xs text-muted-foreground mt-0.5">{description}</p>
+                </div>
+            </div>
+            <div className="space-y-4">{children}</div>
+        </section>
+    );
+}
+
+function SettingsRow({
+    label,
+    description,
+    children,
+}: {
+    label: string;
+    description: string;
+    children: React.ReactNode;
+}) {
+    return (
+        <div className="grid gap-4 sm:grid-cols-[220px_1fr] sm:items-start">
+            <div className="pt-1">
+                <p className="text-sm font-medium">{label}</p>
+                <p className="text-xs text-muted-foreground mt-0.5 leading-relaxed">
+                    {description}
+                </p>
+            </div>
+            <div className="space-y-1.5">{children}</div>
+        </div>
+    );
+}
+
+function AppearanceSummaryCard({
+    icon: Icon,
+    label,
+    value,
+}: {
+    icon: React.ElementType;
+    label: string;
+    value: string;
+}) {
+    return (
+        <div className="rounded-xl border border-border/60 bg-muted/20 p-4 space-y-3">
+            <div className="flex items-center gap-2 text-muted-foreground">
+                <Icon className="w-3.5 h-3.5" />
+                <span className="text-xs font-medium uppercase tracking-wide">
+                    {label}
+                </span>
+            </div>
+            <p className="text-sm font-semibold capitalize">{value}</p>
+        </div>
     );
 }
