@@ -33,6 +33,56 @@ export interface ThemeMeta {
 }
 
 export const THEMES_META: ThemeMeta[] = [
+    {
+        name: "Ghibli",
+        slug: "ghibli",
+        defaultFont: "mali",
+        radius: 1,
+        description: "Soft and magical anime-inspired palette",
+        category: "nature",
+        hasDark: true,
+        swatches: ["oklch(0.91 0.05 82.69)", "oklch(0.71 0.10 111.99)", "oklch(0.88 0.05 83.41)"]
+    },
+    {
+        name: "Marshmallow",
+        slug: "marshmallow",
+        defaultFont: "gabriela",
+        radius: 1.5,
+        description: "Sweet pastel pinks and soft tones",
+        category: "colorful",
+        hasDark: true,
+        swatches: ["oklch(0.97 0.01 264.53)", "oklch(0.80 0.14 349.25)", "oklch(0.83 0.09 248.95)"]
+    },
+    {
+        name: "Marvel",
+        slug: "marvel",
+        defaultFont: "bebas-neue",
+        radius: 0.625,
+        description: "Bold cinematic comic-book colors",
+        category: "retro",
+        hasDark: true,
+        swatches: ["oklch(0.98 0.01 25.23)", "oklch(0.55 0.22 27.03)", "oklch(0.52 0.14 247.51)"]
+    },
+    {
+        name: "Art Deco",
+        slug: "art-deco",
+        defaultFont: "delius-swash-caps",
+        radius: 0,
+        description: "Luxurious 1920s gold and dark tones",
+        category: "retro",
+        hasDark: true,
+        swatches: ["oklch(0.96 0.03 106.96)", "oklch(0.77 0.14 91.05)", "oklch(0.93 0.03 106.91)"]
+    },
+    {
+        name: "Summer",
+        slug: "summer",
+        defaultFont: "comfortaa",
+        radius: 1,
+        description: "Warm beach vibes and sunshine",
+        category: "nature",
+        hasDark: true,
+        swatches: ["oklch(0.98 0.01 78.24)", "oklch(0.70 0.17 28.12)", "oklch(0.81 0.15 72.19)"]
+    },
     // ── Base ──────────────────────────────────────────────────────────────────
     {
         name: "Default",
@@ -436,6 +486,36 @@ export interface FontMeta {
 }
 
 export const FONTS_META: FontMeta[] = [
+    {
+        name: "Gabriela",
+        slug: "gabriela",
+        category: "serif",
+        previewStack: "'Gabriela', serif"
+    },
+    {
+        name: "Delius Swash Caps",
+        slug: "delius-swash-caps",
+        category: "display",
+        previewStack: "'Delius Swash Caps', cursive"
+    },
+    {
+        name: "Mali",
+        slug: "mali",
+        category: "display",
+        previewStack: "'Mali', cursive"
+    },
+    {
+        name: "Bebas Neue",
+        slug: "bebas-neue",
+        category: "display",
+        previewStack: "'Bebas Neue', sans-serif"
+    },
+    {
+        name: "Comfortaa",
+        slug: "comfortaa",
+        category: "sans",
+        previewStack: "'Comfortaa', sans-serif"
+    },
     {
         name: "Silkscreen",
         slug: "silkscreen",

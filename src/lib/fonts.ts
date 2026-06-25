@@ -33,6 +33,11 @@ import {
     Schibsted_Grotesk,
     Onest,
     Work_Sans,
+    Gabriela,
+    Delius_Swash_Caps,
+    Mali,
+    Bebas_Neue,
+    Comfortaa,
 } from "next/font/google";
 
 /**
@@ -48,6 +53,16 @@ export interface FontConfig {
 
 // ── Sans-serif ────────────────────────────────────────────────────────────────
 
+const gabriela = Gabriela({ subsets: ["latin"], weight: ["400"], variable: "--font-gabriela" });
+
+const deliusSwashCaps = Delius_Swash_Caps({ subsets: ["latin"], weight: ["400"], variable: "--font-delius-swash-caps" });
+
+const mali = Mali({ subsets: ["latin"], weight: ["400", "500", "600"], variable: "--font-mali" });
+
+const bebasNeue = Bebas_Neue({ subsets: ["latin"], weight: ["400"], variable: "--font-bebas-neue" });
+
+const comfortaa = Comfortaa({ subsets: ["latin"], weight: ["300", "400", "500", "600", "700"], variable: "--font-comfortaa" });
+
 const silkscreen = Silkscreen({ subsets: ["latin"], weight: ["400"], variable: "--font-silkscreen" });
 
 const shareTechMono = Share_Tech_Mono({ subsets: ["latin"], weight: ["400"], variable: "--font-share-tech-mono" });
@@ -58,7 +73,7 @@ const cinzel = Cinzel({ subsets: ["latin"], variable: "--font-cinzel" });
 
 const libreBaskerville = Libre_Baskerville({ subsets: ["latin"], weight: ["400", "700"], variable: "--font-libre-baskerville" });
 
-const fraunces = Fraunces({ subsets: ["latin"], variable: "--font-fraunces", axes: ["SOFT", "WONK", "opsz", "wght"] });
+const fraunces = Fraunces({ subsets: ["latin"], variable: "--font-fraunces", axes: ["SOFT", "WONK", "opsz"] });
 
 const fredoka = Fredoka({ subsets: ["latin"], variable: "--font-fredoka" });
 
@@ -195,6 +210,41 @@ const sourceCodePro = Source_Code_Pro({
  * Maps font slugs to their configurations
  */
 export const Fonts: Record<string, FontConfig> = {
+    "gabriela": {
+        name: "Gabriela",
+        slug: "gabriela",
+        variable: "--font-gabriela",
+        font: gabriela,
+        category: "serif",
+    },
+    "delius-swash-caps": {
+        name: "Delius Swash Caps",
+        slug: "delius-swash-caps",
+        variable: "--font-delius-swash-caps",
+        font: deliusSwashCaps,
+        category: "display",
+    },
+    "mali": {
+        name: "Mali",
+        slug: "mali",
+        variable: "--font-mali",
+        font: mali,
+        category: "sans",
+    },
+    "bebas-neue": {
+        name: "Bebas Neue",
+        slug: "bebas-neue",
+        variable: "--font-bebas-neue",
+        font: bebasNeue,
+        category: "display",
+    },
+    "comfortaa": {
+        name: "Comfortaa",
+        slug: "comfortaa",
+        variable: "--font-comfortaa",
+        font: comfortaa,
+        category: "sans",
+    },
     "silkscreen": {
         name: "Silkscreen",
         slug: "silkscreen",

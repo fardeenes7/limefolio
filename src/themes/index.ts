@@ -34,6 +34,46 @@ export interface ColorThemeConfig {
 
 /** Full registry — keyed by slug */
 export const ColorThemes: Record<string, ColorThemeConfig> = {
+    "ghibli": {
+        name: "Ghibli",
+        slug: "ghibli",
+        defaultFont: "mali",
+        description: "Soft and magical anime-inspired palette",
+        hasDark: true,
+        category: "nature",
+    },
+    "marshmallow": {
+        name: "Marshmallow",
+        slug: "marshmallow",
+        defaultFont: "gabriela",
+        description: "Sweet pastel pinks and soft tones",
+        hasDark: true,
+        category: "colorful",
+    },
+    "marvel": {
+        name: "Marvel",
+        slug: "marvel",
+        defaultFont: "bebas-neue",
+        description: "Bold cinematic comic-book colors",
+        hasDark: true,
+        category: "retro",
+    },
+    "art-deco": {
+        name: "Art Deco",
+        slug: "art-deco",
+        defaultFont: "delius-swash-caps",
+        description: "Luxurious 1920s gold and dark tones",
+        hasDark: true,
+        category: "retro",
+    },
+    "summer": {
+        name: "Summer",
+        slug: "summer",
+        defaultFont: "comfortaa",
+        description: "Warm beach vibes and sunshine",
+        hasDark: true,
+        category: "nature",
+    },
     // ── Base ────────────────────────────────────────────────────────────────
     default: {
         name: "Default",
