@@ -24,6 +24,8 @@ export interface ThemeMeta {
     swatches: [string, string, string];
     /** Default radius for this theme */
     radius?: number;
+    /** Array of suggested primary hex colors for this theme */
+    suggestedPrimaryColors?: string[];
 }
 
 export const THEMES_META: ThemeMeta[] = [
@@ -35,6 +37,7 @@ export const THEMES_META: ThemeMeta[] = [
         description: "Clean and minimal light theme",
         category: "minimal",
         hasDark: true,
+        suggestedPrimaryColors: ["#000000", "#2563eb", "#16a34a", "#dc2626"],
         swatches: ["oklch(1 0 0)", "oklch(0.205 0 0)", "oklch(0.97 0 0)"],
     },
     {
@@ -44,6 +47,7 @@ export const THEMES_META: ThemeMeta[] = [
         description: "High-contrast dark theme",
         category: "minimal",
         hasDark: false,
+        suggestedPrimaryColors: ["#ffffff", "#3b82f6", "#10b981", "#ef4444"],
         swatches: ["oklch(0.145 0 0)", "oklch(0.87 0 0)", "oklch(0.371 0 0)"],
     },
 
@@ -55,25 +59,14 @@ export const THEMES_META: ThemeMeta[] = [
         description: "Warm off-white with coffee brown accents",
         category: "minimal",
         hasDark: true,
+        suggestedPrimaryColors: ["#78350f", "#b45309", "#451a03", "#9a3412"],
         swatches: [
             "oklch(0.9821 0 0)",
             "oklch(0.4341 0.0392 41.9938)",
             "oklch(0.9310 0 0)",
         ],
     },
-    {
-        name: "Clean Slate",
-        slug: "clean-slate",
-        radius: 0.5,
-        description: "Pure blue-tinted professional white",
-        category: "minimal",
-        hasDark: true,
-        swatches: [
-            "oklch(0.9842 0.0034 247.8575)",
-            "oklch(0.5854 0.2041 277.1173)",
-            "oklch(0.9299 0.0334 272.7879)",
-        ],
-    },
+
     {
         name: "Graphite",
         slug: "graphite",
@@ -81,25 +74,14 @@ export const THEMES_META: ThemeMeta[] = [
         description: "Monochrome grey with subtle shadows",
         category: "minimal",
         hasDark: true,
+        suggestedPrimaryColors: ["#111827", "#374151", "#4b5563", "#000000"],
         swatches: [
             "oklch(0.9551 0 0)",
             "oklch(0.4891 0 0)",
             "oklch(0.8078 0 0)",
         ],
     },
-    {
-        name: "Modern Minimal",
-        slug: "modern-minimal",
-        radius: 0.375,
-        description: "Crisp white with blue-tinted accents",
-        category: "minimal",
-        hasDark: true,
-        swatches: [
-            "oklch(1 0 0)",
-            "oklch(0.6231 0.1880 259.8145)",
-            "oklch(0.9514 0.0250 236.8242)",
-        ],
-    },
+
     {
         name: "Mocha Mousse",
         slug: "mocha-mousse",
@@ -107,6 +89,7 @@ export const THEMES_META: ThemeMeta[] = [
         description: "Rich warm browns, Pantone color of 2025",
         category: "minimal",
         hasDark: true,
+        suggestedPrimaryColors: ["#451a03", "#78350f", "#b45309", "#92400e"],
         swatches: [
             "oklch(0.9529 0.0146 102.4597)",
             "oklch(0.6083 0.0623 44.3588)",
@@ -120,6 +103,7 @@ export const THEMES_META: ThemeMeta[] = [
         description: "Warm orange on cool blue-gray",
         category: "minimal",
         hasDark: true,
+        suggestedPrimaryColors: ["#ea580c", "#f97316", "#c2410c", "#9a3412"],
         swatches: [
             "oklch(0.9383 0.0042 236.4993)",
             "oklch(0.6397 0.1720 36.4421)",
@@ -135,6 +119,7 @@ export const THEMES_META: ThemeMeta[] = [
         description: "Soft purple-tinted with elegant shadows",
         category: "colorful",
         hasDark: true,
+        suggestedPrimaryColors: ["#7e22ce", "#9333ea", "#a855f7", "#6b21a8"],
         swatches: [
             "oklch(0.9777 0.0041 301.4256)",
             "oklch(0.6104 0.0767 299.7335)",
@@ -148,25 +133,14 @@ export const THEMES_META: ThemeMeta[] = [
         description: "Playful pink theme with bold shadows",
         category: "colorful",
         hasDark: true,
+        suggestedPrimaryColors: ["#db2777", "#ec4899", "#be185d", "#9d174d"],
         swatches: [
             "oklch(0.9399 0.0203 345.6985)",
             "oklch(0.6209 0.1801 348.1385)",
             "oklch(0.9195 0.0801 87.667)",
         ],
     },
-    {
-        name: "Candyland",
-        slug: "candyland",
-        radius: 0.5,
-        description: "Sweet pastel tones inspired by candy",
-        category: "colorful",
-        hasDark: true,
-        swatches: [
-            "oklch(0.9809 0.0025 228.7836)",
-            "oklch(0.8677 0.0735 7.0855)",
-            "oklch(0.9680 0.2110 109.7692)",
-        ],
-    },
+
     {
         name: "Pastel Dreams",
         slug: "pastel-dreams",
@@ -174,6 +148,7 @@ export const THEMES_META: ThemeMeta[] = [
         description: "Dreamy lavender-pink palette with large radius",
         category: "colorful",
         hasDark: true,
+        suggestedPrimaryColors: ["#f472b6", "#c084fc", "#818cf8", "#fbbf24"],
         swatches: [
             "oklch(0.9689 0.0090 314.7819)",
             "oklch(0.7090 0.1592 293.5412)",
@@ -187,6 +162,7 @@ export const THEMES_META: ThemeMeta[] = [
         description: "Bold but soft popping colors",
         category: "colorful",
         hasDark: true,
+        suggestedPrimaryColors: ["#fbbf24", "#34d399", "#60a5fa", "#f472b6"],
         swatches: [
             "oklch(0.9789 0.0082 121.6272)",
             "oklch(0.5106 0.2301 276.9656)",
@@ -202,38 +178,14 @@ export const THEMES_META: ThemeMeta[] = [
         description: "Forest greens with earthy warmth",
         category: "nature",
         hasDark: true,
+        suggestedPrimaryColors: ["#15803d", "#16a34a", "#10b981", "#047857"],
         swatches: [
             "oklch(0.9711 0.0074 80.7211)",
             "oklch(0.5234 0.1347 144.1672)",
             "oklch(0.8952 0.0504 146.0366)",
         ],
     },
-    {
-        name: "Northern Lights",
-        slug: "northern-lights",
-        radius: 0.5,
-        description: "Aurora-inspired greens and blues",
-        category: "nature",
-        hasDark: true,
-        swatches: [
-            "oklch(0.9824 0.0013 286.3757)",
-            "oklch(0.6487 0.1538 150.3071)",
-            "oklch(0.8269 0.1080 211.9627)",
-        ],
-    },
-    {
-        name: "Ocean Breeze",
-        slug: "ocean-breeze",
-        radius: 0.5,
-        description: "Coastal greens on clean blue-white",
-        category: "nature",
-        hasDark: true,
-        swatches: [
-            "oklch(0.9751 0.0127 244.2507)",
-            "oklch(0.7227 0.1920 149.5793)",
-            "oklch(0.9505 0.0507 163.0508)",
-        ],
-    },
+
     {
         name: "Solar Dusk",
         slug: "solar-dusk",
@@ -241,6 +193,7 @@ export const THEMES_META: ThemeMeta[] = [
         description: "Warm sunset amber palette",
         category: "nature",
         hasDark: true,
+        suggestedPrimaryColors: ["#eab308", "#f59e0b", "#d97706", "#b45309"],
         swatches: [
             "oklch(0.9885 0.0057 84.5659)",
             "oklch(0.5553 0.1455 48.9975)",
@@ -254,6 +207,7 @@ export const THEMES_META: ThemeMeta[] = [
         description: "Indigo purples with a floral softness",
         category: "nature",
         hasDark: true,
+        suggestedPrimaryColors: ["#4338ca", "#4f46e5", "#3730a3", "#312e81"],
         swatches: [
             "oklch(0.9821 0 0)",
             "oklch(0.5676 0.2021 283.0838)",
@@ -269,6 +223,7 @@ export const THEMES_META: ThemeMeta[] = [
         description: "The beloved pastel dev theme",
         category: "retro",
         hasDark: true,
+        suggestedPrimaryColors: ["#cba6f7", "#f38ba8", "#a6e3a1", "#89b4fa"],
         swatches: [
             "oklch(0.9578 0.0058 264.5321)",
             "oklch(0.5547 0.2503 297.0156)",
@@ -282,6 +237,7 @@ export const THEMES_META: ThemeMeta[] = [
         description: "Puffy clay-look cards with large radius",
         category: "retro",
         hasDark: true,
+        suggestedPrimaryColors: ["#3b82f6", "#ef4444", "#10b981", "#f59e0b"],
         swatches: [
             "oklch(0.9232 0.0026 48.7171)",
             "oklch(0.5854 0.2041 277.1173)",
@@ -295,6 +251,7 @@ export const THEMES_META: ThemeMeta[] = [
         description: "Deep space indigo with violet glow",
         category: "retro",
         hasDark: true,
+        suggestedPrimaryColors: ["#8b5cf6", "#a855f7", "#c084fc", "#3b82f6"],
         swatches: [
             "oklch(0.9730 0.0133 286.1503)",
             "oklch(0.5417 0.1790 288.0332)",
@@ -308,6 +265,7 @@ export const THEMES_META: ThemeMeta[] = [
         description: "Neon pink and cyber-green on dark navy",
         category: "retro",
         hasDark: true,
+        suggestedPrimaryColors: ["#fdf001", "#ff003c", "#00ff00", "#00f0ff"],
         swatches: [
             "oklch(0.9816 0.0017 247.8390)",
             "oklch(0.6726 0.2904 341.4084)",
@@ -321,6 +279,7 @@ export const THEMES_META: ThemeMeta[] = [
         description: "Near-black with amber terminal accents",
         category: "retro",
         hasDark: true,
+        suggestedPrimaryColors: ["#f59e0b", "#fbbf24", "#d97706", "#ea580c"],
         swatches: [
             "oklch(1 0 0)",
             "oklch(0.6716 0.1368 48.5130)",
@@ -333,6 +292,7 @@ export const THEMES_META: ThemeMeta[] = [
         description: "Grey pixel palette with blood-orange",
         category: "retro",
         hasDark: true,
+        suggestedPrimaryColors: ["#dc2626", "#b91c1c", "#991b1b", "#7f1d1d"],
         swatches: [
             "oklch(0.8452 0 0)",
             "oklch(0.5016 0.1887 27.4816)",
@@ -346,6 +306,7 @@ export const THEMES_META: ThemeMeta[] = [
         description: "Van Gogh midnight blue with golden accents",
         category: "retro",
         hasDark: true,
+        suggestedPrimaryColors: ["#facc15", "#eab308", "#ca8a04", "#a16207"],
         swatches: [
             "oklch(0.9755 0.0045 258.3245)",
             "oklch(0.4815 0.1178 263.3758)",
@@ -359,26 +320,13 @@ export const THEMES_META: ThemeMeta[] = [
         description: "Aged parchment with ink-brown text",
         category: "retro",
         hasDark: true,
+        suggestedPrimaryColors: ["#78350f", "#92400e", "#b45309", "#d97706"],
         swatches: [
             "oklch(0.9582 0.0152 90.2357)",
             "oklch(0.6180 0.0778 65.5444)",
             "oklch(0.8348 0.0426 88.8064)",
         ],
     },
-    {
-        name: "Violet Bloom",
-        slug: "violet-bloom",
-        radius: 1.4,
-        description: "Vibrant violet with bloom gradients",
-        category: "retro",
-        hasDark: true,
-        swatches: [
-            "oklch(0.9940 0 0)",
-            "oklch(0.5393 0.2713 286.7462)",
-            "oklch(0.9393 0.0288 266.3680)",
-        ],
-    },
-
     // ── Brand-inspired ────────────────────────────────────────────────────────
     {
         name: "Bold Tech",
@@ -387,6 +335,7 @@ export const THEMES_META: ThemeMeta[] = [
         description: "Electric violet inspired by dev tools",
         category: "brand",
         hasDark: true,
+        suggestedPrimaryColors: ["#8b5cf6", "#7c3aed", "#6d28d9", "#4f46e5"],
         swatches: [
             "oklch(1 0 0)",
             "oklch(0.6056 0.2189 292.7172)",
@@ -400,6 +349,7 @@ export const THEMES_META: ThemeMeta[] = [
         description: "Warm sand tones inspired by the Claude AI",
         category: "brand",
         hasDark: true,
+        suggestedPrimaryColors: ["#d97706", "#b45309", "#92400e", "#78350f"],
         swatches: [
             "oklch(0.9818 0.0054 95.0986)",
             "oklch(0.6171 0.1375 39.0427)",
@@ -413,6 +363,7 @@ export const THEMES_META: ThemeMeta[] = [
         description: "Deep crimson and gold luxury palette",
         category: "brand",
         hasDark: true,
+        suggestedPrimaryColors: ["#b91c1c", "#991b1b", "#7f1d1d", "#b45309"],
         swatches: [
             "oklch(0.9779 0.0042 56.3756)",
             "oklch(0.4650 0.1470 24.9381)",
@@ -426,6 +377,7 @@ export const THEMES_META: ThemeMeta[] = [
         description: "Clean X / Twitter blue with pill radius",
         category: "brand",
         hasDark: true,
+        suggestedPrimaryColors: ["#1d9bf0", "#1da1f2", "#0c85d0", "#005fd1"],
         swatches: [
             "oklch(1 0 0)",
             "oklch(0.6723 0.1606 244.9955)",
@@ -439,6 +391,7 @@ export const THEMES_META: ThemeMeta[] = [
         description: "Official Limefolio theme with vibrant lime green",
         category: "brand",
         hasDark: true,
+        suggestedPrimaryColors: ["#65a30d", "#84cc16", "#4d7c0f", "#3f6212"],
         swatches: ["oklch(0.99 0 0)", "oklch(0.8 0.18 135)", "oklch(0.94 0.05 135)"],
     },
 ];

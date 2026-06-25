@@ -52,16 +52,7 @@ export function ThemeCustomizer({ stateHelpers }: ThemeCustomizerProps) {
         setThemeOverrides({});
     };
 
-    // A simple suggestion tool: Pick a complementary or predefined color based on base theme swatches
-    const handleSuggestPrimary = () => {
-        // As a simple example, we can generate a random bright color, or pick the accent of the current theme
-        const swatches = currentThemeMeta?.swatches || ["#ffffff", "#000000", "#ff0000"];
-        // We'll set primary to the 3rd swatch (accent) for a pop of color, 
-        // converting it to hex would be needed if it was oklch, but we can just pass a hardcoded hex for the demo
-        // For actual oklch to hex, we'd need a library. Let's just generate a nice vivid hex:
-        const randomHex = `#${Math.floor(Math.random()*16777215).toString(16).padStart(6, '0')}`;
-        handleColorChange("--primary", randomHex);
-    };
+
 
     return (
         <div className="p-3 space-y-4">
@@ -155,13 +146,24 @@ export function ThemeCustomizer({ stateHelpers }: ThemeCustomizerProps) {
                     </div>
                 </div>
 
-                <button
-                    onClick={handleSuggestPrimary}
-                    className="w-full flex items-center justify-center gap-2 h-8 rounded-md bg-muted/50 hover:bg-muted text-xs font-medium text-foreground transition-colors border border-border/50"
-                >
-                    <IconWand className="w-3.5 h-3.5 text-primary" />
-                    Suggest Primary Color
-                </button>
+                {currentThemeMeta?.suggestedPrimaryColors && currentThemeMeta.suggestedPrimaryColors.length > 0 && (
+                    <div className="space-y-3 pt-2">
+                        <label className="text-xs font-medium text-foreground">
+                            Suggested Primary Colors
+                        </label>
+                        <div className="flex flex-wrap gap-2">
+                            {currentThemeMeta.suggestedPrimaryColors.map((hex) => (
+                                <button
+                                    key={hex}
+                                    onClick={() => handleColorChange("--primary", hex)}
+                                    className="w-6 h-6 rounded-full cursor-pointer border border-border shadow-sm transition-transform hover:scale-110"
+                                    style={{ backgroundColor: hex }}
+                                    title={hex}
+                                />
+                            ))}
+                        </div>
+                    </div>
+                )}
             </div>
         </div>
     );

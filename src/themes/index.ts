@@ -63,13 +63,6 @@ export const ColorThemes: Record<string, ColorThemeConfig> = {
         hasDark: true,
         category: "colorful",
     },
-    candyland: {
-        name: "Candyland",
-        slug: "candyland",
-        description: "Sweet pastel tones inspired by candy",
-        hasDark: true,
-        category: "colorful",
-    },
     "pastel-dreams": {
         name: "Pastel Dreams",
         slug: "pastel-dreams",
@@ -100,24 +93,10 @@ export const ColorThemes: Record<string, ColorThemeConfig> = {
         hasDark: true,
         category: "minimal",
     },
-    "clean-slate": {
-        name: "Clean Slate",
-        slug: "clean-slate",
-        description: "Pure blue-tinted professional white",
-        hasDark: true,
-        category: "minimal",
-    },
     graphite: {
         name: "Graphite",
         slug: "graphite",
         description: "Monochrome grey with subtle shadows",
-        hasDark: true,
-        category: "minimal",
-    },
-    "modern-minimal": {
-        name: "Modern Minimal",
-        slug: "modern-minimal",
-        description: "Crisp white with blue-tinted accents",
         hasDark: true,
         category: "minimal",
     },
@@ -148,20 +127,6 @@ export const ColorThemes: Record<string, ColorThemeConfig> = {
         name: "Nature",
         slug: "nature",
         description: "Forest greens with earthy warmth",
-        hasDark: true,
-        category: "nature",
-    },
-    "northern-lights": {
-        name: "Northern Lights",
-        slug: "northern-lights",
-        description: "Aurora-inspired greens and blues",
-        hasDark: true,
-        category: "nature",
-    },
-    "ocean-breeze": {
-        name: "Ocean Breeze",
-        slug: "ocean-breeze",
-        description: "Coastal greens on clean blue-white",
         hasDark: true,
         category: "nature",
     },
@@ -237,14 +202,6 @@ export const ColorThemes: Record<string, ColorThemeConfig> = {
         hasDark: true,
         category: "retro",
     },
-    "violet-bloom": {
-        name: "Violet Bloom",
-        slug: "violet-bloom",
-        description: "Vibrant violet with bloom gradients",
-        hasDark: true,
-        category: "retro",
-    },
-
     // ── Brand-inspired ───────────────────────────────────────────────────────
     "bold-tech": {
         name: "Bold Tech",
