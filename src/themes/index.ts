@@ -169,11 +169,19 @@ export const ColorThemes: Record<string, ColorThemeConfig> = {
     },
 
     // ── Nature ───────────────────────────────────────────────────────────────
-    "cinematic-dark": {
+    cinematic: {
         name: "Cinematic",
+        slug: "cinematic",
+        defaultFont: "space-grotesk",
+        description: "Warm film palette with projector-gold accents",
+        hasDark: true,
+        category: "retro",
+    },
+    "cinematic-dark": {
+        name: "Cinematic Dark",
         slug: "cinematic-dark",
-        defaultFont: "inter",
-        description: "Deep dark tones to let video content pop",
+        defaultFont: "space-grotesk",
+        description: "Warm-black screening room palette with projector-gold accents",
         hasDark: false,
         category: "dark-only",
     },

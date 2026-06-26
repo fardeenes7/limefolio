@@ -480,8 +480,8 @@ All contributors must follow these rules without exception:
 
 | key | label | isGlobal | repeatable | removable | variants | default variant |
 |---|---|---|---|---|---|---|
-| `header` | Header | ✓ | ✗ | ✗ | default, compact, minimal, neobrutalism, centered, editorial, floating | default |
-| `footer` | Footer | ✓ | ✗ | ✗ | default, compact, minimal, neobrutalism, centered | default |
+| `header` | Header | ✓ | ✗ | ✗ | default, cinematic, compact, minimal, neobrutalism, centered, editorial, floating | default |
+| `footer` | Footer | ✓ | ✗ | ✗ | default, cinematic, compact, minimal, neobrutalism, centered | default |
 | `cookie_banner` | Cookie Banner | ✓ | ✗ | ✓ | bar | bar |
 | `hero` | Hero | ✗ | ✗ | ✗ | default, compact, centered, minimal, neobrutalism, neobrutalism_poster, split_section, typing_animation, video_reel, profile_card | default |
 | `about` | About | ✗ | ✗ | ✓ | default, minimal, neobrutalism, director_cut | default |
@@ -563,6 +563,71 @@ Current public routes render `landing`, `all_projects`, `project_details`, `all_
 | instanceId | componentKey | defaultVariant | fixed | removable |
 |---|---|---|---|---|
 | `cta_1` | `cta` | minimal | ✗ | — |
+
+#### Page: `contact` (Contact)
+
+| instanceId | componentKey | defaultVariant | fixed | removable |
+|---|---|---|---|---|
+| `contact_1` | `contact` | split_with_info | ✓ | ✗ |
+
+### Template: `cinematic`
+
+Film-forward template for editors, directors, motion designers, and visual creators.
+Uses the `cinematic-dark` variant of the `cinematic` theme by default: warm-black
+surfaces, projector-gold accents, letterbox framing, reel-inspired navigation,
+large scene cards, and horizontal frame galleries.
+
+| Field | Value |
+|---|---|
+| key | `cinematic` |
+| label | Cinematic |
+| version | 1.0.0 |
+| defaultTheme | `cinematic-dark` |
+| defaultFont | `space-grotesk` |
+
+#### Layout sections (rendered by `layout.tsx` on every page)
+
+| instanceId | componentKey | defaultVariant | fixed |
+|---|---|---|---|
+| `header_1` | `header` | cinematic | ✓ |
+| `footer_1` | `footer` | cinematic | ✓ |
+| `cookie_banner_1` | `cookie_banner` | bar | ✗ |
+
+#### Page: `landing` (Landing Page)
+
+| instanceId | componentKey | defaultVariant | fixed | removable |
+|---|---|---|---|---|
+| `hero_1` | `hero` | video_reel | ✗ | ✓ |
+| `about_1` | `about` | director_cut | ✗ | ✓ |
+| `stats_1` | `stats` | counter_row | ✗ | ✓ |
+| `featured_projects_1` | `featured_projects` | cinematic_grid | ✗ | ✓ |
+| `media_gallery_1` | `media_gallery` | horizontal_scroll | ✗ | ✓ |
+| `cta_1` | `cta` | banner | ✗ | ✓ |
+
+#### Page: `all_projects` (All Projects)
+
+| instanceId | componentKey | defaultVariant | fixed | removable |
+|---|---|---|---|---|
+| `featured_projects_1` | `featured_projects` | cinematic_grid | ✓ | ✗ |
+
+#### Page: `project_details` (Project Details)
+
+| instanceId | componentKey | defaultVariant | fixed | removable |
+|---|---|---|---|---|
+| `media_gallery_1` | `media_gallery` | horizontal_scroll | ✗ | — |
+| `cta_1` | `cta` | card | ✗ | — |
+
+#### Page: `all_blog` (All Blog Posts)
+
+| instanceId | componentKey | defaultVariant | fixed | removable |
+|---|---|---|---|---|
+| `latest_blogs_1` | `latest_blogs` | editorial | ✓ | ✗ |
+
+#### Page: `blog_details` (Blog Post)
+
+| instanceId | componentKey | defaultVariant | fixed | removable |
+|---|---|---|---|---|
+| `cta_1` | `cta` | banner | ✗ | — |
 
 #### Page: `contact` (Contact)
 

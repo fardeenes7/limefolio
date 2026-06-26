@@ -99,15 +99,25 @@ const defaultTemplate: Template = {
         {
             instanceId: "header_1",
             componentKey: "header",
-            allowedVariants: allVariants("header"),
-            defaultVariant: "default",
+            allowedVariants: ["cinematic"],
+            defaultVariant: "cinematic",
+            inputDefaults: {
+                backgroundStyle: "solid",
+                backgroundColor: "bg-background",
+                bottomBorder: true,
+                ctaLabel: "Book a screening"
+            },
             fixed: true
         },
         {
             instanceId: "footer_1",
             componentKey: "footer",
-            allowedVariants: allVariants("footer"),
-            defaultVariant: "default",
+            allowedVariants: ["cinematic"],
+            defaultVariant: "cinematic",
+            inputDefaults: {
+                showBackToTop: true,
+                showLimefolioAttribution: false
+            },
             fixed: true
         },
         {
@@ -370,48 +380,81 @@ const cinematicTemplate: Template = {
                 {
                     instanceId: "hero_1",
                     componentKey: "hero",
-                    allowedVariants: allVariants("hero"),
+                    allowedVariants: ["video_reel", "split_section", "profile_card"],
                     defaultVariant: "video_reel",
+                    inputDefaults: {
+                        headline: "Directed by {name}",
+                        subheadline: "Selected cuts, frames, and production notes from a portfolio built like a feature presentation.",
+                        primaryCtaLabel: "Watch the reel",
+                        primaryCtaUrl: "#projects",
+                        secondaryCtaLabel: "View stills",
+                        secondaryCtaUrl: "#gallery",
+                        backgroundType: "effect",
+                        backgroundEffect: "spotlight"
+                    },
                     fixed: false,
                     removable: true
                 },
                 {
                     instanceId: "about_1",
                     componentKey: "about",
-                    allowedVariants: allVariants("about"),
+                    allowedVariants: ["director_cut", "default"],
                     defaultVariant: "director_cut",
+                    inputDefaults: {
+                        showResumeButton: true,
+                        resumeLabel: "Download press kit"
+                    },
                     fixed: false,
                     removable: true
                 },
                 {
                     instanceId: "stats_1",
                     componentKey: "stats",
-                    allowedVariants: allVariants("stats"),
+                    allowedVariants: ["counter_row", "minimal_row"],
                     defaultVariant: "counter_row",
+                    inputDefaults: {
+                        sectionTitle: "Box Office"
+                    },
                     fixed: false,
                     removable: true
                 },
                 {
                     instanceId: "featured_projects_1",
                     componentKey: "featured_projects",
-                    allowedVariants: allVariants("featured_projects"),
+                    allowedVariants: ["cinematic_grid", "spotlight"],
                     defaultVariant: "cinematic_grid",
+                    inputDefaults: {
+                        sectionTitle: "Featured Cuts",
+                        maxItems: "4",
+                        viewAllLabel: "Open the archive"
+                    },
                     fixed: false,
                     removable: true
                 },
                 {
                     instanceId: "media_gallery_1",
                     componentKey: "media_gallery",
-                    allowedVariants: allVariants("media_gallery"),
+                    allowedVariants: ["horizontal_scroll", "carousel"],
                     defaultVariant: "horizontal_scroll",
+                    inputDefaults: {
+                        sectionTitle: "Frame Gallery",
+                        showCaptions: true
+                    },
                     fixed: false,
                     removable: true
                 },
                 {
                     instanceId: "cta_1",
                     componentKey: "cta",
-                    allowedVariants: allVariants("cta"),
+                    allowedVariants: ["banner", "card"],
                     defaultVariant: "banner",
+                    inputDefaults: {
+                        headline: "Roll on your next scene",
+                        subtext: "Bring the brief, the footage, or the half-formed idea. I will help shape the final cut.",
+                        primaryCtaLabel: "Start production",
+                        secondaryCtaLabel: "See the reels",
+                        secondaryCtaUrl: "/projects"
+                    },
                     fixed: false,
                     removable: true
                 }
@@ -424,8 +467,13 @@ const cinematicTemplate: Template = {
                 {
                     instanceId: "featured_projects_1",
                     componentKey: "featured_projects",
-                    allowedVariants: allVariants("featured_projects"),
+                    allowedVariants: ["cinematic_grid", "spotlight"],
                     defaultVariant: "cinematic_grid",
+                    inputDefaults: {
+                        sectionTitle: "All Cuts",
+                        maxItems: "all",
+                        showViewAll: false
+                    },
                     fixed: true
                 }
             ]
@@ -437,15 +485,23 @@ const cinematicTemplate: Template = {
                 {
                     instanceId: "media_gallery_1",
                     componentKey: "media_gallery",
-                    allowedVariants: allVariants("media_gallery"),
+                    allowedVariants: ["horizontal_scroll", "carousel"],
                     defaultVariant: "horizontal_scroll",
+                    inputDefaults: {
+                        sectionTitle: "Behind the Frames",
+                        showCaptions: true
+                    },
                     fixed: false
                 },
                 {
                     instanceId: "cta_1",
                     componentKey: "cta",
-                    allowedVariants: allVariants("cta"),
+                    allowedVariants: ["card", "banner"],
                     defaultVariant: "card",
+                    inputDefaults: {
+                        headline: "Need a cut like this?",
+                        primaryCtaLabel: "Start a conversation"
+                    },
                     fixed: false
                 }
             ]
@@ -457,10 +513,10 @@ const cinematicTemplate: Template = {
                 {
                     instanceId: "latest_blogs_1",
                     componentKey: "latest_blogs",
-                    allowedVariants: allVariants("latest_blogs"),
-                    defaultVariant: "grid",
+                    allowedVariants: ["editorial", "grid"],
+                    defaultVariant: "editorial",
                     inputDefaults: {
-                        sectionTitle: "All Posts",
+                        sectionTitle: "Production Notes",
                         maxItems: "all",
                         showViewAll: false
                     },
@@ -475,8 +531,12 @@ const cinematicTemplate: Template = {
                 {
                     instanceId: "cta_1",
                     componentKey: "cta",
-                    allowedVariants: allVariants("cta"),
-                    defaultVariant: "minimal",
+                    allowedVariants: ["banner", "minimal"],
+                    defaultVariant: "banner",
+                    inputDefaults: {
+                        headline: "Continue the conversation",
+                        primaryCtaLabel: "Send a note"
+                    },
                     fixed: false
                 }
             ]
@@ -488,8 +548,11 @@ const cinematicTemplate: Template = {
                 {
                     instanceId: "contact_1",
                     componentKey: "contact",
-                    allowedVariants: allVariants("contact"),
+                    allowedVariants: ["split_with_info", "social_cards"],
                     defaultVariant: "split_with_info",
+                    inputDefaults: {
+                        sectionTitle: "Book the Next Scene"
+                    },
                     fixed: true
                 }
             ]
@@ -953,7 +1016,7 @@ const neobrutalismTemplate: Template = {
                     instanceId: "hero_1",
                     componentKey: "hero",
                     allowedVariants: ["neobrutalism", "neobrutalism_poster"],
-                    defaultVariant: "neobrutalism_poster",
+                    defaultVariant: "neobrutalism",
                     inputDefaults: {
                         subheadline:
                             "A personal site for sharp work, bright ideas, and zero visual apologies.",

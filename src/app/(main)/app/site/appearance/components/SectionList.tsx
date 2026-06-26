@@ -55,7 +55,8 @@ import {
     IconSocial,
     IconLayoutNavbar,
     IconLayoutBottombar, // footer
-    IconCookie
+    IconCookie,
+    IconRefresh
 } from "@tabler/icons-react";
 
 import { useSectionCustomizer } from "../hooks/useSectionCustomizer";
@@ -349,8 +350,38 @@ export function SectionList({
         };
     });
 
+    const hasVariantOverrides =
+        Object.values(stateHelpers.overrides.layout).some(
+            (override) => override.variant !== undefined
+        ) ||
+        Object.values(stateHelpers.overrides.pages[activePageKey] || {}).some(
+            (override) => override.variant !== undefined
+        );
+
     return (
         <div className="flex flex-col h-full flex-1 min-h-0 overflow-hidden">
+            <div className="flex items-center gap-2 border-b border-border/40 px-2 py-2">
+                <div className="min-w-0 flex-1">
+                    <p className="truncate text-[11px] font-semibold text-foreground">
+                        {activePageLabel}
+                    </p>
+                    <p className="truncate text-[10px] text-muted-foreground">
+                        Reset layout variants to this template&apos;s defaults.
+                    </p>
+                </div>
+                <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    disabled={!hasVariantOverrides}
+                    onClick={() => customizer.resetVariantsToTemplateDefaults()}
+                    className="h-7 shrink-0 gap-1.5 px-2 text-[11px]"
+                    title="Reset variants to template defaults"
+                >
+                    <IconRefresh className="h-3.5 w-3.5" />
+                    Reset variants
+                </Button>
+            </div>
             <div className="flex-1 overflow-y-auto pb-4">
                 <div className="flex flex-col">
                     {topLayoutSections.map((section) => {

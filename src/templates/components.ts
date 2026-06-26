@@ -65,6 +65,7 @@ const header: ComponentSchema = {
     removable: false,
     variants: [
         { key: 'default', label: 'Default' },
+        { key: 'cinematic', label: 'Cinematic' },
         { key: 'compact', label: 'Compact' },
         { key: 'minimal', label: 'Minimal' },
         { key: 'neobrutalism', label: 'Neobrutalism' },
@@ -173,6 +174,7 @@ const footer: ComponentSchema = {
     removable: false,
     variants: [
         { key: 'default', label: 'Default' },
+        { key: 'cinematic', label: 'Cinematic' },
         { key: 'compact', label: 'Compact' },
         { key: 'minimal', label: 'Minimal' },
         { key: 'neobrutalism', label: 'Neobrutalism' },

@@ -18,17 +18,20 @@ export default function CtaBanner({ section }: SectionProps) {
     const backgroundStyle = (i.backgroundStyle as string) || '';
 
     return (
-        <section 
-            className="py-16 md:py-20 bg-muted text-foreground border-y border-border"
+        <section
+            className="relative overflow-hidden border-y border-border bg-muted py-16 text-foreground md:py-24"
             style={backgroundStyle ? { backgroundColor: `hsl(var(${backgroundStyle}))` } : undefined}
         >
-            <div className="container max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-8 text-center md:text-left">
+            <div className="pointer-events-none absolute inset-x-0 top-0 h-10 bg-background" />
+            <div className="pointer-events-none absolute inset-x-0 bottom-0 h-10 bg-background" />
+            <div className="container relative mx-auto flex max-w-7xl flex-col items-center justify-between gap-8 px-6 text-center md:flex-row md:text-left">
                 <div className="max-w-2xl">
-                    <h2 className="text-3xl md:text-5xl font-black tracking-tighter uppercase">
+                    <p className="mb-4 text-xs font-bold uppercase tracking-[0.45em] text-primary">Next Production</p>
+                    <h2 className="text-4xl font-black uppercase leading-none tracking-tighter md:text-6xl">
                         {headline}
                     </h2>
                     {subtext && (
-                        <p className="mt-4 text-xl text-muted-foreground font-light">
+                        <p className="mt-5 text-xl font-light leading-relaxed text-muted-foreground">
                             {subtext}
                         </p>
                     )}
@@ -37,7 +40,7 @@ export default function CtaBanner({ section }: SectionProps) {
                 <div className="flex flex-col sm:flex-row items-center gap-4 shrink-0">
                     <a
                         href={primaryCtaUrl}
-                        className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-none border border-foreground bg-foreground text-background font-bold uppercase tracking-wider hover:bg-transparent hover:text-foreground transition-all"
+                        className="inline-flex items-center justify-center gap-2 rounded-full bg-primary px-8 py-4 font-bold uppercase tracking-[0.22em] text-primary-foreground transition-transform hover:scale-105"
                     >
                         {primaryCtaLabel}
                         <IconArrowRight size={20} />
@@ -46,7 +49,7 @@ export default function CtaBanner({ section }: SectionProps) {
                     {secondaryCtaLabel && (
                         <a
                             href={secondaryCtaUrl}
-                            className="inline-flex items-center justify-center px-8 py-4 rounded-none border border-border bg-transparent text-foreground font-bold uppercase tracking-wider hover:border-foreground transition-all"
+                            className="inline-flex items-center justify-center rounded-full border border-primary/40 bg-background/60 px-8 py-4 font-bold uppercase tracking-[0.22em] text-foreground transition-colors hover:border-primary hover:text-primary"
                         >
                             {secondaryCtaLabel}
                         </a>

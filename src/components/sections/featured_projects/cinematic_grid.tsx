@@ -61,12 +61,14 @@ export default function FeaturedProjectsCinematicGrid({ section, siteData }: Sec
     if (allProjects.length === 0) return null;
 
     return (
-        <section id="projects" className="py-32 bg-background relative z-10">
+        <section id="projects" className="relative z-10 overflow-hidden bg-background py-32">
+            <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_75%_20%,hsl(var(--primary)/0.12),transparent_30%),radial-gradient(circle_at_10%_90%,hsl(var(--accent)/0.12),transparent_28%)]" />
             <div className="container max-w-7xl mx-auto px-6">
-                <div className="flex flex-col md:flex-row md:items-end justify-between mb-20 gap-8">
+                <div className="relative flex flex-col md:flex-row md:items-end justify-between mb-20 gap-8">
                     <div>
+                        <p className="mb-4 text-xs font-bold uppercase tracking-[0.45em] text-primary">Selected Scenes</p>
                         {sectionTitle && (
-                            <h2 className="text-4xl md:text-6xl font-black text-foreground uppercase tracking-tighter mb-4">
+                            <h2 className="max-w-4xl text-5xl md:text-7xl font-black text-foreground uppercase tracking-tighter leading-none mb-4">
                                 {sectionTitle}
                             </h2>
                         )}
@@ -87,15 +89,14 @@ export default function FeaturedProjectsCinematicGrid({ section, siteData }: Sec
                     )}
                 </div>
 
-                <div ref={containerRef} className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-16">
-                    {displayProjects.map((project) => (
+                <div ref={containerRef} className="relative grid grid-cols-1 gap-12 md:grid-cols-2 lg:gap-16">
+                    {displayProjects.map((project, index) => (
                         <Link
                             key={project.id}
                             href={`/projects/${project.slug}`}
                             className="cinematic-card group relative flex flex-col gap-6 outline-none"
                         >
-                            {/* Thumbnail Container */}
-                            <div className="relative aspect-video w-full overflow-hidden rounded-md bg-muted">
+                            <div className="relative aspect-[16/10] w-full overflow-hidden rounded-2xl border border-border bg-muted shadow-2xl">
                                 {project.thumbnail ? (
                                     <img
                                         src={project.thumbnail}
@@ -106,7 +107,7 @@ export default function FeaturedProjectsCinematicGrid({ section, siteData }: Sec
                                     <div className="absolute inset-0 bg-secondary" />
                                 )}
                                 
-                                <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-500" />
+                                <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-background/10 to-transparent transition-colors duration-500" />
                                 
                                 {/* Inner Border Glow on hover */}
                                 <div className="absolute inset-0 border border-white/0 group-hover:border-white/10 transition-colors duration-500 rounded-md" />
@@ -114,24 +115,23 @@ export default function FeaturedProjectsCinematicGrid({ section, siteData }: Sec
                                 {/* Center Play Icon */}
                                 {hoverToPlay && (
                                     <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                                        <div className="p-4 rounded-full bg-black/50 backdrop-blur-md text-white shadow-2xl scale-75 group-hover:scale-100 transition-transform duration-500">
+                                        <div className="p-4 rounded-full bg-primary text-primary-foreground shadow-2xl scale-75 group-hover:scale-100 transition-transform duration-500">
                                             <IconPlayerPlayFilled size={32} />
                                         </div>
                                     </div>
                                 )}
                                 
                                 {project.featured && (
-                                    <div className="absolute top-4 left-4 z-10">
-                                        <span className="px-3 py-1 text-xs font-bold bg-primary text-primary-foreground uppercase tracking-widest rounded-sm">
-                                            Featured
+                                    <div className="absolute left-4 top-4 z-10">
+                                        <span className="rounded-full bg-primary px-3 py-1 text-xs font-bold uppercase tracking-widest text-primary-foreground">
+                                            Scene {String(index + 1).padStart(2, '0')}
                                         </span>
                                     </div>
                                 )}
                             </div>
 
-                            {/* Content */}
                             <div className="flex flex-col gap-2">
-                                <h3 className="text-2xl font-bold text-foreground group-hover:text-primary transition-colors leading-tight">
+                                <h3 className="text-3xl font-black uppercase leading-none tracking-tighter text-foreground transition-colors group-hover:text-primary">
                                     {project.title}
                                 </h3>
                                 

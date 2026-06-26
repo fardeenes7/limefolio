@@ -64,7 +64,7 @@ export default function MediaGalleryHorizontalScroll({ section, siteData }: Sect
         return (
             <section id="gallery" className="bg-background py-24">
                 <div className="container mx-auto max-w-7xl px-6">
-                    {inputs.sectionTitle && <h2 className="mb-8 text-3xl font-bold text-foreground md:text-5xl">{inputs.sectionTitle}</h2>}
+                {inputs.sectionTitle && <h2 className="mb-8 text-4xl font-black uppercase leading-none tracking-tighter text-foreground md:text-6xl">{inputs.sectionTitle}</h2>}
                     <EmptyGallery />
                 </div>
             </section>
@@ -75,15 +75,18 @@ export default function MediaGalleryHorizontalScroll({ section, siteData }: Sect
         <section
             id="gallery"
             ref={containerRef}
-            className="relative min-h-[calc(var(--gallery-sticky-height,700px)+var(--gallery-scroll-distance,0px))] border-y border-border bg-background"
+            className="relative min-h-[calc(var(--gallery-sticky-height,700px)+var(--gallery-scroll-distance,0px))] border-y border-border bg-card"
         >
-            <div ref={stickyRef} className="sticky top-[var(--header-height,0px)] overflow-hidden bg-background py-16 md:py-24">
+            <div ref={stickyRef} className="sticky top-[var(--header-height,0px)] overflow-hidden bg-card py-16 md:py-24">
                 <div className="container mx-auto mb-10 max-w-7xl px-6">
                     <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
-                        <h2 className="max-w-3xl text-3xl font-bold text-foreground md:text-5xl">
+                        <div>
+                            <p className="mb-4 text-xs font-bold uppercase tracking-[0.45em] text-primary">Frame by Frame</p>
+                            <h2 className="max-w-3xl text-4xl font-black uppercase leading-none tracking-tighter text-foreground md:text-6xl">
                             {inputs.sectionTitle}
-                        </h2>
-                        <p className="text-sm text-muted-foreground">Scroll to explore {media.length} item{media.length === 1 ? '' : 's'}</p>
+                            </h2>
+                        </div>
+                        <p className="rounded-full border border-border bg-background px-4 py-2 text-sm uppercase tracking-[0.2em] text-muted-foreground">Scroll to explore {media.length} frame{media.length === 1 ? '' : 's'}</p>
                     </div>
                 </div>
 
@@ -100,7 +103,7 @@ export default function MediaGalleryHorizontalScroll({ section, siteData }: Sect
                 </div>
 
                 <div ref={viewportRef} className="overflow-hidden px-6 md:px-12">
-                    <div ref={trackRef} className="flex h-[340px] w-max items-stretch gap-5 pb-2 pr-[calc(100vw-3rem)] sm:h-[400px] md:h-[460px] md:gap-8 md:pr-[calc(100vw-6rem)] lg:h-[520px]">
+                    <div ref={trackRef} className="flex h-[360px] w-max items-stretch gap-5 pb-2 pr-[calc(100vw-3rem)] sm:h-[430px] md:h-[500px] md:gap-8 md:pr-[calc(100vw-6rem)] lg:h-[580px]">
                         {media.map((item, index) => (
                             <button
                                 key={item.id || index}
@@ -109,8 +112,9 @@ export default function MediaGalleryHorizontalScroll({ section, siteData }: Sect
                                 className="group relative h-full w-auto shrink-0 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
                                 disabled={!inputs.lightboxEnabled}
                             >
-                                <MediaFrame item={item} showCaption={inputs.showCaptions} className="h-full w-auto rounded-2xl border border-border bg-card shadow-sm" mediaClassName="h-full w-auto max-w-[82vw] object-contain" />
-                                <div className="pointer-events-none absolute inset-0 bg-primary/0 transition-colors duration-500 group-hover:bg-primary/10" />
+                                <MediaFrame item={item} showCaption={inputs.showCaptions} className="h-full w-auto rounded-2xl border border-border bg-background shadow-2xl" mediaClassName="h-full w-auto max-w-[82vw] object-contain" />
+                                <div className="pointer-events-none absolute inset-0 rounded-2xl bg-primary/0 transition-colors duration-500 group-hover:bg-primary/10" />
+                                <span className="pointer-events-none absolute left-4 top-4 rounded-full bg-background/75 px-3 py-1 text-xs font-bold uppercase tracking-[0.25em] text-primary backdrop-blur">Frame {String(index + 1).padStart(2, '0')}</span>
                             </button>
                         ))}
                     </div>

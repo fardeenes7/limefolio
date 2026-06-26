@@ -170,6 +170,18 @@ export const THEMES_META: ThemeMeta[] = [
             "oklch(0.9119 0.0222 243.8174)"
         ]
     },
+    {
+        name: "Cinematic",
+        slug: "cinematic",
+        defaultFont: "space-grotesk",
+        radius: 0.35,
+        description: "Warm film palette with projector-gold accents",
+        category: "retro",
+        hasDark: true,
+        defaultMode: "dark",
+        suggestedPrimaryColors: ["oklch(0.78 0.14 82)", "oklch(0.56 0.22 24)", "oklch(0.66 0.12 245)", "oklch(0.72 0.10 135)"],
+        swatches: ["oklch(0.09 0.018 255)", "oklch(0.78 0.14 82)", "oklch(0.56 0.22 24)"]
+    },
 
     // ── Colorful / Playful ────────────────────────────────────────────────────
     {

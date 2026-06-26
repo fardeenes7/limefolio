@@ -2,6 +2,18 @@ import { useCallback } from "react";
 import type { UserPortfolioConfig, SectionInstance, SectionOverride } from "@/templates/types";
 import { ComponentRegistry } from "@/templates/components";
 
+function withoutVariantOverride(
+    override: SectionOverride | undefined,
+): SectionOverride | undefined {
+    if (!override) return undefined;
+
+    const next: SectionOverride = {
+        ...(override.inputs !== undefined ? { inputs: override.inputs } : {}),
+    };
+
+    return Object.keys(next).length > 0 ? next : undefined;
+}
+
 function withInputOverride(
     override: SectionOverride | undefined,
     inputKey: string,
@@ -155,11 +167,46 @@ export function useSectionCustomizer(
         });
     }, [pageKey, state]);
 
+    const resetVariantsToTemplateDefaults = useCallback(() => {
+        state.setOverrides(prev => {
+            const next = { ...prev };
+
+            next.layout = Object.entries(next.layout).reduce<Record<string, SectionOverride>>(
+                (acc, [instanceId, override]) => {
+                    const nextOverride = withoutVariantOverride(override);
+                    if (nextOverride) acc[instanceId] = nextOverride;
+                    return acc;
+                },
+                {},
+            );
+
+            const existingPage = next.pages[pageKey] || {};
+            next.pages = { ...next.pages };
+            const resetPage = Object.entries(existingPage).reduce<Record<string, SectionOverride>>(
+                (acc, [instanceId, override]) => {
+                    const nextOverride = withoutVariantOverride(override);
+                    if (nextOverride) acc[instanceId] = nextOverride;
+                    return acc;
+                },
+                {},
+            );
+
+            if (Object.keys(resetPage).length > 0) {
+                next.pages[pageKey] = resetPage;
+            } else {
+                delete next.pages[pageKey];
+            }
+
+            return next;
+        });
+    }, [pageKey, state]);
+
     return {
         updateVariant,
         updateInput,
         toggleVisibility,
         reorderSections,
         addSection,
+        resetVariantsToTemplateDefaults,
     };
 }
