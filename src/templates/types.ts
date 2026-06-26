@@ -58,7 +58,7 @@ export type ComponentInputType =
     | { kind: 'text' }
     | { kind: 'boolean' }
     | { kind: 'select'; options: SelectOption[] }
-    | { kind: 'file'; accepts: 'image' | 'video' | 'doc' }
+    | { kind: 'file'; accepts: 'image' | 'video' | 'doc'; multiple?: boolean }
     | { kind: 'token'; category: 'color' | 'radius' | 'shadow' }
     | { kind: 'slider'; min: number; max: number; step: number };
 

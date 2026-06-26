@@ -52,7 +52,7 @@ export function LayoutPageRenderer({
     );
 
     return (
-        <>
+        <div className="flex min-h-screen flex-col bg-background">
             {headerSections.map((section) => (
                 <SectionRenderer
                     key={section.instanceId}
@@ -60,15 +60,19 @@ export function LayoutPageRenderer({
                     siteData={siteData}
                 />
             ))}
-            {children}
-            {footerSections.map((section) => (
-                <SectionRenderer
-                    key={section.instanceId}
-                    section={section}
-                    siteData={siteData}
-                />
-            ))}
-        </>
+            <main className="flex-1">
+                {children}
+            </main>
+            <div className="mt-auto">
+                {footerSections.map((section) => (
+                    <SectionRenderer
+                        key={section.instanceId}
+                        section={section}
+                        siteData={siteData}
+                    />
+                ))}
+            </div>
+        </div>
     );
 }
 

@@ -24,8 +24,24 @@ export interface Project {
     github_url?: string | null;
     cover_image?: string | null;
     thumbnail?: string | null;
+    media?: Media[];
     /** Present on project detail pages */
     project?: Project;
+}
+
+export interface Media {
+    id: number;
+    image?: string | null;
+    video?: string | null;
+    thumbnail?: string | null;
+    alt?: string | null;
+    caption?: string | null;
+    order?: number;
+    is_featured?: boolean;
+    media_type?: 'image' | 'video' | string;
+    url?: string | null;
+    created_at?: string;
+    updated_at?: string;
 }
 
 export interface Experience {
@@ -56,10 +72,22 @@ export interface BlogPost {
     slug: string;
     title: string;
     excerpt?: string | null;
+    content?: string | null;
+    thumbnail?: string | null;
+    thumbnail_url?: string | null;
     cover_image?: string | null;
+    author?: string | null;
+    author_name?: string | null;
     published_at?: string | null;
     tags?: string[];
+    categories?: string[];
+    reading_time?: number | null;
     reading_time_minutes?: number | null;
+    is_featured?: boolean;
+    view_count?: number;
+    meta_description?: string | null;
+    meta_keywords?: string | null;
+    media?: Media[];
 }
 
 export interface Testimonial {
@@ -126,10 +154,14 @@ export interface SiteData {
     experiences?: Experience[];
     skills?: Skill[];
     blog_posts?: BlogPost[];
+    media?: Media[];
     testimonials?: Testimonial[];
     services?: Service[];
     stats?: Stat[];
 
     /** Present on project detail pages */
     project?: Project;
+
+    /** Present on blog detail pages */
+    blog_post?: BlogPost;
 }

@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import getSite, { getProject, getTemplateConfig } from "@/lib/api";
+import getSite, { getMedia, getProject, getTemplateConfig } from "@/lib/api";
 import { getTemplate } from "@/templates/registry";
 import { resolvePortfolioConfig } from "@/templates/merge";
 import { userConfigFromRaw } from "@/templates/config";
@@ -32,9 +32,10 @@ export async function generateMetadata({
 export default async function SingleProjectPage({ params }: SingleProjectProps) {
     const { domain, slug } = await params;
 
-    const [siteData, project] = await Promise.all([
+    const [siteData, project, media] = await Promise.all([
         getSite(domain),
-        getProject(domain, slug)
+        getProject(domain, slug),
+        getMedia(domain),
     ]);
 
     if (!siteData || siteData.error) return notFound();
@@ -56,7 +57,7 @@ export default async function SingleProjectPage({ params }: SingleProjectProps) 
     const resolvedConfig = resolvePortfolioConfig(templateDef, userConfig);
 
     // Provide the specific project nested under `project`
-    const pageData = { ...siteData, project };
+    const pageData = { ...siteData, project, media };
 
     return (
         <PageRenderer

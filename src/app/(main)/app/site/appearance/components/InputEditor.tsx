@@ -14,10 +14,11 @@ import {
 import { Button } from "@/components/ui/button";
 import { ColorTokenSelect } from "./ColorTokenSelect";
 import { BackgroundTypePicker, BackgroundEffectPicker } from "./BackgroundPicker";
-import { IconUpload, IconX, IconRotate, IconPhoto } from "@tabler/icons-react";
+import { IconRotate, IconPhoto } from "@tabler/icons-react";
 import type { ComponentInput } from "@/templates/types";
 import { cn } from "@/lib/utils";
 import { MediaGalleryDialog } from "./MediaGalleryDialog";
+import type { Media } from "@/types";
 
 interface InputEditorProps {
     input: ComponentInput;
@@ -31,7 +32,6 @@ interface InputEditorProps {
 
 export function InputEditor({ input, value, defaultValue, isModified, onChange, onReset, compact }: InputEditorProps) {
     const isBoolean = input.type.kind === "boolean";
-    const isSmallText = input.type.kind === "text" && !/bio|description|summary/.test(input.label.toLowerCase());
     const [isGalleryOpen, setIsGalleryOpen] = React.useState(false);
 
     const renderControl = () => {
@@ -115,6 +115,40 @@ export function InputEditor({ input, value, defaultValue, isModified, onChange, 
         }
 
         if (input.type.kind === "file") {
+            if (input.type.multiple) {
+                const selectedMedia = Array.isArray(value) ? value.filter((item): item is Media => Boolean(item && typeof item === 'object')) : [];
+                const selectedIds = selectedMedia.map((item) => item.id).filter((id): id is number => typeof id === 'number');
+
+                return (
+                    <div className="flex flex-col gap-2">
+                        {selectedMedia.length > 0 && (
+                            <div className="grid grid-cols-4 gap-1.5">
+                                {selectedMedia.slice(0, 8).map((item, index) => (
+                                    <div key={item.id || index} className="aspect-square overflow-hidden rounded border bg-muted">
+                                        <img src={item.thumbnail || item.image || item.url} alt={item.alt || ""} className="h-full w-full object-cover" />
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                        <Button type="button" variant="outline" size="sm" className="h-8 text-[10px] md:text-[10px] px-2" onClick={() => setIsGalleryOpen(true)}>
+                            <IconPhoto className="w-3.5 h-3.5 mr-1" />
+                            {selectedMedia.length > 0 ? `${selectedMedia.length} selected` : "Select Media"}
+                        </Button>
+                        <MediaGalleryDialog
+                            open={isGalleryOpen}
+                            onOpenChange={setIsGalleryOpen}
+                            onSelect={(media) => {
+                                onChange(Array.isArray(media) ? media : [media]);
+                                setIsGalleryOpen(false);
+                            }}
+                            accepts={input.type.accepts as 'image' | 'video' | undefined}
+                            multiple
+                            selectedIds={selectedIds}
+                        />
+                    </div>
+                );
+            }
+
             const strValue = typeof value === 'string' ? value : '';
             return (
                 <div className="flex flex-col gap-2">
@@ -126,18 +160,19 @@ export function InputEditor({ input, value, defaultValue, isModified, onChange, 
                                 )}
                             </div>
                         )}
-                        <Button variant="outline" size="sm" className="flex-1 h-8 text-[10px] md:text-[10px] px-2" onClick={() => setIsGalleryOpen(true)}>
+                        <Button type="button" variant="outline" size="sm" className="flex-1 h-8 text-[10px] md:text-[10px] px-2" onClick={() => setIsGalleryOpen(true)}>
                             <IconPhoto className="w-3.5 h-3.5 mr-1" />
                             {strValue ? "Change Media" : "Select Media"}
                         </Button>
                     </div>
-                    <MediaGalleryDialog
-                        open={isGalleryOpen}
-                        onOpenChange={setIsGalleryOpen}
-                        onSelect={(url) => {
-                            onChange(url);
-                            setIsGalleryOpen(false);
-                        }}
+                        <MediaGalleryDialog
+                            open={isGalleryOpen}
+                            onOpenChange={setIsGalleryOpen}
+                            onSelect={(media) => {
+                                const selected = Array.isArray(media) ? media[0] : media;
+                                onChange(selected?.url || "");
+                                setIsGalleryOpen(false);
+                            }}
                         accepts={input.type.accepts as 'image' | 'video' | undefined}
                     />
                 </div>

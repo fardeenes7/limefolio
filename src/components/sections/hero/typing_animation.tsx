@@ -16,7 +16,7 @@ export default function HeroTypingAnimation({ section, siteData }: SectionProps)
     const primaryCtaLabel = (i.primaryCtaLabel as string) || 'View My Work';
     const primaryCtaUrl = (i.primaryCtaUrl as string) || '#projects';
     const secondaryCtaLabel = (i.secondaryCtaLabel as string) || 'Contact Me';
-    const secondaryCtaUrl = (i.secondaryCtaUrl as string) || '#contact';
+    const secondaryCtaUrl = (i.secondaryCtaUrl as string) || '/contact';
 
     // Layout
     const paddingTop = (i.paddingTop as number) || 0;

@@ -1,4 +1,4 @@
-import getSite, { getTemplateConfig } from "@/lib/api";
+import getSite, { getMedia, getTemplateConfig } from "@/lib/api";
 import "../../globals.css";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
@@ -62,9 +62,10 @@ export default async function DomainLayout({
     params: Promise<{ domain: string }>;
 }>) {
     const { domain } = await params;
-    const siteData = await getSite(domain);
-
-    console.log("siteData::", siteData);
+    const [siteData, media] = await Promise.all([
+        getSite(domain),
+        getMedia(domain),
+    ]);
 
     // Get configuration from site data or use defaults
     const colorThemeSlug = siteData?.theme || "default";
@@ -87,6 +88,7 @@ export default async function DomainLayout({
             </ThemeProvider>
         );
     }
+    const siteWithMedia = { ...siteData, media };
 
     // 1. Fetch user's template config (or use defaults if missing/preview)
     const rawConfig = await getTemplateConfig(domain);
@@ -143,14 +145,14 @@ export default async function DomainLayout({
                         templateDef={templateDef}
                         initialUserConfig={userConfig}
                         initialLayoutSections={resolvedConfig.layout}
-                        siteData={siteData}
+                        siteData={siteWithMedia}
                     >
                         {children}
                     </LivePreviewProvider>
                 </ThemeProvider>
 
                 {/* Analytics & Tracking Scripts */}
-                {siteData.seo?.google_tag_manager_id && (
+                {siteWithMedia.seo?.google_tag_manager_id && (
                     <Script
                         id="gtm-script"
                         strategy="afterInteractive"
@@ -160,16 +162,16 @@ export default async function DomainLayout({
                             new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
                             j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                             'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-                            })(window,document,'script','dataLayer','${siteData.seo.google_tag_manager_id}');
+                            })(window,document,'script','dataLayer','${siteWithMedia.seo.google_tag_manager_id}');
                             `
                         }}
                     />
                 )}
-                {siteData.seo?.google_analytics_id && (
+                {siteWithMedia.seo?.google_analytics_id && (
                     <>
                         <Script
                             strategy="afterInteractive"
-                            src={`https://www.googletagmanager.com/gtag/js?id=${siteData.seo.google_analytics_id}`}
+                            src={`https://www.googletagmanager.com/gtag/js?id=${siteWithMedia.seo.google_analytics_id}`}
                         />
                         <Script
                             id="ga4-script"
@@ -179,13 +181,13 @@ export default async function DomainLayout({
                                 window.dataLayer = window.dataLayer || [];
                                 function gtag(){dataLayer.push(arguments);}
                                 gtag('js', new Date());
-                                gtag('config', '${siteData.seo.google_analytics_id}');
+                                gtag('config', '${siteWithMedia.seo.google_analytics_id}');
                                 `
                             }}
                         />
                     </>
                 )}
-                {siteData.seo?.facebook_pixel_id && (
+                {siteWithMedia.seo?.facebook_pixel_id && (
                     <Script
                         id="fb-pixel-script"
                         strategy="afterInteractive"
@@ -199,7 +201,7 @@ export default async function DomainLayout({
                             t.src=v;s=b.getElementsByTagName(e)[0];
                             s.parentNode.insertBefore(t,s)}(window, document,'script',
                             'https://connect.facebook.net/en_US/fbevents.js');
-                            fbq('init', '${siteData.seo.facebook_pixel_id}');
+                            fbq('init', '${siteWithMedia.seo.facebook_pixel_id}');
                             fbq('track', 'PageView');
                             `
                         }}

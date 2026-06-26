@@ -11,7 +11,7 @@ export default function LatestBlogsGrid({ section, siteData }: SectionProps) {
     const i = section.resolvedInputs as Record<string, unknown>;
     const sectionTitle = (i.sectionTitle as string) || 'Latest Posts';
     const maxItemsStr = (i.maxItems as string) || '3';
-    const maxItems = parseInt(maxItemsStr, 10);
+    const maxItems = maxItemsStr === 'all' ? undefined : parseInt(maxItemsStr, 10);
     const showExcerpt = i.showExcerpt !== false;
     const showDate = i.showDate !== false;
     const showTags = i.showTags !== false;
@@ -21,7 +21,7 @@ export default function LatestBlogsGrid({ section, siteData }: SectionProps) {
     const allPosts = siteData.blog_posts || [];
     if (allPosts.length === 0) return null;
 
-    const displayPosts = allPosts.slice(0, maxItems);
+    const displayPosts = maxItems === undefined ? allPosts : allPosts.slice(0, maxItems);
 
     return (
         <section id="blog" className="py-24 bg-muted/30">
@@ -34,7 +34,7 @@ export default function LatestBlogsGrid({ section, siteData }: SectionProps) {
                             </h2>
                         )}
                     </div>
-                    {showViewAll && allPosts.length > maxItems && (
+                    {showViewAll && maxItems !== undefined && allPosts.length > maxItems && (
                         <Link
                             href="/blog"
                             className="shrink-0 inline-flex items-center gap-2 text-primary font-semibold hover:gap-3 transition-all"
@@ -52,10 +52,10 @@ export default function LatestBlogsGrid({ section, siteData }: SectionProps) {
                             href={`/blog/${post.slug}`}
                             className="group flex flex-col bg-background rounded-2xl border border-border overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
                         >
-                            {post.cover_image && (
+                            {(post.cover_image || post.thumbnail || post.thumbnail_url) && (
                                 <div className="relative aspect-video w-full overflow-hidden bg-muted">
                                     <img
-                                        src={post.cover_image}
+                                        src={post.cover_image || post.thumbnail || post.thumbnail_url || ''}
                                         alt={post.title}
                                         className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                                     />
@@ -74,10 +74,10 @@ export default function LatestBlogsGrid({ section, siteData }: SectionProps) {
                                             })}
                                         </div>
                                     )}
-                                    {post.reading_time_minutes && (
+                                    {(post.reading_time_minutes || post.reading_time) && (
                                         <div className="flex items-center gap-1.5">
                                             <IconClock size={14} />
-                                            {post.reading_time_minutes} min read
+                                            {post.reading_time_minutes || post.reading_time} min read
                                         </div>
                                     )}
                                 </div>

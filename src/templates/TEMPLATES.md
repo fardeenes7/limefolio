@@ -483,17 +483,17 @@ All contributors must follow these rules without exception:
 | `header` | Header | ✓ | ✗ | ✗ | default, compact, centered, editorial, floating | default |
 | `footer` | Footer | ✓ | ✗ | ✗ | default, compact, centered | default |
 | `cookie_banner` | Cookie Banner | ✓ | ✗ | ✓ | bar | bar |
-| `hero` | Hero | ✗ | ✗ | ✗ | default, compact, centered, split_section, typing_animation, video_reel | default |
+| `hero` | Hero | ✗ | ✗ | ✗ | default, compact, centered, split_section, typing_animation, video_reel, profile_card | default |
 | `about` | About | ✗ | ✗ | ✓ | default, director_cut | default |
 | `skills` | Skills | ✗ | ✗ | ✓ | icon_grid, tag_cloud | icon_grid |
-| `featured_projects` | Featured Projects | ✗ | ✓ | ✓ | table, grid, cinematic_grid | grid |
+| `featured_projects` | Featured Projects | ✗ | ✓ | ✓ | table, grid, cinematic_grid, spotlight | grid |
 | `media_gallery` | Media Gallery | ✗ | ✓ | ✓ | carousel, grid, masonry, horizontal_scroll | masonry |
-| `latest_blogs` | Latest Blog Posts | ✗ | ✗ | ✓ | grid | grid |
+| `latest_blogs` | Latest Blog Posts | ✗ | ✗ | ✓ | grid, editorial | grid |
 | `cta` | Call to Action | ✗ | ✓ | ✓ | default, card, banner, minimal | default |
 | `testimonials` | Testimonials | ✗ | ✗ | ✓ | carousel | carousel |
 | `services` | Services | ✗ | ✗ | ✓ | card_grid | card_grid |
 | `experience` | Experience | ✗ | ✗ | ✓ | timeline | timeline |
-| `contact` | Contact | ✗ | ✗ | ✓ | split_with_info, minimal | split_with_info |
+| `contact` | Contact | ✗ | ✗ | ✓ | split_with_info, minimal, social_cards | split_with_info |
 | `stats` | Stats | ✗ | ✗ | ✓ | counter_row | counter_row |
 | `social_feed` | Social Feed | ✗ | ✓ | ✓ | grid | grid |
 
@@ -503,10 +503,8 @@ All contributors must follow these rules without exception:
 
 Registered templates: `default`, `cinematic`, and `terminal`.
 
-Current public routes render `landing`, `all_projects`, and `project_details`. The
-template registry also defines `all_blog`, `blog_details`, and `contact` page configs;
-those route implementations still need to be added before those pages are publicly
-reachable.
+Current public routes render `landing`, `all_projects`, `project_details`, `all_blog`,
+`blog_details`, and `contact`.
 
 ### Template: `default`
 

@@ -13,6 +13,7 @@ import {
     IconBrandTwitter,
     IconExternalLink,
 } from '@tabler/icons-react';
+import { getFooterBackgroundClass, getFooterGapClass, LimefolioAttribution } from './footerUtils';
 
 const socialIconsMap: Record<string, any> = {
     github: IconBrandGithub,
@@ -26,6 +27,10 @@ export default function FooterDefault({ section, siteData }: SectionProps) {
     const showCopyright = i.showCopyright !== false;
     const copyrightText = (i.copyrightText as string) || `© {year} {title}. All rights reserved.`;
     const showBackToTop = i.showBackToTop === true;
+    const showLimefolioAttribution = i.showLimefolioAttribution !== false;
+    const attributionPlacement = (i.attributionPlacement as string) || 'copyright';
+    const backgroundClass = getFooterBackgroundClass(i.backgroundStyle, i.backgroundColor, 'bg-muted/20');
+    const gapClass = getFooterGapClass(i.linkDensity);
 
     const currentYear = new Date().getFullYear().toString();
     const title = siteData.title || 'Portfolio';
@@ -40,19 +45,22 @@ export default function FooterDefault({ section, siteData }: SectionProps) {
     };
 
     return (
-        <footer className="border-t border-border bg-muted/20 py-12">
+        <footer className={`border-t border-border py-12 ${backgroundClass}`}>
             <div className="container max-w-7xl mx-auto px-6 flex flex-col items-center justify-between gap-6 sm:flex-row">
-                {/* Copyright */}
-                {showCopyright && (
-                    <p className="text-sm text-muted-foreground order-2 sm:order-1 text-center sm:text-left">
-                        {finalCopyright}
-                    </p>
-                )}
+                <div className="order-2 flex flex-col items-center gap-2 text-center sm:order-1 sm:items-start sm:text-left">
+                    {/* Copyright */}
+                    {showCopyright && (
+                        <p className="text-sm text-muted-foreground">
+                            {finalCopyright}
+                        </p>
+                    )}
+                    {showLimefolioAttribution && attributionPlacement === 'copyright' && <LimefolioAttribution />}
+                </div>
 
                 <div className="flex items-center gap-6 order-1 sm:order-2">
                     {/* Social Links */}
                     {showSocialLinks && socialLinks.length > 0 && (
-                        <div className="flex items-center gap-4">
+                        <div className={`flex items-center ${gapClass}`}>
                             {socialLinks.map((link) => {
                                 const Icon = socialIconsMap[link.platform] || IconExternalLink;
                                 return (
@@ -83,6 +91,11 @@ export default function FooterDefault({ section, siteData }: SectionProps) {
                     )}
                 </div>
             </div>
+            {showLimefolioAttribution && attributionPlacement === 'bottom' && (
+                <div className="container max-w-7xl mx-auto px-6 pt-6 text-center">
+                    <LimefolioAttribution />
+                </div>
+            )}
         </footer>
     );
 }

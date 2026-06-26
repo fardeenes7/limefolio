@@ -11,7 +11,7 @@ export default function CtaDefault({ section }: SectionProps) {
     const headline = (i.headline as string) || 'Ready to start your next project?';
     const subtext = (i.subtext as string) || "Let's build something amazing together.";
     const primaryCtaLabel = (i.primaryCtaLabel as string) || "Let's Talk";
-    const primaryCtaUrl = (i.primaryCtaUrl as string) || '#contact';
+    const primaryCtaUrl = (i.primaryCtaUrl as string) || '/contact';
     const backgroundStyle = (i.backgroundStyle as string) || '';
 
     return (

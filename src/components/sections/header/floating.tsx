@@ -53,7 +53,7 @@ export default function HeaderFloating({ section, siteData }: SectionProps) {
                             <Link href="/#skills" className="rounded-full px-3 py-1.5 transition-colors hover:bg-background hover:text-foreground">
                                 Skills
                             </Link>
-                            <Link href="/#contact" className="rounded-full px-3 py-1.5 transition-colors hover:bg-background hover:text-foreground">
+                            <Link href="/contact" className="rounded-full px-3 py-1.5 transition-colors hover:bg-background hover:text-foreground">
                                 Contact
                             </Link>
                         </nav>
@@ -65,7 +65,7 @@ export default function HeaderFloating({ section, siteData }: SectionProps) {
                         </Link>
                         {ctaButton && (
                             <Link
-                                href="/#contact"
+                                href="/contact"
                                 className="inline-flex items-center rounded-full bg-primary px-4 py-2 text-xs font-semibold text-primary-foreground shadow-sm transition-all hover:bg-primary/90 md:px-5"
                             >
                                 {ctaLabel}

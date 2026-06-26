@@ -1,72 +1,53 @@
-import getSite, { getMedia, getTemplateConfig } from "@/lib/api";
 import { notFound } from "next/navigation";
+import getSite, { getMedia, getTemplateConfig } from "@/lib/api";
 import { getTemplate } from "@/templates/registry";
 import { resolvePortfolioConfig } from "@/templates/merge";
 import { userConfigFromRaw } from "@/templates/config";
 import { PageRenderer } from "@/components/sections/_renderer/PageRenderer";
 import type { Metadata } from "next";
 
-export async function generateMetadata({
-    params
-}: {
+interface ContactPageProps {
     params: Promise<{ domain: string }>;
-}): Promise<Metadata> {
+}
+
+export async function generateMetadata({ params }: ContactPageProps): Promise<Metadata> {
     const { domain } = await params;
     const siteData = await getSite(domain);
 
-    if (!siteData) return {};
+    if (!siteData || siteData.error) return {};
 
     const seo = siteData.seo;
-    const pageMeta = seo?.page_meta?.["landing"];
-
-    const title = pageMeta?.meta_title || seo?.default_meta_title || siteData.title;
+    const pageMeta = seo?.page_meta?.["contact"];
+    const title = pageMeta?.meta_title || `Contact | ${siteData.title}`;
     const description = pageMeta?.meta_description || seo?.default_meta_description || siteData.description;
     const ogImage = pageMeta?.og_image || seo?.og_image || siteData.logo;
-    const robotsStr = pageMeta?.robots || seo?.robots_default || "index,follow";
-    
-    // Parse robots "index,follow" to { index: true, follow: true }
-    const index = robotsStr.includes("index") && !robotsStr.includes("noindex");
-    const follow = robotsStr.includes("follow") && !robotsStr.includes("nofollow");
 
     return {
         title,
-        description,
+        description: description || undefined,
         openGraph: {
             title,
             description: description || undefined,
             images: ogImage ? [ogImage] : [],
         },
-        robots: {
-            index,
-            follow,
-        }
     };
 }
 
-export default async function SiteHomePage({
-    params
-}: {
-    params: Promise<{ domain: string }>;
-}) {
+export default async function ContactPage({ params }: ContactPageProps) {
     const { domain } = await params;
     const [siteData, media] = await Promise.all([
         getSite(domain),
         getMedia(domain),
     ]);
 
-    if (!siteData || siteData.error) {
-        return notFound();
-    }
+    if (!siteData || siteData.error) return notFound();
 
     const templateSlug = siteData.template || "default";
     const colorThemeSlug = siteData.theme || "default";
     const fontSlug = siteData.font || "inter";
 
-    // Resolve config just for this page
-    // Next.js deduplicates this fetch since layout.tsx also calls it
     const rawConfig = await getTemplateConfig(domain);
     const templateDef = getTemplate(templateSlug);
-    
     const userConfig = userConfigFromRaw(rawConfig, templateDef, {
         templateKey: templateSlug,
         themeKey: colorThemeSlug,
@@ -77,7 +58,7 @@ export default async function SiteHomePage({
 
     return (
         <PageRenderer
-            sections={resolvedConfig.pages.find(p => p.key === "landing")?.sections || []}
+            sections={resolvedConfig.pages.find(p => p.key === "contact")?.sections || []}
             siteData={{ ...siteData, media }}
         />
     );

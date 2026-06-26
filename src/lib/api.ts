@@ -45,7 +45,7 @@ export default async function getSite(domain: string) {
 
 export async function getProjects(domain: string) {
     if (isPreview(domain)) {
-        return SAMPLE_DATA.projects;
+        return SAMPLE_DATA.projects.map(normalizeProject);
     }
 
     const res = await fetcher("/projects/", {
@@ -55,12 +55,13 @@ export async function getProjects(domain: string) {
             tags: [`${domain}-projects`]
         }
     });
-    return Array.isArray(res) ? res : (res?.results ?? []);
+    const projects = Array.isArray(res) ? res : (res?.results ?? []);
+    return projects.map(normalizeProject);
 }
 
 export async function getProject(domain: string, slug: string) {
     if (isPreview(domain)) {
-        return (
+        return normalizeProject(
             SAMPLE_DATA.projects.find((p: any) => p.slug === slug) ??
             SAMPLE_DATA.projects[0]
         );
@@ -73,7 +74,93 @@ export async function getProject(domain: string, slug: string) {
             tags: [`${domain}-project-${slug}`]
         }
     });
-    return res;
+    return normalizeProject(res);
+}
+
+function normalizeMediaItem(item: any) {
+    if (!item) return item;
+    return {
+        ...item,
+        url: item.url ?? item.image ?? item.video ?? item.thumbnail ?? null,
+    };
+}
+
+function normalizeProject(project: any) {
+    if (!project) return project;
+    return {
+        ...project,
+        media: (project.media || []).map(normalizeMediaItem),
+    };
+}
+
+function normalizeBlogPost(post: any) {
+    if (!post) return post;
+    return {
+        ...post,
+        cover_image: post.cover_image ?? post.thumbnail ?? post.thumbnail_url ?? null,
+        reading_time_minutes: post.reading_time_minutes ?? post.reading_time ?? null,
+        media: (post.media || []).map(normalizeMediaItem),
+    };
+}
+
+export async function getMedia(domain: string) {
+    if (isPreview(domain)) {
+        const sample = SAMPLE_DATA as unknown as {
+            media?: unknown[];
+            projects: Array<{ media?: unknown[] }>;
+            blog_posts: Array<{ media?: unknown[] }>;
+        };
+
+        return [
+            ...(sample.media || []),
+            ...sample.projects.flatMap((project) => project.media || []),
+            ...sample.blog_posts.flatMap((post) => post.media || []),
+        ].map(normalizeMediaItem);
+    }
+
+    const res = await fetcher("/media/", {
+        headers: domainHeaders(domain),
+        next: {
+            revalidate: REVALIDATE_TIME,
+            tags: [`${domain}-media`]
+        }
+    });
+    const media = Array.isArray(res) ? res : (res?.results ?? []);
+    return media.map(normalizeMediaItem);
+}
+
+export async function getBlogPosts(domain: string) {
+    if (isPreview(domain)) {
+        return (SAMPLE_DATA.blog_posts || []).map(normalizeBlogPost);
+    }
+
+    const res = await fetcher("/blog/", {
+        headers: domainHeaders(domain),
+        next: {
+            revalidate: REVALIDATE_TIME,
+            tags: [`${domain}-blog`]
+        }
+    });
+    const posts = Array.isArray(res) ? res : (res?.results ?? []);
+    return posts.map(normalizeBlogPost);
+}
+
+export async function getBlogPost(domain: string, slug: string) {
+    if (isPreview(domain)) {
+        const posts = SAMPLE_DATA.blog_posts || [];
+        return normalizeBlogPost(
+            posts.find((p: any) => p.slug === slug) ?? posts[0]
+        );
+    }
+
+    const res = await fetcher(`/blog/${slug}/`, {
+        headers: domainHeaders(domain),
+        next: {
+            revalidate: REVALIDATE_TIME,
+            tags: [`${domain}-blog-${slug}`]
+        }
+    });
+    return normalizeBlogPost(res);
 }
 
 export async function getTemplateConfig(domain: string) {

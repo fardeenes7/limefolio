@@ -5,25 +5,56 @@ import { getMediaList } from "@/lib/actions/media";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
-import { IconSearch, IconFilePlus } from "@tabler/icons-react";
+import { IconCheck, IconFilePlus, IconSearch } from "@tabler/icons-react";
 import { MediaUploader } from "@/components/media/media-uploader";
 import type { Media } from "@/types";
 import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 
 interface MediaGalleryDialogProps {
     open: boolean;
     onOpenChange: (open: boolean) => void;
-    onSelect: (url: string) => void;
+    onSelect: (media: Media | Media[]) => void;
     accepts?: "image" | "video";
+    multiple?: boolean;
+    selectedIds?: number[];
 }
 
-export function MediaGalleryDialog({ open, onOpenChange, onSelect, accepts }: MediaGalleryDialogProps) {
+export function MediaGalleryDialog({ open, onOpenChange, onSelect, accepts, multiple = false, selectedIds = [] }: MediaGalleryDialogProps) {
     const [searchQuery, setSearchQuery] = useState("");
-    const [uploadOpen, setUploadOpen] = useState(false);
+    const selectedKey = selectedIds.join(",");
+    const [localSelectedIds, setLocalSelectedIds] = useState<Set<number>>(() => new Set(selectedIds));
 
     const [allMedia, setAllMedia] = useState<Media[]>([]);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(false);
+
+    useEffect(() => {
+        if (!open) return;
+
+        const timer = window.setTimeout(() => {
+            setIsLoading(true);
+            getMediaList().then(res => {
+                if (res.ok && res.data) {
+                    setAllMedia(res.data);
+                    setError(false);
+                } else {
+                    setError(true);
+                }
+            }).catch(() => setError(true)).finally(() => setIsLoading(false));
+        }, 0);
+
+        return () => window.clearTimeout(timer);
+    }, [open]);
+
+    useEffect(() => {
+        if (!open) return;
+        const ids = selectedKey
+            ? selectedKey.split(",").map((id) => Number(id)).filter(Number.isFinite)
+            : [];
+        const timer = window.setTimeout(() => setLocalSelectedIds(new Set(ids)), 0);
+        return () => window.clearTimeout(timer);
+    }, [open, selectedKey]);
 
     const loadMedia = () => {
         if (!open) return;
@@ -38,18 +69,35 @@ export function MediaGalleryDialog({ open, onOpenChange, onSelect, accepts }: Me
         }).catch(() => setError(true)).finally(() => setIsLoading(false));
     };
 
-    useEffect(() => {
-        loadMedia();
-    }, [open]);
+    const toggleSelection = (media: Media) => {
+        if (!multiple) {
+            onSelect(media);
+            return;
+        }
+
+        setLocalSelectedIds((prev) => {
+            const next = new Set(prev);
+            if (next.has(media.id)) next.delete(media.id);
+            else next.add(media.id);
+            return next;
+        });
+    };
+
+    const confirmSelection = () => {
+        const selectedMedia = allMedia.filter((media) => localSelectedIds.has(media.id));
+        onSelect(selectedMedia);
+    };
 
     // Filter by type and search query
     const filteredMedia = allMedia.filter(m => {
-        if (accepts && m.media_type !== accepts) return false;
+        if (accepts === "image" && m.media_type !== "image" && !m.image) return false;
+        if (accepts === "video" && m.media_type !== "video" && !m.video) return false;
         if (searchQuery) {
             const query = searchQuery.toLowerCase();
             return (
                 (m.alt && m.alt.toLowerCase().includes(query)) ||
-                (m.caption && m.caption.toLowerCase().includes(query))
+                (m.caption && m.caption.toLowerCase().includes(query)) ||
+                (m.url && m.url.toLowerCase().includes(query))
             );
         }
         return true;
@@ -139,11 +187,18 @@ export function MediaGalleryDialog({ open, onOpenChange, onSelect, accepts }: Me
                                 </div>
                             ) : (
                                 <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-                                    {filteredMedia.map(media => (
+                                    {filteredMedia.map(media => {
+                                        const isSelected = localSelectedIds.has(media.id);
+
+                                        return (
                                         <button
                                             key={media.id}
-                                            className="group relative aspect-square rounded-md overflow-hidden bg-muted border border-border/50 hover:border-primary focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 transition-all text-left"
-                                            onClick={() => onSelect(media.url)}
+                                            type="button"
+                                            className={cn(
+                                                "group relative aspect-square rounded-md overflow-hidden bg-muted border hover:border-primary focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 transition-all text-left",
+                                                isSelected ? "border-primary ring-2 ring-primary/40" : "border-border/50"
+                                            )}
+                                            onClick={() => toggleSelection(media)}
                                         >
                                             {media.media_type === "video" ? (
                                                 <div className="absolute inset-0 flex items-center justify-center bg-black/50 z-10 group-hover:bg-black/40 transition-colors">
@@ -162,8 +217,14 @@ export function MediaGalleryDialog({ open, onOpenChange, onSelect, accepts }: Me
                                                     {media.alt || media.url.split('/').pop()}
                                                 </p>
                                             </div>
+                                            {isSelected && (
+                                                <div className="absolute right-2 top-2 flex h-6 w-6 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg">
+                                                    <IconCheck className="h-3.5 w-3.5" />
+                                                </div>
+                                            )}
                                         </button>
-                                    ))}
+                                        );
+                                    })}
                                 </div>
                             )}
                         </div>
@@ -178,6 +239,22 @@ export function MediaGalleryDialog({ open, onOpenChange, onSelect, accepts }: Me
                         </div>
                     </TabsContent>
                 </Tabs>
+
+                {multiple && (
+                    <div className="flex items-center justify-between border-t px-6 py-4">
+                        <span className="text-sm text-muted-foreground">
+                            {localSelectedIds.size} selected
+                        </span>
+                        <div className="flex gap-2">
+                            <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
+                                Cancel
+                            </Button>
+                            <Button type="button" onClick={confirmSelection}>
+                                Use Selected
+                            </Button>
+                        </div>
+                    </div>
+                )}
             </DialogContent>
         </Dialog>
     );

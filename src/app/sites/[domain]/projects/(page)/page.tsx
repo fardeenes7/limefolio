@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import getSite, { getProjects, getTemplateConfig } from "@/lib/api";
+import getSite, { getMedia, getProjects, getTemplateConfig } from "@/lib/api";
 import { getTemplate } from "@/templates/registry";
 import { resolvePortfolioConfig } from "@/templates/merge";
 import { userConfigFromRaw } from "@/templates/config";
@@ -12,9 +12,10 @@ interface ProjectsPageProps {
 export default async function ProjectsPage({ params }: ProjectsPageProps) {
     const { domain } = await params;
 
-    const [siteData, projects] = await Promise.all([
+    const [siteData, projects, media] = await Promise.all([
         getSite(domain),
-        getProjects(domain)
+        getProjects(domain),
+        getMedia(domain),
     ]);
 
     if (!siteData || siteData.error) return notFound();
@@ -35,7 +36,7 @@ export default async function ProjectsPage({ params }: ProjectsPageProps) {
     const resolvedConfig = resolvePortfolioConfig(templateDef, userConfig);
 
     // Provide the projects data to the renderer
-    const pageData = { ...siteData, projects };
+    const pageData = { ...siteData, projects, media };
 
     return (
         <PageRenderer

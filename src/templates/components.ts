@@ -201,6 +201,58 @@ const footer: ComponentSchema = {
             type: { kind: 'boolean' },
             default: true,
         },
+        {
+            key: 'backgroundStyle',
+            label: 'Background Style',
+            type: {
+                kind: 'select',
+                options: [
+                    { label: 'Default', value: 'default' },
+                    { label: 'Muted', value: 'muted' },
+                    { label: 'Solid Color', value: 'solid' },
+                ],
+            },
+            default: 'default',
+        },
+        {
+            key: 'backgroundColor',
+            label: 'Background Color',
+            type: { kind: 'token', category: 'color' },
+            default: 'bg-background',
+            showIf: { input: 'backgroundStyle', equals: 'solid' },
+        },
+        {
+            key: 'linkDensity',
+            label: 'Link Density',
+            type: {
+                kind: 'select',
+                options: [
+                    { label: 'Compact', value: 'compact' },
+                    { label: 'Comfortable', value: 'comfortable' },
+                    { label: 'Spacious', value: 'spacious' },
+                ],
+            },
+            default: 'comfortable',
+        },
+        {
+            key: 'showLimefolioAttribution',
+            label: 'Show Limefolio attribution',
+            type: { kind: 'boolean' },
+            default: true,
+        },
+        {
+            key: 'attributionPlacement',
+            label: 'Attribution Placement',
+            type: {
+                kind: 'select',
+                options: [
+                    { label: 'With Copyright', value: 'copyright' },
+                    { label: 'Bottom Center', value: 'bottom' },
+                ],
+            },
+            default: 'copyright',
+            showIf: { input: 'showLimefolioAttribution', equals: true },
+        },
     ],
 };
 
@@ -269,6 +321,7 @@ const hero: ComponentSchema = {
         { key: 'split_section', label: 'Split Section' },
         { key: 'typing_animation', label: 'Typing Animation' },
         { key: 'video_reel', label: 'Video Reel' },
+        { key: 'profile_card', label: 'Profile Card' },
     ],
     defaultVariant: 'default',
     inputs: [
@@ -330,7 +383,7 @@ const hero: ComponentSchema = {
             key: 'secondaryCtaUrl',
             label: 'Secondary CTA URL',
             type: { kind: 'text' },
-            default: '#contact',
+            default: '/contact',
         },
         {
             key: 'backgroundType',
@@ -558,6 +611,7 @@ const featured_projects: ComponentSchema = {
         { key: 'table', label: 'Table' },
         { key: 'grid', label: 'Grid' },
         { key: 'cinematic_grid', label: 'Cinematic Grid' },
+        { key: 'spotlight', label: 'Spotlight' },
     ],
     defaultVariant: 'grid',
     inputs: [
@@ -641,7 +695,8 @@ const media_gallery: ComponentSchema = {
         {
             key: 'images',
             label: 'Images',
-            type: { kind: 'file', accepts: 'image' },
+            type: { kind: 'file', accepts: 'image', multiple: true },
+            default: [],
         },
         {
             key: 'showCaptions',
@@ -686,6 +741,7 @@ const latest_blogs: ComponentSchema = {
     removable: true,
     variants: [
         { key: 'grid', label: 'Grid' },
+        { key: 'editorial', label: 'Editorial' },
     ],
     defaultVariant: 'grid',
     inputs: [
@@ -704,6 +760,7 @@ const latest_blogs: ComponentSchema = {
                     { label: '3', value: '3' },
                     { label: '4', value: '4' },
                     { label: '6', value: '6' },
+                    { label: 'All', value: 'all' },
                 ],
             },
             default: '3',
@@ -976,6 +1033,7 @@ const contact: ComponentSchema = {
     variants: [
         { key: 'split_with_info', label: 'Split with Info' },
         { key: 'minimal', label: 'Minimal' },
+        { key: 'social_cards', label: 'Social Cards' },
     ],
     defaultVariant: 'split_with_info',
     inputs: [

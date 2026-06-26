@@ -32,7 +32,7 @@ export default function HeroCompact({ section, siteData }: SectionProps) {
     const primaryCtaLabel = (i.primaryCtaLabel as string) || 'View My Work';
     const primaryCtaUrl = (i.primaryCtaUrl as string) || '#projects';
     const secondaryCtaLabel = (i.secondaryCtaLabel as string) || 'Get In Touch';
-    const secondaryCtaUrl = (i.secondaryCtaUrl as string) || '#contact';
+    const secondaryCtaUrl = (i.secondaryCtaUrl as string) || '/contact';
 
     // Socials
     const socialLinks = siteData.social_links || [];

@@ -55,12 +55,12 @@ export default function HeaderDefault({ section, siteData }: SectionProps) {
                         <Link href="/#skills" className="transition-colors hover:text-foreground">
                             Skills
                         </Link>
-                        <Link href="/#contact" className="transition-colors hover:text-foreground">
+                        <Link href="/contact" className="transition-colors hover:text-foreground">
                             Contact
                         </Link>
                         {ctaButton && (
                             <Link
-                                href="/#contact"
+                                href="/contact"
                                 className="inline-flex items-center gap-1.5 rounded-full bg-primary px-4 py-1.5 text-primary-foreground transition-all hover:bg-primary/90"
                             >
                                 {ctaLabel}
@@ -78,7 +78,7 @@ export default function HeaderDefault({ section, siteData }: SectionProps) {
                         Projects
                     </Link>
                     <Link
-                        href="/#contact"
+                        href="/contact"
                         className="inline-flex items-center gap-1 rounded-full bg-primary px-4 py-1.5 text-sm font-medium text-primary-foreground"
                     >
                         {ctaLabel}
