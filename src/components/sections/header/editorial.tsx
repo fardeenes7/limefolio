@@ -17,11 +17,12 @@ export default function HeaderEditorial({ section, siteData }: SectionProps) {
     const bottomBorder = i.bottomBorder === true;
     const transparentOnTop = i.transparentOnTop === true;
     const backgroundStyle = (i.backgroundStyle as string) || 'frosted';
+    const backgroundColor = (i.backgroundColor as string) || 'bg-background';
     const bottomRowLayout = (i.bottomRowLayout as string) || 'center';
     const isBetween = bottomRowLayout === 'between';
     const title = siteData.title || 'Portfolio';
 
-    const { headerClass, headerRef, headerInitialStyle } = useHeaderState(sticky, transparentOnTop, bottomBorder, backgroundStyle, section.instanceId, 124);
+    const { headerClass, headerRef, headerInitialStyle } = useHeaderState(sticky, transparentOnTop, bottomBorder, backgroundStyle, section.instanceId, 124, backgroundColor);
 
     return (
         <>

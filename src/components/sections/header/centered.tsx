@@ -17,9 +17,10 @@ export default function HeaderCentered({ section, siteData }: SectionProps) {
     const bottomBorder = i.bottomBorder === true;
     const transparentOnTop = i.transparentOnTop === true;
     const backgroundStyle = (i.backgroundStyle as string) || 'frosted';
+    const backgroundColor = (i.backgroundColor as string) || 'bg-background';
     const title = siteData.title || 'Portfolio';
 
-    const { headerClass, headerRef, headerInitialStyle } = useHeaderState(sticky, transparentOnTop, bottomBorder, backgroundStyle, section.instanceId, 64);
+    const { headerClass, headerRef, headerInitialStyle } = useHeaderState(sticky, transparentOnTop, bottomBorder, backgroundStyle, section.instanceId, 64, backgroundColor);
 
     return (
         <>

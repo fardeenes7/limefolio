@@ -68,6 +68,7 @@ const header: ComponentSchema = {
         { key: 'compact', label: 'Compact' },
         { key: 'centered', label: 'Centered' },
         { key: 'editorial', label: 'Editorial' },
+        { key: 'floating', label: 'Floating' },
     ],
     defaultVariant: 'default',
     inputs: [
@@ -89,6 +90,13 @@ const header: ComponentSchema = {
                 ],
             },
             default: 'frosted',
+        },
+        {
+            key: 'backgroundColor',
+            label: 'Background Color',
+            type: { kind: 'token', category: 'color' },
+            default: 'bg-background',
+            showIf: { input: 'backgroundStyle', equals: 'solid' },
         },
         {
             key: 'showNav',

@@ -480,7 +480,7 @@ All contributors must follow these rules without exception:
 
 | key | label | isGlobal | repeatable | removable | variants | default variant |
 |---|---|---|---|---|---|---|
-| `header` | Header | ✓ | ✗ | ✗ | default, compact, centered, editorial | default |
+| `header` | Header | ✓ | ✗ | ✗ | default, compact, centered, editorial, floating | default |
 | `footer` | Footer | ✓ | ✗ | ✗ | default, compact, centered | default |
 | `cookie_banner` | Cookie Banner | ✓ | ✗ | ✓ | bar | bar |
 | `hero` | Hero | ✗ | ✗ | ✗ | default, compact, centered, split_section, typing_animation, video_reel | default |

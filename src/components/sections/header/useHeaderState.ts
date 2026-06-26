@@ -1,7 +1,32 @@
 import { useState, useEffect, useLayoutEffect, useContext, useRef } from 'react';
 import { PreviewContext } from '@/components/preview/LivePreviewProvider';
 
-export function useHeaderState(sticky: boolean, transparentOnTop: boolean, bottomBorder: boolean, backgroundStyle: string = 'frosted', instanceId?: string, initialHeight: number = 80) {
+const SUPPORTED_BACKGROUND_CLASSES = new Set([
+    'bg-background',
+    'bg-primary',
+    'bg-secondary',
+    'bg-muted',
+    'bg-accent',
+    'bg-card',
+    'bg-destructive',
+    'bg-popover',
+]);
+
+function toBackgroundClass(backgroundColor: string) {
+    if (SUPPORTED_BACKGROUND_CLASSES.has(backgroundColor)) return backgroundColor;
+    if (backgroundColor.startsWith('--')) return `bg-[var(${backgroundColor})]`;
+    return 'bg-background';
+}
+
+export function useHeaderState(
+    sticky: boolean,
+    transparentOnTop: boolean,
+    bottomBorder: boolean,
+    backgroundStyle: string = 'frosted',
+    instanceId?: string,
+    initialHeight: number = 80,
+    backgroundColor: string = 'bg-background',
+) {
     const { isPreviewMode, selectedInstanceId } = useContext(PreviewContext);
     const [isScrolled, setIsScrolled] = useState(false);
     const headerRef = useRef<HTMLElement>(null);
@@ -57,7 +82,7 @@ export function useHeaderState(sticky: boolean, transparentOnTop: boolean, botto
     if (isTransparent || backgroundStyle === 'transparent') {
         bgClass = 'bg-transparent';
     } else if (backgroundStyle === 'solid') {
-        bgClass = 'bg-background';
+        bgClass = toBackgroundClass(backgroundColor);
     } else {
         bgClass = 'bg-background/80 backdrop-blur-xl';
     }
