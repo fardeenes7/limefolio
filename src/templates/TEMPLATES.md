@@ -480,28 +480,28 @@ All contributors must follow these rules without exception:
 
 | key | label | isGlobal | repeatable | removable | variants | default variant |
 |---|---|---|---|---|---|---|
-| `header` | Header | ✓ | ✗ | ✗ | default, compact, minimal, centered, editorial, floating | default |
-| `footer` | Footer | ✓ | ✗ | ✗ | default, compact, minimal, centered | default |
+| `header` | Header | ✓ | ✗ | ✗ | default, compact, minimal, neobrutalism, centered, editorial, floating | default |
+| `footer` | Footer | ✓ | ✗ | ✗ | default, compact, minimal, neobrutalism, centered | default |
 | `cookie_banner` | Cookie Banner | ✓ | ✗ | ✓ | bar | bar |
-| `hero` | Hero | ✗ | ✗ | ✗ | default, compact, centered, minimal, split_section, typing_animation, video_reel, profile_card | default |
-| `about` | About | ✗ | ✗ | ✓ | default, minimal, director_cut | default |
-| `skills` | Skills | ✗ | ✗ | ✓ | icon_grid, minimal_list, tag_cloud | icon_grid |
-| `featured_projects` | Featured Projects | ✗ | ✓ | ✓ | minimal_list, table, grid, cinematic_grid, spotlight | grid |
+| `hero` | Hero | ✗ | ✗ | ✗ | default, compact, centered, minimal, neobrutalism, neobrutalism_poster, split_section, typing_animation, video_reel, profile_card | default |
+| `about` | About | ✗ | ✗ | ✓ | default, minimal, neobrutalism, director_cut | default |
+| `skills` | Skills | ✗ | ✗ | ✓ | icon_grid, minimal_list, neobrutalism, tag_cloud | icon_grid |
+| `featured_projects` | Featured Projects | ✗ | ✓ | ✓ | minimal_list, neobrutalism, neobrutalism_stack, table, grid, cinematic_grid, spotlight | grid |
 | `media_gallery` | Media Gallery | ✗ | ✓ | ✓ | carousel, grid, masonry, horizontal_scroll | masonry |
-| `latest_blogs` | Latest Blog Posts | ✗ | ✗ | ✓ | minimal_list, grid, editorial | grid |
-| `cta` | Call to Action | ✗ | ✓ | ✓ | default, card, banner, minimal | default |
+| `latest_blogs` | Latest Blog Posts | ✗ | ✗ | ✓ | minimal_list, neobrutalism, neobrutalism_zine, grid, editorial | grid |
+| `cta` | Call to Action | ✗ | ✓ | ✓ | default, card, banner, minimal, neobrutalism | default |
 | `testimonials` | Testimonials | ✗ | ✗ | ✓ | carousel | carousel |
-| `services` | Services | ✗ | ✗ | ✓ | card_grid | card_grid |
-| `experience` | Experience | ✗ | ✗ | ✓ | minimal_list, timeline | timeline |
-| `contact` | Contact | ✗ | ✗ | ✓ | split_with_info, minimal, social_cards | split_with_info |
-| `stats` | Stats | ✗ | ✗ | ✓ | minimal_row, counter_row | counter_row |
+| `services` | Services | ✗ | ✗ | ✓ | card_grid, neobrutalism | card_grid |
+| `experience` | Experience | ✗ | ✗ | ✓ | minimal_list, neobrutalism, timeline | timeline |
+| `contact` | Contact | ✗ | ✗ | ✓ | split_with_info, minimal, neobrutalism, neobrutalism_ticket, social_cards | split_with_info |
+| `stats` | Stats | ✗ | ✗ | ✓ | minimal_row, neobrutalism, counter_row | counter_row |
 | `social_feed` | Social Feed | ✗ | ✓ | ✓ | grid | grid |
 
 ---
 
 ## Template Reference
 
-Registered templates: `default`, `cinematic`, `terminal`, and `minimal`.
+Registered templates: `default`, `cinematic`, `terminal`, `minimal`, and `neobrutalism`.
 
 Current public routes render `landing`, `all_projects`, `project_details`, `all_blog`,
 `blog_details`, and `contact`.
@@ -632,3 +632,70 @@ by restrained engineer portfolios.
 | instanceId | componentKey | defaultVariant | fixed | removable |
 |---|---|---|---|---|
 | `contact_1` | `contact` | minimal | ✓ | ✗ |
+
+### Template: `neobrutalism`
+
+Loud, high-contrast template with hard borders, offset shadows, uppercase display
+typography, and blocky section compositions. Built for creators who want an
+intentionally raw visual language instead of polished glassmorphism.
+
+| Field | Value |
+|---|---|
+| key | `neobrutalism` |
+| label | Neobrutalism |
+| version | 1.0.0 |
+| defaultTheme | `neobrutalism` |
+| defaultFont | `archivo-black` |
+
+#### Layout sections (rendered by `layout.tsx` on every page)
+
+| instanceId | componentKey | defaultVariant | fixed |
+|---|---|---|---|
+| `header_1` | `header` | neobrutalism | ✓ |
+| `footer_1` | `footer` | neobrutalism | ✓ |
+| `cookie_banner_1` | `cookie_banner` | bar | ✗ |
+
+#### Page: `landing` (Landing Page)
+
+| instanceId | componentKey | defaultVariant | fixed | removable |
+|---|---|---|---|---|
+| `hero_1` | `hero` | neobrutalism_poster | ✗ | ✓ |
+| `about_1` | `about` | neobrutalism | ✗ | ✓ |
+| `stats_1` | `stats` | neobrutalism | ✗ | ✓ |
+| `skills_1` | `skills` | neobrutalism | ✗ | ✓ |
+| `featured_projects_1` | `featured_projects` | neobrutalism_stack | ✗ | ✓ |
+| `services_1` | `services` | neobrutalism | ✗ | ✓ |
+| `experience_1` | `experience` | neobrutalism | ✗ | ✓ |
+| `latest_blogs_1` | `latest_blogs` | neobrutalism_zine | ✗ | ✓ |
+| `cta_1` | `cta` | neobrutalism | ✗ | ✓ |
+
+#### Page: `all_projects` (All Projects)
+
+| instanceId | componentKey | defaultVariant | fixed | removable |
+|---|---|---|---|---|
+| `featured_projects_1` | `featured_projects` | neobrutalism_stack | ✓ | ✗ |
+
+#### Page: `project_details` (Project Details)
+
+| instanceId | componentKey | defaultVariant | fixed | removable |
+|---|---|---|---|---|
+| `media_gallery_1` | `media_gallery` | grid | ✗ | — |
+| `cta_1` | `cta` | neobrutalism | ✗ | — |
+
+#### Page: `all_blog` (All Blog Posts)
+
+| instanceId | componentKey | defaultVariant | fixed | removable |
+|---|---|---|---|---|
+| `latest_blogs_1` | `latest_blogs` | neobrutalism_zine | ✓ | ✗ |
+
+#### Page: `blog_details` (Blog Post)
+
+| instanceId | componentKey | defaultVariant | fixed | removable |
+|---|---|---|---|---|
+| `cta_1` | `cta` | neobrutalism | ✗ | — |
+
+#### Page: `contact` (Contact)
+
+| instanceId | componentKey | defaultVariant | fixed | removable |
+|---|---|---|---|---|
+| `contact_1` | `contact` | neobrutalism_ticket | ✓ | ✗ |

@@ -1,0 +1,36 @@
+/* Neobrutalism: loud accent blocks, hard edges, heavy contrast. */
+.neobrutalism {
+    --background: oklch(0.96 0.06 98);
+    --foreground: oklch(0.15 0.02 260);
+    --card: oklch(1 0 0);
+    --card-foreground: oklch(0.15 0.02 260);
+    --popover: oklch(1 0 0);
+    --popover-foreground: oklch(0.15 0.02 260);
+    --primary: oklch(0.83 0.17 86);
+    --primary-foreground: oklch(0.15 0.02 260);
+    --secondary: oklch(0.74 0.15 196);
+    --secondary-foreground: oklch(0.15 0.02 260);
+    --muted: oklch(0.89 0.05 98);
+    --muted-foreground: oklch(0.33 0.03 260);
+    --accent: oklch(0.71 0.20 352);
+    --accent-foreground: oklch(1 0 0);
+    --destructive: oklch(0.62 0.23 28);
+    --destructive-foreground: oklch(1 0 0);
+    --border: oklch(0.15 0.02 260);
+    --input: oklch(0.15 0.02 260);
+    --ring: oklch(0.15 0.02 260);
+    --chart-1: oklch(0.83 0.17 86);
+    --chart-2: oklch(0.71 0.20 352);
+    --chart-3: oklch(0.74 0.15 196);
+    --chart-4: oklch(0.68 0.23 36);
+    --chart-5: oklch(0.62 0.18 300);
+    --sidebar: oklch(1 0 0);
+    --sidebar-foreground: oklch(0.15 0.02 260);
+    --sidebar-primary: oklch(0.83 0.17 86);
+    --sidebar-primary-foreground: oklch(0.15 0.02 260);
+    --sidebar-accent: oklch(0.71 0.20 352);
+    --sidebar-accent-foreground: oklch(1 0 0);
+    --sidebar-border: oklch(0.15 0.02 260);
+    --sidebar-ring: oklch(0.15 0.02 260);
+    --radius: 0rem;
+}

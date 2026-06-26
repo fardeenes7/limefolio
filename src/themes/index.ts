@@ -83,6 +83,14 @@ export const ColorThemes: Record<string, ColorThemeConfig> = {
         hasDark: true,
         category: "minimal",
     },
+    neobrutalism: {
+        name: "Neobrutalism",
+        slug: "neobrutalism",
+        defaultFont: "archivo-black",
+        description: "High-contrast blocks, heavy outlines, and loud accent color",
+        hasDark: false,
+        category: "retro",
+    },
 
     // ── Colorful / Playful ───────────────────────────────────────────────────
     "amethyst-haze": {

@@ -67,6 +67,7 @@ const header: ComponentSchema = {
         { key: 'default', label: 'Default' },
         { key: 'compact', label: 'Compact' },
         { key: 'minimal', label: 'Minimal' },
+        { key: 'neobrutalism', label: 'Neobrutalism' },
         { key: 'centered', label: 'Centered' },
         { key: 'editorial', label: 'Editorial' },
         { key: 'floating', label: 'Floating' },
@@ -174,6 +175,7 @@ const footer: ComponentSchema = {
         { key: 'default', label: 'Default' },
         { key: 'compact', label: 'Compact' },
         { key: 'minimal', label: 'Minimal' },
+        { key: 'neobrutalism', label: 'Neobrutalism' },
         { key: 'centered', label: 'Centered' },
     ],
     defaultVariant: 'default',
@@ -321,6 +323,8 @@ const hero: ComponentSchema = {
         { key: 'compact', label: 'Compact' },
         { key: 'centered', label: 'Centered' },
         { key: 'minimal', label: 'Minimal' },
+        { key: 'neobrutalism', label: 'Neobrutalism' },
+        { key: 'neobrutalism_poster', label: 'Neobrutalism Poster' },
         { key: 'split_section', label: 'Split Section' },
         { key: 'typing_animation', label: 'Typing Animation' },
         { key: 'video_reel', label: 'Video Reel' },
@@ -503,6 +507,7 @@ const about: ComponentSchema = {
     variants: [
         { key: 'default', label: 'Default' },
         { key: 'minimal', label: 'Minimal' },
+        { key: 'neobrutalism', label: 'Neobrutalism' },
         { key: 'director_cut', label: 'Director Cut' },
     ],
     defaultVariant: 'default',
@@ -568,6 +573,7 @@ const skills: ComponentSchema = {
     variants: [
         { key: 'icon_grid', label: 'Icon Grid' },
         { key: 'minimal_list', label: 'Minimal List' },
+        { key: 'neobrutalism', label: 'Neobrutalism' },
         { key: 'tag_cloud', label: 'Tag Cloud' },
     ],
     defaultVariant: 'icon_grid',
@@ -614,6 +620,8 @@ const featured_projects: ComponentSchema = {
     removable: true,
     variants: [
         { key: 'minimal_list', label: 'Minimal List' },
+        { key: 'neobrutalism', label: 'Neobrutalism' },
+        { key: 'neobrutalism_stack', label: 'Neobrutalism Stack' },
         { key: 'table', label: 'Table' },
         { key: 'grid', label: 'Grid' },
         { key: 'cinematic_grid', label: 'Cinematic Grid' },
@@ -747,6 +755,8 @@ const latest_blogs: ComponentSchema = {
     removable: true,
     variants: [
         { key: 'minimal_list', label: 'Minimal List' },
+        { key: 'neobrutalism', label: 'Neobrutalism' },
+        { key: 'neobrutalism_zine', label: 'Neobrutalism Zine' },
         { key: 'grid', label: 'Grid' },
         { key: 'editorial', label: 'Editorial' },
     ],
@@ -824,6 +834,7 @@ const cta: ComponentSchema = {
         { key: 'card', label: 'Card' },
         { key: 'banner', label: 'Banner' },
         { key: 'minimal', label: 'Minimal' },
+        { key: 'neobrutalism', label: 'Neobrutalism' },
     ],
     defaultVariant: 'default',
     inputs: [
@@ -936,6 +947,7 @@ const services: ComponentSchema = {
     removable: true,
     variants: [
         { key: 'card_grid', label: 'Card Grid' },
+        { key: 'neobrutalism', label: 'Neobrutalism' },
     ],
     defaultVariant: 'card_grid',
     inputs: [
@@ -982,6 +994,7 @@ const experience: ComponentSchema = {
     removable: true,
     variants: [
         { key: 'minimal_list', label: 'Minimal List' },
+        { key: 'neobrutalism', label: 'Neobrutalism' },
         { key: 'timeline', label: 'Timeline' },
     ],
     defaultVariant: 'timeline',
@@ -1041,6 +1054,8 @@ const contact: ComponentSchema = {
     variants: [
         { key: 'split_with_info', label: 'Split with Info' },
         { key: 'minimal', label: 'Minimal' },
+        { key: 'neobrutalism', label: 'Neobrutalism' },
+        { key: 'neobrutalism_ticket', label: 'Neobrutalism Ticket' },
         { key: 'social_cards', label: 'Social Cards' },
     ],
     defaultVariant: 'split_with_info',
@@ -1112,6 +1127,7 @@ const stats: ComponentSchema = {
     removable: true,
     variants: [
         { key: 'minimal_row', label: 'Minimal Row' },
+        { key: 'neobrutalism', label: 'Neobrutalism' },
         { key: 'counter_row', label: 'Counter Row' },
     ],
     defaultVariant: 'counter_row',

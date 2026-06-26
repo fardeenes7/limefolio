@@ -38,6 +38,7 @@ import {
     Mali,
     Bebas_Neue,
     Comfortaa,
+    Archivo_Black,
 } from "next/font/google";
 
 /**
@@ -62,6 +63,8 @@ const mali = Mali({ subsets: ["latin"], weight: ["400", "500", "600"], variable:
 const bebasNeue = Bebas_Neue({ subsets: ["latin"], weight: ["400"], variable: "--font-bebas-neue" });
 
 const comfortaa = Comfortaa({ subsets: ["latin"], weight: ["300", "400", "500", "600", "700"], variable: "--font-comfortaa" });
+
+const archivoBlack = Archivo_Black({ subsets: ["latin"], weight: ["400"], variable: "--font-archivo-black" });
 
 const silkscreen = Silkscreen({ subsets: ["latin"], weight: ["400"], variable: "--font-silkscreen" });
 
@@ -244,6 +247,13 @@ export const Fonts: Record<string, FontConfig> = {
         variable: "--font-comfortaa",
         font: comfortaa,
         category: "sans",
+    },
+    "archivo-black": {
+        name: "Archivo Black",
+        slug: "archivo-black",
+        variable: "--font-archivo-black",
+        font: archivoBlack,
+        category: "display",
     },
     "silkscreen": {
         name: "Silkscreen",

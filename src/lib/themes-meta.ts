@@ -95,6 +95,17 @@ export const THEMES_META: ThemeMeta[] = [
         suggestedPrimaryColors: ["#000000", "#2563eb", "#16a34a", "#dc2626"],
         swatches: ["oklch(1 0 0)", "oklch(0.205 0 0)", "oklch(0.97 0 0)"]
     },
+    {
+        name: "Neobrutalism",
+        slug: "neobrutalism",
+        defaultFont: "archivo-black",
+        radius: 0,
+        description: "High-contrast blocks, heavy outlines, and loud accent color",
+        category: "retro",
+        hasDark: false,
+        suggestedPrimaryColors: ["oklch(0.83 0.17 86)", "oklch(0.71 0.20 352)", "oklch(0.74 0.15 196)", "oklch(0.68 0.23 36)"],
+        swatches: ["oklch(0.96 0.06 98)", "oklch(0.83 0.17 86)", "oklch(0.71 0.20 352)"]
+    },
    
     // ── Minimal / Professional ────────────────────────────────────────────────
     {
@@ -486,6 +497,12 @@ export interface FontMeta {
 }
 
 export const FONTS_META: FontMeta[] = [
+    {
+        name: "Archivo Black",
+        slug: "archivo-black",
+        category: "display",
+        previewStack: "'Archivo Black', Impact, sans-serif"
+    },
     {
         name: "Gabriela",
         slug: "gabriela",

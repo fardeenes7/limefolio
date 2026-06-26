@@ -51,8 +51,8 @@
  * freely change them afterward. They are NOT locked to the template.
  */
 
-import type { Template, SectionInstance } from './types';
-import { ComponentRegistry } from './components';
+import type { Template, SectionInstance } from "./types";
+import { ComponentRegistry } from "./components";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Helper to expand 'all' allowedVariants for a given component
@@ -68,7 +68,7 @@ function allVariants(componentKey: string): string[] {
     if (!schema) {
         throw new Error(
             `[TemplateRegistry] Unknown componentKey "${componentKey}". ` +
-            `Ensure it is registered in ComponentRegistry before referencing it here.`
+                `Ensure it is registered in ComponentRegistry before referencing it here.`
         );
     }
     return schema.variants.map((v) => v.key);
@@ -86,37 +86,37 @@ function allVariants(componentKey: string): string[] {
  * All optional sections can be removed by the user; only the hero is pinned.
  */
 const defaultTemplate: Template = {
-    key: 'default',
-    label: 'Default',
-    version: '1.0.0',
+    key: "default",
+    label: "Default",
+    version: "1.0.0",
     // "default" exists in ColorThemes (src/themes/index.ts) as a neutral light theme.
-    defaultTheme: 'default',
+    defaultTheme: "default",
     // "inter" is the first sans-serif font in Fonts (src/lib/fonts.ts) and the fallback.
-    defaultFont: 'inter',
+    defaultFont: "inter",
 
     // ── Layout sections (rendered by layout.tsx on every page) ─────────────────
     layout: [
         {
-            instanceId: 'header_1',
-            componentKey: 'header',
-            allowedVariants: allVariants('header'),
-            defaultVariant: 'default',
-            fixed: true,
+            instanceId: "header_1",
+            componentKey: "header",
+            allowedVariants: allVariants("header"),
+            defaultVariant: "default",
+            fixed: true
         },
         {
-            instanceId: 'footer_1',
-            componentKey: 'footer',
-            allowedVariants: allVariants('footer'),
-            defaultVariant: 'default',
-            fixed: true,
+            instanceId: "footer_1",
+            componentKey: "footer",
+            allowedVariants: allVariants("footer"),
+            defaultVariant: "default",
+            fixed: true
         },
         {
-            instanceId: 'cookie_banner_1',
-            componentKey: 'cookie_banner',
-            allowedVariants: allVariants('cookie_banner'),
-            defaultVariant: 'bar',
-            fixed: false,
-        },
+            instanceId: "cookie_banner_1",
+            componentKey: "cookie_banner",
+            allowedVariants: allVariants("cookie_banner"),
+            defaultVariant: "bar",
+            fixed: false
+        }
     ] satisfies SectionInstance[],
 
     // ── Pages ──────────────────────────────────────────────────────────────────
@@ -124,94 +124,94 @@ const defaultTemplate: Template = {
         /**
          * Landing page — the portfolio home page.
          *
-         * All sections can be removed, reordered, or supplemented with user 
+         * All sections can be removed, reordered, or supplemented with user
          * additions (for repeatable components).
          */
         {
-            key: 'landing',
-            label: 'Landing Page',
+            key: "landing",
+            label: "Landing Page",
             sections: [
                 {
-                    instanceId: 'hero_1',
-                    componentKey: 'hero',
-                    allowedVariants: allVariants('hero'),
-                    defaultVariant: 'default',
+                    instanceId: "hero_1",
+                    componentKey: "hero",
+                    allowedVariants: allVariants("hero"),
+                    defaultVariant: "default",
                     fixed: false,
-                    removable: true,
+                    removable: true
                 },
                 {
-                    instanceId: 'about_1',
-                    componentKey: 'about',
-                    allowedVariants: allVariants('about'),
-                    defaultVariant: 'default',
+                    instanceId: "about_1",
+                    componentKey: "about",
+                    allowedVariants: allVariants("about"),
+                    defaultVariant: "default",
                     fixed: false,
-                    removable: true,
+                    removable: true
                 },
                 {
-                    instanceId: 'stats_1',
-                    componentKey: 'stats',
-                    allowedVariants: allVariants('stats'),
-                    defaultVariant: 'counter_row',
+                    instanceId: "stats_1",
+                    componentKey: "stats",
+                    allowedVariants: allVariants("stats"),
+                    defaultVariant: "counter_row",
                     fixed: false,
-                    removable: true,
+                    removable: true
                 },
                 {
-                    instanceId: 'skills_1',
-                    componentKey: 'skills',
-                    allowedVariants: allVariants('skills'),
-                    defaultVariant: 'icon_grid',
+                    instanceId: "skills_1",
+                    componentKey: "skills",
+                    allowedVariants: allVariants("skills"),
+                    defaultVariant: "icon_grid",
                     fixed: false,
-                    removable: true,
+                    removable: true
                 },
                 {
-                    instanceId: 'featured_projects_1',
-                    componentKey: 'featured_projects',
-                    allowedVariants: allVariants('featured_projects'),
-                    defaultVariant: 'grid',
+                    instanceId: "featured_projects_1",
+                    componentKey: "featured_projects",
+                    allowedVariants: allVariants("featured_projects"),
+                    defaultVariant: "grid",
                     fixed: false,
-                    removable: true,
+                    removable: true
                 },
                 {
-                    instanceId: 'media_gallery_1',
-                    componentKey: 'media_gallery',
-                    allowedVariants: allVariants('media_gallery'),
-                    defaultVariant: 'masonry',
+                    instanceId: "media_gallery_1",
+                    componentKey: "media_gallery",
+                    allowedVariants: allVariants("media_gallery"),
+                    defaultVariant: "masonry",
                     fixed: false,
-                    removable: true,
+                    removable: true
                 },
                 {
-                    instanceId: 'testimonials_1',
-                    componentKey: 'testimonials',
-                    allowedVariants: allVariants('testimonials'),
-                    defaultVariant: 'carousel',
+                    instanceId: "testimonials_1",
+                    componentKey: "testimonials",
+                    allowedVariants: allVariants("testimonials"),
+                    defaultVariant: "carousel",
                     fixed: false,
-                    removable: true,
+                    removable: true
                 },
                 {
-                    instanceId: 'services_1',
-                    componentKey: 'services',
-                    allowedVariants: allVariants('services'),
-                    defaultVariant: 'card_grid',
+                    instanceId: "services_1",
+                    componentKey: "services",
+                    allowedVariants: allVariants("services"),
+                    defaultVariant: "card_grid",
                     fixed: false,
-                    removable: true,
+                    removable: true
                 },
                 {
-                    instanceId: 'latest_blogs_1',
-                    componentKey: 'latest_blogs',
-                    allowedVariants: allVariants('latest_blogs'),
-                    defaultVariant: 'grid',
+                    instanceId: "latest_blogs_1",
+                    componentKey: "latest_blogs",
+                    allowedVariants: allVariants("latest_blogs"),
+                    defaultVariant: "grid",
                     fixed: false,
-                    removable: true,
+                    removable: true
                 },
                 {
-                    instanceId: 'cta_1',
-                    componentKey: 'cta',
-                    allowedVariants: allVariants('cta'),
-                    defaultVariant: 'default',
+                    instanceId: "cta_1",
+                    componentKey: "cta",
+                    allowedVariants: allVariants("cta"),
+                    defaultVariant: "default",
                     fixed: false,
-                    removable: true,
-                },
-            ],
+                    removable: true
+                }
+            ]
         },
 
         /**
@@ -220,17 +220,17 @@ const defaultTemplate: Template = {
          * solely to display projects — removing it would leave the page empty.
          */
         {
-            key: 'all_projects',
-            label: 'All Projects',
+            key: "all_projects",
+            label: "All Projects",
             sections: [
                 {
-                    instanceId: 'featured_projects_1',
-                    componentKey: 'featured_projects',
-                    allowedVariants: allVariants('featured_projects'),
-                    defaultVariant: 'grid',
-                    fixed: true,
-                },
-            ],
+                    instanceId: "featured_projects_1",
+                    componentKey: "featured_projects",
+                    allowedVariants: allVariants("featured_projects"),
+                    defaultVariant: "grid",
+                    fixed: true
+                }
+            ]
         },
 
         /**
@@ -239,24 +239,24 @@ const defaultTemplate: Template = {
          * data (title, description, links) is always rendered by the page itself.
          */
         {
-            key: 'project_details',
-            label: 'Project Details',
+            key: "project_details",
+            label: "Project Details",
             sections: [
                 {
-                    instanceId: 'media_gallery_1',
-                    componentKey: 'media_gallery',
-                    allowedVariants: allVariants('media_gallery'),
-                    defaultVariant: 'carousel',
-                    fixed: false,
+                    instanceId: "media_gallery_1",
+                    componentKey: "media_gallery",
+                    allowedVariants: allVariants("media_gallery"),
+                    defaultVariant: "carousel",
+                    fixed: false
                 },
                 {
-                    instanceId: 'cta_1',
-                    componentKey: 'cta',
-                    allowedVariants: allVariants('cta'),
-                    defaultVariant: 'card',
-                    fixed: false,
-                },
-            ],
+                    instanceId: "cta_1",
+                    componentKey: "cta",
+                    allowedVariants: allVariants("cta"),
+                    defaultVariant: "card",
+                    fixed: false
+                }
+            ]
         },
 
         /**
@@ -265,22 +265,22 @@ const defaultTemplate: Template = {
          * display posts.
          */
         {
-            key: 'all_blog',
-            label: 'All Blog Posts',
+            key: "all_blog",
+            label: "All Blog Posts",
             sections: [
                 {
-                    instanceId: 'latest_blogs_1',
-                    componentKey: 'latest_blogs',
-                    allowedVariants: allVariants('latest_blogs'),
-                    defaultVariant: 'grid',
+                    instanceId: "latest_blogs_1",
+                    componentKey: "latest_blogs",
+                    allowedVariants: allVariants("latest_blogs"),
+                    defaultVariant: "grid",
                     inputDefaults: {
-                        sectionTitle: 'All Posts',
-                        maxItems: 'all',
-                        showViewAll: false,
+                        sectionTitle: "All Posts",
+                        maxItems: "all",
+                        showViewAll: false
                     },
-                    fixed: true,
-                },
-            ],
+                    fixed: true
+                }
+            ]
         },
 
         /**
@@ -289,17 +289,17 @@ const defaultTemplate: Template = {
          * It's removable for users who prefer a cleaner reading experience.
          */
         {
-            key: 'blog_details',
-            label: 'Blog Post',
+            key: "blog_details",
+            label: "Blog Post",
             sections: [
                 {
-                    instanceId: 'cta_1',
-                    componentKey: 'cta',
-                    allowedVariants: allVariants('cta'),
-                    defaultVariant: 'minimal',
-                    fixed: false,
-                },
-            ],
+                    instanceId: "cta_1",
+                    componentKey: "cta",
+                    allowedVariants: allVariants("cta"),
+                    defaultVariant: "minimal",
+                    fixed: false
+                }
+            ]
         },
 
         /**
@@ -308,193 +308,193 @@ const defaultTemplate: Template = {
          * form or info is meaningless.
          */
         {
-            key: 'contact',
-            label: 'Contact',
+            key: "contact",
+            label: "Contact",
             sections: [
                 {
-                    instanceId: 'contact_1',
-                    componentKey: 'contact',
-                    allowedVariants: allVariants('contact'),
-                    defaultVariant: 'split_with_info',
-                    fixed: true,
-                },
-            ],
-        },
-    ],
+                    instanceId: "contact_1",
+                    componentKey: "contact",
+                    allowedVariants: allVariants("contact"),
+                    defaultVariant: "split_with_info",
+                    fixed: true
+                }
+            ]
+        }
+    ]
 };
 
 /**
  * "Cinematic" template — tailored for video editors and filmmakers.
  *
- * Uses GSAP animations for a premium screening room feel. Features large video 
+ * Uses GSAP animations for a premium screening room feel. Features large video
  * thumbnails, horizontal scroll galleries, and text reveals.
  */
 const cinematicTemplate: Template = {
-    key: 'cinematic',
-    label: 'Cinematic',
-    version: '1.0.0',
-    defaultTheme: 'cinematic-dark',
-    defaultFont: 'space-grotesk',
+    key: "cinematic",
+    label: "Cinematic",
+    version: "1.0.0",
+    defaultTheme: "cinematic-dark",
+    defaultFont: "space-grotesk",
 
     // ── Layout sections (rendered by layout.tsx on every page) ─────────────────
     layout: [
         {
-            instanceId: 'header_1',
-            componentKey: 'header',
-            allowedVariants: allVariants('header'),
-            defaultVariant: 'default',
-            fixed: true,
+            instanceId: "header_1",
+            componentKey: "header",
+            allowedVariants: allVariants("header"),
+            defaultVariant: "default",
+            fixed: true
         },
         {
-            instanceId: 'footer_1',
-            componentKey: 'footer',
-            allowedVariants: allVariants('footer'),
-            defaultVariant: 'default',
-            fixed: true,
+            instanceId: "footer_1",
+            componentKey: "footer",
+            allowedVariants: allVariants("footer"),
+            defaultVariant: "default",
+            fixed: true
         },
         {
-            instanceId: 'cookie_banner_1',
-            componentKey: 'cookie_banner',
-            allowedVariants: allVariants('cookie_banner'),
-            defaultVariant: 'bar',
-            fixed: false,
-        },
+            instanceId: "cookie_banner_1",
+            componentKey: "cookie_banner",
+            allowedVariants: allVariants("cookie_banner"),
+            defaultVariant: "bar",
+            fixed: false
+        }
     ] satisfies SectionInstance[],
 
     // ── Pages ──────────────────────────────────────────────────────────────────
     pages: [
         {
-            key: 'landing',
-            label: 'Landing Page',
+            key: "landing",
+            label: "Landing Page",
             sections: [
                 {
-                    instanceId: 'hero_1',
-                    componentKey: 'hero',
-                    allowedVariants: allVariants('hero'),
-                    defaultVariant: 'video_reel',
+                    instanceId: "hero_1",
+                    componentKey: "hero",
+                    allowedVariants: allVariants("hero"),
+                    defaultVariant: "video_reel",
                     fixed: false,
-                    removable: true,
+                    removable: true
                 },
                 {
-                    instanceId: 'about_1',
-                    componentKey: 'about',
-                    allowedVariants: allVariants('about'),
-                    defaultVariant: 'director_cut',
+                    instanceId: "about_1",
+                    componentKey: "about",
+                    allowedVariants: allVariants("about"),
+                    defaultVariant: "director_cut",
                     fixed: false,
-                    removable: true,
+                    removable: true
                 },
                 {
-                    instanceId: 'stats_1',
-                    componentKey: 'stats',
-                    allowedVariants: allVariants('stats'),
-                    defaultVariant: 'counter_row',
+                    instanceId: "stats_1",
+                    componentKey: "stats",
+                    allowedVariants: allVariants("stats"),
+                    defaultVariant: "counter_row",
                     fixed: false,
-                    removable: true,
+                    removable: true
                 },
                 {
-                    instanceId: 'featured_projects_1',
-                    componentKey: 'featured_projects',
-                    allowedVariants: allVariants('featured_projects'),
-                    defaultVariant: 'cinematic_grid',
+                    instanceId: "featured_projects_1",
+                    componentKey: "featured_projects",
+                    allowedVariants: allVariants("featured_projects"),
+                    defaultVariant: "cinematic_grid",
                     fixed: false,
-                    removable: true,
+                    removable: true
                 },
                 {
-                    instanceId: 'media_gallery_1',
-                    componentKey: 'media_gallery',
-                    allowedVariants: allVariants('media_gallery'),
-                    defaultVariant: 'horizontal_scroll',
+                    instanceId: "media_gallery_1",
+                    componentKey: "media_gallery",
+                    allowedVariants: allVariants("media_gallery"),
+                    defaultVariant: "horizontal_scroll",
                     fixed: false,
-                    removable: true,
+                    removable: true
                 },
                 {
-                    instanceId: 'cta_1',
-                    componentKey: 'cta',
-                    allowedVariants: allVariants('cta'),
-                    defaultVariant: 'banner',
+                    instanceId: "cta_1",
+                    componentKey: "cta",
+                    allowedVariants: allVariants("cta"),
+                    defaultVariant: "banner",
                     fixed: false,
-                    removable: true,
-                },
-            ],
+                    removable: true
+                }
+            ]
         },
         {
-            key: 'all_projects',
-            label: 'All Projects',
+            key: "all_projects",
+            label: "All Projects",
             sections: [
                 {
-                    instanceId: 'featured_projects_1',
-                    componentKey: 'featured_projects',
-                    allowedVariants: allVariants('featured_projects'),
-                    defaultVariant: 'cinematic_grid',
-                    fixed: true,
-                },
-            ],
+                    instanceId: "featured_projects_1",
+                    componentKey: "featured_projects",
+                    allowedVariants: allVariants("featured_projects"),
+                    defaultVariant: "cinematic_grid",
+                    fixed: true
+                }
+            ]
         },
         {
-            key: 'project_details',
-            label: 'Project Details',
+            key: "project_details",
+            label: "Project Details",
             sections: [
                 {
-                    instanceId: 'media_gallery_1',
-                    componentKey: 'media_gallery',
-                    allowedVariants: allVariants('media_gallery'),
-                    defaultVariant: 'horizontal_scroll',
-                    fixed: false,
+                    instanceId: "media_gallery_1",
+                    componentKey: "media_gallery",
+                    allowedVariants: allVariants("media_gallery"),
+                    defaultVariant: "horizontal_scroll",
+                    fixed: false
                 },
                 {
-                    instanceId: 'cta_1',
-                    componentKey: 'cta',
-                    allowedVariants: allVariants('cta'),
-                    defaultVariant: 'card',
-                    fixed: false,
-                },
-            ],
+                    instanceId: "cta_1",
+                    componentKey: "cta",
+                    allowedVariants: allVariants("cta"),
+                    defaultVariant: "card",
+                    fixed: false
+                }
+            ]
         },
         {
-            key: 'all_blog',
-            label: 'All Blog Posts',
+            key: "all_blog",
+            label: "All Blog Posts",
             sections: [
                 {
-                    instanceId: 'latest_blogs_1',
-                    componentKey: 'latest_blogs',
-                    allowedVariants: allVariants('latest_blogs'),
-                    defaultVariant: 'grid',
+                    instanceId: "latest_blogs_1",
+                    componentKey: "latest_blogs",
+                    allowedVariants: allVariants("latest_blogs"),
+                    defaultVariant: "grid",
                     inputDefaults: {
-                        sectionTitle: 'All Posts',
-                        maxItems: 'all',
-                        showViewAll: false,
+                        sectionTitle: "All Posts",
+                        maxItems: "all",
+                        showViewAll: false
                     },
-                    fixed: true,
-                },
-            ],
+                    fixed: true
+                }
+            ]
         },
         {
-            key: 'blog_details',
-            label: 'Blog Post',
+            key: "blog_details",
+            label: "Blog Post",
             sections: [
                 {
-                    instanceId: 'cta_1',
-                    componentKey: 'cta',
-                    allowedVariants: allVariants('cta'),
-                    defaultVariant: 'minimal',
-                    fixed: false,
-                },
-            ],
+                    instanceId: "cta_1",
+                    componentKey: "cta",
+                    allowedVariants: allVariants("cta"),
+                    defaultVariant: "minimal",
+                    fixed: false
+                }
+            ]
         },
         {
-            key: 'contact',
-            label: 'Contact',
+            key: "contact",
+            label: "Contact",
             sections: [
                 {
-                    instanceId: 'contact_1',
-                    componentKey: 'contact',
-                    allowedVariants: allVariants('contact'),
-                    defaultVariant: 'split_with_info',
-                    fixed: true,
-                },
-            ],
-        },
-    ],
+                    instanceId: "contact_1",
+                    componentKey: "contact",
+                    allowedVariants: allVariants("contact"),
+                    defaultVariant: "split_with_info",
+                    fixed: true
+                }
+            ]
+        }
+    ]
 };
 
 /**
@@ -504,169 +504,169 @@ const cinematicTemplate: Template = {
  * a command-line interface.
  */
 const terminalTemplate: Template = {
-    key: 'terminal',
-    label: 'Terminal',
-    version: '1.0.0',
-    defaultTheme: 'darkmatter',
-    defaultFont: 'fira-code',
+    key: "terminal",
+    label: "Terminal",
+    version: "1.0.0",
+    defaultTheme: "darkmatter",
+    defaultFont: "fira-code",
 
     layout: [
         {
-            instanceId: 'header_1',
-            componentKey: 'header',
-            allowedVariants: allVariants('header'),
-            defaultVariant: 'compact',
-            fixed: true,
+            instanceId: "header_1",
+            componentKey: "header",
+            allowedVariants: allVariants("header"),
+            defaultVariant: "compact",
+            fixed: true
         },
         {
-            instanceId: 'footer_1',
-            componentKey: 'footer',
-            allowedVariants: allVariants('footer'),
-            defaultVariant: 'compact',
-            fixed: true,
+            instanceId: "footer_1",
+            componentKey: "footer",
+            allowedVariants: allVariants("footer"),
+            defaultVariant: "compact",
+            fixed: true
         },
         {
-            instanceId: 'cookie_banner_1',
-            componentKey: 'cookie_banner',
-            allowedVariants: allVariants('cookie_banner'),
-            defaultVariant: 'bar',
-            fixed: false,
-        },
+            instanceId: "cookie_banner_1",
+            componentKey: "cookie_banner",
+            allowedVariants: allVariants("cookie_banner"),
+            defaultVariant: "bar",
+            fixed: false
+        }
     ] satisfies SectionInstance[],
 
     pages: [
         {
-            key: 'landing',
-            label: 'Landing Page',
+            key: "landing",
+            label: "Landing Page",
             sections: [
                 {
-                    instanceId: 'hero_1',
-                    componentKey: 'hero',
-                    allowedVariants: allVariants('hero'),
-                    defaultVariant: 'typing_animation',
+                    instanceId: "hero_1",
+                    componentKey: "hero",
+                    allowedVariants: allVariants("hero"),
+                    defaultVariant: "typing_animation",
                     fixed: false,
-                    removable: true,
+                    removable: true
                 },
                 {
-                    instanceId: 'about_1',
-                    componentKey: 'about',
-                    allowedVariants: allVariants('about'),
-                    defaultVariant: 'default',
+                    instanceId: "about_1",
+                    componentKey: "about",
+                    allowedVariants: allVariants("about"),
+                    defaultVariant: "default",
                     fixed: false,
-                    removable: true,
+                    removable: true
                 },
                 {
-                    instanceId: 'skills_1',
-                    componentKey: 'skills',
-                    allowedVariants: allVariants('skills'),
-                    defaultVariant: 'tag_cloud',
+                    instanceId: "skills_1",
+                    componentKey: "skills",
+                    allowedVariants: allVariants("skills"),
+                    defaultVariant: "tag_cloud",
                     fixed: false,
-                    removable: true,
+                    removable: true
                 },
                 {
-                    instanceId: 'featured_projects_1',
-                    componentKey: 'featured_projects',
-                    allowedVariants: allVariants('featured_projects'),
-                    defaultVariant: 'table',
+                    instanceId: "featured_projects_1",
+                    componentKey: "featured_projects",
+                    allowedVariants: allVariants("featured_projects"),
+                    defaultVariant: "table",
                     fixed: false,
-                    removable: true,
+                    removable: true
                 },
                 {
-                    instanceId: 'latest_blogs_1',
-                    componentKey: 'latest_blogs',
-                    allowedVariants: allVariants('latest_blogs'),
-                    defaultVariant: 'grid',
+                    instanceId: "latest_blogs_1",
+                    componentKey: "latest_blogs",
+                    allowedVariants: allVariants("latest_blogs"),
+                    defaultVariant: "grid",
                     fixed: false,
-                    removable: true,
+                    removable: true
                 },
                 {
-                    instanceId: 'cta_1',
-                    componentKey: 'cta',
-                    allowedVariants: allVariants('cta'),
-                    defaultVariant: 'minimal',
+                    instanceId: "cta_1",
+                    componentKey: "cta",
+                    allowedVariants: allVariants("cta"),
+                    defaultVariant: "minimal",
                     fixed: false,
-                    removable: true,
-                },
-            ],
+                    removable: true
+                }
+            ]
         },
         {
-            key: 'all_projects',
-            label: 'All Projects',
+            key: "all_projects",
+            label: "All Projects",
             sections: [
                 {
-                    instanceId: 'featured_projects_1',
-                    componentKey: 'featured_projects',
-                    allowedVariants: allVariants('featured_projects'),
-                    defaultVariant: 'table',
-                    fixed: true,
-                },
-            ],
+                    instanceId: "featured_projects_1",
+                    componentKey: "featured_projects",
+                    allowedVariants: allVariants("featured_projects"),
+                    defaultVariant: "table",
+                    fixed: true
+                }
+            ]
         },
         {
-            key: 'project_details',
-            label: 'Project Details',
+            key: "project_details",
+            label: "Project Details",
             sections: [
                 {
-                    instanceId: 'media_gallery_1',
-                    componentKey: 'media_gallery',
-                    allowedVariants: allVariants('media_gallery'),
-                    defaultVariant: 'grid',
-                    fixed: false,
+                    instanceId: "media_gallery_1",
+                    componentKey: "media_gallery",
+                    allowedVariants: allVariants("media_gallery"),
+                    defaultVariant: "grid",
+                    fixed: false
                 },
                 {
-                    instanceId: 'cta_1',
-                    componentKey: 'cta',
-                    allowedVariants: allVariants('cta'),
-                    defaultVariant: 'minimal',
-                    fixed: false,
-                },
-            ],
+                    instanceId: "cta_1",
+                    componentKey: "cta",
+                    allowedVariants: allVariants("cta"),
+                    defaultVariant: "minimal",
+                    fixed: false
+                }
+            ]
         },
         {
-            key: 'all_blog',
-            label: 'All Blog Posts',
+            key: "all_blog",
+            label: "All Blog Posts",
             sections: [
                 {
-                    instanceId: 'latest_blogs_1',
-                    componentKey: 'latest_blogs',
-                    allowedVariants: allVariants('latest_blogs'),
-                    defaultVariant: 'grid',
+                    instanceId: "latest_blogs_1",
+                    componentKey: "latest_blogs",
+                    allowedVariants: allVariants("latest_blogs"),
+                    defaultVariant: "grid",
                     inputDefaults: {
-                        sectionTitle: 'All Posts',
-                        maxItems: 'all',
-                        showViewAll: false,
+                        sectionTitle: "All Posts",
+                        maxItems: "all",
+                        showViewAll: false
                     },
-                    fixed: true,
-                },
-            ],
+                    fixed: true
+                }
+            ]
         },
         {
-            key: 'blog_details',
-            label: 'Blog Post',
+            key: "blog_details",
+            label: "Blog Post",
             sections: [
                 {
-                    instanceId: 'cta_1',
-                    componentKey: 'cta',
-                    allowedVariants: allVariants('cta'),
-                    defaultVariant: 'minimal',
-                    fixed: false,
-                },
-            ],
+                    instanceId: "cta_1",
+                    componentKey: "cta",
+                    allowedVariants: allVariants("cta"),
+                    defaultVariant: "minimal",
+                    fixed: false
+                }
+            ]
         },
         {
-            key: 'contact',
-            label: 'Contact',
+            key: "contact",
+            label: "Contact",
             sections: [
                 {
-                    instanceId: 'contact_1',
-                    componentKey: 'contact',
-                    allowedVariants: allVariants('contact'),
-                    defaultVariant: 'minimal',
-                    fixed: true,
-                },
-            ],
-        },
-    ],
+                    instanceId: "contact_1",
+                    componentKey: "contact",
+                    allowedVariants: allVariants("contact"),
+                    defaultVariant: "minimal",
+                    fixed: true
+                }
+            ]
+        }
+    ]
 };
 
 /**
@@ -677,221 +677,497 @@ const terminalTemplate: Template = {
  * decorative cards unless the underlying content needs structure.
  */
 const minimalTemplate: Template = {
-    key: 'minimal',
-    label: 'Minimal',
-    version: '1.0.0',
-    defaultTheme: 'default',
-    defaultFont: 'geist-sans',
+    key: "minimal",
+    label: "Minimal",
+    version: "1.0.0",
+    defaultTheme: "default",
+    defaultFont: "geist-sans",
 
     layout: [
         {
-            instanceId: 'header_1',
-            componentKey: 'header',
-            allowedVariants: ['minimal'],
-            defaultVariant: 'minimal',
+            instanceId: "header_1",
+            componentKey: "header",
+            allowedVariants: ["minimal"],
+            defaultVariant: "minimal",
             inputDefaults: {
                 sticky: false,
-                backgroundStyle: 'transparent',
+                backgroundStyle: "transparent",
                 ctaButton: false,
-                bottomBorder: false,
+                bottomBorder: false
             },
-            fixed: true,
+            fixed: true
         },
         {
-            instanceId: 'footer_1',
-            componentKey: 'footer',
-            allowedVariants: ['minimal'],
-            defaultVariant: 'minimal',
+            instanceId: "footer_1",
+            componentKey: "footer",
+            allowedVariants: ["minimal"],
+            defaultVariant: "minimal",
             inputDefaults: {
                 showBackToTop: false,
                 showLimefolioAttribution: false,
-                linkDensity: 'compact',
+                linkDensity: "compact"
             },
-            fixed: true,
+            fixed: true
         },
         {
-            instanceId: 'cookie_banner_1',
-            componentKey: 'cookie_banner',
-            allowedVariants: allVariants('cookie_banner'),
-            defaultVariant: 'bar',
-            fixed: false,
-        },
+            instanceId: "cookie_banner_1",
+            componentKey: "cookie_banner",
+            allowedVariants: allVariants("cookie_banner"),
+            defaultVariant: "bar",
+            fixed: false
+        }
     ] satisfies SectionInstance[],
 
     pages: [
         {
-            key: 'landing',
-            label: 'Landing Page',
+            key: "landing",
+            label: "Landing Page",
             sections: [
                 {
-                    instanceId: 'hero_1',
-                    componentKey: 'hero',
-                    allowedVariants: ['minimal'],
-                    defaultVariant: 'minimal',
+                    instanceId: "hero_1",
+                    componentKey: "hero",
+                    allowedVariants: ["minimal"],
+                    defaultVariant: "minimal",
                     inputDefaults: {
-                        primaryCtaLabel: 'Projects',
-                        primaryCtaUrl: '/projects',
-                        secondaryCtaLabel: 'Writing',
-                        secondaryCtaUrl: '/blog',
-                        showAvatar: false,
+                        primaryCtaLabel: "Projects",
+                        primaryCtaUrl: "/projects",
+                        secondaryCtaLabel: "Writing",
+                        secondaryCtaUrl: "/blog",
+                        showAvatar: false
                     },
                     fixed: false,
-                    removable: true,
+                    removable: true
                 },
                 {
-                    instanceId: 'about_1',
-                    componentKey: 'about',
-                    allowedVariants: ['minimal'],
-                    defaultVariant: 'minimal',
+                    instanceId: "about_1",
+                    componentKey: "about",
+                    allowedVariants: ["minimal"],
+                    defaultVariant: "minimal",
                     inputDefaults: {
                         showProfileImage: false,
-                        showResumeButton: false,
+                        showResumeButton: false
                     },
                     fixed: false,
-                    removable: true,
+                    removable: true
                 },
                 {
-                    instanceId: 'featured_projects_1',
-                    componentKey: 'featured_projects',
-                    allowedVariants: ['minimal_list'],
-                    defaultVariant: 'minimal_list',
+                    instanceId: "featured_projects_1",
+                    componentKey: "featured_projects",
+                    allowedVariants: ["minimal_list"],
+                    defaultVariant: "minimal_list",
                     inputDefaults: {
-                        sectionTitle: 'Selected work',
-                        maxItems: '4',
-                        viewAllLabel: 'All projects',
+                        sectionTitle: "Selected work",
+                        maxItems: "4",
+                        viewAllLabel: "All projects"
                     },
                     fixed: false,
-                    removable: true,
+                    removable: true
                 },
                 {
-                    instanceId: 'skills_1',
-                    componentKey: 'skills',
-                    allowedVariants: ['minimal_list'],
-                    defaultVariant: 'minimal_list',
+                    instanceId: "skills_1",
+                    componentKey: "skills",
+                    allowedVariants: ["minimal_list"],
+                    defaultVariant: "minimal_list",
                     inputDefaults: {
-                        sectionTitle: 'Stack',
-                        showProficiencyLevel: false,
+                        sectionTitle: "Stack",
+                        showProficiencyLevel: false
                     },
                     fixed: false,
-                    removable: true,
+                    removable: true
                 },
                 {
-                    instanceId: 'experience_1',
-                    componentKey: 'experience',
-                    allowedVariants: ['minimal_list'],
-                    defaultVariant: 'minimal_list',
+                    instanceId: "experience_1",
+                    componentKey: "experience",
+                    allowedVariants: ["minimal_list"],
+                    defaultVariant: "minimal_list",
                     inputDefaults: {
-                        sectionTitle: 'Experience',
+                        sectionTitle: "Experience"
                     },
                     fixed: false,
-                    removable: true,
+                    removable: true
                 },
                 {
-                    instanceId: 'latest_blogs_1',
-                    componentKey: 'latest_blogs',
-                    allowedVariants: ['minimal_list'],
-                    defaultVariant: 'minimal_list',
+                    instanceId: "latest_blogs_1",
+                    componentKey: "latest_blogs",
+                    allowedVariants: ["minimal_list"],
+                    defaultVariant: "minimal_list",
                     inputDefaults: {
-                        sectionTitle: 'Writing',
-                        maxItems: '3',
+                        sectionTitle: "Writing",
+                        maxItems: "3",
                         showExcerpt: false,
                         showTags: false,
-                        viewAllLabel: 'All posts',
+                        viewAllLabel: "All posts"
                     },
                     fixed: false,
-                    removable: true,
-                },
-            ],
+                    removable: true
+                }
+            ]
         },
         {
-            key: 'all_projects',
-            label: 'All Projects',
+            key: "all_projects",
+            label: "All Projects",
             sections: [
                 {
-                    instanceId: 'featured_projects_1',
-                    componentKey: 'featured_projects',
-                    allowedVariants: ['minimal_list'],
-                    defaultVariant: 'minimal_list',
+                    instanceId: "featured_projects_1",
+                    componentKey: "featured_projects",
+                    allowedVariants: ["minimal_list"],
+                    defaultVariant: "minimal_list",
                     inputDefaults: {
-                        sectionTitle: 'Projects',
-                        maxItems: 'all',
-                        showViewAll: false,
+                        sectionTitle: "Projects",
+                        maxItems: "all",
+                        showViewAll: false
                     },
-                    fixed: true,
-                },
-            ],
+                    fixed: true
+                }
+            ]
         },
         {
-            key: 'project_details',
-            label: 'Project Details',
+            key: "project_details",
+            label: "Project Details",
             sections: [
                 {
-                    instanceId: 'media_gallery_1',
-                    componentKey: 'media_gallery',
-                    allowedVariants: ['grid'],
-                    defaultVariant: 'grid',
+                    instanceId: "media_gallery_1",
+                    componentKey: "media_gallery",
+                    allowedVariants: ["grid"],
+                    defaultVariant: "grid",
                     inputDefaults: {
-                        sectionTitle: '',
+                        sectionTitle: "",
                         showCaptions: true,
-                        columns: '2',
+                        columns: "2"
+                    },
+                    fixed: false
+                }
+            ]
+        },
+        {
+            key: "all_blog",
+            label: "All Blog Posts",
+            sections: [
+                {
+                    instanceId: "latest_blogs_1",
+                    componentKey: "latest_blogs",
+                    allowedVariants: ["minimal_list"],
+                    defaultVariant: "minimal_list",
+                    inputDefaults: {
+                        sectionTitle: "Writing",
+                        maxItems: "all",
+                        showViewAll: false
+                    },
+                    fixed: true
+                }
+            ]
+        },
+        {
+            key: "blog_details",
+            label: "Blog Post",
+            sections: [
+                {
+                    instanceId: "cta_1",
+                    componentKey: "cta",
+                    allowedVariants: ["minimal"],
+                    defaultVariant: "minimal",
+                    inputDefaults: {
+                        headline: "Have thoughts on this?",
+                        primaryCtaLabel: "Send a note"
+                    },
+                    fixed: false
+                }
+            ]
+        },
+        {
+            key: "contact",
+            label: "Contact",
+            sections: [
+                {
+                    instanceId: "contact_1",
+                    componentKey: "contact",
+                    allowedVariants: ["minimal"],
+                    defaultVariant: "minimal",
+                    inputDefaults: {
+                        sectionTitle: "Contact",
+                        showPhone: false
+                    },
+                    fixed: true
+                }
+            ]
+        }
+    ]
+};
+
+/**
+ * "Neobrutalism" template — loud, blocky portfolio with hard borders.
+ *
+ * Uses the neobrutalism theme and display font pairing with chunky section
+ * cards, high-contrast labels, offset shadows, and compressed editorial flow.
+ */
+const neobrutalismTemplate: Template = {
+    key: "neobrutalism",
+    label: "Neobrutalism",
+    version: "1.0.0",
+    defaultTheme: "neobrutalism",
+    defaultFont: "archivo-black",
+
+    layout: [
+        {
+            instanceId: "header_1",
+            componentKey: "header",
+            allowedVariants: ["neobrutalism"],
+            defaultVariant: "neobrutalism",
+            inputDefaults: {
+                sticky: true,
+                backgroundStyle: "solid",
+                backgroundColor: "bg-primary",
+                bottomBorder: true,
+                ctaLabel: "Start a project"
+            },
+            fixed: true
+        },
+        {
+            instanceId: "footer_1",
+            componentKey: "footer",
+            allowedVariants: ["neobrutalism"],
+            defaultVariant: "neobrutalism",
+            inputDefaults: {
+                backgroundStyle: "solid",
+                backgroundColor: "bg-secondary",
+                showBackToTop: true,
+                linkDensity: "spacious"
+            },
+            fixed: true
+        },
+        {
+            instanceId: "cookie_banner_1",
+            componentKey: "cookie_banner",
+            allowedVariants: allVariants("cookie_banner"),
+            defaultVariant: "bar",
+            fixed: false
+        }
+    ] satisfies SectionInstance[],
+
+    pages: [
+        {
+            key: "landing",
+            label: "Landing Page",
+            sections: [
+                {
+                    instanceId: "hero_1",
+                    componentKey: "hero",
+                    allowedVariants: ["neobrutalism", "neobrutalism_poster"],
+                    defaultVariant: "neobrutalism_poster",
+                    inputDefaults: {
+                        subheadline:
+                            "A personal site for sharp work, bright ideas, and zero visual apologies.",
+                        primaryCtaLabel: "See projects",
+                        primaryCtaUrl: "/projects",
+                        secondaryCtaLabel: "Contact me",
+                        secondaryCtaUrl: "/contact",
+                        showAvatar: true
                     },
                     fixed: false,
+                    removable: true
                 },
-            ],
-        },
-        {
-            key: 'all_blog',
-            label: 'All Blog Posts',
-            sections: [
                 {
-                    instanceId: 'latest_blogs_1',
-                    componentKey: 'latest_blogs',
-                    allowedVariants: ['minimal_list'],
-                    defaultVariant: 'minimal_list',
+                    instanceId: "about_1",
+                    componentKey: "about",
+                    allowedVariants: ["neobrutalism", "neobrutalism_stack"],
+                    defaultVariant: "neobrutalism_stack",
                     inputDefaults: {
-                        sectionTitle: 'Writing',
-                        maxItems: 'all',
-                        showViewAll: false,
-                    },
-                    fixed: true,
-                },
-            ],
-        },
-        {
-            key: 'blog_details',
-            label: 'Blog Post',
-            sections: [
-                {
-                    instanceId: 'cta_1',
-                    componentKey: 'cta',
-                    allowedVariants: ['minimal'],
-                    defaultVariant: 'minimal',
-                    inputDefaults: {
-                        headline: 'Have thoughts on this?',
-                        primaryCtaLabel: 'Send a note',
+                        showResumeButton: true
                     },
                     fixed: false,
+                    removable: true
                 },
-            ],
+                {
+                    instanceId: "stats_1",
+                    componentKey: "stats",
+                    allowedVariants: ["neobrutalism", "neobrutalism_zine"],
+                    defaultVariant: "neobrutalism_zine",
+                    inputDefaults: {
+                        sectionTitle: "Scoreboard"
+                    },
+                    fixed: false,
+                    removable: true
+                },
+                {
+                    instanceId: "skills_1",
+                    componentKey: "skills",
+                    allowedVariants: ["neobrutalism", "neobrutalism_stack"],
+                    defaultVariant: "neobrutalism_stack",
+                    inputDefaults: {
+                        sectionTitle: "Toolbox",
+                        showProficiencyLevel: true,
+                        layout: "spacious"
+                    },
+                    fixed: false,
+                    removable: true
+                },
+                {
+                    instanceId: "featured_projects_1",
+                    componentKey: "featured_projects",
+                    allowedVariants: ["neobrutalism", "neobrutalism_zine"],
+                    defaultVariant: "neobrutalism_zine",
+                    inputDefaults: {
+                        sectionTitle: "Featured work",
+                        maxItems: "4",
+                        viewAllLabel: "All projects"
+                    },
+                    fixed: false,
+                    removable: true
+                },
+                {
+                    instanceId: "services_1",
+                    componentKey: "services",
+                    allowedVariants: ["neobrutalism", "neobrutalism_ticket"],
+                    defaultVariant: "neobrutalism_ticket",
+                    inputDefaults: {
+                        sectionTitle: "What I do",
+                        showPricing: true
+                    },
+                    fixed: false,
+                    removable: true
+                },
+                {
+                    instanceId: "experience_1",
+                    componentKey: "experience",
+                    allowedVariants: ["neobrutalism"],
+                    defaultVariant: "neobrutalism",
+                    inputDefaults: {
+                        sectionTitle: "Work history"
+                    },
+                    fixed: false,
+                    removable: true
+                },
+                {
+                    instanceId: "latest_blogs_1",
+                    componentKey: "latest_blogs",
+                    allowedVariants: ["neobrutalism"],
+                    defaultVariant: "neobrutalism",
+                    inputDefaults: {
+                        sectionTitle: "Notes and rants",
+                        maxItems: "3",
+                        viewAllLabel: "All posts"
+                    },
+                    fixed: false,
+                    removable: true
+                },
+                {
+                    instanceId: "cta_1",
+                    componentKey: "cta",
+                    allowedVariants: ["neobrutalism"],
+                    defaultVariant: "neobrutalism",
+                    inputDefaults: {
+                        headline: "Got a bold idea?",
+                        subtext:
+                            "Let us turn it into something impossible to ignore.",
+                        primaryCtaLabel: "Start talking",
+                        secondaryCtaLabel: "Browse work",
+                        secondaryCtaUrl: "/projects"
+                    },
+                    fixed: false,
+                    removable: true
+                }
+            ]
         },
         {
-            key: 'contact',
-            label: 'Contact',
+            key: "all_projects",
+            label: "All Projects",
             sections: [
                 {
-                    instanceId: 'contact_1',
-                    componentKey: 'contact',
-                    allowedVariants: ['minimal'],
-                    defaultVariant: 'minimal',
+                    instanceId: "featured_projects_1",
+                    componentKey: "featured_projects",
+                    allowedVariants: ["neobrutalism"],
+                    defaultVariant: "neobrutalism",
                     inputDefaults: {
-                        sectionTitle: 'Contact',
-                        showPhone: false,
+                        sectionTitle: "All projects",
+                        maxItems: "all",
+                        showViewAll: false
                     },
-                    fixed: true,
-                },
-            ],
+                    fixed: true
+                }
+            ]
         },
-    ],
+        {
+            key: "project_details",
+            label: "Project Details",
+            sections: [
+                {
+                    instanceId: "media_gallery_1",
+                    componentKey: "media_gallery",
+                    allowedVariants: ["grid"],
+                    defaultVariant: "grid",
+                    inputDefaults: {
+                        sectionTitle: "Project evidence",
+                        showCaptions: true,
+                        columns: "2"
+                    },
+                    fixed: false
+                },
+                {
+                    instanceId: "cta_1",
+                    componentKey: "cta",
+                    allowedVariants: ["neobrutalism"],
+                    defaultVariant: "neobrutalism",
+                    inputDefaults: {
+                        headline: "Want one like this?",
+                        primaryCtaLabel: "Get in touch"
+                    },
+                    fixed: false
+                }
+            ]
+        },
+        {
+            key: "all_blog",
+            label: "All Blog Posts",
+            sections: [
+                {
+                    instanceId: "latest_blogs_1",
+                    componentKey: "latest_blogs",
+                    allowedVariants: ["neobrutalism"],
+                    defaultVariant: "neobrutalism",
+                    inputDefaults: {
+                        sectionTitle: "All posts",
+                        maxItems: "all",
+                        showViewAll: false
+                    },
+                    fixed: true
+                }
+            ]
+        },
+        {
+            key: "blog_details",
+            label: "Blog Post",
+            sections: [
+                {
+                    instanceId: "cta_1",
+                    componentKey: "cta",
+                    allowedVariants: ["neobrutalism"],
+                    defaultVariant: "neobrutalism",
+                    inputDefaults: {
+                        headline: "Argue, agree, or build on it.",
+                        primaryCtaLabel: "Send a note"
+                    },
+                    fixed: false
+                }
+            ]
+        },
+        {
+            key: "contact",
+            label: "Contact",
+            sections: [
+                {
+                    instanceId: "contact_1",
+                    componentKey: "contact",
+                    allowedVariants: ["neobrutalism"],
+                    defaultVariant: "neobrutalism",
+                    inputDefaults: {
+                        sectionTitle: "Contact",
+                        showPhone: false
+                    },
+                    fixed: true
+                }
+            ]
+        }
+    ]
 };
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -909,6 +1185,7 @@ export const TemplateRegistry: Record<string, Template> = {
     cinematic: cinematicTemplate,
     terminal: terminalTemplate,
     minimal: minimalTemplate,
+    neobrutalism: neobrutalismTemplate
 };
 
 /**
