@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useReducedMotion } from "motion/react";
+import { motion, useReducedMotion, type Variants } from "motion/react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -132,7 +132,7 @@ const integrations = [
 
 export function HomeHero({ promotion }: { promotion: any }) {
     const reduce = useReducedMotion();
-    const slideUp = {
+    const slideUp: Variants = {
         hidden: { opacity: 0, y: 20 },
         visible: {
             opacity: 1,
