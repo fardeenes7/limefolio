@@ -321,11 +321,13 @@ no harm. When the user next saves their config, the orphaned key can be cleaned 
 
 3. **Build the React components** under `src/components/sections/[componentKey]/`.
    Name each file after its variant: `default.tsx`, `grid.tsx`, `masonry.tsx`, etc.
+   Variant filenames must be lowercase and may use numbers, underscores, or hyphens.
 
-4. **Update `SectionRenderer.tsx`** — add your new component key to the `switch (componentKey)` block in `src/components/sections/_renderer/SectionRenderer.tsx` so the dynamic importer knows where to find the variants:
-   ```ts
-   case 'timeline_feed': return await import(`../timeline_feed/${targetVariant}`);
+4. **Regenerate `VariantRegistry.tsx`** so the renderer can import the new files:
+   ```bash
+   npm run variants:generate
    ```
+   Use `npm run variants:check` in CI or before committing to detect registry drift.
 
 5. **Update this document** — add the new component to the Component Reference Table
    and document any non-obvious behaviour.
@@ -342,8 +344,9 @@ no harm. When the user next saves their config, the orphaned key can be cleaned 
    curated subset.
 
 3. **Build template-specific component variants** if needed (e.g. a `hero_split`
-   variant that only makes sense in this template). Add every renderable variant to both
-   `ComponentRegistry` and `VariantRegistry`; do not expose variants that cannot render.
+   variant that only makes sense in this template). Add every public variant to
+   `ComponentRegistry`, then run `npm run variants:generate`; do not expose variants
+   that cannot render.
 
 4. **Add a theme entry** to `src/themes/index.ts` and create the corresponding
    `src/themes/[slug].css` file if the template needs a custom default theme. Add a

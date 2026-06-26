@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "variants:generate": "node scripts/generate-section-variants.mjs",
+    "variants:check": "node scripts/generate-section-variants.mjs --check"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",
