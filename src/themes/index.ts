@@ -251,6 +251,14 @@ export const ColorThemes: Record<string, ColorThemeConfig> = {
         hasDark: true,
         category: "retro",
     },
+    terminal: {
+        name: "Terminal",
+        slug: "terminal",
+        defaultFont: "jetbrains-mono",
+        description: "Phosphor green CLI palette with amber command highlights",
+        hasDark: true,
+        category: "retro",
+    },
     "doom-64": {
         name: "Doom 64",
         slug: "doom-64",

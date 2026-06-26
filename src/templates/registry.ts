@@ -561,31 +561,42 @@ const cinematicTemplate: Template = {
 };
 
 /**
- * "Terminal" template — tailored for developers who love the CLI.
+ * "Terminal" template — tailored for developers who want a portfolio that feels
+ * like a polished interactive shell.
  *
- * Uses a monospace font, dark background, and typing animations to simulate
- * a command-line interface.
+ * Uses phosphor terminal colors, monospace typography, shell command labels,
+ * repo tables, log streams, and man-page inspired content blocks.
  */
 const terminalTemplate: Template = {
     key: "terminal",
     label: "Terminal",
     version: "1.0.0",
-    defaultTheme: "darkmatter",
-    defaultFont: "fira-code",
+    defaultTheme: "terminal-dark",
+    defaultFont: "jetbrains-mono",
 
     layout: [
         {
             instanceId: "header_1",
             componentKey: "header",
-            allowedVariants: allVariants("header"),
-            defaultVariant: "compact",
+            allowedVariants: ["terminal"],
+            defaultVariant: "terminal",
+            inputDefaults: {
+                backgroundStyle: "solid",
+                backgroundColor: "bg-background",
+                bottomBorder: true,
+                ctaLabel: "./contact"
+            },
             fixed: true
         },
         {
             instanceId: "footer_1",
             componentKey: "footer",
-            allowedVariants: allVariants("footer"),
-            defaultVariant: "compact",
+            allowedVariants: ["terminal"],
+            defaultVariant: "terminal",
+            inputDefaults: {
+                showBackToTop: true,
+                showLimefolioAttribution: false
+            },
             fixed: true
         },
         {
@@ -605,48 +616,76 @@ const terminalTemplate: Template = {
                 {
                     instanceId: "hero_1",
                     componentKey: "hero",
-                    allowedVariants: allVariants("hero"),
-                    defaultVariant: "typing_animation",
+                    allowedVariants: ["terminal", "terminal_split"],
+                    defaultVariant: "terminal_split",
+                    inputDefaults: {
+                        headline: "{name}",
+                        subheadline: "developer portfolio initialized from ~/.limefolio/profile",
+                        primaryCtaLabel: "run projects",
+                        primaryCtaUrl: "#projects",
+                        secondaryCtaLabel: "open contact",
+                        secondaryCtaUrl: "/contact",
+                        typingStrings: "build --fast, ship --clean, debug --deep"
+                    },
                     fixed: false,
                     removable: true
                 },
                 {
                     instanceId: "about_1",
                     componentKey: "about",
-                    allowedVariants: allVariants("about"),
-                    defaultVariant: "default",
+                    allowedVariants: ["terminal", "terminal_process"],
+                    defaultVariant: "terminal_process",
                     fixed: false,
                     removable: true
                 },
                 {
                     instanceId: "skills_1",
                     componentKey: "skills",
-                    allowedVariants: allVariants("skills"),
-                    defaultVariant: "tag_cloud",
+                    allowedVariants: ["terminal", "terminal_changelog"],
+                    defaultVariant: "terminal_changelog",
+                    inputDefaults: {
+                        sectionTitle: "stack",
+                        showProficiencyLevel: true
+                    },
                     fixed: false,
                     removable: true
                 },
                 {
                     instanceId: "featured_projects_1",
                     componentKey: "featured_projects",
-                    allowedVariants: allVariants("featured_projects"),
-                    defaultVariant: "table",
+                    allowedVariants: ["terminal", "terminal_process"],
+                    defaultVariant: "terminal_process",
+                    inputDefaults: {
+                        sectionTitle: "./work",
+                        maxItems: "6",
+                        viewAllLabel: "cd /projects"
+                    },
                     fixed: false,
                     removable: true
                 },
                 {
                     instanceId: "latest_blogs_1",
                     componentKey: "latest_blogs",
-                    allowedVariants: allVariants("latest_blogs"),
-                    defaultVariant: "grid",
+                    allowedVariants: ["terminal", "terminal_changelog"],
+                    defaultVariant: "terminal_changelog",
+                    inputDefaults: {
+                        sectionTitle: "logs",
+                        maxItems: "3",
+                        viewAllLabel: "cat all.log"
+                    },
                     fixed: false,
                     removable: true
                 },
                 {
                     instanceId: "cta_1",
                     componentKey: "cta",
-                    allowedVariants: allVariants("cta"),
-                    defaultVariant: "minimal",
+                    allowedVariants: ["terminal", "terminal_ssh"],
+                    defaultVariant: "terminal_ssh",
+                    inputDefaults: {
+                        headline: "Ready to deploy?",
+                        subtext: "Open a secure channel and send the brief.",
+                        primaryCtaLabel: "ssh contact"
+                    },
                     fixed: false,
                     removable: true
                 }
@@ -659,8 +698,13 @@ const terminalTemplate: Template = {
                 {
                     instanceId: "featured_projects_1",
                     componentKey: "featured_projects",
-                    allowedVariants: allVariants("featured_projects"),
-                    defaultVariant: "table",
+                    allowedVariants: ["terminal"],
+                    defaultVariant: "terminal",
+                    inputDefaults: {
+                        sectionTitle: "./projects",
+                        maxItems: "all",
+                        showViewAll: false
+                    },
                     fixed: true
                 }
             ]
@@ -672,15 +716,24 @@ const terminalTemplate: Template = {
                 {
                     instanceId: "media_gallery_1",
                     componentKey: "media_gallery",
-                    allowedVariants: allVariants("media_gallery"),
+                    allowedVariants: ["grid"],
                     defaultVariant: "grid",
+                    inputDefaults: {
+                        sectionTitle: "artifacts",
+                        showCaptions: true,
+                        columns: "2"
+                    },
                     fixed: false
                 },
                 {
                     instanceId: "cta_1",
                     componentKey: "cta",
-                    allowedVariants: allVariants("cta"),
-                    defaultVariant: "minimal",
+                    allowedVariants: ["terminal"],
+                    defaultVariant: "terminal",
+                    inputDefaults: {
+                        headline: "Fork this outcome?",
+                        primaryCtaLabel: "ssh contact"
+                    },
                     fixed: false
                 }
             ]
@@ -692,10 +745,10 @@ const terminalTemplate: Template = {
                 {
                     instanceId: "latest_blogs_1",
                     componentKey: "latest_blogs",
-                    allowedVariants: allVariants("latest_blogs"),
-                    defaultVariant: "grid",
+                    allowedVariants: ["terminal"],
+                    defaultVariant: "terminal",
                     inputDefaults: {
-                        sectionTitle: "All Posts",
+                        sectionTitle: "logs",
                         maxItems: "all",
                         showViewAll: false
                     },
@@ -710,8 +763,12 @@ const terminalTemplate: Template = {
                 {
                     instanceId: "cta_1",
                     componentKey: "cta",
-                    allowedVariants: allVariants("cta"),
-                    defaultVariant: "minimal",
+                    allowedVariants: ["terminal"],
+                    defaultVariant: "terminal",
+                    inputDefaults: {
+                        headline: "Reply to this log?",
+                        primaryCtaLabel: "mail -s hello"
+                    },
                     fixed: false
                 }
             ]
@@ -723,8 +780,12 @@ const terminalTemplate: Template = {
                 {
                     instanceId: "contact_1",
                     componentKey: "contact",
-                    allowedVariants: allVariants("contact"),
-                    defaultVariant: "minimal",
+                    allowedVariants: ["terminal"],
+                    defaultVariant: "terminal",
+                    inputDefaults: {
+                        sectionTitle: "contact",
+                        showPhone: false
+                    },
                     fixed: true
                 }
             ]

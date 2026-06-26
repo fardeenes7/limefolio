@@ -480,20 +480,20 @@ All contributors must follow these rules without exception:
 
 | key | label | isGlobal | repeatable | removable | variants | default variant |
 |---|---|---|---|---|---|---|
-| `header` | Header | ✓ | ✗ | ✗ | default, cinematic, compact, minimal, neobrutalism, centered, editorial, floating | default |
-| `footer` | Footer | ✓ | ✗ | ✗ | default, cinematic, compact, minimal, neobrutalism, centered | default |
+| `header` | Header | ✓ | ✗ | ✗ | default, cinematic, compact, minimal, terminal, neobrutalism, centered, editorial, floating | default |
+| `footer` | Footer | ✓ | ✗ | ✗ | default, cinematic, compact, minimal, terminal, neobrutalism, centered | default |
 | `cookie_banner` | Cookie Banner | ✓ | ✗ | ✓ | bar | bar |
-| `hero` | Hero | ✗ | ✗ | ✗ | default, cinematic, compact, centered, minimal, neobrutalism, neobrutalism_poster, split_section, typing_animation, video_reel, profile_card | default |
-| `about` | About | ✗ | ✗ | ✓ | default, minimal, neobrutalism, director_cut | default |
-| `skills` | Skills | ✗ | ✗ | ✓ | icon_grid, minimal_list, neobrutalism, tag_cloud | icon_grid |
-| `featured_projects` | Featured Projects | ✗ | ✓ | ✓ | minimal_list, neobrutalism, neobrutalism_stack, table, grid, cinematic_grid, spotlight | grid |
+| `hero` | Hero | ✗ | ✗ | ✗ | default, cinematic, compact, centered, minimal, terminal, terminal_split, neobrutalism, neobrutalism_poster, split_section, typing_animation, video_reel, profile_card | default |
+| `about` | About | ✗ | ✗ | ✓ | default, minimal, terminal, neobrutalism, director_cut | default |
+| `skills` | Skills | ✗ | ✗ | ✓ | icon_grid, minimal_list, terminal, neobrutalism, tag_cloud | icon_grid |
+| `featured_projects` | Featured Projects | ✗ | ✓ | ✓ | minimal_list, terminal, terminal_process, neobrutalism, neobrutalism_stack, table, grid, cinematic_grid, spotlight | grid |
 | `media_gallery` | Media Gallery | ✗ | ✓ | ✓ | carousel, grid, masonry, horizontal_scroll | masonry |
-| `latest_blogs` | Latest Blog Posts | ✗ | ✗ | ✓ | minimal_list, neobrutalism, neobrutalism_zine, grid, editorial | grid |
-| `cta` | Call to Action | ✗ | ✓ | ✓ | default, card, banner, minimal, neobrutalism | default |
+| `latest_blogs` | Latest Blog Posts | ✗ | ✗ | ✓ | minimal_list, terminal, terminal_changelog, neobrutalism, neobrutalism_zine, grid, editorial | grid |
+| `cta` | Call to Action | ✗ | ✓ | ✓ | default, card, banner, minimal, terminal, neobrutalism | default |
 | `testimonials` | Testimonials | ✗ | ✗ | ✓ | carousel | carousel |
 | `services` | Services | ✗ | ✗ | ✓ | card_grid, neobrutalism | card_grid |
 | `experience` | Experience | ✗ | ✗ | ✓ | minimal_list, neobrutalism, timeline | timeline |
-| `contact` | Contact | ✗ | ✗ | ✓ | split_with_info, minimal, neobrutalism, neobrutalism_ticket, social_cards | split_with_info |
+| `contact` | Contact | ✗ | ✗ | ✓ | split_with_info, minimal, terminal, terminal_ssh, neobrutalism, neobrutalism_ticket, social_cards | split_with_info |
 | `stats` | Stats | ✗ | ✗ | ✓ | minimal_row, neobrutalism, counter_row | counter_row |
 | `social_feed` | Social Feed | ✗ | ✓ | ✓ | grid | grid |
 
@@ -569,6 +569,70 @@ Current public routes render `landing`, `all_projects`, `project_details`, `all_
 | instanceId | componentKey | defaultVariant | fixed | removable |
 |---|---|---|---|---|
 | `contact_1` | `contact` | split_with_info | ✓ | ✗ |
+
+### Template: `terminal`
+
+Interactive-shell inspired template for developer portfolios. Uses phosphor terminal
+colors, monospace typography, command prompts, process tables, changelog-style writing,
+and SSH-flavored contact blocks.
+
+| Field | Value |
+|---|---|
+| key | `terminal` |
+| label | Terminal |
+| version | 1.0.0 |
+| defaultTheme | `terminal-dark` |
+| defaultFont | `jetbrains-mono` |
+
+#### Layout sections (rendered by `layout.tsx` on every page)
+
+| instanceId | componentKey | defaultVariant | fixed |
+|---|---|---|---|
+| `header_1` | `header` | terminal | ✓ |
+| `footer_1` | `footer` | terminal | ✓ |
+| `cookie_banner_1` | `cookie_banner` | bar | ✗ |
+
+#### Page: `landing` (Landing Page)
+
+| instanceId | componentKey | defaultVariant | fixed | removable |
+|---|---|---|---|---|
+| `hero_1` | `hero` | terminal_split | ✗ | ✓ |
+| `about_1` | `about` | terminal | ✗ | ✓ |
+| `skills_1` | `skills` | terminal | ✗ | ✓ |
+| `featured_projects_1` | `featured_projects` | terminal_process | ✗ | ✓ |
+| `latest_blogs_1` | `latest_blogs` | terminal_changelog | ✗ | ✓ |
+| `cta_1` | `cta` | terminal | ✗ | ✓ |
+
+#### Page: `all_projects` (All Projects)
+
+| instanceId | componentKey | defaultVariant | fixed | removable |
+|---|---|---|---|---|
+| `featured_projects_1` | `featured_projects` | terminal_process | ✓ | ✗ |
+
+#### Page: `project_details` (Project Details)
+
+| instanceId | componentKey | defaultVariant | fixed | removable |
+|---|---|---|---|---|
+| `media_gallery_1` | `media_gallery` | grid | ✗ | — |
+| `cta_1` | `cta` | terminal | ✗ | — |
+
+#### Page: `all_blog` (All Blog Posts)
+
+| instanceId | componentKey | defaultVariant | fixed | removable |
+|---|---|---|---|---|
+| `latest_blogs_1` | `latest_blogs` | terminal_changelog | ✓ | ✗ |
+
+#### Page: `blog_details` (Blog Post)
+
+| instanceId | componentKey | defaultVariant | fixed | removable |
+|---|---|---|---|---|
+| `cta_1` | `cta` | terminal | ✗ | — |
+
+#### Page: `contact` (Contact)
+
+| instanceId | componentKey | defaultVariant | fixed | removable |
+|---|---|---|---|---|
+| `contact_1` | `contact` | terminal_ssh | ✓ | ✗ |
 
 ### Template: `cinematic`
 

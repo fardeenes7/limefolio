@@ -374,6 +374,18 @@ export const THEMES_META: ThemeMeta[] = [
         ]
     },
     {
+        name: "Terminal",
+        slug: "terminal",
+        defaultFont: "jetbrains-mono",
+        radius: 0.25,
+        description: "Phosphor green CLI palette with amber command highlights",
+        category: "retro",
+        hasDark: true,
+        defaultMode: "dark",
+        suggestedPrimaryColors: ["oklch(0.78 0.19 145)", "oklch(0.78 0.15 82)", "oklch(0.70 0.13 220)", "oklch(0.70 0.16 305)"],
+        swatches: ["oklch(0.10 0.025 145)", "oklch(0.78 0.19 145)", "oklch(0.78 0.15 82)"]
+    },
+    {
         name: "Doom 64",
         slug: "doom-64",
         defaultFont: "silkscreen",
