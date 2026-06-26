@@ -86,6 +86,19 @@ const WIREFRAMES: Record<string, (props: WireframeProps) => React.ReactElement> 
             <rect x={31} y={23} width={14} height={2} rx={1} fill="currentColor" opacity={0.1} />
         </svg>
     ),
+    project_details: ({ className }) => (
+        <svg viewBox="0 0 48 32" className={className} fill="none">
+            <Bar x={4} y={4} w={22} h={3} opacity={0.65} />
+            <Bar x={4} y={9} w={16} h={1.6} opacity={0.35} />
+            <rect x={4} y={14} width={23} height={12} rx={2} fill="currentColor" opacity={0.16} />
+            <rect x={31} y={5} width={13} height={8} rx={2} fill="currentColor" opacity={0.1} stroke="currentColor" strokeWidth="0.8" strokeOpacity="0.25" />
+            <Circle cx={35} cy={9} r={2} opacity={0.28} />
+            <Bar x={39} y={8} w={4} h={1.2} opacity={0.35} />
+            <Bar x={31} y={18} w={13} h={1.4} opacity={0.4} />
+            <Bar x={31} y={22} w={10} h={1.2} opacity={0.25} />
+            <Bar x={31} y={26} w={12} h={1.2} opacity={0.25} />
+        </svg>
+    ),
     latest_blogs: ({ className }) => (
         <svg viewBox="0 0 48 32" className={className} fill="none">
             {/* Title */}

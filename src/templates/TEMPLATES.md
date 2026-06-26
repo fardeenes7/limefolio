@@ -488,6 +488,7 @@ All contributors must follow these rules without exception:
 | `skills` | Skills | ✗ | ✗ | ✓ | icon_grid, minimal_list, terminal, neobrutalism, tag_cloud, vscode | icon_grid |
 | `featured_projects` | Featured Projects | ✗ | ✓ | ✓ | minimal_list, terminal, terminal_process, neobrutalism, neobrutalism_stack, table, grid, cinematic_grid, spotlight, vscode | grid |
 | `media_gallery` | Media Gallery | ✗ | ✓ | ✓ | carousel, grid, masonry, horizontal_scroll | masonry |
+| `project_details` | Project Details | ✗ | ✗ | ✗ | default, cinematic, terminal, vscode, minimal, neobrutalism | default |
 | `latest_blogs` | Latest Blog Posts | ✗ | ✗ | ✓ | minimal_list, terminal, terminal_changelog, neobrutalism, neobrutalism_zine, grid, editorial, vscode | grid |
 | `cta` | Call to Action | ✗ | ✓ | ✓ | default, card, banner, minimal, terminal, neobrutalism | default |
 | `testimonials` | Testimonials | ✗ | ✗ | ✓ | carousel | carousel |
@@ -549,7 +550,7 @@ Current public routes render `landing`, `all_projects`, `project_details`, `all_
 
 | instanceId | componentKey | defaultVariant | fixed | removable |
 |---|---|---|---|---|
-| `media_gallery_1` | `media_gallery` | carousel | ✗ | — |
+| `project_details_1` | `project_details` | default | ✓ | ✗ |
 | `cta_1` | `cta` | card | ✗ | — |
 
 #### Page: `all_blog` (All Blog Posts)
@@ -613,7 +614,7 @@ and SSH-flavored contact blocks.
 
 | instanceId | componentKey | defaultVariant | fixed | removable |
 |---|---|---|---|---|
-| `media_gallery_1` | `media_gallery` | grid | ✗ | — |
+| `project_details_1` | `project_details` | terminal | ✓ | ✗ |
 | `cta_1` | `cta` | terminal | ✗ | — |
 
 #### Page: `all_blog` (All Blog Posts)
@@ -678,7 +679,7 @@ when the layout header resolves to the `vscode` variant.
 
 | instanceId | componentKey | defaultVariant | fixed | removable |
 |---|---|---|---|---|
-| `media_gallery_1` | `media_gallery` | grid | ✗ | — |
+| `project_details_1` | `project_details` | vscode | ✓ | ✗ |
 | `contact_1` | `contact` | vscode | ✗ | — |
 
 #### Page: `all_blog` (All Blog Posts)
@@ -743,7 +744,7 @@ large scene cards, and horizontal frame galleries.
 
 | instanceId | componentKey | defaultVariant | fixed | removable |
 |---|---|---|---|---|
-| `media_gallery_1` | `media_gallery` | horizontal_scroll | ✗ | — |
+| `project_details_1` | `project_details` | cinematic | ✓ | ✗ |
 | `cta_1` | `cta` | card | ✗ | — |
 
 #### Page: `all_blog` (All Blog Posts)
@@ -807,7 +808,7 @@ by restrained engineer portfolios.
 
 | instanceId | componentKey | defaultVariant | fixed | removable |
 |---|---|---|---|---|
-| `media_gallery_1` | `media_gallery` | grid | ✗ | — |
+| `project_details_1` | `project_details` | minimal | ✓ | ✗ |
 
 #### Page: `all_blog` (All Blog Posts)
 
@@ -873,7 +874,7 @@ intentionally raw visual language instead of polished glassmorphism.
 
 | instanceId | componentKey | defaultVariant | fixed | removable |
 |---|---|---|---|---|
-| `media_gallery_1` | `media_gallery` | grid | ✗ | — |
+| `project_details_1` | `project_details` | neobrutalism | ✓ | ✗ |
 | `cta_1` | `cta` | neobrutalism | ✗ | — |
 
 #### Page: `all_blog` (All Blog Posts)

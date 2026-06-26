@@ -18,13 +18,19 @@ export interface Project {
     title: string;
     tagline?: string | null;
     description?: string | null;
+    content?: string | null;
     featured: boolean;
     technologies?: string[];
     project_url?: string | null;
     github_url?: string | null;
+    youtube_url?: string | null;
     cover_image?: string | null;
     thumbnail?: string | null;
     media?: Media[];
+    start_date?: string | null;
+    end_date?: string | null;
+    created_at?: string | null;
+    updated_at?: string | null;
     /** Present on project detail pages */
     project?: Project;
 }

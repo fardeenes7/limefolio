@@ -48,6 +48,7 @@ import {
     IconPhoto,
     IconWriting,
     IconCursorText,
+    IconFileDescription,
     IconMessageCircle,
     IconBriefcase,
     IconMail,
@@ -72,6 +73,7 @@ const COMPONENT_ICONS: Record<string, React.ElementType> = {
     skills: IconSection, // fallback since ti-layers is layers
     featured_projects: IconFolder,
     media_gallery: IconPhoto,
+    project_details: IconFileDescription,
     latest_blogs: IconWriting,
     cta: IconCursorText,
     testimonials: IconMessageCircle,

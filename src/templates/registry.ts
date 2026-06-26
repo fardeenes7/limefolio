@@ -99,8 +99,8 @@ const defaultTemplate: Template = {
         {
             instanceId: "header_1",
             componentKey: "header",
-            allowedVariants: ["cinematic"],
-            defaultVariant: "cinematic",
+            allowedVariants: allVariants("header"),
+            defaultVariant: "default",
             inputDefaults: {
                 backgroundStyle: "solid",
                 backgroundColor: "bg-background",
@@ -112,8 +112,8 @@ const defaultTemplate: Template = {
         {
             instanceId: "footer_1",
             componentKey: "footer",
-            allowedVariants: ["cinematic"],
-            defaultVariant: "cinematic",
+            allowedVariants: allVariants("footer"),
+            defaultVariant: "default",
             inputDefaults: {
                 showBackToTop: true,
                 showLimefolioAttribution: false
@@ -245,19 +245,19 @@ const defaultTemplate: Template = {
 
         /**
          * Project Details page — individual project view.
-         * Both the gallery and CTA are optional enhancements — the project's own
-         * data (title, description, links) is always rendered by the page itself.
+         * The project_details section owns the canonical project view: header,
+         * project images, author context, links, and related projects.
          */
         {
             key: "project_details",
             label: "Project Details",
             sections: [
                 {
-                    instanceId: "media_gallery_1",
-                    componentKey: "media_gallery",
-                    allowedVariants: allVariants("media_gallery"),
-                    defaultVariant: "carousel",
-                    fixed: false
+                    instanceId: "project_details_1",
+                    componentKey: "project_details",
+                    allowedVariants: allVariants("project_details"),
+                    defaultVariant: "default",
+                    fixed: true
                 },
                 {
                     instanceId: "cta_1",
@@ -483,15 +483,11 @@ const cinematicTemplate: Template = {
             label: "Project Details",
             sections: [
                 {
-                    instanceId: "media_gallery_1",
-                    componentKey: "media_gallery",
-                    allowedVariants: ["horizontal_scroll", "carousel"],
-                    defaultVariant: "horizontal_scroll",
-                    inputDefaults: {
-                        sectionTitle: "Behind the Frames",
-                        showCaptions: true
-                    },
-                    fixed: false
+                    instanceId: "project_details_1",
+                    componentKey: "project_details",
+                    allowedVariants: ["cinematic", "default"],
+                    defaultVariant: "cinematic",
+                    fixed: true
                 },
                 {
                     instanceId: "cta_1",
@@ -714,16 +710,11 @@ const terminalTemplate: Template = {
             label: "Project Details",
             sections: [
                 {
-                    instanceId: "media_gallery_1",
-                    componentKey: "media_gallery",
-                    allowedVariants: ["grid"],
-                    defaultVariant: "grid",
-                    inputDefaults: {
-                        sectionTitle: "artifacts",
-                        showCaptions: true,
-                        columns: "2"
-                    },
-                    fixed: false
+                    instanceId: "project_details_1",
+                    componentKey: "project_details",
+                    allowedVariants: ["terminal", "default"],
+                    defaultVariant: "terminal",
+                    fixed: true
                 },
                 {
                     instanceId: "cta_1",
@@ -945,15 +936,11 @@ const vscodeTemplate: Template = {
             label: "Project Details",
             sections: [
                 {
-                    instanceId: "media_gallery_1",
-                    componentKey: "media_gallery",
-                    allowedVariants: ["grid", "carousel"],
-                    defaultVariant: "grid",
-                    inputDefaults: {
-                        sectionTitle: "preview assets",
-                        columns: "2"
-                    },
-                    fixed: false
+                    instanceId: "project_details_1",
+                    componentKey: "project_details",
+                    allowedVariants: ["vscode", "default"],
+                    defaultVariant: "vscode",
+                    fixed: true
                 },
                 {
                     instanceId: "contact_1",
@@ -1177,16 +1164,11 @@ const minimalTemplate: Template = {
             label: "Project Details",
             sections: [
                 {
-                    instanceId: "media_gallery_1",
-                    componentKey: "media_gallery",
-                    allowedVariants: ["grid"],
-                    defaultVariant: "grid",
-                    inputDefaults: {
-                        sectionTitle: "",
-                        showCaptions: true,
-                        columns: "2"
-                    },
-                    fixed: false
+                    instanceId: "project_details_1",
+                    componentKey: "project_details",
+                    allowedVariants: ["minimal", "default"],
+                    defaultVariant: "minimal",
+                    fixed: true
                 }
             ]
         },
@@ -1442,16 +1424,11 @@ const neobrutalismTemplate: Template = {
             label: "Project Details",
             sections: [
                 {
-                    instanceId: "media_gallery_1",
-                    componentKey: "media_gallery",
-                    allowedVariants: ["grid"],
-                    defaultVariant: "grid",
-                    inputDefaults: {
-                        sectionTitle: "Project evidence",
-                        showCaptions: true,
-                        columns: "2"
-                    },
-                    fixed: false
+                    instanceId: "project_details_1",
+                    componentKey: "project_details",
+                    allowedVariants: ["neobrutalism", "default"],
+                    defaultVariant: "neobrutalism",
+                    fixed: true
                 },
                 {
                     instanceId: "cta_1",

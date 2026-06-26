@@ -759,6 +759,31 @@ const media_gallery: ComponentSchema = {
 };
 
 /**
+ * Project Details — renders the canonical individual project page content.
+ *
+ * Unlike Media Gallery, this section reads from `siteData.project` and is meant
+ * for project detail routes only: title, metadata, project-owned images, author
+ * context, outbound links, and related project links.
+ */
+const project_details: ComponentSchema = {
+    key: 'project_details',
+    label: 'Project Details',
+    isGlobal: false,
+    repeatable: false,
+    removable: false,
+    variants: [
+        { key: 'default', label: 'Default' },
+        { key: 'cinematic', label: 'Cinematic' },
+        { key: 'terminal', label: 'Terminal' },
+        { key: 'vscode', label: 'VS Code' },
+        { key: 'minimal', label: 'Minimal' },
+        { key: 'neobrutalism', label: 'Neobrutalism' },
+    ],
+    defaultVariant: 'default',
+    inputs: [],
+};
+
+/**
  * Latest Blogs — preview cards linking to blog posts.
  *
  * Non-repeatable (one blog section per page is sufficient). `viewAllLabel`
@@ -1257,6 +1282,7 @@ export const ComponentRegistry: Record<string, ComponentSchema> = {
     skills,
     featured_projects,
     media_gallery,
+    project_details,
     latest_blogs,
     cta,
     testimonials,

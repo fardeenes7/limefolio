@@ -201,6 +201,9 @@ function LivePreviewProviderInner({
 
     // Find the current page or fallback to the first page (usually 'landing')
     const page = resolvedConfig.pages.find((p) => p.key === previewPageKey) || resolvedConfig.pages[0];
+    const previewSiteData = page.key === "project_details"
+        ? { ...siteData, project: siteData.project ?? siteData.projects?.[0] }
+        : siteData;
 
     return (
         <PreviewContext.Provider value={{ selectedInstanceId, isPreviewMode: true }}>
@@ -217,8 +220,8 @@ function LivePreviewProviderInner({
                     }`
                 }} />
             )}
-            <LayoutPageRenderer layoutSections={resolvedConfig.layout} siteData={siteData}>
-                <PageRenderer sections={page.sections} siteData={siteData} />
+            <LayoutPageRenderer layoutSections={resolvedConfig.layout} siteData={previewSiteData}>
+                <PageRenderer sections={page.sections} siteData={previewSiteData} />
             </LayoutPageRenderer>
         </PreviewContext.Provider>
     );
