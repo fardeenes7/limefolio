@@ -483,7 +483,7 @@ All contributors must follow these rules without exception:
 | `header` | Header | ✓ | ✗ | ✗ | default, cinematic, compact, minimal, neobrutalism, centered, editorial, floating | default |
 | `footer` | Footer | ✓ | ✗ | ✗ | default, cinematic, compact, minimal, neobrutalism, centered | default |
 | `cookie_banner` | Cookie Banner | ✓ | ✗ | ✓ | bar | bar |
-| `hero` | Hero | ✗ | ✗ | ✗ | default, compact, centered, minimal, neobrutalism, neobrutalism_poster, split_section, typing_animation, video_reel, profile_card | default |
+| `hero` | Hero | ✗ | ✗ | ✗ | default, cinematic, compact, centered, minimal, neobrutalism, neobrutalism_poster, split_section, typing_animation, video_reel, profile_card | default |
 | `about` | About | ✗ | ✗ | ✓ | default, minimal, neobrutalism, director_cut | default |
 | `skills` | Skills | ✗ | ✗ | ✓ | icon_grid, minimal_list, neobrutalism, tag_cloud | icon_grid |
 | `featured_projects` | Featured Projects | ✗ | ✓ | ✓ | minimal_list, neobrutalism, neobrutalism_stack, table, grid, cinematic_grid, spotlight | grid |
@@ -597,7 +597,7 @@ large scene cards, and horizontal frame galleries.
 
 | instanceId | componentKey | defaultVariant | fixed | removable |
 |---|---|---|---|---|
-| `hero_1` | `hero` | video_reel | ✗ | ✓ |
+| `hero_1` | `hero` | cinematic | ✗ | ✓ |
 | `about_1` | `about` | director_cut | ✗ | ✓ |
 | `stats_1` | `stats` | counter_row | ✗ | ✓ |
 | `featured_projects_1` | `featured_projects` | cinematic_grid | ✗ | ✓ |

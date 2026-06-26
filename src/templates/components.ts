@@ -322,6 +322,7 @@ const hero: ComponentSchema = {
     removable: false,
     variants: [
         { key: 'default', label: 'Default' },
+        { key: 'cinematic', label: 'Cinematic' },
         { key: 'compact', label: 'Compact' },
         { key: 'centered', label: 'Centered' },
         { key: 'minimal', label: 'Minimal' },

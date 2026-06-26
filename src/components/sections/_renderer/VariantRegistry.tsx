@@ -47,6 +47,7 @@ export const VariantRegistry: Record<string, ComponentType<SectionProps>> = {
     'header/minimal': dynamic(() => import('../header/minimal')),
     'header/neobrutalism': dynamic(() => import('../header/neobrutalism')),
     'hero/centered': dynamic(() => import('../hero/centered')),
+    'hero/cinematic': dynamic(() => import('../hero/cinematic')),
     'hero/compact': dynamic(() => import('../hero/compact')),
     'hero/default': dynamic(() => import('../hero/default')),
     'hero/minimal': dynamic(() => import('../hero/minimal')),

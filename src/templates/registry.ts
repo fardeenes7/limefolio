@@ -380,13 +380,13 @@ const cinematicTemplate: Template = {
                 {
                     instanceId: "hero_1",
                     componentKey: "hero",
-                    allowedVariants: ["video_reel", "split_section", "profile_card"],
-                    defaultVariant: "video_reel",
+                    allowedVariants: ["cinematic"],
+                    defaultVariant: "cinematic",
                     inputDefaults: {
                         headline: "Directed by {name}",
                         subheadline: "Selected cuts, frames, and production notes from a portfolio built like a feature presentation.",
                         primaryCtaLabel: "Watch the reel",
-                        primaryCtaUrl: "#projects",
+                        primaryCtaUrl: "/projects",
                         secondaryCtaLabel: "View stills",
                         secondaryCtaUrl: "#gallery",
                         backgroundType: "effect",
