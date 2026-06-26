@@ -83,6 +83,7 @@ function getComponent(componentKey: string, variant: string): SectionComponent {
 interface SectionRendererProps {
     section: ResolvedSection;
     siteData: SiteData;
+    compensateHeaderOffset?: boolean;
 }
 
 /**
@@ -92,6 +93,7 @@ interface SectionRendererProps {
 export const SectionRenderer = memo(function SectionRenderer({
     section,
     siteData,
+    compensateHeaderOffset = false,
 }: SectionRendererProps) {
     const { selectedInstanceId, isPreviewMode } = useContext(PreviewContext);
     const isSelected = selectedInstanceId === section.instanceId;
@@ -121,8 +123,16 @@ export const SectionRenderer = memo(function SectionRenderer({
         };
     }, [section.instanceId]);
 
+    const offsetStyle = compensateHeaderOffset
+        ? { paddingTop: 'var(--header-offset, 0px)' }
+        : undefined;
+
     if (!isPreviewMode) {
-        return <Component section={interpolatedSection} siteData={siteData} />;
+        return (
+            <div className="bg-background" style={offsetStyle} data-header-offset={compensateHeaderOffset || undefined}>
+                <Component section={interpolatedSection} siteData={siteData} />
+            </div>
+        );
     }
 
     if (section.componentKey === 'header') {
@@ -137,6 +147,8 @@ export const SectionRenderer = memo(function SectionRenderer({
         <div 
             onClick={handleClick}
             className={`group/section relative cursor-pointer ${isSelected ? 'ring-2 ring-primary ring-inset z-10' : ''}`}
+            style={offsetStyle}
+            data-header-offset={compensateHeaderOffset || undefined}
         >
             <Component section={interpolatedSection} siteData={siteData} />
             <div className={`absolute inset-0 border-2 border-transparent group-hover/section:border-primary/50 pointer-events-none transition-colors ${isSelected ? 'border-primary/50' : ''}`} />

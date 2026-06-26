@@ -43,7 +43,7 @@ export default function HeroCentered({ section, siteData }: SectionProps) {
     return (
         <section 
             className="relative min-h-[80vh] flex items-center justify-center overflow-hidden bg-background text-center"
-            style={{ paddingTop: `calc(${paddingTop || 0}px + var(--header-offset, 0px))`, paddingBottom: paddingBottom ? `${paddingBottom}px` : undefined }}
+            style={{ paddingTop: paddingTop ? `${paddingTop}px` : undefined, paddingBottom: paddingBottom ? `${paddingBottom}px` : undefined }}
         >
             <HeroBackground section={section} />
 

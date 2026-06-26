@@ -43,7 +43,7 @@ export default function HeroDefault({ section, siteData }: SectionProps) {
     return (
         <section 
             className="relative min-h-[90vh] flex items-center overflow-hidden bg-background"
-            style={{ paddingTop: `calc(${paddingTop}px + var(--header-offset, 0px))`, paddingBottom: `${paddingBottom}px` }}
+            style={{ paddingTop: `${paddingTop}px`, paddingBottom: `${paddingBottom}px` }}
         >
             <HeroBackground section={section} />
 

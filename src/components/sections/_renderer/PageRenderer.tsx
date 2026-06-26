@@ -86,11 +86,12 @@ interface PageRendererProps {
 export function PageRenderer({ sections, siteData }: PageRendererProps) {
     return (
         <>
-            {sections.map((section) => (
+            {sections.map((section, index) => (
                 <SectionRenderer
                     key={section.instanceId}
                     section={section}
                     siteData={siteData}
+                    compensateHeaderOffset={index === 0}
                 />
             ))}
         </>
