@@ -1,0 +1,46 @@
+"use client";
+
+// AUTO-GENERATED
+import dynamic from 'next/dynamic';
+import { ComponentType } from 'react';
+import { SectionProps } from './SectionRenderer';
+
+export const VariantRegistry: Record<string, ComponentType<SectionProps>> = {
+    'about/default': dynamic(() => import('../about/default')),
+    'about/director_cut': dynamic(() => import('../about/director_cut')),
+    'contact/minimal': dynamic(() => import('../contact/minimal')),
+    'contact/split_with_info': dynamic(() => import('../contact/split_with_info')),
+    'cookie_banner/bar': dynamic(() => import('../cookie_banner/bar')),
+    'cta/banner': dynamic(() => import('../cta/banner')),
+    'cta/card': dynamic(() => import('../cta/card')),
+    'cta/default': dynamic(() => import('../cta/default')),
+    'cta/minimal': dynamic(() => import('../cta/minimal')),
+    'experience/timeline': dynamic(() => import('../experience/timeline')),
+    'featured_projects/cinematic_grid': dynamic(() => import('../featured_projects/cinematic_grid')),
+    'featured_projects/grid': dynamic(() => import('../featured_projects/grid')),
+    'featured_projects/table': dynamic(() => import('../featured_projects/table')),
+    'footer/centered': dynamic(() => import('../footer/centered')),
+    'footer/compact': dynamic(() => import('../footer/compact')),
+    'footer/default': dynamic(() => import('../footer/default')),
+    'header/centered': dynamic(() => import('../header/centered')),
+    'header/compact': dynamic(() => import('../header/compact')),
+    'header/default': dynamic(() => import('../header/default')),
+    'header/editorial': dynamic(() => import('../header/editorial')),
+    'hero/centered': dynamic(() => import('../hero/centered')),
+    'hero/compact': dynamic(() => import('../hero/compact')),
+    'hero/default': dynamic(() => import('../hero/default')),
+    'hero/split_section': dynamic(() => import('../hero/split_section')),
+    'hero/typing_animation': dynamic(() => import('../hero/typing_animation')),
+    'hero/video_reel': dynamic(() => import('../hero/video_reel')),
+    'latest_blogs/grid': dynamic(() => import('../latest_blogs/grid')),
+    'media_gallery/carousel': dynamic(() => import('../media_gallery/carousel')),
+    'media_gallery/grid': dynamic(() => import('../media_gallery/grid')),
+    'media_gallery/horizontal_scroll': dynamic(() => import('../media_gallery/horizontal_scroll')),
+    'media_gallery/masonry': dynamic(() => import('../media_gallery/masonry')),
+    'services/card_grid': dynamic(() => import('../services/card_grid')),
+    'skills/icon_grid': dynamic(() => import('../skills/icon_grid')),
+    'skills/tag_cloud': dynamic(() => import('../skills/tag_cloud')),
+    'social_feed/grid': dynamic(() => import('../social_feed/grid')),
+    'stats/counter_row': dynamic(() => import('../stats/counter_row')),
+    'testimonials/carousel': dynamic(() => import('../testimonials/carousel')),
+};

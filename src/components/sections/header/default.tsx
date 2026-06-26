@@ -23,10 +23,12 @@ export default function HeaderDefault({ section, siteData }: SectionProps) {
     const backgroundStyle = (i.backgroundStyle as string) || 'frosted';
     const title = siteData.title || 'Portfolio';
 
-    const { headerClass } = useHeaderState(sticky, transparentOnTop, bottomBorder, backgroundStyle, section.instanceId);
+    const { headerClass, headerRef, headerInitialStyle } = useHeaderState(sticky, transparentOnTop, bottomBorder, backgroundStyle, section.instanceId, 64);
 
     return (
-        <header className={headerClass}>
+        <>
+            <style dangerouslySetInnerHTML={{ __html: headerInitialStyle }} />
+            <header className={headerClass} ref={headerRef}>
             <div className="container max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
                 {/* Logo / Site name */}
                 <Link
@@ -83,5 +85,6 @@ export default function HeaderDefault({ section, siteData }: SectionProps) {
                 </div>
             </div>
         </header>
+        </>
     );
 }

@@ -19,10 +19,12 @@ export default function HeaderCompact({ section, siteData }: SectionProps) {
     const backgroundStyle = (i.backgroundStyle as string) || 'frosted';
     const title = siteData.title || 'Portfolio';
 
-    const { headerClass } = useHeaderState(sticky, transparentOnTop, bottomBorder, backgroundStyle, section.instanceId);
+    const { headerClass, headerRef, headerInitialStyle } = useHeaderState(sticky, transparentOnTop, bottomBorder, backgroundStyle, section.instanceId, 56);
 
     return (
-        <header className={headerClass}>
+        <>
+            <style dangerouslySetInnerHTML={{ __html: headerInitialStyle }} />
+            <header className={headerClass} ref={headerRef}>
             <div className="container max-w-7xl mx-auto flex items-center justify-between px-6 py-3">
                 <Link href="/" className="text-sm font-semibold text-foreground hover:text-primary transition-colors flex-shrink-0">
                     {siteData.logo ? (
@@ -51,5 +53,6 @@ export default function HeaderCompact({ section, siteData }: SectionProps) {
                 </div>
             </div>
         </header>
+        </>
     );
 }

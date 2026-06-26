@@ -21,10 +21,12 @@ export default function HeaderEditorial({ section, siteData }: SectionProps) {
     const isBetween = bottomRowLayout === 'between';
     const title = siteData.title || 'Portfolio';
 
-    const { headerClass } = useHeaderState(sticky, transparentOnTop, bottomBorder, backgroundStyle, section.instanceId);
+    const { headerClass, headerRef, headerInitialStyle } = useHeaderState(sticky, transparentOnTop, bottomBorder, backgroundStyle, section.instanceId, 124);
 
     return (
-        <header className={headerClass}>
+        <>
+            <style dangerouslySetInnerHTML={{ __html: headerInitialStyle }} />
+            <header className={headerClass} ref={headerRef}>
             <div className="container max-w-7xl mx-auto px-6 pt-6 pb-4 flex flex-col items-center gap-5">
                 {/* Top Row: Logo / Site name */}
                 <div className="w-full flex justify-center">
@@ -71,5 +73,6 @@ export default function HeaderEditorial({ section, siteData }: SectionProps) {
                 </div>
             </div>
         </header>
+        </>
     );
 }

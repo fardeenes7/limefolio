@@ -18,7 +18,7 @@ export default function MediaGalleryHorizontalScroll({ section }: SectionProps) 
     useHorizontalScroll(containerRef, wrapperRef, [sectionTitle]);
 
     return (
-        <section ref={containerRef} className="relative h-screen bg-background overflow-hidden flex flex-col justify-center border-y border-border">
+        <section ref={containerRef} className="relative h-[calc(100vh-var(--header-height,0px))] bg-background overflow-hidden flex flex-col justify-center border-y border-border">
             <div className="absolute top-12 left-6 md:left-12 z-20">
                 <h2 className="text-2xl md:text-4xl font-bold text-foreground uppercase tracking-widest">
                     {sectionTitle}

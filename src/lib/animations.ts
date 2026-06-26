@@ -103,7 +103,7 @@ export const useHorizontalScroll = (
             ease: "none",
             scrollTrigger: {
                 trigger: container,
-                start: "top top",
+                start: () => `top ${getComputedStyle(document.documentElement).getPropertyValue('--header-height') || '0px'}`,
                 end: () => `+=${scrollWidth}`,
                 pin: true,
                 scrub: 1,

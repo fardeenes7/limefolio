@@ -110,8 +110,11 @@ export function useAppearanceState({ initialConfigRaw }: UseAppearanceStateProps
                         });
                     }
 
-                    if (Object.keys(newInputs).length > 0) {
-                        newGroup[instanceId] = { inputs: newInputs };
+                    if (Object.keys(newInputs).length > 0 || override.variant) {
+                        newGroup[instanceId] = {
+                            ...(Object.keys(newInputs).length > 0 ? { inputs: newInputs } : {}),
+                            ...(override.variant ? { variant: override.variant } : {})
+                        };
                     }
                 });
             };

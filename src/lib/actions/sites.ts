@@ -3,7 +3,7 @@
 import { api } from "../fetcher";
 import type { Site, SiteFormData } from "../../types";
 import type { UserPortfolioConfig } from "@/templates/types";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 
 /**
  * Get user's site details
@@ -21,6 +21,19 @@ export async function updateSite(data: SiteFormData) {
 
     if (response.ok) {
         revalidatePath("/dashboard");
+        revalidatePath("/", "layout");
+        if (response.data?.subdomain) {
+            // @ts-ignore - Next.js 16.1.6 typings issue expecting 2 arguments
+            revalidateTag(`${response.data.subdomain}-site`);
+            // @ts-ignore
+            revalidateTag(`${response.data.subdomain}.limefolio.com-site`); // Assuming default domain scheme
+        }
+        if (response.data?.custom_domains) {
+            response.data.custom_domains.forEach((cd: any) => {
+                // @ts-ignore
+                revalidateTag(`${cd.domain}-site`);
+            });
+        }
     }
 
     return response;
@@ -49,6 +62,22 @@ export async function updateTemplateConfig(data: any) {
 
     if (response.ok) {
         revalidatePath("/dashboard");
+        revalidatePath("/", "layout");
+        
+        // Fetch site to get subdomain to invalidate tag
+        const siteResponse = await getSiteDetail();
+        if (siteResponse.ok && siteResponse.data?.subdomain) {
+            // @ts-ignore - Next.js 16.1.6 typings issue expecting 2 arguments
+            revalidateTag(`${siteResponse.data.subdomain}-template-config`);
+            // @ts-ignore
+            revalidateTag(`${siteResponse.data.subdomain}.limefolio.com-template-config`);
+        }
+        if (siteResponse.ok && siteResponse.data?.custom_domains) {
+            siteResponse.data.custom_domains.forEach((cd: any) => {
+                // @ts-ignore
+                revalidateTag(`${cd.domain}-template-config`);
+            });
+        }
     }
 
     return response;

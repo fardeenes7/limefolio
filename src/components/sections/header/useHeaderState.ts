@@ -1,9 +1,10 @@
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect, useLayoutEffect, useContext, useRef } from 'react';
 import { PreviewContext } from '@/components/preview/LivePreviewProvider';
 
-export function useHeaderState(sticky: boolean, transparentOnTop: boolean, bottomBorder: boolean, backgroundStyle: string = 'frosted', instanceId?: string) {
+export function useHeaderState(sticky: boolean, transparentOnTop: boolean, bottomBorder: boolean, backgroundStyle: string = 'frosted', instanceId?: string, initialHeight: number = 80) {
     const { isPreviewMode, selectedInstanceId } = useContext(PreviewContext);
     const [isScrolled, setIsScrolled] = useState(false);
+    const headerRef = useRef<HTMLElement>(null);
 
     useEffect(() => {
         const handleScroll = () => {
@@ -13,6 +14,35 @@ export function useHeaderState(sticky: boolean, transparentOnTop: boolean, botto
         window.addEventListener('scroll', handleScroll, { passive: true });
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
+
+    const useIsomorphicLayoutEffect = typeof window !== 'undefined' ? useLayoutEffect : useEffect;
+
+    useIsomorphicLayoutEffect(() => {
+        if (!headerRef.current) return;
+
+        // Synchronous measurement before first paint to prevent any flash/jump
+        const updateHeight = (height: number) => {
+            document.documentElement.style.setProperty('--header-height', `${height}px`);
+            
+            // Only update offset if it differs significantly from the SSR guess
+            // This prevents tiny (1-5px) layout shifts during hydration due to font rendering differences
+            if (Math.abs(height - initialHeight) > 10) {
+                document.documentElement.style.setProperty('--header-offset', transparentOnTop ? `${height}px` : '0px');
+            }
+        };
+
+        updateHeight(headerRef.current.clientHeight);
+
+        // Observe header height for future dynamic changes (window resize, wrapping)
+        const ro = new ResizeObserver((entries) => {
+            for (const entry of entries) {
+                updateHeight(entry.target.clientHeight);
+            }
+        });
+        ro.observe(headerRef.current);
+
+        return () => ro.disconnect();
+    }, [transparentOnTop]);
 
     let positionClass = 'relative w-full z-50';
     if (transparentOnTop) {
@@ -42,5 +72,7 @@ export function useHeaderState(sticky: boolean, transparentOnTop: boolean, botto
 
     return {
         headerClass: `${positionClass} ${bgClass} ${borderClass} ${previewClasses} transition-all duration-300`,
+        headerRef,
+        headerInitialStyle: `:root { --header-offset: ${transparentOnTop ? initialHeight + 'px' : '0px'}; --header-height: ${initialHeight}px; }`
     };
 }

@@ -23,7 +23,6 @@
 
 import type { ResolvedSection } from '@/templates/types';
 import type { SiteData } from '@/types/site';
-import dynamic from 'next/dynamic';
 import { ComponentType, memo, useMemo, useContext } from 'react';
 import { PreviewContext } from '@/components/preview/LivePreviewProvider';
 
@@ -45,64 +44,36 @@ export interface SectionProps {
 // ─────────────────────────────────────────────────────────────────────────────
 
 import { ComponentRegistry } from '@/templates/components';
+import { VariantRegistry } from './VariantRegistry';
 
 type SectionComponent = ComponentType<SectionProps>;
-const componentCache = new Map<string, SectionComponent>();
 
 function getComponent(componentKey: string, variant: string): SectionComponent {
     const cacheKey = `${componentKey}/${variant}`;
-    if (componentCache.has(cacheKey)) return componentCache.get(cacheKey)!;
+    
+    // Fast path: Exact variant match
+    if (VariantRegistry[cacheKey]) {
+        return VariantRegistry[cacheKey];
+    }
 
     const schema = ComponentRegistry[componentKey];
     if (!schema) {
         console.warn(`[SectionRenderer] Unknown componentKey: ${componentKey}`);
-        const NullComp = () => null;
-        componentCache.set(cacheKey, NullComp);
-        return NullComp;
+        return () => null;
     }
 
-    const loadVariant = async (targetVariant: string) => {
-        switch (componentKey) {
-            case 'about': return await import(`../about/${targetVariant}`);
-            case 'contact': return await import(`../contact/${targetVariant}`);
-            case 'cookie_banner': return await import(`../cookie_banner/${targetVariant}`);
-            case 'cta': return await import(`../cta/${targetVariant}`);
-            case 'experience': return await import(`../experience/${targetVariant}`);
-            case 'featured_projects': return await import(`../featured_projects/${targetVariant}`);
-            case 'footer': return await import(`../footer/${targetVariant}`);
-            case 'header': return await import(`../header/${targetVariant}`);
-            case 'hero': return await import(`../hero/${targetVariant}`);
-            case 'latest_blogs': return await import(`../latest_blogs/${targetVariant}`);
-            case 'media_gallery': return await import(`../media_gallery/${targetVariant}`);
-            case 'services': return await import(`../services/${targetVariant}`);
-            case 'skills': return await import(`../skills/${targetVariant}`);
-            case 'social_feed': return await import(`../social_feed/${targetVariant}`);
-            case 'stats': return await import(`../stats/${targetVariant}`);
-            case 'testimonials': return await import(`../testimonials/${targetVariant}`);
-            default:
-                throw new Error(`Unknown componentKey: ${componentKey}`);
-        }
-    };
+    // Fallback path: Try default variant
+    const defaultCacheKey = `${componentKey}/${schema.defaultVariant}`;
+    if (VariantRegistry[defaultCacheKey]) {
+        console.warn(
+            `[SectionRenderer] Variant "${variant}" not found for "${componentKey}". Falling back to default "${schema.defaultVariant}".`
+        );
+        return VariantRegistry[defaultCacheKey];
+    }
 
-    const Comp = dynamic(() => 
-        loadVariant(variant).catch((err) => {
-            if (variant !== schema.defaultVariant) {
-                console.warn(
-                    `[SectionRenderer] Variant "${variant}" not found for "${componentKey}". Falling back to default "${schema.defaultVariant}".`,
-                );
-                return loadVariant(schema.defaultVariant).catch(() => {
-                    console.warn(`[SectionRenderer] Default variant "${schema.defaultVariant}" for "${componentKey}" also missing. Rendering nothing.`);
-                    return { default: () => null };
-                });
-            }
-            console.warn(`[SectionRenderer] Variant "${variant}" not found for "${componentKey}". Rendering nothing.`);
-            return { default: () => null };
-        }), 
-        { ssr: true }
-    ) as SectionComponent;
-
-    componentCache.set(cacheKey, Comp);
-    return Comp;
+    // Final fallback
+    console.warn(`[SectionRenderer] Default variant "${schema.defaultVariant}" for "${componentKey}" also missing. Rendering nothing.`);
+    return () => null;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -125,8 +96,7 @@ export const SectionRenderer = memo(function SectionRenderer({
     const { selectedInstanceId, isPreviewMode } = useContext(PreviewContext);
     const isSelected = selectedInstanceId === section.instanceId;
 
-    // eslint-disable-next-line react-hooks/static-components
-    const Component = getComponent(section.componentKey, section.resolvedVariant);
+    const Component = getComponent(section.componentKey, section.resolvedVariant); console.log("Rendering:", section.componentKey, "Variant:", section.resolvedVariant, "isPreview:", isPreviewMode);
     
     // Interpolate template variables in inputs
     const interpolatedInputs = { ...section.resolvedInputs };
