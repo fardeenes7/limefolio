@@ -8,8 +8,9 @@ import { getFont, getAllFontVariables } from "@/lib/fonts";
 import { readFile } from "fs/promises";
 import path from "path";
 import { LayoutPageRenderer } from "@/components/sections/_renderer/PageRenderer";
-import { resolvePortfolioConfig, emptyUserConfig } from "@/templates/merge";
+import { resolvePortfolioConfig } from "@/templates/merge";
 import { getTemplate } from "@/templates/registry";
+import { userConfigFromRaw } from "@/templates/config";
 import { LivePreviewProvider } from "@/components/preview/LivePreviewProvider";
 import { THEMES_META } from "@/lib/themes-meta";
 
@@ -91,16 +92,11 @@ export default async function DomainLayout({
     const rawConfig = await getTemplateConfig(domain);
     const templateDef = getTemplate(templateSlug);
     
-    const userConfig = rawConfig && !rawConfig.error ? {
+    const userConfig = userConfigFromRaw(rawConfig, templateDef, {
         templateKey: templateSlug,
         themeKey: colorThemeSlug,
         fontKey: fontSlug,
-        templateVersion: rawConfig.template_version || '1.0.0',
-        overrides: rawConfig.config_overrides || { layout: {}, pages: {} },
-        additions: rawConfig.config_additions || { layout: [], pages: {} },
-        removals: rawConfig.config_removals || { layout: [], pages: {} },
-        ordering: rawConfig.config_ordering || {},
-    } : emptyUserConfig(templateSlug, colorThemeSlug, fontSlug, templateDef.version);
+    });
 
     // 2. Resolve the config (SSR merge)
     const resolvedConfig = resolvePortfolioConfig(templateDef, userConfig);

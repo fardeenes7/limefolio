@@ -1,7 +1,41 @@
 import { useCallback } from "react";
-import type { UserPortfolioConfig, SectionInstance } from "@/templates/types";
+import type { UserPortfolioConfig, SectionInstance, SectionOverride } from "@/templates/types";
 import { ComponentRegistry } from "@/templates/components";
-import { useResolvedSections } from "./useResolvedSections";
+
+function withInputOverride(
+    override: SectionOverride | undefined,
+    inputKey: string,
+    value: unknown,
+): SectionOverride | undefined {
+    const inputs = { ...(override?.inputs ?? {}) };
+
+    if (value === undefined) {
+        delete inputs[inputKey];
+    } else {
+        inputs[inputKey] = value;
+    }
+
+    const next: SectionOverride = {
+        ...(override?.variant !== undefined ? { variant: override.variant } : {}),
+        ...(Object.keys(inputs).length > 0 ? { inputs } : {}),
+    };
+
+    return Object.keys(next).length > 0 ? next : undefined;
+}
+
+function setOrDeleteOverride(
+    overrides: Record<string, SectionOverride>,
+    instanceId: string,
+    override: SectionOverride | undefined,
+): Record<string, SectionOverride> {
+    const next = { ...overrides };
+    if (override) {
+        next[instanceId] = override;
+    } else {
+        delete next[instanceId];
+    }
+    return next;
+}
 
 export function useSectionCustomizer(
     pageKey: string,
@@ -37,12 +71,20 @@ export function useSectionCustomizer(
             const next = { ...prev };
             if (isGlobal(instanceId)) {
                 const existing = next.layout[instanceId] || {};
-                next.layout = { ...next.layout, [instanceId]: { ...existing, inputs: { ...existing.inputs, [inputKey]: value } } };
+                next.layout = setOrDeleteOverride(
+                    next.layout,
+                    instanceId,
+                    withInputOverride(existing, inputKey, value),
+                );
             } else {
                 next.pages = { ...next.pages };
                 const existingPage = next.pages[pageKey] || {};
                 const existing = existingPage[instanceId] || {};
-                next.pages[pageKey] = { ...existingPage, [instanceId]: { ...existing, inputs: { ...existing.inputs, [inputKey]: value } } };
+                next.pages[pageKey] = setOrDeleteOverride(
+                    existingPage,
+                    instanceId,
+                    withInputOverride(existing, inputKey, value),
+                );
             }
             return next;
         });

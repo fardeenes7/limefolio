@@ -26,6 +26,8 @@ Lives in the Next.js codebase:
   its key, variants, inputs, and flags.
 - **`src/templates/registry.ts`** — defines every available portfolio template: which
   components appear on which pages, in what order, with which allowed variants.
+- **`src/templates/config.ts`** — maps raw Django API payloads into the TypeScript
+  `UserPortfolioConfig` shape used by SSR and public page rendering.
 
 These files are compile-time constants. They never change at runtime and are never
 stored in the database. When you add a new component or template, you edit these files
@@ -34,7 +36,7 @@ and deploy.
 ### Layer 2 — User config layer (sparse deltas, persisted in Django)
 
 Stored in `PortfolioTemplateConfig.config_overrides / config_additions / config_removals
-/ config_ordering` JSON columns.
+/ config_ordering / theme_overrides` JSON columns.
 
 The user config stores **only what the user has explicitly changed** from the template
 defaults. It is a diff, not a snapshot. If the user has not changed a section's variant,
@@ -128,6 +130,7 @@ Each input has a `kind`:
 | `select` | One of a fixed set of string `value`s | Dropdown |
 | `file` | A URL to an uploaded asset | File picker |
 | `token` | A shadcn CSS variable name (e.g. `"--primary"`) | Token palette picker |
+| `slider` | A numeric value within a bounded range | Slider control |
 
 **`showIf`** conditionally hides an input in the editor when another input's current
 value does not match. It does NOT affect SSR — the input's default is applied
@@ -194,6 +197,7 @@ This is the TypeScript type (`src/templates/types.ts`) corresponding to what the
 | `additions` | User-added `SectionInstance` objects for repeatable components. |
 | `removals` | `instanceId` arrays of sections the user has explicitly removed. |
 | `ordering` | `instanceId` arrays representing the user's preferred section order. |
+| `themeOverrides` | CSS variable overrides for the active theme, such as custom colors or radius. |
 
 Example of a minimal user config after the user changed only the hero variant:
 
@@ -260,18 +264,7 @@ or `userConfig.removals.pages[pageKey]`.
 Append any `SectionInstance[]` from `userConfig.additions.layout` or
 `userConfig.additions.pages[pageKey]` at the end of the section list.
 
-### Step 5 — Inject global components
-
-Global components (`isGlobal: true` in `ComponentRegistry`) are sourced from
-`template.layout` and injected into every page's resolved section list automatically.
-The `header` is prepended; the `footer` and `cookie_banner` are appended. Their config
-(variant, inputDefaults) comes from the corresponding `SectionInstance` in
-`template.layout`, merged with any user overrides from `userConfig.overrides.layout`.
-
-Global components must not be declared in `template.pages[x].sections`. Declaring one
-there would result in it appearing twice.
-
-### Step 6 — Resolve inputs and variant for each section
+### Step 5 — Resolve inputs and variant for each section
 
 For each section, the final values are determined by this priority order
 (lowest priority → highest priority):
@@ -280,11 +273,24 @@ For each section, the final values are determined by this priority order
 2. `SectionInstance.inputDefaults[n]` (per-instance defaults in the template definition)
 3. `userConfig.overrides[pageKey][instanceId].inputs[key]` (only keys explicitly set by the user)
 
-Variant resolution: `userConfig.overrides[pageKey][instanceId].variant ?? sectionInstance.defaultVariant`
+Variant resolution validates persisted values against `allowedVariants` and the component
+schema. Invalid or stale variants fall back to the section default, then to the component
+schema default if needed.
 
 Only keys explicitly present in `userOverride.inputs` are applied. The entire override
 object is never merged blindly — a user override of `{ headline: "Hello" }` does not
 affect any other input.
+
+### Layout sections
+
+Global components (`isGlobal: true` in `ComponentRegistry`) are resolved from
+`template.layout` into `ResolvedPortfolioConfig.layout`. They are not inserted into each
+`ResolvedPage.sections` array. Runtime rendering wraps page content with
+`LayoutPageRenderer`: header sections render above page content, and footer/cookie
+sections render below it.
+
+Global components must not be declared in `template.pages[x].sections`. Declaring one
+there would result in it appearing twice if a page rendered both layout and page sections.
 
 ### Edge cases
 
@@ -336,8 +342,8 @@ no harm. When the user next saves their config, the orphaned key can be cleaned 
    curated subset.
 
 3. **Build template-specific component variants** if needed (e.g. a `hero_split`
-   variant that only makes sense in this template). Fall back to the `default` variant
-   for any component that doesn't have a template-specific implementation yet.
+   variant that only makes sense in this template). Add every renderable variant to both
+   `ComponentRegistry` and `VariantRegistry`; do not expose variants that cannot render.
 
 4. **Add a theme entry** to `src/themes/index.ts` and create the corresponding
    `src/themes/[slug].css` file if the template needs a custom default theme. Add a
@@ -471,26 +477,33 @@ All contributors must follow these rules without exception:
 
 | key | label | isGlobal | repeatable | removable | variants | default variant |
 |---|---|---|---|---|---|---|
-| `header` | Header | ✓ | ✗ | ✗ | default, compact, centered, split | default |
-| `footer` | Footer | ✓ | ✗ | ✗ | default, compact, centered, columns | default |
-| `cookie_banner` | Cookie Banner | ✓ | ✗ | ✓ | bar, modal, corner_card | bar |
-| `hero` | Hero | ✗ | ✗ | ✗ | default, typing_animation, image_split, video_background, animated_gradient, 3d_model, minimal_text | default |
-| `about` | About | ✗ | ✗ | ✓ | default, timeline, skills_focused, split_image | default |
-| `skills` | Skills | ✗ | ✗ | ✓ | icon_grid, tag_cloud, progress_bars, category_grouped | icon_grid |
-| `featured_projects` | Featured Projects | ✗ | ✓ | ✓ | table, grid, bento | grid |
-| `media_gallery` | Media Gallery | ✗ | ✓ | ✓ | carousel, grid, masonry | masonry |
-| `latest_blogs` | Latest Blog Posts | ✗ | ✗ | ✓ | carousel, grid, masonry, bento | grid |
-| `cta` | Call to Action | ✗ | ✓ | ✓ | default, split, card, banner | default |
-| `testimonials` | Testimonials | ✗ | ✗ | ✓ | carousel, grid, single_featured, masonry | carousel |
-| `services` | Services | ✗ | ✗ | ✓ | card_grid, icon_list, pricing_table, horizontal_scroll | card_grid |
-| `experience` | Experience | ✗ | ✗ | ✓ | timeline, card_list, compact_list | timeline |
-| `contact` | Contact | ✗ | ✗ | ✓ | form_only, split_with_info, card, minimal | split_with_info |
-| `stats` | Stats | ✗ | ✗ | ✓ | counter_row, card_grid, minimal_list | counter_row |
-| `social_feed` | Social Feed | ✗ | ✓ | ✓ | grid, carousel, masonry | grid |
+| `header` | Header | ✓ | ✗ | ✗ | default, compact, centered, editorial | default |
+| `footer` | Footer | ✓ | ✗ | ✗ | default, compact, centered | default |
+| `cookie_banner` | Cookie Banner | ✓ | ✗ | ✓ | bar | bar |
+| `hero` | Hero | ✗ | ✗ | ✗ | default, compact, centered, split_section, typing_animation, video_reel | default |
+| `about` | About | ✗ | ✗ | ✓ | default, director_cut | default |
+| `skills` | Skills | ✗ | ✗ | ✓ | icon_grid, tag_cloud | icon_grid |
+| `featured_projects` | Featured Projects | ✗ | ✓ | ✓ | table, grid, cinematic_grid | grid |
+| `media_gallery` | Media Gallery | ✗ | ✓ | ✓ | carousel, grid, masonry, horizontal_scroll | masonry |
+| `latest_blogs` | Latest Blog Posts | ✗ | ✗ | ✓ | grid | grid |
+| `cta` | Call to Action | ✗ | ✓ | ✓ | default, card, banner, minimal | default |
+| `testimonials` | Testimonials | ✗ | ✗ | ✓ | carousel | carousel |
+| `services` | Services | ✗ | ✗ | ✓ | card_grid | card_grid |
+| `experience` | Experience | ✗ | ✗ | ✓ | timeline | timeline |
+| `contact` | Contact | ✗ | ✗ | ✓ | split_with_info, minimal | split_with_info |
+| `stats` | Stats | ✗ | ✗ | ✓ | counter_row | counter_row |
+| `social_feed` | Social Feed | ✗ | ✓ | ✓ | grid | grid |
 
 ---
 
 ## Template Reference
+
+Registered templates: `default`, `cinematic`, and `terminal`.
+
+Current public routes render `landing`, `all_projects`, and `project_details`. The
+template registry also defines `all_blog`, `blog_details`, and `contact` page configs;
+those route implementations still need to be added before those pages are publicly
+reachable.
 
 ### Template: `default`
 

@@ -288,8 +288,19 @@ function resolveSection(
         ...userInputs,
     };
 
-    // Resolve variant: user override → section default
-    const resolvedVariant = userOverride.variant ?? section.defaultVariant;
+    // Resolve variant within the section's allowed set. Persisted config can outlive
+    // schema changes, so invalid variants fall back instead of reaching the renderer.
+    const variantCandidate = userOverride.variant ?? section.defaultVariant;
+    const schemaVariantKeys = new Set(schema.variants.map((variant) => variant.key));
+    const allowedVariants = section.allowedVariants.filter((variant) =>
+        schemaVariantKeys.has(variant),
+    );
+    const fallbackVariant = allowedVariants.includes(section.defaultVariant)
+        ? section.defaultVariant
+        : schema.defaultVariant;
+    const resolvedVariant = allowedVariants.includes(variantCandidate)
+        ? variantCandidate
+        : fallbackVariant;
 
     return {
         ...section,
@@ -297,4 +308,3 @@ function resolveSection(
         resolvedInputs,
     };
 }
-

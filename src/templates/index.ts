@@ -45,6 +45,7 @@ export { ComponentRegistry } from './components';
 // ── SSR merge utilities ─────────────────────────────────────────────────────
 
 export { resolvePortfolioConfig, emptyUserConfig } from './merge';
+export { userConfigFromRaw } from './config';
 
 // ── Types ────────────────────────────────────────────────────────────────────
 

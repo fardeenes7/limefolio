@@ -248,7 +248,7 @@ export function SectionList({
             if (activePageIdx === -1 || overPageIdx === -1) return;
 
             const newArray = arrayMove(pageSections, activePageIdx, overPageIdx);
-            const newOrdering = newArray.filter(s => !s.fixed).map(s => s.instanceId);
+            const newOrdering = newArray.map(s => s.instanceId);
             customizer.reorderSections(newOrdering);
         }
     };

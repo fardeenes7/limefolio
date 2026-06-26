@@ -165,7 +165,6 @@ const footer: ComponentSchema = {
         { key: 'default', label: 'Default' },
         { key: 'compact', label: 'Compact' },
         { key: 'centered', label: 'Centered' },
-        { key: 'columns', label: 'Columns' },
     ],
     defaultVariant: 'default',
     inputs: [
@@ -212,8 +211,6 @@ const cookie_banner: ComponentSchema = {
     removable: true,
     variants: [
         { key: 'bar', label: 'Bar' },
-        { key: 'modal', label: 'Modal' },
-        { key: 'corner_card', label: 'Corner Card' },
     ],
     defaultVariant: 'bar',
     inputs: [
@@ -260,6 +257,7 @@ const hero: ComponentSchema = {
     variants: [
         { key: 'default', label: 'Default' },
         { key: 'compact', label: 'Compact' },
+        { key: 'centered', label: 'Centered' },
         { key: 'split_section', label: 'Split Section' },
         { key: 'typing_animation', label: 'Typing Animation' },
         { key: 'video_reel', label: 'Video Reel' },
@@ -440,9 +438,6 @@ const about: ComponentSchema = {
     removable: true,
     variants: [
         { key: 'default', label: 'Default' },
-        { key: 'timeline', label: 'Timeline' },
-        { key: 'skills_focused', label: 'Skills Focused' },
-        { key: 'split_image', label: 'Split Image' },
         { key: 'director_cut', label: 'Director Cut' },
     ],
     defaultVariant: 'default',
@@ -508,8 +503,6 @@ const skills: ComponentSchema = {
     variants: [
         { key: 'icon_grid', label: 'Icon Grid' },
         { key: 'tag_cloud', label: 'Tag Cloud' },
-        { key: 'progress_bars', label: 'Progress Bars' },
-        { key: 'category_grouped', label: 'Category Grouped' },
     ],
     defaultVariant: 'icon_grid',
     inputs: [
@@ -556,7 +549,6 @@ const featured_projects: ComponentSchema = {
     variants: [
         { key: 'table', label: 'Table' },
         { key: 'grid', label: 'Grid' },
-        { key: 'bento', label: 'Bento' },
         { key: 'cinematic_grid', label: 'Cinematic Grid' },
     ],
     defaultVariant: 'grid',
@@ -685,10 +677,7 @@ const latest_blogs: ComponentSchema = {
     repeatable: false,
     removable: true,
     variants: [
-        { key: 'carousel', label: 'Carousel' },
         { key: 'grid', label: 'Grid' },
-        { key: 'masonry', label: 'Masonry' },
-        { key: 'bento', label: 'Bento' },
     ],
     defaultVariant: 'grid',
     inputs: [
@@ -760,9 +749,9 @@ const cta: ComponentSchema = {
     removable: true,
     variants: [
         { key: 'default', label: 'Default' },
-        { key: 'split', label: 'Split' },
         { key: 'card', label: 'Card' },
         { key: 'banner', label: 'Banner' },
+        { key: 'minimal', label: 'Minimal' },
     ],
     defaultVariant: 'default',
     inputs: [
@@ -824,9 +813,6 @@ const testimonials: ComponentSchema = {
     removable: true,
     variants: [
         { key: 'carousel', label: 'Carousel' },
-        { key: 'grid', label: 'Grid' },
-        { key: 'single_featured', label: 'Single Featured' },
-        { key: 'masonry', label: 'Masonry' },
     ],
     defaultVariant: 'carousel',
     inputs: [
@@ -878,9 +864,6 @@ const services: ComponentSchema = {
     removable: true,
     variants: [
         { key: 'card_grid', label: 'Card Grid' },
-        { key: 'icon_list', label: 'Icon List' },
-        { key: 'pricing_table', label: 'Pricing Table' },
-        { key: 'horizontal_scroll', label: 'Horizontal Scroll' },
     ],
     defaultVariant: 'card_grid',
     inputs: [
@@ -927,8 +910,6 @@ const experience: ComponentSchema = {
     removable: true,
     variants: [
         { key: 'timeline', label: 'Timeline' },
-        { key: 'card_list', label: 'Card List' },
-        { key: 'compact_list', label: 'Compact List' },
     ],
     defaultVariant: 'timeline',
     inputs: [
@@ -985,9 +966,7 @@ const contact: ComponentSchema = {
     repeatable: false,
     removable: true,
     variants: [
-        { key: 'form_only', label: 'Form Only' },
         { key: 'split_with_info', label: 'Split with Info' },
-        { key: 'card', label: 'Card' },
         { key: 'minimal', label: 'Minimal' },
     ],
     defaultVariant: 'split_with_info',
@@ -1059,8 +1038,6 @@ const stats: ComponentSchema = {
     removable: true,
     variants: [
         { key: 'counter_row', label: 'Counter Row' },
-        { key: 'card_grid', label: 'Card Grid' },
-        { key: 'minimal_list', label: 'Minimal List' },
     ],
     defaultVariant: 'counter_row',
     inputs: [
@@ -1102,8 +1079,6 @@ const social_feed: ComponentSchema = {
     removable: true,
     variants: [
         { key: 'grid', label: 'Grid' },
-        { key: 'carousel', label: 'Carousel' },
-        { key: 'masonry', label: 'Masonry' },
     ],
     defaultVariant: 'grid',
     inputs: [
