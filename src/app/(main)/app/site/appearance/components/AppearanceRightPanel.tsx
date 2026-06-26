@@ -11,7 +11,7 @@ import { SectionList } from "./SectionList";
 import { SectionDetail } from "./SectionDetail";
 
 import { ThemeCustomizer } from "./ThemeCustomizer";
-import { THEMES_META, FONTS_META } from "@/lib/themes-meta";
+import { SORTED_FONTS_META } from "@/lib/themes-meta";
 import type { UserPortfolioConfig } from "@/templates/types";
 import { useAppearanceState } from "../hooks/useAppearanceState";
 import { useResolvedSections } from "../hooks/useResolvedSections";
@@ -141,7 +141,7 @@ export function AppearanceRightPanel({
 
                         {activeDesignTab === "font" && (
                             <div className="p-1.5">
-                                {FONTS_META.map((font) => (
+                                {SORTED_FONTS_META.map((font) => (
                                     <FontOption
                                         key={font.slug}
                                         font={font}

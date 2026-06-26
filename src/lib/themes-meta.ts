@@ -728,3 +728,8 @@ export const FONTS_META: FontMeta[] = [
         previewStack: "'Source Code Pro', monospace"
     }
 ];
+
+const byName = <T extends { name: string }>(a: T, b: T) => a.name.localeCompare(b.name);
+
+export const SORTED_THEMES_META = [...THEMES_META].sort(byName);
+export const SORTED_FONTS_META = [...FONTS_META].sort(byName);

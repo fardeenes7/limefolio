@@ -480,28 +480,28 @@ All contributors must follow these rules without exception:
 
 | key | label | isGlobal | repeatable | removable | variants | default variant |
 |---|---|---|---|---|---|---|
-| `header` | Header | ✓ | ✗ | ✗ | default, compact, centered, editorial, floating | default |
-| `footer` | Footer | ✓ | ✗ | ✗ | default, compact, centered | default |
+| `header` | Header | ✓ | ✗ | ✗ | default, compact, minimal, centered, editorial, floating | default |
+| `footer` | Footer | ✓ | ✗ | ✗ | default, compact, minimal, centered | default |
 | `cookie_banner` | Cookie Banner | ✓ | ✗ | ✓ | bar | bar |
-| `hero` | Hero | ✗ | ✗ | ✗ | default, compact, centered, split_section, typing_animation, video_reel, profile_card | default |
-| `about` | About | ✗ | ✗ | ✓ | default, director_cut | default |
-| `skills` | Skills | ✗ | ✗ | ✓ | icon_grid, tag_cloud | icon_grid |
-| `featured_projects` | Featured Projects | ✗ | ✓ | ✓ | table, grid, cinematic_grid, spotlight | grid |
+| `hero` | Hero | ✗ | ✗ | ✗ | default, compact, centered, minimal, split_section, typing_animation, video_reel, profile_card | default |
+| `about` | About | ✗ | ✗ | ✓ | default, minimal, director_cut | default |
+| `skills` | Skills | ✗ | ✗ | ✓ | icon_grid, minimal_list, tag_cloud | icon_grid |
+| `featured_projects` | Featured Projects | ✗ | ✓ | ✓ | minimal_list, table, grid, cinematic_grid, spotlight | grid |
 | `media_gallery` | Media Gallery | ✗ | ✓ | ✓ | carousel, grid, masonry, horizontal_scroll | masonry |
-| `latest_blogs` | Latest Blog Posts | ✗ | ✗ | ✓ | grid, editorial | grid |
+| `latest_blogs` | Latest Blog Posts | ✗ | ✗ | ✓ | minimal_list, grid, editorial | grid |
 | `cta` | Call to Action | ✗ | ✓ | ✓ | default, card, banner, minimal | default |
 | `testimonials` | Testimonials | ✗ | ✗ | ✓ | carousel | carousel |
 | `services` | Services | ✗ | ✗ | ✓ | card_grid | card_grid |
-| `experience` | Experience | ✗ | ✗ | ✓ | timeline | timeline |
+| `experience` | Experience | ✗ | ✗ | ✓ | minimal_list, timeline | timeline |
 | `contact` | Contact | ✗ | ✗ | ✓ | split_with_info, minimal, social_cards | split_with_info |
-| `stats` | Stats | ✗ | ✗ | ✓ | counter_row | counter_row |
+| `stats` | Stats | ✗ | ✗ | ✓ | minimal_row, counter_row | counter_row |
 | `social_feed` | Social Feed | ✗ | ✓ | ✓ | grid | grid |
 
 ---
 
 ## Template Reference
 
-Registered templates: `default`, `cinematic`, and `terminal`.
+Registered templates: `default`, `cinematic`, `terminal`, and `minimal`.
 
 Current public routes render `landing`, `all_projects`, `project_details`, `all_blog`,
 `blog_details`, and `contact`.
@@ -569,3 +569,66 @@ Current public routes render `landing`, `all_projects`, `project_details`, `all_
 | instanceId | componentKey | defaultVariant | fixed | removable |
 |---|---|---|---|---|
 | `contact_1` | `contact` | split_with_info | ✓ | ✗ |
+
+### Template: `minimal`
+
+Text-first template for software engineers who want a quiet personal site: narrow
+measure, simple underlined links, low visual chrome, and minimal list variants inspired
+by restrained engineer portfolios.
+
+| Field | Value |
+|---|---|
+| key | `minimal` |
+| label | Minimal |
+| version | 1.0.0 |
+| defaultTheme | `default` |
+| defaultFont | `geist-sans` |
+
+#### Layout sections (rendered by `layout.tsx` on every page)
+
+| instanceId | componentKey | defaultVariant | fixed |
+|---|---|---|---|
+| `header_1` | `header` | minimal | ✓ |
+| `footer_1` | `footer` | minimal | ✓ |
+| `cookie_banner_1` | `cookie_banner` | bar | ✗ |
+
+#### Page: `landing` (Landing Page)
+
+| instanceId | componentKey | defaultVariant | fixed | removable |
+|---|---|---|---|---|
+| `hero_1` | `hero` | minimal | ✗ | ✓ |
+| `about_1` | `about` | minimal | ✗ | ✓ |
+| `featured_projects_1` | `featured_projects` | minimal_list | ✗ | ✓ |
+| `skills_1` | `skills` | minimal_list | ✗ | ✓ |
+| `experience_1` | `experience` | minimal_list | ✗ | ✓ |
+| `latest_blogs_1` | `latest_blogs` | minimal_list | ✗ | ✓ |
+
+#### Page: `all_projects` (All Projects)
+
+| instanceId | componentKey | defaultVariant | fixed | removable |
+|---|---|---|---|---|
+| `featured_projects_1` | `featured_projects` | minimal_list | ✓ | ✗ |
+
+#### Page: `project_details` (Project Details)
+
+| instanceId | componentKey | defaultVariant | fixed | removable |
+|---|---|---|---|---|
+| `media_gallery_1` | `media_gallery` | grid | ✗ | — |
+
+#### Page: `all_blog` (All Blog Posts)
+
+| instanceId | componentKey | defaultVariant | fixed | removable |
+|---|---|---|---|---|
+| `latest_blogs_1` | `latest_blogs` | minimal_list | ✓ | ✗ |
+
+#### Page: `blog_details` (Blog Post)
+
+| instanceId | componentKey | defaultVariant | fixed | removable |
+|---|---|---|---|---|
+| `cta_1` | `cta` | minimal | ✗ | — |
+
+#### Page: `contact` (Contact)
+
+| instanceId | componentKey | defaultVariant | fixed | removable |
+|---|---|---|---|---|
+| `contact_1` | `contact` | minimal | ✓ | ✗ |

@@ -6,7 +6,7 @@ import { SectionList } from "./SectionList";
 import { ThemeSwatch } from "./ThemeSwatch";
 import { FontOption } from "./FontOption";
 import { TemplatePicker } from "./TemplatePicker";
-import { THEMES_META, FONTS_META } from "@/lib/themes-meta";
+import { SORTED_THEMES_META, SORTED_FONTS_META } from "@/lib/themes-meta";
 import type { UserPortfolioConfig } from "@/templates/types";
 import { useAppearanceState } from "../hooks/useAppearanceState";
 import {
@@ -94,7 +94,7 @@ export function AppearanceLeftSidebar({
                 {activeTab === "theme" && (
                     <div className="flex-1 overflow-y-auto p-3">
                         <div className="grid grid-cols-3 gap-2.5 mb-6">
-                            {THEMES_META.map((theme) => (
+                            {SORTED_THEMES_META.map((theme) => (
                                 <ThemeSwatch
                                     key={theme.slug}
                                     theme={theme}
@@ -116,7 +116,7 @@ export function AppearanceLeftSidebar({
                 {activeTab === "font" && (
                     <div className="flex-1 overflow-y-auto">
                         <div className="flex flex-col">
-                            {FONTS_META.map((font) => (
+                            {SORTED_FONTS_META.map((font) => (
                                 <FontOption
                                     key={font.slug}
                                     font={font}

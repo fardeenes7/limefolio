@@ -6,7 +6,7 @@ import { SectionList } from "./SectionList";
 import { ThemeSwatch } from "./ThemeSwatch";
 import { FontOption } from "./FontOption";
 import { TemplatePicker } from "./TemplatePicker";
-import { THEMES_META, FONTS_META } from "@/lib/themes-meta";
+import { SORTED_THEMES_META, SORTED_FONTS_META } from "@/lib/themes-meta";
 import type { UserPortfolioConfig } from "@/templates/types";
 import { useAppearanceState } from "../hooks/useAppearanceState";
 import {
@@ -102,7 +102,7 @@ export function AppearanceSidebar({
                                 { cat: "retro",    label: "Retro" },
                                 { cat: "brand",    label: "Brand" },
                             ] as const).map(({ cat, label }) => {
-                                const group = THEMES_META.filter(t => t.category === cat);
+                                const group = SORTED_THEMES_META.filter(t => t.category === cat);
                                 if (!group.length) return null;
                                 return (
                                     <div key={cat} className="flex flex-col gap-2">
@@ -131,7 +131,7 @@ export function AppearanceSidebar({
 
                     {activeTab === "font" && (
                         <div className="flex-1 overflow-y-auto p-2">
-                            {FONTS_META.map((font) => (
+                            {SORTED_FONTS_META.map((font) => (
                                 <FontOption
                                     key={font.slug}
                                     font={font}

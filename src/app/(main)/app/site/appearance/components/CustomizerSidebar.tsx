@@ -4,7 +4,7 @@ import { ComponentRegistry } from "@/templates/components";
 import { SectionEditor } from "./SectionEditor";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
-import { THEMES_META, FONTS_META } from "@/lib/themes-meta";
+import { SORTED_THEMES_META, SORTED_FONTS_META } from "@/lib/themes-meta";
 import { getAvailableTemplates, getTemplate } from "@/templates/registry";
 import { IconLayout, IconPalette, IconTypography, IconSettings, IconGripVertical, IconTrash, IconPlus } from "@tabler/icons-react";
 
@@ -197,7 +197,7 @@ export function CustomizerSidebar({
                             <div className="space-y-2">
                                 <label className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Theme</label>
                                 <div className="grid grid-cols-2 gap-2">
-                                    {THEMES_META.map(theme => (
+                                    {SORTED_THEMES_META.map(theme => (
                                         <button
                                             key={theme.slug}
                                             onClick={() => updateGlobal('themeKey', theme.slug)}
@@ -213,7 +213,7 @@ export function CustomizerSidebar({
                             <div className="space-y-2">
                                 <label className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Font</label>
                                 <div className="grid grid-cols-2 gap-2">
-                                    {FONTS_META.map(font => (
+                                    {SORTED_FONTS_META.map(font => (
                                         <button
                                             key={font.slug}
                                             onClick={() => updateGlobal('fontKey', font.slug)}

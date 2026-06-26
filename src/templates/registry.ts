@@ -669,6 +669,231 @@ const terminalTemplate: Template = {
     ],
 };
 
+/**
+ * "Minimal" template — quiet, text-first portfolio for software engineers.
+ *
+ * Inspired by restrained personal sites from engineers like shadcn and Lee
+ * Robinson: generous whitespace, narrow reading measure, simple links, and no
+ * decorative cards unless the underlying content needs structure.
+ */
+const minimalTemplate: Template = {
+    key: 'minimal',
+    label: 'Minimal',
+    version: '1.0.0',
+    defaultTheme: 'default',
+    defaultFont: 'geist-sans',
+
+    layout: [
+        {
+            instanceId: 'header_1',
+            componentKey: 'header',
+            allowedVariants: ['minimal'],
+            defaultVariant: 'minimal',
+            inputDefaults: {
+                sticky: false,
+                backgroundStyle: 'transparent',
+                ctaButton: false,
+                bottomBorder: false,
+            },
+            fixed: true,
+        },
+        {
+            instanceId: 'footer_1',
+            componentKey: 'footer',
+            allowedVariants: ['minimal'],
+            defaultVariant: 'minimal',
+            inputDefaults: {
+                showBackToTop: false,
+                showLimefolioAttribution: false,
+                linkDensity: 'compact',
+            },
+            fixed: true,
+        },
+        {
+            instanceId: 'cookie_banner_1',
+            componentKey: 'cookie_banner',
+            allowedVariants: allVariants('cookie_banner'),
+            defaultVariant: 'bar',
+            fixed: false,
+        },
+    ] satisfies SectionInstance[],
+
+    pages: [
+        {
+            key: 'landing',
+            label: 'Landing Page',
+            sections: [
+                {
+                    instanceId: 'hero_1',
+                    componentKey: 'hero',
+                    allowedVariants: ['minimal'],
+                    defaultVariant: 'minimal',
+                    inputDefaults: {
+                        primaryCtaLabel: 'Projects',
+                        primaryCtaUrl: '/projects',
+                        secondaryCtaLabel: 'Writing',
+                        secondaryCtaUrl: '/blog',
+                        showAvatar: false,
+                    },
+                    fixed: false,
+                    removable: true,
+                },
+                {
+                    instanceId: 'about_1',
+                    componentKey: 'about',
+                    allowedVariants: ['minimal'],
+                    defaultVariant: 'minimal',
+                    inputDefaults: {
+                        showProfileImage: false,
+                        showResumeButton: false,
+                    },
+                    fixed: false,
+                    removable: true,
+                },
+                {
+                    instanceId: 'featured_projects_1',
+                    componentKey: 'featured_projects',
+                    allowedVariants: ['minimal_list'],
+                    defaultVariant: 'minimal_list',
+                    inputDefaults: {
+                        sectionTitle: 'Selected work',
+                        maxItems: '4',
+                        viewAllLabel: 'All projects',
+                    },
+                    fixed: false,
+                    removable: true,
+                },
+                {
+                    instanceId: 'skills_1',
+                    componentKey: 'skills',
+                    allowedVariants: ['minimal_list'],
+                    defaultVariant: 'minimal_list',
+                    inputDefaults: {
+                        sectionTitle: 'Stack',
+                        showProficiencyLevel: false,
+                    },
+                    fixed: false,
+                    removable: true,
+                },
+                {
+                    instanceId: 'experience_1',
+                    componentKey: 'experience',
+                    allowedVariants: ['minimal_list'],
+                    defaultVariant: 'minimal_list',
+                    inputDefaults: {
+                        sectionTitle: 'Experience',
+                    },
+                    fixed: false,
+                    removable: true,
+                },
+                {
+                    instanceId: 'latest_blogs_1',
+                    componentKey: 'latest_blogs',
+                    allowedVariants: ['minimal_list'],
+                    defaultVariant: 'minimal_list',
+                    inputDefaults: {
+                        sectionTitle: 'Writing',
+                        maxItems: '3',
+                        showExcerpt: false,
+                        showTags: false,
+                        viewAllLabel: 'All posts',
+                    },
+                    fixed: false,
+                    removable: true,
+                },
+            ],
+        },
+        {
+            key: 'all_projects',
+            label: 'All Projects',
+            sections: [
+                {
+                    instanceId: 'featured_projects_1',
+                    componentKey: 'featured_projects',
+                    allowedVariants: ['minimal_list'],
+                    defaultVariant: 'minimal_list',
+                    inputDefaults: {
+                        sectionTitle: 'Projects',
+                        maxItems: 'all',
+                        showViewAll: false,
+                    },
+                    fixed: true,
+                },
+            ],
+        },
+        {
+            key: 'project_details',
+            label: 'Project Details',
+            sections: [
+                {
+                    instanceId: 'media_gallery_1',
+                    componentKey: 'media_gallery',
+                    allowedVariants: ['grid'],
+                    defaultVariant: 'grid',
+                    inputDefaults: {
+                        sectionTitle: '',
+                        showCaptions: true,
+                        columns: '2',
+                    },
+                    fixed: false,
+                },
+            ],
+        },
+        {
+            key: 'all_blog',
+            label: 'All Blog Posts',
+            sections: [
+                {
+                    instanceId: 'latest_blogs_1',
+                    componentKey: 'latest_blogs',
+                    allowedVariants: ['minimal_list'],
+                    defaultVariant: 'minimal_list',
+                    inputDefaults: {
+                        sectionTitle: 'Writing',
+                        maxItems: 'all',
+                        showViewAll: false,
+                    },
+                    fixed: true,
+                },
+            ],
+        },
+        {
+            key: 'blog_details',
+            label: 'Blog Post',
+            sections: [
+                {
+                    instanceId: 'cta_1',
+                    componentKey: 'cta',
+                    allowedVariants: ['minimal'],
+                    defaultVariant: 'minimal',
+                    inputDefaults: {
+                        headline: 'Have thoughts on this?',
+                        primaryCtaLabel: 'Send a note',
+                    },
+                    fixed: false,
+                },
+            ],
+        },
+        {
+            key: 'contact',
+            label: 'Contact',
+            sections: [
+                {
+                    instanceId: 'contact_1',
+                    componentKey: 'contact',
+                    allowedVariants: ['minimal'],
+                    defaultVariant: 'minimal',
+                    inputDefaults: {
+                        sectionTitle: 'Contact',
+                        showPhone: false,
+                    },
+                    fixed: true,
+                },
+            ],
+        },
+    ],
+};
+
 // ─────────────────────────────────────────────────────────────────────────────
 // Registry export
 // ─────────────────────────────────────────────────────────────────────────────
@@ -683,6 +908,7 @@ export const TemplateRegistry: Record<string, Template> = {
     default: defaultTemplate,
     cinematic: cinematicTemplate,
     terminal: terminalTemplate,
+    minimal: minimalTemplate,
 };
 
 /**

@@ -5,7 +5,7 @@ import { SectionDetail } from "./SectionDetail";
 import { ThemeSwatch } from "./ThemeSwatch";
 import { FontOption } from "./FontOption";
 import { TemplatePicker } from "./TemplatePicker";
-import { THEMES_META, FONTS_META } from "@/lib/themes-meta";
+import { SORTED_THEMES_META, SORTED_FONTS_META } from "@/lib/themes-meta";
 import type { UserPortfolioConfig, ResolvedSection } from "@/templates/types";
 import { useAppearanceState } from "../hooks/useAppearanceState";
 import { useResolvedSections } from "../hooks/useResolvedSections";
@@ -104,7 +104,7 @@ export function AppearancePanel({
                 {activeTab === "theme" && (
                     <div className="p-4 overflow-y-auto">
                         <div className="grid grid-cols-4 gap-3">
-                            {THEMES_META.map((theme) => (
+                            {SORTED_THEMES_META.map((theme) => (
                                 <ThemeSwatch
                                     key={theme.slug}
                                     theme={theme}
@@ -119,7 +119,7 @@ export function AppearancePanel({
                 {activeTab === "font" && (
                     <div className="p-4 overflow-y-auto">
                         <div className="flex flex-col gap-1">
-                            {FONTS_META.map((font) => (
+                            {SORTED_FONTS_META.map((font) => (
                                 <FontOption
                                     key={font.slug}
                                     font={font}

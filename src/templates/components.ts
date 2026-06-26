@@ -66,6 +66,7 @@ const header: ComponentSchema = {
     variants: [
         { key: 'default', label: 'Default' },
         { key: 'compact', label: 'Compact' },
+        { key: 'minimal', label: 'Minimal' },
         { key: 'centered', label: 'Centered' },
         { key: 'editorial', label: 'Editorial' },
         { key: 'floating', label: 'Floating' },
@@ -172,6 +173,7 @@ const footer: ComponentSchema = {
     variants: [
         { key: 'default', label: 'Default' },
         { key: 'compact', label: 'Compact' },
+        { key: 'minimal', label: 'Minimal' },
         { key: 'centered', label: 'Centered' },
     ],
     defaultVariant: 'default',
@@ -318,6 +320,7 @@ const hero: ComponentSchema = {
         { key: 'default', label: 'Default' },
         { key: 'compact', label: 'Compact' },
         { key: 'centered', label: 'Centered' },
+        { key: 'minimal', label: 'Minimal' },
         { key: 'split_section', label: 'Split Section' },
         { key: 'typing_animation', label: 'Typing Animation' },
         { key: 'video_reel', label: 'Video Reel' },
@@ -499,6 +502,7 @@ const about: ComponentSchema = {
     removable: true,
     variants: [
         { key: 'default', label: 'Default' },
+        { key: 'minimal', label: 'Minimal' },
         { key: 'director_cut', label: 'Director Cut' },
     ],
     defaultVariant: 'default',
@@ -563,6 +567,7 @@ const skills: ComponentSchema = {
     removable: true,
     variants: [
         { key: 'icon_grid', label: 'Icon Grid' },
+        { key: 'minimal_list', label: 'Minimal List' },
         { key: 'tag_cloud', label: 'Tag Cloud' },
     ],
     defaultVariant: 'icon_grid',
@@ -608,6 +613,7 @@ const featured_projects: ComponentSchema = {
     repeatable: true,
     removable: true,
     variants: [
+        { key: 'minimal_list', label: 'Minimal List' },
         { key: 'table', label: 'Table' },
         { key: 'grid', label: 'Grid' },
         { key: 'cinematic_grid', label: 'Cinematic Grid' },
@@ -740,6 +746,7 @@ const latest_blogs: ComponentSchema = {
     repeatable: false,
     removable: true,
     variants: [
+        { key: 'minimal_list', label: 'Minimal List' },
         { key: 'grid', label: 'Grid' },
         { key: 'editorial', label: 'Editorial' },
     ],
@@ -974,6 +981,7 @@ const experience: ComponentSchema = {
     repeatable: false,
     removable: true,
     variants: [
+        { key: 'minimal_list', label: 'Minimal List' },
         { key: 'timeline', label: 'Timeline' },
     ],
     defaultVariant: 'timeline',
@@ -1103,6 +1111,7 @@ const stats: ComponentSchema = {
     repeatable: false,
     removable: true,
     variants: [
+        { key: 'minimal_row', label: 'Minimal Row' },
         { key: 'counter_row', label: 'Counter Row' },
     ],
     defaultVariant: 'counter_row',
