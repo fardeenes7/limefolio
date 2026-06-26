@@ -50,9 +50,12 @@ export function LayoutPageRenderer({
     const footerSections = layoutSections.filter(
         (s) => s.componentKey !== 'header',
     );
+    const usesVsCodeShell = headerSections.some(
+        (s) => s.resolvedVariant === 'vscode',
+    );
 
     return (
-        <div className="flex min-h-screen flex-col bg-background">
+        <div className={`flex min-h-screen flex-col bg-background ${usesVsCodeShell ? 'h-screen overflow-hidden' : ''}`}>
             {headerSections.map((section) => (
                 <SectionRenderer
                     key={section.instanceId}
@@ -60,10 +63,10 @@ export function LayoutPageRenderer({
                     siteData={siteData}
                 />
             ))}
-            <main className="flex-1">
+            <main className={`flex-1 ${usesVsCodeShell ? 'overflow-y-auto lg:pl-72' : ''}`}>
                 {children}
             </main>
-            <div className="mt-auto">
+            <div className={`${usesVsCodeShell ? 'shrink-0' : 'mt-auto'}`}>
                 {footerSections.map((section) => (
                     <SectionRenderer
                         key={section.instanceId}

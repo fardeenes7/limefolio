@@ -480,20 +480,20 @@ All contributors must follow these rules without exception:
 
 | key | label | isGlobal | repeatable | removable | variants | default variant |
 |---|---|---|---|---|---|---|
-| `header` | Header | ✓ | ✗ | ✗ | default, cinematic, compact, minimal, terminal, neobrutalism, centered, editorial, floating | default |
-| `footer` | Footer | ✓ | ✗ | ✗ | default, cinematic, compact, minimal, terminal, neobrutalism, centered | default |
+| `header` | Header | ✓ | ✗ | ✗ | default, cinematic, compact, minimal, terminal, neobrutalism, centered, editorial, floating, vscode | default |
+| `footer` | Footer | ✓ | ✗ | ✗ | default, cinematic, compact, minimal, terminal, neobrutalism, centered, vscode | default |
 | `cookie_banner` | Cookie Banner | ✓ | ✗ | ✓ | bar | bar |
-| `hero` | Hero | ✗ | ✗ | ✗ | default, cinematic, compact, centered, minimal, terminal, terminal_split, neobrutalism, neobrutalism_poster, split_section, typing_animation, video_reel, profile_card | default |
-| `about` | About | ✗ | ✗ | ✓ | default, minimal, terminal, neobrutalism, director_cut | default |
-| `skills` | Skills | ✗ | ✗ | ✓ | icon_grid, minimal_list, terminal, neobrutalism, tag_cloud | icon_grid |
-| `featured_projects` | Featured Projects | ✗ | ✓ | ✓ | minimal_list, terminal, terminal_process, neobrutalism, neobrutalism_stack, table, grid, cinematic_grid, spotlight | grid |
+| `hero` | Hero | ✗ | ✗ | ✗ | default, cinematic, compact, centered, minimal, terminal, terminal_split, neobrutalism, neobrutalism_poster, split_section, typing_animation, video_reel, profile_card, vscode | default |
+| `about` | About | ✗ | ✗ | ✓ | default, minimal, terminal, neobrutalism, director_cut, vscode | default |
+| `skills` | Skills | ✗ | ✗ | ✓ | icon_grid, minimal_list, terminal, neobrutalism, tag_cloud, vscode | icon_grid |
+| `featured_projects` | Featured Projects | ✗ | ✓ | ✓ | minimal_list, terminal, terminal_process, neobrutalism, neobrutalism_stack, table, grid, cinematic_grid, spotlight, vscode | grid |
 | `media_gallery` | Media Gallery | ✗ | ✓ | ✓ | carousel, grid, masonry, horizontal_scroll | masonry |
-| `latest_blogs` | Latest Blog Posts | ✗ | ✗ | ✓ | minimal_list, terminal, terminal_changelog, neobrutalism, neobrutalism_zine, grid, editorial | grid |
+| `latest_blogs` | Latest Blog Posts | ✗ | ✗ | ✓ | minimal_list, terminal, terminal_changelog, neobrutalism, neobrutalism_zine, grid, editorial, vscode | grid |
 | `cta` | Call to Action | ✗ | ✓ | ✓ | default, card, banner, minimal, terminal, neobrutalism | default |
 | `testimonials` | Testimonials | ✗ | ✗ | ✓ | carousel | carousel |
 | `services` | Services | ✗ | ✗ | ✓ | card_grid, neobrutalism | card_grid |
 | `experience` | Experience | ✗ | ✗ | ✓ | minimal_list, neobrutalism, timeline | timeline |
-| `contact` | Contact | ✗ | ✗ | ✓ | split_with_info, minimal, terminal, terminal_ssh, neobrutalism, neobrutalism_ticket, social_cards | split_with_info |
+| `contact` | Contact | ✗ | ✗ | ✓ | split_with_info, minimal, terminal, terminal_ssh, neobrutalism, neobrutalism_ticket, social_cards, vscode | split_with_info |
 | `stats` | Stats | ✗ | ✗ | ✓ | minimal_row, neobrutalism, counter_row | counter_row |
 | `social_feed` | Social Feed | ✗ | ✓ | ✓ | grid | grid |
 
@@ -501,7 +501,7 @@ All contributors must follow these rules without exception:
 
 ## Template Reference
 
-Registered templates: `default`, `cinematic`, `terminal`, `minimal`, and `neobrutalism`.
+Registered templates: `default`, `cinematic`, `terminal`, `vscode`, `minimal`, and `neobrutalism`.
 
 Current public routes render `landing`, `all_projects`, `project_details`, `all_blog`,
 `blog_details`, and `contact`.
@@ -633,6 +633,71 @@ and SSH-flavored contact blocks.
 | instanceId | componentKey | defaultVariant | fixed | removable |
 |---|---|---|---|---|
 | `contact_1` | `contact` | terminal_ssh | ✓ | ✗ |
+
+### Template: `vscode`
+
+Editor-shell inspired template for developer portfolios. Uses a sticky VS Code-style
+activity bar, explorer sidebar, command/search bar, tab strip, and bottom status bar.
+Only the page content pane scrolls; the shell remains fixed via `LayoutPageRenderer`
+when the layout header resolves to the `vscode` variant.
+
+| Field | Value |
+|---|---|
+| key | `vscode` |
+| label | VS Code |
+| version | 1.0.0 |
+| defaultTheme | `vscode-dark` |
+| defaultFont | `jetbrains-mono` |
+
+#### Layout sections (rendered by `layout.tsx` on every page)
+
+| instanceId | componentKey | defaultVariant | fixed |
+|---|---|---|---|
+| `header_1` | `header` | vscode | ✓ |
+| `footer_1` | `footer` | vscode | ✓ |
+| `cookie_banner_1` | `cookie_banner` | bar | ✗ |
+
+#### Page: `landing` (Landing Page)
+
+| instanceId | componentKey | defaultVariant | fixed | removable |
+|---|---|---|---|---|
+| `hero_1` | `hero` | vscode | ✗ | ✓ |
+| `about_1` | `about` | vscode | ✗ | ✓ |
+| `featured_projects_1` | `featured_projects` | vscode | ✗ | ✓ |
+| `skills_1` | `skills` | vscode | ✗ | ✓ |
+| `latest_blogs_1` | `latest_blogs` | vscode | ✗ | ✓ |
+| `contact_1` | `contact` | vscode | ✗ | ✓ |
+
+#### Page: `all_projects` (All Projects)
+
+| instanceId | componentKey | defaultVariant | fixed | removable |
+|---|---|---|---|---|
+| `featured_projects_1` | `featured_projects` | vscode | ✓ | ✗ |
+
+#### Page: `project_details` (Project Details)
+
+| instanceId | componentKey | defaultVariant | fixed | removable |
+|---|---|---|---|---|
+| `media_gallery_1` | `media_gallery` | grid | ✗ | — |
+| `contact_1` | `contact` | vscode | ✗ | — |
+
+#### Page: `all_blog` (All Blog Posts)
+
+| instanceId | componentKey | defaultVariant | fixed | removable |
+|---|---|---|---|---|
+| `latest_blogs_1` | `latest_blogs` | vscode | ✓ | ✗ |
+
+#### Page: `blog_details` (Blog Post)
+
+| instanceId | componentKey | defaultVariant | fixed | removable |
+|---|---|---|---|---|
+| `contact_1` | `contact` | vscode | ✗ | — |
+
+#### Page: `contact` (Contact)
+
+| instanceId | componentKey | defaultVariant | fixed | removable |
+|---|---|---|---|---|
+| `contact_1` | `contact` | vscode | ✓ | ✗ |
 
 ### Template: `cinematic`
 

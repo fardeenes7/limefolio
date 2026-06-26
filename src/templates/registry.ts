@@ -794,6 +794,233 @@ const terminalTemplate: Template = {
 };
 
 /**
+ * "VS Code" template — editor-shell inspired portfolio with sticky chrome.
+ *
+ * The header variant owns the activity bar, explorer sidebar, command/search bar,
+ * and tab strip. `LayoutPageRenderer` detects this header variant and constrains
+ * scrolling to the page content pane so the shell remains fixed.
+ */
+const vscodeTemplate: Template = {
+    key: "vscode",
+    label: "VS Code",
+    version: "1.0.0",
+    defaultTheme: "vscode-dark",
+    defaultFont: "jetbrains-mono",
+
+    layout: [
+        {
+            instanceId: "header_1",
+            componentKey: "header",
+            allowedVariants: ["vscode"],
+            defaultVariant: "vscode",
+            inputDefaults: {
+                sticky: true,
+                ctaButton: false,
+                bottomBorder: true
+            },
+            fixed: true
+        },
+        {
+            instanceId: "footer_1",
+            componentKey: "footer",
+            allowedVariants: ["vscode"],
+            defaultVariant: "vscode",
+            inputDefaults: {
+                showBackToTop: false,
+                showLimefolioAttribution: false
+            },
+            fixed: true
+        },
+        {
+            instanceId: "cookie_banner_1",
+            componentKey: "cookie_banner",
+            allowedVariants: allVariants("cookie_banner"),
+            defaultVariant: "bar",
+            fixed: false
+        }
+    ] satisfies SectionInstance[],
+
+    pages: [
+        {
+            key: "landing",
+            label: "Landing Page",
+            sections: [
+                {
+                    instanceId: "hero_1",
+                    componentKey: "hero",
+                    allowedVariants: ["vscode"],
+                    defaultVariant: "vscode",
+                    inputDefaults: {
+                        headline: "{name}",
+                        subheadline: "Portfolio opened in an editor-inspired workspace",
+                        primaryCtaLabel: "Open Projects",
+                        primaryCtaUrl: "#projects",
+                        secondaryCtaLabel: "Run Contact",
+                        secondaryCtaUrl: "/contact"
+                    },
+                    fixed: false,
+                    removable: true
+                },
+                {
+                    instanceId: "about_1",
+                    componentKey: "about",
+                    allowedVariants: ["vscode"],
+                    defaultVariant: "vscode",
+                    fixed: false,
+                    removable: true
+                },
+                {
+                    instanceId: "featured_projects_1",
+                    componentKey: "featured_projects",
+                    allowedVariants: ["vscode"],
+                    defaultVariant: "vscode",
+                    inputDefaults: {
+                        sectionTitle: "src/projects",
+                        maxItems: "6",
+                        viewAllLabel: "Open All Projects"
+                    },
+                    fixed: false,
+                    removable: true
+                },
+                {
+                    instanceId: "skills_1",
+                    componentKey: "skills",
+                    allowedVariants: ["vscode"],
+                    defaultVariant: "vscode",
+                    inputDefaults: {
+                        sectionTitle: "Extensions",
+                        showProficiencyLevel: true
+                    },
+                    fixed: false,
+                    removable: true
+                },
+                {
+                    instanceId: "latest_blogs_1",
+                    componentKey: "latest_blogs",
+                    allowedVariants: ["vscode"],
+                    defaultVariant: "vscode",
+                    inputDefaults: {
+                        sectionTitle: "Search: notes",
+                        maxItems: "3",
+                        viewAllLabel: "Open Blog"
+                    },
+                    fixed: false,
+                    removable: true
+                },
+                {
+                    instanceId: "contact_1",
+                    componentKey: "contact",
+                    allowedVariants: ["vscode"],
+                    defaultVariant: "vscode",
+                    inputDefaults: {
+                        sectionTitle: "Terminal: contact",
+                        showPhone: false,
+                        showMap: false
+                    },
+                    fixed: false,
+                    removable: true
+                }
+            ]
+        },
+        {
+            key: "all_projects",
+            label: "All Projects",
+            sections: [
+                {
+                    instanceId: "featured_projects_1",
+                    componentKey: "featured_projects",
+                    allowedVariants: ["vscode"],
+                    defaultVariant: "vscode",
+                    inputDefaults: {
+                        sectionTitle: "src/projects",
+                        maxItems: "all",
+                        showViewAll: false
+                    },
+                    fixed: true
+                }
+            ]
+        },
+        {
+            key: "project_details",
+            label: "Project Details",
+            sections: [
+                {
+                    instanceId: "media_gallery_1",
+                    componentKey: "media_gallery",
+                    allowedVariants: ["grid", "carousel"],
+                    defaultVariant: "grid",
+                    inputDefaults: {
+                        sectionTitle: "preview assets",
+                        columns: "2"
+                    },
+                    fixed: false
+                },
+                {
+                    instanceId: "contact_1",
+                    componentKey: "contact",
+                    allowedVariants: ["vscode"],
+                    defaultVariant: "vscode",
+                    inputDefaults: {
+                        sectionTitle: "Terminal: discuss project"
+                    },
+                    fixed: false
+                }
+            ]
+        },
+        {
+            key: "all_blog",
+            label: "All Blog Posts",
+            sections: [
+                {
+                    instanceId: "latest_blogs_1",
+                    componentKey: "latest_blogs",
+                    allowedVariants: ["vscode"],
+                    defaultVariant: "vscode",
+                    inputDefaults: {
+                        sectionTitle: "Search: all notes",
+                        maxItems: "all",
+                        showViewAll: false
+                    },
+                    fixed: true
+                }
+            ]
+        },
+        {
+            key: "blog_details",
+            label: "Blog Post",
+            sections: [
+                {
+                    instanceId: "contact_1",
+                    componentKey: "contact",
+                    allowedVariants: ["vscode"],
+                    defaultVariant: "vscode",
+                    inputDefaults: {
+                        sectionTitle: "Terminal: respond to note"
+                    },
+                    fixed: false
+                }
+            ]
+        },
+        {
+            key: "contact",
+            label: "Contact",
+            sections: [
+                {
+                    instanceId: "contact_1",
+                    componentKey: "contact",
+                    allowedVariants: ["vscode"],
+                    defaultVariant: "vscode",
+                    inputDefaults: {
+                        sectionTitle: "Terminal: contact"
+                    },
+                    fixed: true
+                }
+            ]
+        }
+    ]
+};
+
+/**
  * "Minimal" template — quiet, text-first portfolio for software engineers.
  *
  * Inspired by restrained personal sites from engineers like shadcn and Lee
@@ -1308,6 +1535,7 @@ export const TemplateRegistry: Record<string, Template> = {
     default: defaultTemplate,
     cinematic: cinematicTemplate,
     terminal: terminalTemplate,
+    vscode: vscodeTemplate,
     minimal: minimalTemplate,
     neobrutalism: neobrutalismTemplate
 };

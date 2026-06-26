@@ -182,6 +182,18 @@ export const THEMES_META: ThemeMeta[] = [
         suggestedPrimaryColors: ["oklch(0.78 0.14 82)", "oklch(0.56 0.22 24)", "oklch(0.66 0.12 245)", "oklch(0.72 0.10 135)"],
         swatches: ["oklch(0.09 0.018 255)", "oklch(0.78 0.14 82)", "oklch(0.56 0.22 24)"]
     },
+    {
+        name: "VS Code Dark",
+        slug: "vscode-dark",
+        defaultFont: "jetbrains-mono",
+        radius: 0.375,
+        description: "Editor chrome palette with blue activity accents",
+        category: "minimal",
+        hasDark: false,
+        defaultMode: "dark",
+        suggestedPrimaryColors: ["oklch(0.62 0.18 252)", "oklch(0.74 0.14 155)", "oklch(0.72 0.15 82)", "oklch(0.70 0.15 310)"],
+        swatches: ["oklch(0.18 0.025 255)", "oklch(0.62 0.18 252)", "oklch(0.36 0.08 250)"]
+    },
 
     // ── Colorful / Playful ────────────────────────────────────────────────────
     {

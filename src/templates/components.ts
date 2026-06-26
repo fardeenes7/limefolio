@@ -73,6 +73,7 @@ const header: ComponentSchema = {
         { key: 'centered', label: 'Centered' },
         { key: 'editorial', label: 'Editorial' },
         { key: 'floating', label: 'Floating' },
+        { key: 'vscode', label: 'VS Code' },
     ],
     defaultVariant: 'default',
     inputs: [
@@ -181,6 +182,7 @@ const footer: ComponentSchema = {
         { key: 'terminal', label: 'Terminal' },
         { key: 'neobrutalism', label: 'Neobrutalism' },
         { key: 'centered', label: 'Centered' },
+        { key: 'vscode', label: 'VS Code' },
     ],
     defaultVariant: 'default',
     inputs: [
@@ -336,6 +338,7 @@ const hero: ComponentSchema = {
         { key: 'typing_animation', label: 'Typing Animation' },
         { key: 'video_reel', label: 'Video Reel' },
         { key: 'profile_card', label: 'Profile Card' },
+        { key: 'vscode', label: 'VS Code Editor' },
     ],
     defaultVariant: 'default',
     inputs: [
@@ -517,6 +520,7 @@ const about: ComponentSchema = {
         { key: 'terminal', label: 'Terminal' },
         { key: 'neobrutalism', label: 'Neobrutalism' },
         { key: 'director_cut', label: 'Director Cut' },
+        { key: 'vscode', label: 'VS Code Markdown' },
     ],
     defaultVariant: 'default',
     inputs: [
@@ -584,6 +588,7 @@ const skills: ComponentSchema = {
         { key: 'terminal', label: 'Terminal' },
         { key: 'neobrutalism', label: 'Neobrutalism' },
         { key: 'tag_cloud', label: 'Tag Cloud' },
+        { key: 'vscode', label: 'VS Code Extensions' },
     ],
     defaultVariant: 'icon_grid',
     inputs: [
@@ -637,6 +642,7 @@ const featured_projects: ComponentSchema = {
         { key: 'grid', label: 'Grid' },
         { key: 'cinematic_grid', label: 'Cinematic Grid' },
         { key: 'spotlight', label: 'Spotlight' },
+        { key: 'vscode', label: 'VS Code Explorer' },
     ],
     defaultVariant: 'grid',
     inputs: [
@@ -772,6 +778,7 @@ const latest_blogs: ComponentSchema = {
         { key: 'neobrutalism_zine', label: 'Neobrutalism Zine' },
         { key: 'grid', label: 'Grid' },
         { key: 'editorial', label: 'Editorial' },
+        { key: 'vscode', label: 'VS Code Search' },
     ],
     defaultVariant: 'grid',
     inputs: [
@@ -1073,6 +1080,7 @@ const contact: ComponentSchema = {
         { key: 'neobrutalism', label: 'Neobrutalism' },
         { key: 'neobrutalism_ticket', label: 'Neobrutalism Ticket' },
         { key: 'social_cards', label: 'Social Cards' },
+        { key: 'vscode', label: 'VS Code Terminal' },
     ],
     defaultVariant: 'split_with_info',
     inputs: [

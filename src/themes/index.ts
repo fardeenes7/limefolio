@@ -185,6 +185,14 @@ export const ColorThemes: Record<string, ColorThemeConfig> = {
         hasDark: false,
         category: "dark-only",
     },
+    "vscode-dark": {
+        name: "VS Code Dark",
+        slug: "vscode-dark",
+        defaultFont: "jetbrains-mono",
+        description: "Editor chrome palette with blue activity accents",
+        hasDark: false,
+        category: "dark-only",
+    },
     nature: {
         name: "Nature",
         slug: "nature",
