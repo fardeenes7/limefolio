@@ -622,7 +622,7 @@ const terminalTemplate: Template = {
                         headline: "{name}",
                         subheadline: "developer portfolio initialized from ~/.limefolio/profile",
                         primaryCtaLabel: "run projects",
-                        primaryCtaUrl: "#projects",
+                        primaryCtaUrl: "/projects",
                         secondaryCtaLabel: "open contact",
                         secondaryCtaUrl: "/contact",
                         typingStrings: "build --fast, ship --clean, debug --deep"
@@ -633,16 +633,16 @@ const terminalTemplate: Template = {
                 {
                     instanceId: "about_1",
                     componentKey: "about",
-                    allowedVariants: ["terminal", "terminal_process"],
-                    defaultVariant: "terminal_process",
+                    allowedVariants: ["terminal"],
+                    defaultVariant: "terminal",
                     fixed: false,
                     removable: true
                 },
                 {
                     instanceId: "skills_1",
                     componentKey: "skills",
-                    allowedVariants: ["terminal", "terminal_changelog"],
-                    defaultVariant: "terminal_changelog",
+                    allowedVariants: ["terminal"],
+                    defaultVariant: "terminal",
                     inputDefaults: {
                         sectionTitle: "stack",
                         showProficiencyLevel: true
@@ -679,8 +679,8 @@ const terminalTemplate: Template = {
                 {
                     instanceId: "cta_1",
                     componentKey: "cta",
-                    allowedVariants: ["terminal", "terminal_ssh"],
-                    defaultVariant: "terminal_ssh",
+                    allowedVariants: ["terminal"],
+                    defaultVariant: "terminal",
                     inputDefaults: {
                         headline: "Ready to deploy?",
                         subtext: "Open a secure channel and send the brief.",
@@ -854,7 +854,7 @@ const vscodeTemplate: Template = {
                         headline: "{name}",
                         subheadline: "Portfolio opened in an editor-inspired workspace",
                         primaryCtaLabel: "Open Projects",
-                        primaryCtaUrl: "#projects",
+                        primaryCtaUrl: "/projects",
                         secondaryCtaLabel: "Run Contact",
                         secondaryCtaUrl: "/contact"
                     },
@@ -1320,8 +1320,8 @@ const neobrutalismTemplate: Template = {
                 {
                     instanceId: "about_1",
                     componentKey: "about",
-                    allowedVariants: ["neobrutalism", "neobrutalism_stack"],
-                    defaultVariant: "neobrutalism_stack",
+                    allowedVariants: ["neobrutalism"],
+                    defaultVariant: "neobrutalism",
                     inputDefaults: {
                         showResumeButton: true
                     },
@@ -1331,8 +1331,8 @@ const neobrutalismTemplate: Template = {
                 {
                     instanceId: "stats_1",
                     componentKey: "stats",
-                    allowedVariants: ["neobrutalism", "neobrutalism_zine"],
-                    defaultVariant: "neobrutalism_zine",
+                    allowedVariants: ["neobrutalism"],
+                    defaultVariant: "neobrutalism",
                     inputDefaults: {
                         sectionTitle: "Scoreboard"
                     },
@@ -1342,8 +1342,8 @@ const neobrutalismTemplate: Template = {
                 {
                     instanceId: "skills_1",
                     componentKey: "skills",
-                    allowedVariants: ["neobrutalism", "neobrutalism_stack"],
-                    defaultVariant: "neobrutalism_stack",
+                    allowedVariants: ["neobrutalism"],
+                    defaultVariant: "neobrutalism",
                     inputDefaults: {
                         sectionTitle: "Toolbox",
                         showProficiencyLevel: true,
@@ -1355,8 +1355,8 @@ const neobrutalismTemplate: Template = {
                 {
                     instanceId: "featured_projects_1",
                     componentKey: "featured_projects",
-                    allowedVariants: ["neobrutalism", "neobrutalism_zine"],
-                    defaultVariant: "neobrutalism_zine",
+                    allowedVariants: ["neobrutalism", "neobrutalism_stack"],
+                    defaultVariant: "neobrutalism_stack",
                     inputDefaults: {
                         sectionTitle: "Featured work",
                         maxItems: "4",
@@ -1368,8 +1368,8 @@ const neobrutalismTemplate: Template = {
                 {
                     instanceId: "services_1",
                     componentKey: "services",
-                    allowedVariants: ["neobrutalism", "neobrutalism_ticket"],
-                    defaultVariant: "neobrutalism_ticket",
+                    allowedVariants: ["neobrutalism"],
+                    defaultVariant: "neobrutalism",
                     inputDefaults: {
                         sectionTitle: "What I do",
                         showPricing: true

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useAppearanceState } from "./hooks/useAppearanceState";
 import { useSaveAppearance } from "./hooks/useSaveAppearance";
 import { useDebouncedConfig } from "./hooks/useDebouncedConfig";
@@ -24,7 +24,7 @@ export function AppearanceClient({ initialSite, initialConfigRaw }: AppearanceCl
     const stateHelpers = useAppearanceState({ initialConfigRaw });
     const { save, isSaving } = useSaveAppearance({ onSuccess: () => {} });
 
-    const draftConfig = {
+    const draftConfig = useMemo(() => ({
         templateKey:    stateHelpers.selectedTemplate,
         themeKey:       stateHelpers.selectedTheme,
         fontKey:        stateHelpers.selectedFont,
@@ -33,9 +33,22 @@ export function AppearanceClient({ initialSite, initialConfigRaw }: AppearanceCl
         additions:      stateHelpers.additions,
         removals:       stateHelpers.removals,
         ordering:       stateHelpers.ordering,
-    };
+    }), [
+        stateHelpers.selectedTemplate,
+        stateHelpers.selectedTheme,
+        stateHelpers.selectedFont,
+        stateHelpers.themeOverrides,
+        stateHelpers.overrides,
+        stateHelpers.additions,
+        stateHelpers.removals,
+        stateHelpers.ordering,
+    ]);
 
-    const debouncedConfig = useDebouncedConfig(draftConfig, 400);
+    const debouncedConfig = useDebouncedConfig(
+        draftConfig,
+        400,
+        `${stateHelpers.selectedTemplate}:${stateHelpers.templateResetRevision}`,
+    );
     const handleSave    = () => save(draftConfig);
     const handleDiscard = () => stateHelpers.resetToSaved();
 
@@ -115,6 +128,7 @@ export function AppearanceClient({ initialSite, initialConfigRaw }: AppearanceCl
 
                 {/* Center: live preview */}
                 <LivePreviewPane
+                    key={`${stateHelpers.selectedTemplate}:${stateHelpers.templateResetRevision}`}
                     tenant={initialSite.subdomain || "demo"}
                     draftConfig={debouncedConfig}
                     activePage={activePage}

@@ -46,7 +46,7 @@ export default function HeroTerminalSplit({ section, siteData }: SectionProps) {
             <div className="relative mx-auto grid min-h-[calc(100vh-6rem)] max-w-6xl items-center gap-6 px-4 sm:px-6 lg:grid-cols-[minmax(0,1fr)_24rem]">
                 <div className="space-y-8">
                     <div className="space-y-4">
-                        <p className="text-sm text-muted-foreground"><span className="text-primary">visitor@limefolio</span>:<span className="text-accent">~/profile</span>$ ./whoami</p>
+                        <p className="text-sm text-muted-foreground"><span className="text-primary">visitor@limefolio</span>:<span className="text-primary">~/profile</span>$ ./whoami</p>
                         <h1 className="max-w-4xl text-4xl font-bold leading-none tracking-tight text-foreground sm:text-6xl lg:text-7xl">{headline}</h1>
                         <p className="max-w-3xl text-lg leading-8 text-muted-foreground sm:text-xl">{subheadline}</p>
                     </div>

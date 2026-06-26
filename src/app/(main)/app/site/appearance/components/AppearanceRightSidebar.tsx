@@ -28,7 +28,16 @@ export function AppearanceRightSidebar({
     stateHelpers,
     onClose,
 }: AppearanceRightSidebarProps) {
-    const resolvedConfig = useResolvedSections({ overrides: stateHelpers.overrides, additions: stateHelpers.additions, removals: stateHelpers.removals, ordering: stateHelpers.ordering } as any);
+    const resolvedConfig = useResolvedSections({
+        templateKey: stateHelpers.selectedTemplate,
+        themeKey: stateHelpers.selectedTheme,
+        fontKey: stateHelpers.selectedFont,
+        themeOverrides: stateHelpers.themeOverrides,
+        overrides: stateHelpers.overrides,
+        additions: stateHelpers.additions,
+        removals: stateHelpers.removals,
+        ordering: stateHelpers.ordering,
+    });
     const customizer = useSectionCustomizer(activePageKey, stateHelpers, resolvedConfig.layout);
     const schema = selectedSection ? ComponentRegistry[selectedSection.componentKey] : null;
 
