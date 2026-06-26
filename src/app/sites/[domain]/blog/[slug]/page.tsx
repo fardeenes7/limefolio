@@ -4,7 +4,6 @@ import { getTemplate } from "@/templates/registry";
 import { resolvePortfolioConfig } from "@/templates/merge";
 import { userConfigFromRaw } from "@/templates/config";
 import { PageRenderer } from "@/components/sections/_renderer/PageRenderer";
-import { BlogArticle } from "./BlogArticle";
 import type { Metadata } from "next";
 import type { BlogPost } from "@/types/site";
 
@@ -61,15 +60,17 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     });
 
     const resolvedConfig = resolvePortfolioConfig(templateDef, userConfig);
-    const pageData = { ...siteData, blog_post: typedPost, blog_posts: [typedPost], media };
+    const pageData = {
+        ...siteData,
+        blog_post: typedPost,
+        blog_posts: siteData.blog_posts?.length ? siteData.blog_posts : [typedPost],
+        media
+    };
 
     return (
-        <>
-            <BlogArticle post={typedPost} siteTitle={siteData.title} />
-            <PageRenderer
-                sections={resolvedConfig.pages.find(p => p.key === "blog_details")?.sections || []}
-                siteData={pageData}
-            />
-        </>
+        <PageRenderer
+            sections={resolvedConfig.pages.find(p => p.key === "blog_details")?.sections || []}
+            siteData={pageData}
+        />
     );
 }

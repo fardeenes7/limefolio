@@ -295,13 +295,20 @@ const defaultTemplate: Template = {
 
         /**
          * Blog Details page — individual blog post view.
-         * The CTA at the bottom encourages readers to get in touch after reading.
-         * It's removable for users who prefer a cleaner reading experience.
+         * The blog_details section owns the canonical post view: headline,
+         * metadata, cover image, article content, tags, and related posts.
          */
         {
             key: "blog_details",
             label: "Blog Post",
             sections: [
+                {
+                    instanceId: "blog_details_1",
+                    componentKey: "blog_details",
+                    allowedVariants: allVariants("blog_details"),
+                    defaultVariant: "default",
+                    fixed: true
+                },
                 {
                     instanceId: "cta_1",
                     componentKey: "cta",
@@ -524,6 +531,13 @@ const cinematicTemplate: Template = {
             key: "blog_details",
             label: "Blog Post",
             sections: [
+                {
+                    instanceId: "blog_details_1",
+                    componentKey: "blog_details",
+                    allowedVariants: ["cinematic", "default"],
+                    defaultVariant: "cinematic",
+                    fixed: true
+                },
                 {
                     instanceId: "cta_1",
                     componentKey: "cta",
@@ -752,6 +766,13 @@ const terminalTemplate: Template = {
             label: "Blog Post",
             sections: [
                 {
+                    instanceId: "blog_details_1",
+                    componentKey: "blog_details",
+                    allowedVariants: ["terminal", "default"],
+                    defaultVariant: "terminal",
+                    fixed: true
+                },
+                {
                     instanceId: "cta_1",
                     componentKey: "cta",
                     allowedVariants: ["terminal"],
@@ -977,6 +998,13 @@ const vscodeTemplate: Template = {
             label: "Blog Post",
             sections: [
                 {
+                    instanceId: "blog_details_1",
+                    componentKey: "blog_details",
+                    allowedVariants: ["vscode", "default"],
+                    defaultVariant: "vscode",
+                    fixed: true
+                },
+                {
                     instanceId: "contact_1",
                     componentKey: "contact",
                     allowedVariants: ["vscode"],
@@ -1194,6 +1222,13 @@ const minimalTemplate: Template = {
             key: "blog_details",
             label: "Blog Post",
             sections: [
+                {
+                    instanceId: "blog_details_1",
+                    componentKey: "blog_details",
+                    allowedVariants: ["minimal", "default"],
+                    defaultVariant: "minimal",
+                    fixed: true
+                },
                 {
                     instanceId: "cta_1",
                     componentKey: "cta",
@@ -1465,6 +1500,13 @@ const neobrutalismTemplate: Template = {
             key: "blog_details",
             label: "Blog Post",
             sections: [
+                {
+                    instanceId: "blog_details_1",
+                    componentKey: "blog_details",
+                    allowedVariants: ["neobrutalism", "default"],
+                    defaultVariant: "neobrutalism",
+                    fixed: true
+                },
                 {
                     instanceId: "cta_1",
                     componentKey: "cta",

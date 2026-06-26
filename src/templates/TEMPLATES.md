@@ -489,6 +489,7 @@ All contributors must follow these rules without exception:
 | `featured_projects` | Featured Projects | ✗ | ✓ | ✓ | minimal_list, terminal, terminal_process, neobrutalism, neobrutalism_stack, table, grid, cinematic_grid, spotlight, vscode | grid |
 | `media_gallery` | Media Gallery | ✗ | ✓ | ✓ | carousel, grid, masonry, horizontal_scroll | masonry |
 | `project_details` | Project Details | ✗ | ✗ | ✗ | default, cinematic, terminal, vscode, minimal, neobrutalism | default |
+| `blog_details` | Blog Details | ✗ | ✗ | ✗ | default, cinematic, terminal, vscode, minimal, neobrutalism | default |
 | `latest_blogs` | Latest Blog Posts | ✗ | ✗ | ✓ | minimal_list, terminal, terminal_changelog, neobrutalism, neobrutalism_zine, grid, editorial, vscode | grid |
 | `cta` | Call to Action | ✗ | ✓ | ✓ | default, card, banner, minimal, terminal, neobrutalism | default |
 | `testimonials` | Testimonials | ✗ | ✗ | ✓ | carousel | carousel |
@@ -563,6 +564,7 @@ Current public routes render `landing`, `all_projects`, `project_details`, `all_
 
 | instanceId | componentKey | defaultVariant | fixed | removable |
 |---|---|---|---|---|
+| `blog_details_1` | `blog_details` | default | ✓ | ✗ |
 | `cta_1` | `cta` | minimal | ✗ | — |
 
 #### Page: `contact` (Contact)
@@ -627,6 +629,7 @@ and SSH-flavored contact blocks.
 
 | instanceId | componentKey | defaultVariant | fixed | removable |
 |---|---|---|---|---|
+| `blog_details_1` | `blog_details` | terminal | ✓ | ✗ |
 | `cta_1` | `cta` | terminal | ✗ | — |
 
 #### Page: `contact` (Contact)
@@ -692,6 +695,7 @@ when the layout header resolves to the `vscode` variant.
 
 | instanceId | componentKey | defaultVariant | fixed | removable |
 |---|---|---|---|---|
+| `blog_details_1` | `blog_details` | vscode | ✓ | ✗ |
 | `contact_1` | `contact` | vscode | ✗ | — |
 
 #### Page: `contact` (Contact)
@@ -757,6 +761,7 @@ large scene cards, and horizontal frame galleries.
 
 | instanceId | componentKey | defaultVariant | fixed | removable |
 |---|---|---|---|---|
+| `blog_details_1` | `blog_details` | cinematic | ✓ | ✗ |
 | `cta_1` | `cta` | banner | ✗ | — |
 
 #### Page: `contact` (Contact)
@@ -820,6 +825,7 @@ by restrained engineer portfolios.
 
 | instanceId | componentKey | defaultVariant | fixed | removable |
 |---|---|---|---|---|
+| `blog_details_1` | `blog_details` | minimal | ✓ | ✗ |
 | `cta_1` | `cta` | minimal | ✗ | — |
 
 #### Page: `contact` (Contact)
@@ -887,6 +893,7 @@ intentionally raw visual language instead of polished glassmorphism.
 
 | instanceId | componentKey | defaultVariant | fixed | removable |
 |---|---|---|---|---|
+| `blog_details_1` | `blog_details` | neobrutalism | ✓ | ✗ |
 | `cta_1` | `cta` | neobrutalism | ✗ | — |
 
 #### Page: `contact` (Contact)

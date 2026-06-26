@@ -784,6 +784,31 @@ const project_details: ComponentSchema = {
 };
 
 /**
+ * Blog Details — renders the canonical individual blog post page content.
+ *
+ * Reads from `siteData.blog_post` and is meant for blog detail routes only:
+ * article heading, publication metadata, cover media, body copy, tags, and
+ * links to other posts.
+ */
+const blog_details: ComponentSchema = {
+    key: 'blog_details',
+    label: 'Blog Details',
+    isGlobal: false,
+    repeatable: false,
+    removable: false,
+    variants: [
+        { key: 'default', label: 'Default' },
+        { key: 'cinematic', label: 'Cinematic' },
+        { key: 'terminal', label: 'Terminal' },
+        { key: 'vscode', label: 'VS Code' },
+        { key: 'minimal', label: 'Minimal' },
+        { key: 'neobrutalism', label: 'Neobrutalism' },
+    ],
+    defaultVariant: 'default',
+    inputs: [],
+};
+
+/**
  * Latest Blogs — preview cards linking to blog posts.
  *
  * Non-repeatable (one blog section per page is sufficient). `viewAllLabel`
@@ -1283,6 +1308,7 @@ export const ComponentRegistry: Record<string, ComponentSchema> = {
     featured_projects,
     media_gallery,
     project_details,
+    blog_details,
     latest_blogs,
     cta,
     testimonials,

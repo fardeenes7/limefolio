@@ -203,7 +203,9 @@ function LivePreviewProviderInner({
     const page = resolvedConfig.pages.find((p) => p.key === previewPageKey) || resolvedConfig.pages[0];
     const previewSiteData = page.key === "project_details"
         ? { ...siteData, project: siteData.project ?? siteData.projects?.[0] }
-        : siteData;
+        : page.key === "blog_details"
+            ? { ...siteData, blog_post: siteData.blog_post ?? siteData.blog_posts?.[0] }
+            : siteData;
 
     return (
         <PreviewContext.Provider value={{ selectedInstanceId, isPreviewMode: true }}>
