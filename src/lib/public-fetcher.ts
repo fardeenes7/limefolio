@@ -1,6 +1,6 @@
 import type { APIResponse } from "../types";
 
-const API_URL = process.env.API_URL || "http://localhost:8000";
+const API_URL = process.env.API_URL || "https://api.limefolio.com";
 
 /**
  * Public fetcher - no authentication required
@@ -11,7 +11,7 @@ const API_URL = process.env.API_URL || "http://localhost:8000";
  */
 export async function publicFetcher<T = any>(
     endpoint: string,
-    options: RequestInit = {},
+    options: RequestInit = {}
 ): Promise<APIResponse<T>> {
     const url = `${API_URL}${endpoint}`;
 
@@ -21,7 +21,7 @@ export async function publicFetcher<T = any>(
     try {
         const response = await fetch(url, {
             ...options,
-            headers,
+            headers
         });
 
         let data: T | null = null;
@@ -39,14 +39,14 @@ export async function publicFetcher<T = any>(
         return {
             data,
             status: response.status,
-            ok: response.ok,
+            ok: response.ok
         };
     } catch (error) {
         console.error("Fetch error:", error);
         return {
             data: null,
             status: 500,
-            ok: false,
+            ok: false
         };
     }
 }
@@ -62,6 +62,6 @@ export const publicApi = {
         publicFetcher<T>(endpoint, {
             ...options,
             method: "POST",
-            body: body ? JSON.stringify(body) : undefined,
-        }),
+            body: body ? JSON.stringify(body) : undefined
+        })
 };

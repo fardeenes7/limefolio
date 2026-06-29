@@ -5,7 +5,11 @@ import { publicApi } from "../public-fetcher";
 import { revalidatePath } from "next/cache";
 
 export async function getPlans() {
-    const response = await publicApi.get("/api/billing/plans/");
+    const response = await publicApi.get("/api/billing/plans/", {
+        next: {
+            revalidate: 3600
+        }
+    });
     return response.data || [];
 }
 
@@ -42,6 +46,9 @@ export async function reactivateSubscription() {
 }
 
 export async function upgradeBkashSubscription(data: any) {
-    const response = await api.post("/api/billing/subscription/bkash/upgrade/", data);
+    const response = await api.post(
+        "/api/billing/subscription/bkash/upgrade/",
+        data
+    );
     return response;
 }
