@@ -1,19 +1,13 @@
-import { PricingClient } from "./pricing-client";
+import { Suspense } from "react";
+import { PricingSection } from "@/components/pricing/pricing-section";
+import { PricingSkeleton } from "@/components/pricing/pricing-skeleton";
 
-async function getPlans() {
-    try {
-        const apiUrl = process.env.API_URL || "http://localhost:8001";
-        const res = await fetch(`${apiUrl}/api/billing/plans/`, { next: { revalidate: 300 } });
-        if (res.ok && res.status !== 204) {
-            return await res.json();
-        }
-    } catch (e) {
-        console.error("Failed to fetch plans:", e);
-    }
-    return [];
-}
-
-export default async function PricingPage() {
-    const plans = await getPlans();
-    return <PricingClient plans={plans} />;
+export default function PricingPage() {
+    return (
+        <main className="min-h-dvh pt-32 pb-24 bg-background selection:bg-primary/20">
+            <Suspense fallback={<PricingSkeleton />}>
+                <PricingSection />
+            </Suspense>
+        </main>
+    );
 }

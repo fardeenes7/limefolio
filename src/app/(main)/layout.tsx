@@ -62,6 +62,7 @@ export default function RootLayout({
     return (
         <html lang="en" className={outfit.variable}>
             <GoogleTagManager gtmId="GTM-PDSBXRH5" />
+            
             <body
                 className={`${geistSans.variable} ${geistMono.variable} antialiased`}
             >
