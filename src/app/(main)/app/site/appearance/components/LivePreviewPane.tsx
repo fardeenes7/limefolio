@@ -7,8 +7,7 @@ import {
     IconDeviceMobile
 } from "@tabler/icons-react";
 
-const PREVIEW_BASE_URL =
-    process.env.NEXT_PUBLIC_PREVIEW_URL ?? "http://preview.localhost:3000";
+
 
 const DEVICE_WIDTHS = {
     desktop: "100%",
@@ -208,7 +207,7 @@ export function LivePreviewPane({
                     )}
                     <iframe
                         ref={iframeRef}
-                        src={`${PREVIEW_BASE_URL}?preview=true&template=${draftConfig.templateKey}`}
+                        src={`/sites/${tenant}?preview=true&template=${draftConfig.templateKey}`}
                         className={cn("w-full h-full border-0 transition-opacity duration-500", isIframeReady ? "opacity-100" : "opacity-0")}
                         title="Portfolio preview"
                     />

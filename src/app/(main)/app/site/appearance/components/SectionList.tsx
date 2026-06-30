@@ -56,7 +56,6 @@ import {
     IconSocial,
     IconLayoutNavbar,
     IconLayoutBottombar, // footer
-    IconCookie,
     IconRefresh
 } from "@tabler/icons-react";
 
@@ -83,8 +82,7 @@ const COMPONENT_ICONS: Record<string, React.ElementType> = {
     stats: IconChartBar,
     social_feed: IconSocial,
     header: IconLayoutNavbar,
-    footer: IconLayoutBottombar,
-    cookie_banner: IconCookie
+    footer: IconLayoutBottombar
 };
 
 interface SectionRowBaseProps {

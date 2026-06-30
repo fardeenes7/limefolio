@@ -192,8 +192,8 @@ export type TemplatePage = {
  * - `version` is semver (e.g. "1.0.0") and must be bumped when any breaking
  *   change is made to section instanceIds, input keys, or removed sections.
  *
- * `layout` contains `SectionInstance` objects for global components (header,
- * footer, cookie banner, etc.) rendered by `layout.tsx` on every page.
+ * Types representing the authoritative definition of a template.
+ * Each template has a layout (global sections like header, footer) rendered by `layout.tsx` on every page.
  *
  * `pages` contains one `TemplatePage` per route. Page sections are rendered by
  * each `page.tsx`; they do not include the global layout components.
@@ -207,7 +207,7 @@ export type Template = {
     defaultTheme: string;
     /** Must exist in Fonts. Applied when the user first switches to this template. */
     defaultFont: string;
-    /** Global sections rendered by layout.tsx — header, footer, cookie banner, etc. */
+    /** Global sections rendered by layout.tsx — header, footer, etc. */
     layout: SectionInstance[];
     /** Per-route page definitions. One entry per supported page type. */
     pages: TemplatePage[];

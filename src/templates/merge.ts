@@ -24,8 +24,7 @@
  * with its merged value, every variant resolved. Ready to pass to renderers.
  *
  * ## Global components
- * Components with `isGlobal: true` in `ComponentRegistry` (header, footer,
- * cookie_banner) are automatically included in every page's resolved section list.
+ * Global layout components declared in `template.layout` (e.g. header, footer) are automatically included in every page's resolved section list.
  * Their config is sourced from `template.layout`, not from page section declarations.
  * The merge function injects them using the following convention:
  *   - Header-like globals (defined first in layout) are prepended to page sections.

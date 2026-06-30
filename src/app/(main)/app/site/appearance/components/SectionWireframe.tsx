@@ -172,14 +172,6 @@ const WIREFRAMES: Record<string, (props: WireframeProps) => React.ReactElement> 
             <rect x={0} y={1} width={48} height={1} fill="currentColor" opacity={0.2} />
         </svg>
     ),
-    cookie_banner: ({ className }) => (
-        <svg viewBox="0 0 48 32" className={className} fill="none">
-            <rect x={2} y={20} width={44} height={10} rx={2} fill="currentColor" opacity={0.08} stroke="currentColor" strokeWidth="0.8" strokeOpacity="0.3" />
-            <Bar x={5} y={23} w={24} h={1.5} opacity={0.35} />
-            <Bar x={5} y={26} w={16} h={1.5} opacity={0.25} />
-            <Bar x={34} y={22} w={10} h={5} rx={2} opacity={0.45} />
-        </svg>
-    ),
 };
 
 const FALLBACK: (props: WireframeProps) => React.ReactElement = ({ className }) => (

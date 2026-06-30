@@ -4,7 +4,7 @@
  * Maps a `ResolvedSection[]` to a vertical stack of `<SectionRenderer>` nodes.
  *
  * Used by:
- * - `layout.tsx`       → renders the layout sections (header, footer, cookie_banner)
+ * - `layout.tsx`       → renders the layout sections (header, footer)
  *                        wrapping `{children}` (page-specific content)
  * - each `page.tsx`    → renders that page's own sections
  *
@@ -20,7 +20,7 @@ import { SectionRenderer } from './SectionRenderer';
 import { ReactNode } from 'react';
 
 interface LayoutPageRendererProps {
-    /** Sections rendered in the layout wrapper (header, footer, cookie_banner) */
+    /** Sections rendered in the layout wrapper (header, footer) */
     layoutSections: ResolvedSection[];
     /** Page-specific sections rendered between header and footer */
     children: ReactNode;
@@ -32,7 +32,7 @@ interface LayoutPageRendererProps {
  *
  * The header-like sections (those that appear before any non-global section in
  * the template layout definition — i.e. `header`) are rendered above `children`.
- * The footer-like sections (`footer`, `cookie_banner`) are rendered below.
+ * The footer-like sections (`footer`) are rendered below.
  *
  * This replaces the old `<DefaultLayout>` / `<TemplateLayout>` wrapper pattern.
  */
@@ -43,7 +43,7 @@ export function LayoutPageRenderer({
 }: LayoutPageRendererProps) {
     // Split layout sections into header group and footer group.
     // Sections with componentKey === 'header' (or any header-variant) are headers.
-    // Everything else (footer, cookie_banner) goes below content.
+    // Everything else (footer) goes below content.
     const headerSections = layoutSections.filter(
         (s) => s.componentKey === 'header',
     );

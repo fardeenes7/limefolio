@@ -15,7 +15,7 @@
  * Every template has two sets of `SectionInstance` declarations:
  *
  * - **`layout`** — rendered once by `layout.tsx` and wraps every page.
- *   Contains global components like `header`, `footer`, and `cookie_banner`.
+ *   Contains global components like `header`, `footer`.
  *   All components in `layout` must have `isGlobal: true` in the component registry.
  *   These sections are automatically injected into every page's resolved section list
  *   by `resolvePortfolioConfig` — they must NOT be duplicated in `pages[x].sections`.
@@ -119,13 +119,6 @@ const defaultTemplate: Template = {
                 showLimefolioAttribution: false
             },
             fixed: true
-        },
-        {
-            instanceId: "cookie_banner_1",
-            componentKey: "cookie_banner",
-            allowedVariants: allVariants("cookie_banner"),
-            defaultVariant: "bar",
-            fixed: false
         }
     ] satisfies SectionInstance[],
 
@@ -368,13 +361,6 @@ const cinematicTemplate: Template = {
             allowedVariants: allVariants("footer"),
             defaultVariant: "default",
             fixed: true
-        },
-        {
-            instanceId: "cookie_banner_1",
-            componentKey: "cookie_banner",
-            allowedVariants: allVariants("cookie_banner"),
-            defaultVariant: "bar",
-            fixed: false
         }
     ] satisfies SectionInstance[],
 
@@ -608,13 +594,6 @@ const terminalTemplate: Template = {
                 showLimefolioAttribution: false
             },
             fixed: true
-        },
-        {
-            instanceId: "cookie_banner_1",
-            componentKey: "cookie_banner",
-            allowedVariants: allVariants("cookie_banner"),
-            defaultVariant: "bar",
-            fixed: false
         }
     ] satisfies SectionInstance[],
 
@@ -842,13 +821,6 @@ const vscodeTemplate: Template = {
                 showLimefolioAttribution: false
             },
             fixed: true
-        },
-        {
-            instanceId: "cookie_banner_1",
-            componentKey: "cookie_banner",
-            allowedVariants: allVariants("cookie_banner"),
-            defaultVariant: "bar",
-            fixed: false
         }
     ] satisfies SectionInstance[],
 
@@ -1074,13 +1046,6 @@ const minimalTemplate: Template = {
                 linkDensity: "compact"
             },
             fixed: true
-        },
-        {
-            instanceId: "cookie_banner_1",
-            componentKey: "cookie_banner",
-            allowedVariants: allVariants("cookie_banner"),
-            defaultVariant: "bar",
-            fixed: false
         }
     ] satisfies SectionInstance[],
 
@@ -1302,13 +1267,6 @@ const neobrutalismTemplate: Template = {
                 linkDensity: "spacious"
             },
             fixed: true
-        },
-        {
-            instanceId: "cookie_banner_1",
-            componentKey: "cookie_banner",
-            allowedVariants: allVariants("cookie_banner"),
-            defaultVariant: "bar",
-            fixed: false
         }
     ] satisfies SectionInstance[],
 

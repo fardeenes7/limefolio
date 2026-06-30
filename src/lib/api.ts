@@ -1,5 +1,7 @@
 "use server";
 
+import { auth } from "@/auth";
+
 import { SAMPLE_DATA } from "@/lib/sample-data";
 
 const REVALIDATE_TIME = 86400;
@@ -11,6 +13,23 @@ const isPreview = (domain: string) => {
 async function fetcher(pathname: string, options: RequestInit = {}) {
     const apiUrl = `${process.env.API_URL?.replace(/\/$/, "")}/api/public`;
     const reqUrl = `${apiUrl}/${pathname.replace(/^\//, "")}`;
+    try {
+        const session = await auth();
+        if (session?.accessToken) {
+            options.headers = {
+                ...options.headers,
+                "Authorization": `Bearer ${session.accessToken}`
+            };
+            // Bypass global cache for authenticated requests to prevent leaking private data
+            if (options.next) {
+                delete options.next;
+            }
+            options.cache = "no-store";
+        }
+    } catch (e) {
+        // Ignore auth error if not in Next.js context
+    }
+    
     try {
         const res = await fetch(reqUrl, options);
         const data = await res.json();

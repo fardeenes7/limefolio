@@ -14,7 +14,7 @@
  *   - The page renderer — to dynamically import the correct variant component
  *
  * ## isGlobal flag
- * Components with `isGlobal: true` (currently `header`, `footer`, `cookie_banner`)
+ * Components with `isGlobal: true` (currently `header`, `footer`)
  * are automatically injected into every page's resolved section list by
  * `resolvePortfolioConfig`. They must NOT be declared in `template.pages[x].sections`
  * — their config comes exclusively from `template.layout`. At render time, every
@@ -266,44 +266,6 @@ const footer: ComponentSchema = {
     ],
 };
 
-/**
- * Cookie Banner — GDPR/CCPA consent notice.
- *
- * Removable (users who don't need cookie consent can hide it).
- * The `position` input only applies to the `bar` variant, so it is guarded by
- * a `showIf` condition to keep the editor uncluttered for other variants.
- */
-const cookie_banner: ComponentSchema = {
-    key: 'cookie_banner',
-    label: 'Cookie Banner',
-    isGlobal: true,
-    repeatable: false,
-    removable: true,
-    variants: [
-        { key: 'bar', label: 'Bar' },
-    ],
-    defaultVariant: 'bar',
-    inputs: [
-        {
-            key: 'position',
-            label: 'Position',
-            type: {
-                kind: 'select',
-                options: [
-                    { label: 'Bottom', value: 'bottom' },
-                    { label: 'Top', value: 'top' },
-                ],
-            },
-            showIf: { input: 'variant', equals: 'bar' },
-        },
-        {
-            key: 'policyUrl',
-            label: 'Privacy policy URL',
-            type: { kind: 'text' },
-            default: '/privacy-policy',
-        },
-    ],
-};
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Page components (isGlobal: false)
@@ -1301,7 +1263,6 @@ const social_feed: ComponentSchema = {
 export const ComponentRegistry: Record<string, ComponentSchema> = {
     header,
     footer,
-    cookie_banner,
     hero,
     about,
     skills,

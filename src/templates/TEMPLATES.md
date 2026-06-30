@@ -82,7 +82,6 @@ ComponentRegistry['hero'].removable   // false
 
 **`isGlobal: true`** means the component is automatically rendered on every page
 without being declared in each page's section list. Global components (`header`,
-`footer`, `cookie_banner`) are sourced from `template.layout` and injected by
 `resolvePortfolioConfig`. They must NOT appear in `template.pages[x].sections`.
 
 **`repeatable: true`** means the user can add multiple independent instances of this
@@ -482,7 +481,6 @@ All contributors must follow these rules without exception:
 |---|---|---|---|---|---|---|
 | `header` | Header | ✓ | ✗ | ✗ | default, cinematic, compact, minimal, terminal, neobrutalism, centered, editorial, floating, vscode | default |
 | `footer` | Footer | ✓ | ✗ | ✗ | default, cinematic, compact, minimal, terminal, neobrutalism, centered, vscode | default |
-| `cookie_banner` | Cookie Banner | ✓ | ✗ | ✓ | bar | bar |
 | `hero` | Hero | ✗ | ✗ | ✗ | default, cinematic, compact, centered, minimal, terminal, terminal_split, neobrutalism, neobrutalism_poster, split_section, typing_animation, video_reel, profile_card, vscode | default |
 | `about` | About | ✗ | ✗ | ✓ | default, minimal, terminal, neobrutalism, director_cut, vscode | default |
 | `skills` | Skills | ✗ | ✗ | ✓ | icon_grid, minimal_list, terminal, neobrutalism, tag_cloud, vscode | icon_grid |
@@ -524,7 +522,6 @@ Current public routes render `landing`, `all_projects`, `project_details`, `all_
 |---|---|---|---|
 | `header_1` | `header` | default | ✓ |
 | `footer_1` | `footer` | default | ✓ |
-| `cookie_banner_1` | `cookie_banner` | bar | ✗ |
 
 #### Page: `landing` (Landing Page)
 
@@ -593,7 +590,6 @@ and SSH-flavored contact blocks.
 |---|---|---|---|
 | `header_1` | `header` | terminal | ✓ |
 | `footer_1` | `footer` | terminal | ✓ |
-| `cookie_banner_1` | `cookie_banner` | bar | ✗ |
 
 #### Page: `landing` (Landing Page)
 
@@ -659,7 +655,6 @@ when the layout header resolves to the `vscode` variant.
 |---|---|---|---|
 | `header_1` | `header` | vscode | ✓ |
 | `footer_1` | `footer` | vscode | ✓ |
-| `cookie_banner_1` | `cookie_banner` | bar | ✗ |
 
 #### Page: `landing` (Landing Page)
 
@@ -725,7 +720,6 @@ large scene cards, and horizontal frame galleries.
 |---|---|---|---|
 | `header_1` | `header` | cinematic | ✓ |
 | `footer_1` | `footer` | cinematic | ✓ |
-| `cookie_banner_1` | `cookie_banner` | bar | ✗ |
 
 #### Page: `landing` (Landing Page)
 
@@ -790,7 +784,6 @@ by restrained engineer portfolios.
 |---|---|---|---|
 | `header_1` | `header` | minimal | ✓ |
 | `footer_1` | `footer` | minimal | ✓ |
-| `cookie_banner_1` | `cookie_banner` | bar | ✗ |
 
 #### Page: `landing` (Landing Page)
 
@@ -854,7 +847,6 @@ intentionally raw visual language instead of polished glassmorphism.
 |---|---|---|---|
 | `header_1` | `header` | neobrutalism | ✓ |
 | `footer_1` | `footer` | neobrutalism | ✓ |
-| `cookie_banner_1` | `cookie_banner` | bar | ✗ |
 
 #### Page: `landing` (Landing Page)
 

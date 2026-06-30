@@ -27,7 +27,7 @@ export const VariantRegistry: Record<string, ComponentType<SectionProps>> = {
     'contact/terminal': dynamic(() => import('../contact/terminal')),
     'contact/terminal_ssh': dynamic(() => import('../contact/terminal_ssh')),
     'contact/vscode': dynamic(() => import('../contact/vscode')),
-    'cookie_banner/bar': dynamic(() => import('../cookie_banner/bar')),
+
     'cta/banner': dynamic(() => import('../cta/banner')),
     'cta/card': dynamic(() => import('../cta/card')),
     'cta/default': dynamic(() => import('../cta/default')),

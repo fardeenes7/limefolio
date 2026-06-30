@@ -2,7 +2,42 @@ import NextAuth from "next-auth";
 import Google from "next-auth/providers/google";
 import GitHub from "next-auth/providers/github";
 
+const useSecureCookies = process.env.NODE_ENV === "production";
+const cookiePrefix = useSecureCookies ? "__Secure-" : "";
+const hostName = process.env.NODE_ENV === "production" ? ".limefolio.com" : "localhost";
+
 export const { handlers, signIn, signOut, auth } = NextAuth({
+    cookies: {
+        sessionToken: {
+            name: `${cookiePrefix}authjs.session-token`,
+            options: {
+                httpOnly: true,
+                sameSite: "lax",
+                path: "/",
+                secure: useSecureCookies,
+                domain: hostName === "localhost" ? undefined : hostName
+            }
+        },
+        callbackUrl: {
+            name: `${cookiePrefix}authjs.callback-url`,
+            options: {
+                sameSite: "lax",
+                path: "/",
+                secure: useSecureCookies,
+                domain: hostName === "localhost" ? undefined : hostName
+            }
+        },
+        csrfToken: {
+            name: `${cookiePrefix}authjs.csrf-token`,
+            options: {
+                httpOnly: true,
+                sameSite: "lax",
+                path: "/",
+                secure: useSecureCookies,
+                domain: hostName === "localhost" ? undefined : hostName
+            }
+        }
+    },
     providers: [
         Google({
             clientId: process.env.GOOGLE_CLIENT_ID!,
