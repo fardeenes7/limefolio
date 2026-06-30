@@ -20,7 +20,7 @@ export default function HeaderMinimal({ section, siteData }: SectionProps) {
         <>
             <style dangerouslySetInnerHTML={{ __html: headerInitialStyle }} />
             <header className={headerClass} ref={headerRef}>
-                <div className="mx-auto flex max-w-3xl items-center justify-between px-6 py-6">
+                <div className="mx-auto flex max-w-theme items-center justify-between px-6 py-6">
                     <Link href="/" className="text-sm font-medium text-foreground underline-offset-4 hover:underline">
                         {siteData.logo ? (
                             // Section variants use raw uploaded asset URLs from the API.

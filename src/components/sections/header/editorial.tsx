@@ -28,7 +28,7 @@ export default function HeaderEditorial({ section, siteData }: SectionProps) {
         <>
             <style dangerouslySetInnerHTML={{ __html: headerInitialStyle }} />
             <header className={headerClass} ref={headerRef}>
-            <div className="container max-w-7xl mx-auto px-6 pt-6 pb-4 flex flex-col items-center gap-5">
+            <div className="container max-w-theme mx-auto px-6 pt-6 pb-4 flex flex-col items-center gap-5">
                 {/* Top Row: Logo / Site name */}
                 <div className="w-full flex justify-center">
                     <Link

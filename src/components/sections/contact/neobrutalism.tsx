@@ -20,7 +20,7 @@ export default function ContactNeobrutalism({ section, siteData }: SectionProps)
 
     return (
         <section id="contact" className="bg-background py-20">
-            <div className="mx-auto grid max-w-7xl gap-8 px-6 lg:grid-cols-[1fr_1.1fr]">
+            <div className="mx-auto grid max-w-theme gap-8 px-6 lg:grid-cols-[1fr_1.1fr]">
                 <div>
                     <h2 className="text-5xl font-black uppercase leading-none tracking-tighter text-foreground sm:text-7xl">{sectionTitle}</h2>
                     <div className="mt-8 space-y-4">

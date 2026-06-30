@@ -18,6 +18,7 @@ interface LivePreviewProviderProps {
 import { useTheme } from "next-themes";
 import { getFont } from "@/lib/fonts";
 import { getTemplate } from "@/templates/registry";
+import { getLayoutWidthValue } from "@/lib/utils";
 
 export const PreviewContext = React.createContext<{
     selectedInstanceId: string | null;
@@ -139,6 +140,14 @@ function LivePreviewProviderInner({
             setTheme(themeToApply);
         }
     }, [previewConfig?.fontKey, previewConfig?.themeKey, isPreviewMode, initialUserConfig.fontKey, initialUserConfig.themeKey, templateDef.defaultFont, setTheme]);
+
+    // Apply layout width directly to body inline styles to override SSR layout
+    useEffect(() => {
+        if (!isPreviewMode) return;
+        const activeTemplate = previewConfig?.templateKey ? getTemplate(previewConfig.templateKey) : templateDef;
+        const layoutWidth = previewConfig?.layoutWidth || initialUserConfig.layoutWidth || activeTemplate.defaultLayoutWidth || 'default';
+        document.body.style.setProperty('--theme-layout-width', getLayoutWidthValue(layoutWidth));
+    }, [previewConfig?.layoutWidth, previewConfig?.templateKey, initialUserConfig.layoutWidth, templateDef, isPreviewMode]);
 
     // Send computed hex colors back to the customizer
     useEffect(() => {

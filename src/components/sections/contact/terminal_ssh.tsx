@@ -17,7 +17,7 @@ export default function ContactTerminalSsh({ section, siteData }: SectionProps) 
 
     return (
         <section id="contact" className="bg-background py-20 font-mono text-foreground">
-            <div className="mx-auto max-w-5xl px-6">
+            <div className="mx-auto max-w-theme px-6">
                 <div className="grid overflow-hidden rounded-lg border border-border bg-card shadow-2xl shadow-primary/10 lg:grid-cols-[1fr_22rem]">
                     <div className="p-6 sm:p-8">
                         <p className="text-xs uppercase tracking-[0.28em] text-primary">$ ssh handshake</p>

@@ -47,7 +47,7 @@ export default function HeroCentered({ section, siteData }: SectionProps) {
         >
             <HeroBackground section={section} />
 
-            <div className="container max-w-3xl mx-auto px-6 py-20 relative z-10 flex flex-col items-center text-center">
+            <div className="container max-w-theme mx-auto px-6 py-20 relative z-10 flex flex-col items-center text-center">
                 
                 {/* Avatar */}
                 {showAvatar && avatarUrl && (
@@ -75,7 +75,7 @@ export default function HeroCentered({ section, siteData }: SectionProps) {
                 </h1>
 
                 {body && (
-                    <p className="text-lg sm:text-xl text-muted-foreground mb-10 max-w-2xl mx-auto leading-relaxed">
+                    <p className="text-lg sm:text-xl text-muted-foreground mb-10 max-w-theme mx-auto leading-relaxed">
                         {body}
                     </p>
                 )}

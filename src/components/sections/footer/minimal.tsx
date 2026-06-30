@@ -23,7 +23,7 @@ export default function FooterMinimal({ section, siteData }: SectionProps) {
 
     return (
         <footer className="bg-background py-10">
-            <div className="mx-auto flex max-w-3xl flex-col gap-4 px-6 text-sm text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
+            <div className="mx-auto flex max-w-theme flex-col gap-4 px-6 text-sm text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
                 <div className="space-y-1">
                     {showCopyright && <p>{finalCopyright}</p>}
                     {showLimefolioAttribution && <LimefolioAttribution />}

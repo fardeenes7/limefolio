@@ -13,7 +13,7 @@ export default function ProjectDetailsNeobrutalism({ siteData }: SectionProps) {
     return (
         <article className="border-b-4 border-border bg-background text-foreground">
             <section className="border-b-4 border-border bg-muted py-10 md:py-16">
-                <div className="mx-auto max-w-7xl px-6">
+                <div className="mx-auto max-w-theme px-6">
                     <BackToProjectsLink className="mb-8 inline-flex items-center gap-2 border-4 border-border bg-background px-4 py-2 text-sm font-black uppercase text-foreground shadow-[5px_5px_0_hsl(var(--border))] transition-transform hover:-translate-x-0.5 hover:-translate-y-0.5" />
                     <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_24rem] lg:items-end">
                         <div>
@@ -40,7 +40,7 @@ export default function ProjectDetailsNeobrutalism({ siteData }: SectionProps) {
 
             {heroImage && (
                 <section className="border-b-4 border-border bg-background py-8">
-                    <div className="mx-auto max-w-7xl px-6">
+                    <div className="mx-auto max-w-theme px-6">
                         <div className="border-4 border-border bg-primary p-3 shadow-[12px_12px_0_hsl(var(--border))]">
                             <img src={heroImage} alt={project.title} className="aspect-video w-full border-4 border-border object-cover grayscale transition-all hover:grayscale-0" />
                         </div>
@@ -49,7 +49,7 @@ export default function ProjectDetailsNeobrutalism({ siteData }: SectionProps) {
             )}
 
             <section className="py-12 md:py-20">
-                <div className="mx-auto grid max-w-7xl gap-8 px-6 lg:grid-cols-[minmax(0,1fr)_22rem]">
+                <div className="mx-auto grid max-w-theme gap-8 px-6 lg:grid-cols-[minmax(0,1fr)_22rem]">
                     <div className="border-4 border-border bg-card p-6 shadow-[10px_10px_0_hsl(var(--border))] sm:p-10">
                         <p className="mb-5 inline-flex items-center gap-2 border-4 border-border bg-accent px-3 py-1 text-sm font-black uppercase text-accent-foreground"><IconBolt size={18} /> What shipped</p>
                         <div className="space-y-6 text-lg font-semibold leading-8 text-foreground">
@@ -84,7 +84,7 @@ export default function ProjectDetailsNeobrutalism({ siteData }: SectionProps) {
 
             {media.length > 1 && (
                 <section className="border-t-4 border-border bg-muted py-12">
-                    <div className="mx-auto max-w-7xl px-6">
+                    <div className="mx-auto max-w-theme px-6">
                         <h2 className="mb-8 inline-flex items-center gap-2 border-4 border-border bg-background px-4 py-2 text-2xl font-black uppercase shadow-[6px_6px_0_hsl(var(--border))]"><IconPhoto /> Proof Wall</h2>
                         <div className="grid gap-6 md:grid-cols-2">
                             {media.slice(1).map((item, index) => {

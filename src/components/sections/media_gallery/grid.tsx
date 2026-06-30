@@ -11,7 +11,7 @@ export default function MediaGalleryGrid({ section, siteData }: SectionProps) {
 
     return (
         <section id="gallery" className="bg-background py-24">
-            <div className="container mx-auto max-w-7xl px-6">
+            <div className="container mx-auto max-w-theme px-6">
                 {inputs.sectionTitle && (
                     <div className="mb-12 text-center">
                         <h2 className="text-3xl font-bold text-foreground md:text-5xl">{inputs.sectionTitle}</h2>

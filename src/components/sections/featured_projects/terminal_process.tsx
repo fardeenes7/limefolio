@@ -23,7 +23,7 @@ export default function FeaturedProjectsTerminalProcess({ section, siteData }: S
 
     return (
         <section id="projects" className="bg-background py-20 font-mono text-foreground">
-            <div className="mx-auto max-w-7xl px-6">
+            <div className="mx-auto max-w-theme px-6">
                 <div className="mb-8 grid gap-4 border-b border-border pb-5 lg:grid-cols-[1fr_auto] lg:items-end">
                     <div>
                         <p className="text-xs uppercase tracking-[0.28em] text-primary">$ top --sort=impact</p>

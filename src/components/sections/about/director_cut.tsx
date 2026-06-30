@@ -25,7 +25,7 @@ export default function AboutDirectorCut({ section, siteData }: SectionProps) {
     return (
         <section id="about" className="relative overflow-hidden border-y border-border bg-background py-32">
             <div className="pointer-events-none absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-primary/10 to-transparent" />
-            <div className="container max-w-7xl mx-auto px-6">
+            <div className="container max-w-theme mx-auto px-6">
                 <div className="grid lg:grid-cols-[0.9fr_1.1fr] gap-16 lg:gap-24 items-center">
                     
                     {/* Image Column */}

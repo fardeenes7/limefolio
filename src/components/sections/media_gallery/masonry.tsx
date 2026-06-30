@@ -11,7 +11,7 @@ export default function MediaGalleryMasonry({ section, siteData }: SectionProps)
 
     return (
         <section id="gallery" className="bg-background py-24">
-            <div className="container mx-auto max-w-7xl px-6">
+            <div className="container mx-auto max-w-theme px-6">
                 {inputs.sectionTitle && (
                     <div className="mb-12 max-w-2xl">
                         <p className="mb-3 text-sm font-semibold uppercase tracking-[0.3em] text-primary">Selected work</p>

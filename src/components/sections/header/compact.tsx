@@ -26,7 +26,7 @@ export default function HeaderCompact({ section, siteData }: SectionProps) {
         <>
             <style dangerouslySetInnerHTML={{ __html: headerInitialStyle }} />
             <header className={headerClass} ref={headerRef}>
-            <div className="container max-w-7xl mx-auto flex items-center justify-between px-6 py-3">
+            <div className="container max-w-theme mx-auto flex items-center justify-between px-6 py-3">
                 <Link href="/" className="text-sm font-semibold text-foreground hover:text-primary transition-colors flex-shrink-0">
                     {siteData.logo ? (
                         <img src={siteData.logo} alt={title} className="h-6 w-auto" />

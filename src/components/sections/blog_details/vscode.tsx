@@ -13,7 +13,7 @@ export default function BlogDetailsVsCode({ siteData }: SectionProps) {
 
     return (
         <article className="bg-background py-6 font-mono text-foreground">
-            <div className="mx-auto max-w-7xl px-4 sm:px-6">
+            <div className="mx-auto max-w-theme px-4 sm:px-6">
                 <div className="overflow-hidden rounded-lg border border-border bg-card shadow-2xl shadow-primary/5">
                     <div className="flex items-center justify-between border-b border-border bg-muted/50 px-4 py-2 text-xs text-muted-foreground">
                         <span className="inline-flex items-center gap-2"><IconSearch size={14} /> Blog Workspace</span>

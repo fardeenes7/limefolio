@@ -14,7 +14,7 @@ export default function StatsCounterRow({ section, siteData }: SectionProps) {
 
     return (
         <section className="py-16 bg-primary text-primary-foreground">
-            <div className="container max-w-7xl mx-auto px-6">
+            <div className="container max-w-theme mx-auto px-6">
                 {headline && (
                     <h2 className="text-2xl font-bold text-center mb-12 text-primary-foreground/90">
                         {headline}

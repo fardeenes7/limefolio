@@ -15,7 +15,7 @@ export default function CtaMinimal({ section }: SectionProps) {
 
     return (
         <section className="py-12 bg-background border-t border-border mt-12">
-            <div className="container max-w-3xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
+            <div className="container max-w-theme mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
                 <div>
                     <h2 className="text-2xl font-bold text-foreground">
                         {headline}

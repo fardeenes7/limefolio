@@ -30,7 +30,7 @@ export default function FeaturedProjectsTable({ section, siteData }: SectionProp
 
     return (
         <section id="projects" className="py-24 bg-background font-mono">
-            <div className="container max-w-5xl mx-auto px-6">
+            <div className="container max-w-theme mx-auto px-6">
                 <div className="flex items-center justify-between mb-12 border-b border-border pb-4">
                     {sectionTitle && (
                         <h2 className="text-2xl font-bold text-foreground flex items-center gap-3">

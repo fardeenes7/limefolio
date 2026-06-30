@@ -10,7 +10,7 @@ export default function CtaTerminal({ section }: SectionProps) {
 
     return (
         <section className="bg-background py-14 font-mono">
-            <div className="mx-auto max-w-5xl px-6">
+            <div className="mx-auto max-w-theme px-6">
                 <div className="rounded-lg border border-border bg-card p-6 sm:p-8">
                     <p className="text-sm text-muted-foreground"><span className="text-primary">$</span> ./next-step</p>
                     <div className="mt-5 flex flex-col gap-6 md:flex-row md:items-center md:justify-between">

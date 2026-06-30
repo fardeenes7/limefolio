@@ -38,7 +38,7 @@ export default function FooterCentered({ section, siteData }: SectionProps) {
 
     return (
         <footer className={`border-t border-border py-16 ${backgroundClass}`}>
-            <div className="container max-w-3xl mx-auto px-6 flex flex-col items-center gap-8 text-center">
+            <div className="container max-w-theme mx-auto px-6 flex flex-col items-center gap-8 text-center">
                 {/* Social Links */}
                 {showSocialLinks && socialLinks.length > 0 && (
                     <div className={`flex items-center ${gapClass}`}>
@@ -70,7 +70,7 @@ export default function FooterCentered({ section, siteData }: SectionProps) {
                 {showLimefolioAttribution && attributionPlacement === 'copyright' && <LimefolioAttribution />}
             </div>
             {showLimefolioAttribution && attributionPlacement === 'bottom' && (
-                <div className="container max-w-3xl mx-auto px-6 pt-8 text-center">
+                <div className="container max-w-theme mx-auto px-6 pt-8 text-center">
                     <LimefolioAttribution />
                 </div>
             )}

@@ -36,6 +36,7 @@ export function useAppearanceState({ initialConfigRaw }: UseAppearanceStateProps
             templateKey,
             themeKey: initialConfigRaw.theme_key || template.defaultTheme,
             fontKey: initialConfigRaw.font_key || template.defaultFont,
+            layoutWidth: initialConfigRaw.layout_width || template.defaultLayoutWidth || 'default',
             themeOverrides: initialConfigRaw.theme_overrides || {},
             overrides: { layout: {}, pages: {}, ...(initialConfigRaw.config_overrides || {}) },
             additions: { layout: [], pages: {}, ...(initialConfigRaw.config_additions || {}) },
@@ -47,6 +48,7 @@ export function useAppearanceState({ initialConfigRaw }: UseAppearanceStateProps
     const [selectedTemplate, setSelectedTemplate] = useState(savedState.templateKey);
     const [selectedTheme, setSelectedTheme] = useState(savedState.themeKey);
     const [selectedFont, setSelectedFont] = useState(savedState.fontKey);
+    const [selectedLayoutWidth, setSelectedLayoutWidth] = useState(savedState.layoutWidth);
     const [themeOverrides, setThemeOverrides] = useState(savedState.themeOverrides);
     const [overrides, setOverrides] = useState<UserPortfolioConfig['overrides']>(savedState.overrides);
     const [additions, setAdditions] = useState<UserPortfolioConfig['additions']>(savedState.additions);
@@ -59,6 +61,7 @@ export function useAppearanceState({ initialConfigRaw }: UseAppearanceStateProps
             selectedTemplate !== savedState.templateKey ||
             selectedTheme !== savedState.themeKey ||
             selectedFont !== savedState.fontKey ||
+            selectedLayoutWidth !== savedState.layoutWidth ||
             !deepEqual(themeOverrides, savedState.themeOverrides) ||
             !deepEqual(overrides, savedState.overrides) ||
             !deepEqual(additions, savedState.additions) ||
@@ -66,7 +69,7 @@ export function useAppearanceState({ initialConfigRaw }: UseAppearanceStateProps
             !deepEqual(ordering, savedState.ordering)
         );
     }, [
-        selectedTemplate, selectedTheme, selectedFont, themeOverrides, overrides, additions, removals, ordering,
+        selectedTemplate, selectedTheme, selectedFont, selectedLayoutWidth, themeOverrides, overrides, additions, removals, ordering,
         savedState
     ]);
 
@@ -74,6 +77,7 @@ export function useAppearanceState({ initialConfigRaw }: UseAppearanceStateProps
         setSelectedTemplate(savedState.templateKey);
         setSelectedTheme(savedState.themeKey);
         setSelectedFont(savedState.fontKey);
+        setSelectedLayoutWidth(savedState.layoutWidth);
         setThemeOverrides(savedState.themeOverrides);
         setOverrides(savedState.overrides);
         setAdditions(savedState.additions);
@@ -110,6 +114,7 @@ export function useAppearanceState({ initialConfigRaw }: UseAppearanceStateProps
         selectedTemplate,
         selectedTheme,
         selectedFont,
+        selectedLayoutWidth,
         themeOverrides,
         overrides,
         additions,
@@ -118,6 +123,7 @@ export function useAppearanceState({ initialConfigRaw }: UseAppearanceStateProps
         setTemplate: handleTemplateSwitch,
         setTheme: handleThemeSwitch,
         setFont: setSelectedFont,
+        setLayoutWidth: setSelectedLayoutWidth,
         setThemeOverrides,
         setOverrides,
         setAdditions,

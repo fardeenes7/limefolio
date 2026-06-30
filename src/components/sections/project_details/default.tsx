@@ -16,7 +16,7 @@ export default function ProjectDetailsDefault({ siteData }: SectionProps) {
     return (
         <article className="bg-background text-foreground">
             <header className="border-b border-border">
-                <div className="mx-auto max-w-7xl px-6 py-10 md:py-16">
+                <div className="mx-auto max-w-theme px-6 py-10 md:py-16">
                     <BackToProjectsLink className="mb-10 inline-flex items-center gap-2 text-sm font-medium text-muted-foreground transition-colors hover:text-primary" />
 
                     <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_22rem] lg:items-end">
@@ -62,7 +62,7 @@ export default function ProjectDetailsDefault({ siteData }: SectionProps) {
 
             {heroImage && (
                 <section className="py-8 md:py-12">
-                    <div className="mx-auto max-w-7xl px-6">
+                    <div className="mx-auto max-w-theme px-6">
                         <div className="overflow-hidden rounded-[2rem] border border-border bg-muted shadow-2xl shadow-foreground/10">
                             <img src={heroImage} alt={project.title} className="aspect-[16/9] w-full object-cover" />
                         </div>
@@ -71,7 +71,7 @@ export default function ProjectDetailsDefault({ siteData }: SectionProps) {
             )}
 
             <section className="py-12 md:py-20">
-                <div className="mx-auto grid max-w-7xl gap-14 px-6 lg:grid-cols-[minmax(0,1fr)_20rem]">
+                <div className="mx-auto grid max-w-theme gap-14 px-6 lg:grid-cols-[minmax(0,1fr)_20rem]">
                     <div className="max-w-3xl">
                         <div className="mb-8 flex items-center justify-between gap-6 border-b border-border pb-5">
                             <h2 className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">Project Overview</h2>
@@ -128,7 +128,7 @@ export default function ProjectDetailsDefault({ siteData }: SectionProps) {
 
             {media.length > 1 && (
                 <section className="border-t border-border py-12 md:py-20">
-                    <div className="mx-auto max-w-7xl px-6">
+                    <div className="mx-auto max-w-theme px-6">
                         <div className="mb-10 grid gap-6 md:grid-cols-[minmax(0,1fr)_20rem] md:items-end">
                             <div>
                                 <p className="mb-3 inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-[0.2em] text-primary"><IconPhoto size={16} /> Gallery</p>

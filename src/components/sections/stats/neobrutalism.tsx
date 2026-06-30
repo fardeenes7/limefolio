@@ -9,7 +9,7 @@ export default function StatsNeobrutalism({ section, siteData }: SectionProps) {
 
     return (
         <section className="border-b-4 border-border bg-primary py-14 text-primary-foreground">
-            <div className="mx-auto max-w-7xl px-6">
+            <div className="mx-auto max-w-theme px-6">
                 {sectionTitle && <h2 className="mb-8 text-4xl font-black uppercase leading-none tracking-tighter">{sectionTitle}</h2>}
                 <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
                     {stats.map((stat) => (

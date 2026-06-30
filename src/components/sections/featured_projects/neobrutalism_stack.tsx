@@ -24,7 +24,7 @@ export default function FeaturedProjectsNeobrutalismStack({ section, siteData }:
 
     return (
         <section id="projects" className="border-b-4 border-border bg-secondary py-20 text-secondary-foreground">
-            <div className="mx-auto max-w-7xl px-6">
+            <div className="mx-auto max-w-theme px-6">
                 <div className="mb-12 grid gap-6 lg:grid-cols-[24rem_1fr] lg:items-end">
                     <h2 className="text-5xl font-black uppercase leading-none tracking-tighter sm:text-7xl">{sectionTitle}</h2>
                     <p className="max-w-2xl border-4 border-border bg-background p-5 text-lg font-semibold leading-relaxed text-foreground shadow-[8px_8px_0_hsl(var(--border))]">A stacked case-file layout for project-heavy portfolios. Every card reads like a tear-off proof sheet.</p>

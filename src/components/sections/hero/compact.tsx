@@ -47,7 +47,7 @@ export default function HeroCompact({ section, siteData }: SectionProps) {
         >
             <HeroBackground section={section} />
 
-            <div className="container max-w-5xl mx-auto px-6 relative z-10 flex flex-col md:flex-row items-center gap-8">
+            <div className="container max-w-theme mx-auto px-6 relative z-10 flex flex-col md:flex-row items-center gap-8">
                 {/* Avatar / Left Side */}
                 {showAvatar && avatarUrl && (
                     <div className="shrink-0">

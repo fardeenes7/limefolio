@@ -20,7 +20,7 @@ export default function HeaderTerminal({ section, siteData }: SectionProps) {
         <>
             <style dangerouslySetInnerHTML={{ __html: headerInitialStyle }} />
             <header className={`${headerClass} font-mono`} ref={headerRef}>
-                <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
+                <div className="mx-auto flex max-w-theme items-center justify-between gap-4 px-4 py-3 sm:px-6">
                     <Link href="/" className="flex min-w-0 items-center gap-2 text-sm font-semibold text-foreground hover:text-primary">
                         <span className="text-primary">~/</span>
                         <span className="truncate">{handle}</span>

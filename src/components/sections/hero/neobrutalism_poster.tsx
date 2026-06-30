@@ -22,7 +22,7 @@ export default function HeroNeobrutalismPoster({ section, siteData }: SectionPro
     return (
         <section className="relative overflow-hidden border-b-4 border-border bg-primary py-14 text-primary-foreground sm:py-20">
             <div className="absolute inset-0 bg-[radial-gradient(hsl(var(--border))_1.5px,transparent_1.5px)] bg-[size:20px_20px] opacity-20" />
-            <div className="relative mx-auto max-w-7xl px-6">
+            <div className="relative mx-auto max-w-theme px-6">
                 <div className="grid min-h-[72vh] border-4 border-border bg-background text-foreground shadow-[16px_16px_0_hsl(var(--border))] lg:grid-cols-[1fr_19rem]">
                     <div className="flex flex-col justify-between p-6 sm:p-10 lg:p-12">
                         <div>

@@ -11,7 +11,7 @@ export default function SkillsVsCode({ section, siteData }: SectionProps) {
 
     return (
         <section id="skills" className="bg-background py-8 font-mono">
-            <div className="mx-auto max-w-6xl px-4 sm:px-6">
+            <div className="mx-auto max-w-theme px-4 sm:px-6">
                 <div className="mb-4 flex items-center justify-between border-b border-border pb-3">
                     <h2 className="text-sm font-semibold uppercase tracking-wide text-foreground">{sectionTitle}</h2>
                     <span className="text-xs text-muted-foreground">{skills.length} installed</span>

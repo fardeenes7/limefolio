@@ -47,7 +47,7 @@ export default function HeroDefault({ section, siteData }: SectionProps) {
         >
             <HeroBackground section={section} />
 
-            <div className="container max-w-4xl mx-auto px-6 py-20 relative z-10 text-center">
+            <div className="container max-w-theme mx-auto px-6 py-20 relative z-10 text-center">
                 {/* Avatar */}
                 {showAvatar && avatarUrl && (
                     <div className="mb-8 inline-block">
@@ -74,7 +74,7 @@ export default function HeroDefault({ section, siteData }: SectionProps) {
                 )}
 
                 {body && (
-                    <p className="text-lg sm:text-xl text-muted-foreground mb-10 max-w-2xl mx-auto leading-relaxed">
+                    <p className="text-lg sm:text-xl text-muted-foreground mb-10 max-w-theme mx-auto leading-relaxed">
                         {body}
                     </p>
                 )}

@@ -61,7 +61,7 @@ export default function HeroVideoReel({ section, siteData }: SectionProps) {
                 {Array.from({ length: 38 }).map((_, idx) => <span key={idx} className="h-2.5 w-4 rounded-sm bg-primary" />)}
             </div>
 
-            <div className="relative z-10 mx-auto grid w-full max-w-7xl gap-10 px-6 py-28 lg:grid-cols-[1fr_17rem] lg:items-end">
+            <div className="relative z-10 mx-auto grid w-full max-w-theme gap-10 px-6 py-28 lg:grid-cols-[1fr_17rem] lg:items-end">
                 <div>
                     <p className="mb-5 text-xs font-bold uppercase tracking-[0.5em] text-primary">Feature Presentation</p>
                     <h1 ref={headlineRef} className="max-w-6xl text-6xl font-black uppercase leading-[0.82] tracking-tighter text-foreground sm:text-8xl lg:text-9xl">

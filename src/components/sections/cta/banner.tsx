@@ -24,7 +24,7 @@ export default function CtaBanner({ section }: SectionProps) {
         >
             <div className="pointer-events-none absolute inset-x-0 top-0 h-10 bg-background" />
             <div className="pointer-events-none absolute inset-x-0 bottom-0 h-10 bg-background" />
-            <div className="container relative mx-auto flex max-w-7xl flex-col items-center justify-between gap-8 px-6 text-center md:flex-row md:text-left">
+            <div className="container relative mx-auto flex max-w-theme flex-col items-center justify-between gap-8 px-6 text-center md:flex-row md:text-left">
                 <div className="max-w-2xl">
                     <p className="mb-4 text-xs font-bold uppercase tracking-[0.45em] text-primary">Next Production</p>
                     <h2 className="text-4xl font-black uppercase leading-none tracking-tighter md:text-6xl">

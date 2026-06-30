@@ -35,7 +35,7 @@ export default function FeaturedProjectsGrid({ section, siteData }: SectionProps
 
     return (
         <section id="projects" className="py-24 bg-background">
-            <div className="container max-w-7xl mx-auto px-6">
+            <div className="container max-w-theme mx-auto px-6">
                 <div className="text-center mb-16">
                     {sectionTitle && (
                         <h2 className="text-3xl md:text-5xl font-bold text-foreground mb-4">

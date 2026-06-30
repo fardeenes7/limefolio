@@ -32,7 +32,7 @@ export default function ContactSplit({ section, siteData }: SectionProps) {
 
     return (
         <section id="contact" className="py-24 bg-muted/20">
-            <div className="container max-w-6xl mx-auto px-6">
+            <div className="container max-w-theme mx-auto px-6">
                 <div className="grid md:grid-cols-2 gap-16 items-start">
                     {/* Info Column */}
                     <div>

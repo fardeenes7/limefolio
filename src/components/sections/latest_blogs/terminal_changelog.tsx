@@ -25,7 +25,7 @@ export default function LatestBlogsTerminalChangelog({ section, siteData }: Sect
 
     return (
         <section id="blog" className="border-y border-border bg-card py-20 font-mono text-foreground">
-            <div className="mx-auto max-w-6xl px-6">
+            <div className="mx-auto max-w-theme px-6">
                 <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
                     <div>
                         <p className="text-xs uppercase tracking-[0.28em] text-primary">$ git log --oneline ./notes</p>

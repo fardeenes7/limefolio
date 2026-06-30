@@ -23,7 +23,7 @@ export default function FeaturedProjectsMinimalList({ section, siteData }: Secti
 
     return (
         <section id="projects" className="bg-background py-12">
-            <div className="mx-auto max-w-3xl px-6">
+            <div className="mx-auto max-w-theme px-6">
                 <div className="border-t border-border pt-8">
                     <div className="mb-5 flex items-baseline justify-between gap-4">
                         {sectionTitle && <h2 className="text-sm font-medium text-foreground">{sectionTitle}</h2>}

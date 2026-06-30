@@ -23,13 +23,13 @@ export default function ServicesCardGrid({ section, siteData }: SectionProps) {
 
     return (
         <section id="services" className="py-24 bg-background">
-            <div className="container max-w-7xl mx-auto px-6">
+            <div className="container max-w-theme mx-auto px-6">
                 <div className="text-center mb-16">
                     <h2 className="text-3xl md:text-5xl font-bold text-foreground mb-4">
                         {headline}
                     </h2>
                     {subheadline && (
-                        <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                        <p className="text-lg text-muted-foreground max-w-theme mx-auto">
                             {subheadline}
                         </p>
                     )}

@@ -23,7 +23,7 @@ export default function FeaturedProjectsTerminal({ section, siteData }: SectionP
 
     return (
         <section id="projects" className="bg-background py-20 font-mono">
-            <div className="mx-auto max-w-7xl px-6">
+            <div className="mx-auto max-w-theme px-6">
                 <div className="mb-8 flex items-end justify-between gap-4 border-b border-border pb-4">
                     <div>
                         <p className="text-xs text-muted-foreground">$ find ./work -type repo -featured</p>

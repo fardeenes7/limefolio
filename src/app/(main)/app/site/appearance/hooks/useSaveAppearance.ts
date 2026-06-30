@@ -22,6 +22,7 @@ export function useSaveAppearance({ onSuccess }: UseSaveAppearanceProps = {}) {
                 template_key: draftConfig.templateKey,
                 theme_key: draftConfig.themeKey,
                 font_key: draftConfig.fontKey,
+                layout_width: draftConfig.layoutWidth,
                 theme_overrides: draftConfig.themeOverrides,
                 template_version: template.version,
                 config_overrides: draftConfig.overrides,

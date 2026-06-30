@@ -19,7 +19,7 @@ export default function HeaderCinematic({ section, siteData }: SectionProps) {
         <>
             <style dangerouslySetInnerHTML={{ __html: headerInitialStyle }} />
             <header className={headerClass} ref={headerRef}>
-                <div className="mx-auto flex max-w-7xl items-center justify-between gap-6 px-6 py-4">
+                <div className="mx-auto flex max-w-theme items-center justify-between gap-6 px-6 py-4">
                     <Link href="/" className="group flex items-center gap-3 text-foreground">
                         <span className="flex h-9 w-9 items-center justify-center rounded-full border border-primary/40 text-[10px] font-black uppercase tracking-widest text-primary">LF</span>
                         <span className="text-sm font-semibold uppercase tracking-[0.35em] group-hover:text-primary">

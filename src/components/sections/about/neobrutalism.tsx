@@ -12,7 +12,7 @@ export default function AboutNeobrutalism({ section, siteData }: SectionProps) {
 
     return (
         <section id="about" className="border-b-4 border-border bg-muted py-20">
-            <div className="mx-auto grid max-w-7xl gap-8 px-6 lg:grid-cols-[20rem_1fr]">
+            <div className="mx-auto grid max-w-theme gap-8 px-6 lg:grid-cols-[20rem_1fr]">
                 {showProfileImage && (
                     <div className="border-4 border-border bg-primary p-3 shadow-[10px_10px_0_hsl(var(--border))] lg:-rotate-2">
                         {imageUrl ? <img src={imageUrl} alt="About me" className="aspect-[4/5] w-full border-4 border-border object-cover" /> : <div className="aspect-[4/5] w-full border-4 border-border bg-secondary" />}

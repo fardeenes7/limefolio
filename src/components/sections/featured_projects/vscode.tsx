@@ -23,7 +23,7 @@ export default function FeaturedProjectsVsCode({ section, siteData }: SectionPro
 
     return (
         <section id="projects" className="bg-background py-8 font-mono">
-            <div className="mx-auto max-w-6xl px-4 sm:px-6">
+            <div className="mx-auto max-w-theme px-4 sm:px-6">
                 <div className="overflow-hidden rounded-lg border border-border bg-card">
                     <div className="flex items-center justify-between border-b border-border bg-muted/50 px-4 py-2 text-xs text-muted-foreground">
                         <span>Explorer: {sectionTitle}</span>

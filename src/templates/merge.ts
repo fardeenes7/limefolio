@@ -109,6 +109,7 @@ export function resolvePortfolioConfig(
         templateKey: userConfig.templateKey ?? template.key,
         themeKey,
         fontKey,
+        layoutWidth: userConfig.layoutWidth ?? template.defaultLayoutWidth ?? 'default',
         themeOverrides,
         layout: resolvedLayout,
         pages: resolvedPages,
@@ -132,11 +133,13 @@ export function emptyUserConfig(
     themeKey: string,
     fontKey: string,
     templateVersion: string,
+    layoutWidth: string = 'default',
 ): UserPortfolioConfig {
     return {
         templateKey,
         themeKey,
         fontKey,
+        layoutWidth,
         templateVersion,
         themeOverrides: {},
         overrides: { layout: {}, pages: {} },

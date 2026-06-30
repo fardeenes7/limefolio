@@ -35,7 +35,7 @@ export default function HeaderVsCode({ siteData }: SectionProps) {
                         <span key={item} className="flex h-full items-center px-2.5 hover:bg-accent hover:text-accent-foreground">{item}</span>
                     ))}
                 </nav>
-                <div className="mx-auto hidden min-w-64 max-w-md flex-1 items-center justify-center px-4 sm:flex">
+                <div className="mx-auto hidden min-w-64 max-w-theme flex-1 items-center justify-center px-4 sm:flex">
                     <Link href="/projects" className="flex w-full items-center gap-2 rounded border border-border bg-background/80 px-3 py-0.5 text-muted-foreground shadow-sm hover:border-primary/60 hover:text-foreground">
                         <IconSearch size={14} />
                         <span className="truncate">Search {title} portfolio</span>

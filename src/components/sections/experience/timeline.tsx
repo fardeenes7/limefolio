@@ -17,7 +17,7 @@ export default function ExperienceTimeline({ section, siteData }: SectionProps) 
 
     return (
         <section id="experience" className="py-24 bg-background">
-            <div className="container max-w-4xl mx-auto px-6">
+            <div className="container max-w-theme mx-auto px-6">
                 <div className="flex items-center gap-3 mb-16">
                     <IconBriefcase className="text-primary" size={32} />
                     <h2 className="text-3xl md:text-4xl font-bold text-foreground">

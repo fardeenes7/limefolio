@@ -58,7 +58,7 @@ export default function HeroTypingAnimation({ section, siteData }: SectionProps)
             {/* Terminal Background Effect */}
             <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-primary/5 via-background to-background pointer-events-none" />
             
-            <div className="container max-w-6xl mx-auto px-4 sm:px-6 relative z-10 flex-1 flex flex-col">
+            <div className="container max-w-theme mx-auto px-4 sm:px-6 relative z-10 flex-1 flex flex-col">
                 <div className="border border-border bg-card rounded-lg shadow-2xl overflow-hidden flex-1 flex flex-col">
                     {/* Terminal Header */}
                     <div className="flex items-center gap-2 px-4 py-3 border-b border-border bg-muted/50">

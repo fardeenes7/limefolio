@@ -46,7 +46,7 @@ export default function FooterDefault({ section, siteData }: SectionProps) {
 
     return (
         <footer className={`border-t border-border py-12 ${backgroundClass}`}>
-            <div className="container max-w-7xl mx-auto px-6 flex flex-col items-center justify-between gap-6 sm:flex-row">
+            <div className="container max-w-theme mx-auto px-6 flex flex-col items-center justify-between gap-6 sm:flex-row">
                 <div className="order-2 flex flex-col items-center gap-2 text-center sm:order-1 sm:items-start sm:text-left">
                     {/* Copyright */}
                     {showCopyright && (
@@ -92,7 +92,7 @@ export default function FooterDefault({ section, siteData }: SectionProps) {
                 </div>
             </div>
             {showLimefolioAttribution && attributionPlacement === 'bottom' && (
-                <div className="container max-w-7xl mx-auto px-6 pt-6 text-center">
+                <div className="container max-w-theme mx-auto px-6 pt-6 text-center">
                     <LimefolioAttribution />
                 </div>
             )}

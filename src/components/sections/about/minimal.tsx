@@ -8,7 +8,7 @@ export default function AboutMinimal({ section, siteData }: SectionProps) {
 
     return (
         <section id="about" className="bg-background py-12">
-            <div className="mx-auto max-w-3xl px-6">
+            <div className="mx-auto max-w-theme px-6">
                 <div className="border-t border-border pt-8">
                     <h2 className="mb-5 text-sm font-medium text-foreground">About</h2>
                     <div className="space-y-4 text-base leading-8 text-muted-foreground">

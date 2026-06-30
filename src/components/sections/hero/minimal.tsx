@@ -13,7 +13,7 @@ export default function HeroMinimal({ section, siteData }: SectionProps) {
 
     return (
         <section className="bg-background py-20 md:py-28">
-            <div className="mx-auto max-w-3xl px-6">
+            <div className="mx-auto max-w-theme px-6">
                 {subheadline && <p className="mb-4 text-sm text-muted-foreground">{subheadline}</p>}
                 <h1 className="max-w-2xl text-4xl font-semibold tracking-tight text-foreground sm:text-5xl">
                     {headline}

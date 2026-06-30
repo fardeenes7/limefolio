@@ -30,7 +30,7 @@ export default function HeaderFloating({ section, siteData }: SectionProps) {
         <>
             <style dangerouslySetInnerHTML={{ __html: headerInitialStyle }} />
             <header className={`${headerClass} px-4 pt-4`} ref={headerRef}>
-                <div className="mx-auto flex max-w-5xl items-center justify-between gap-4 rounded-full border border-border/70 px-5 py-3 shadow-lg shadow-foreground/5 backdrop-blur-xl md:px-6">
+                <div className="mx-auto flex max-w-theme items-center justify-between gap-4 rounded-full border border-border/70 px-5 py-3 shadow-lg shadow-foreground/5 backdrop-blur-xl md:px-6">
                     <Link
                         href="/"
                         className="min-w-0 truncate text-sm font-bold tracking-tight text-foreground transition-colors hover:text-primary md:text-base"

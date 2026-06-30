@@ -9,7 +9,7 @@ export default function StatsMinimalRow({ section, siteData }: SectionProps) {
 
     return (
         <section className="bg-background py-12">
-            <div className="mx-auto max-w-3xl px-6">
+            <div className="mx-auto max-w-theme px-6">
                 <div className="border-t border-border pt-8">
                     {sectionTitle && <h2 className="mb-5 text-sm font-medium text-foreground">{sectionTitle}</h2>}
                     <div className="grid grid-cols-2 gap-x-6 gap-y-5 sm:grid-cols-4">

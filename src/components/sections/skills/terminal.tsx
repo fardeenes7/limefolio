@@ -10,7 +10,7 @@ export default function SkillsTerminal({ section, siteData }: SectionProps) {
 
     return (
         <section id="skills" className="bg-card py-20 font-mono">
-            <div className="mx-auto max-w-6xl px-6">
+            <div className="mx-auto max-w-theme px-6">
                 <div className="mb-8 flex items-center justify-between border-b border-border pb-3">
                     <h2 className="text-sm font-bold uppercase tracking-[0.3em] text-primary">$ ls ./stack --long</h2>
                     <span className="text-xs text-muted-foreground">{skills.length} packages</span>

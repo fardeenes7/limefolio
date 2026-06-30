@@ -18,7 +18,7 @@ export default function ContactMinimal({ section, siteData }: SectionProps) {
 
     return (
         <section id="contact" className="py-24 bg-background">
-            <div className="container max-w-3xl mx-auto px-6 text-center">
+            <div className="container max-w-theme mx-auto px-6 text-center">
                 {sectionTitle && (
                     <h2 className="text-3xl font-bold text-foreground mb-8">
                         {sectionTitle}

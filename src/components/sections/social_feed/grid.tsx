@@ -11,7 +11,7 @@ export default function SocialFeedGrid({ section }: SectionProps) {
 
     return (
         <section className="py-24 bg-muted/30">
-            <div className="container max-w-7xl mx-auto px-6 text-center">
+            <div className="container max-w-theme mx-auto px-6 text-center">
                 <h2 className="text-3xl font-bold mb-8">{headline}</h2>
                 <div className="p-12 border-2 border-dashed border-border rounded-xl text-muted-foreground bg-background">
                     Social feed data not yet available in SiteData.

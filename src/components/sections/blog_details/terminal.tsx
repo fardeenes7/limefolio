@@ -13,7 +13,7 @@ export default function BlogDetailsTerminal({ siteData }: SectionProps) {
 
     return (
         <article className="bg-background py-8 font-mono text-foreground">
-            <div className="mx-auto max-w-7xl px-4 sm:px-6">
+            <div className="mx-auto max-w-theme px-4 sm:px-6">
                 <BackToBlogLink className="mb-5 inline-flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-primary" />
 
                 <section className="overflow-hidden rounded-lg border border-border bg-card shadow-2xl shadow-primary/5">

@@ -14,7 +14,7 @@ export default function ExperienceNeobrutalism({ section, siteData }: SectionPro
 
     return (
         <section id="experience" className="border-b-4 border-border bg-background py-20">
-            <div className="mx-auto max-w-6xl px-6">
+            <div className="mx-auto max-w-theme px-6">
                 <h2 className="mb-10 text-5xl font-black uppercase leading-none tracking-tighter text-foreground sm:text-7xl">{sectionTitle}</h2>
                 <div className="space-y-6">
                     {experiences.map((experience, index) => {

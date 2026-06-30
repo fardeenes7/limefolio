@@ -24,7 +24,7 @@ export default function HeroNeobrutalism({ section, siteData }: SectionProps) {
     return (
         <section className="relative overflow-hidden border-b-4 border-border bg-background py-20 sm:py-28">
             <div className="absolute inset-0 bg-[linear-gradient(hsl(var(--border))_2px,transparent_2px),linear-gradient(90deg,hsl(var(--border))_2px,transparent_2px)] bg-[size:48px_48px] opacity-10" />
-            <div className="relative mx-auto grid max-w-7xl gap-10 px-6 lg:grid-cols-[1fr_22rem] lg:items-center">
+            <div className="relative mx-auto grid max-w-theme gap-10 px-6 lg:grid-cols-[1fr_22rem] lg:items-center">
                 <div>
                     <div className="mb-6 inline-flex border-4 border-border bg-secondary px-4 py-2 text-sm font-black uppercase text-secondary-foreground shadow-[6px_6px_0_hsl(var(--border))]">
                         {subheadline || 'Available for bold work'}

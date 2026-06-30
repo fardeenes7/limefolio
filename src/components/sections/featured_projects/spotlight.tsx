@@ -25,7 +25,7 @@ export default function FeaturedProjectsSpotlight({ section, siteData }: Section
 
     return (
         <section id="projects" className="bg-background py-24">
-            <div className="container mx-auto max-w-7xl px-6">
+            <div className="container mx-auto max-w-theme px-6">
                 <div className="mb-12 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
                     <div>
                         <p className="mb-3 text-sm font-semibold uppercase tracking-[0.25em] text-primary">Selected work</p>

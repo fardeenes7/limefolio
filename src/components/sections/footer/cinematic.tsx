@@ -23,7 +23,7 @@ export default function FooterCinematic({ section, siteData }: SectionProps) {
 
     return (
         <footer className="border-t border-border bg-background py-12 text-foreground">
-            <div className="mx-auto max-w-7xl px-6">
+            <div className="mx-auto max-w-theme px-6">
                 <div className="mb-8 flex h-8 items-center justify-between opacity-30" aria-hidden="true">
                     {Array.from({ length: 28 }).map((_, index) => <span key={index} className="h-3 w-3 rounded-sm bg-primary" />)}
                 </div>

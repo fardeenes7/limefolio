@@ -46,6 +46,7 @@
     --radius-3xl: calc(var(--radius) * 2.5);
     --radius-4xl: calc(var(--radius) * 3);
     --radius-button: calc(var(--radius) * 3);
+    --spacing-theme: var(--theme-layout-width, 64rem);
     --animate-spotlight: spotlight 2s ease 0.75s 1 forwards;
   @keyframes spotlight {
     0% {
@@ -158,8 +159,8 @@
     }
 
     .container {
-        @apply max-w-6xl! mx-auto;
-    }
+        @apply max-w-theme mx-auto w-full px-4 sm:px-6;
+    } 
 
     @keyframes fade-in-up {
         from {
@@ -280,6 +281,8 @@
         display: block;
         margin: 0.75rem 0;
     }
+
+
 
     /* Selection */
     ::selection {

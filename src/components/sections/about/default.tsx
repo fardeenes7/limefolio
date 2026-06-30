@@ -21,7 +21,7 @@ export default function AboutDefault({ section, siteData }: SectionProps) {
 
     return (
         <section id="about" className="py-24 bg-background">
-            <div className="container max-w-6xl mx-auto px-6">
+            <div className="container max-w-theme mx-auto px-6">
                 <div className="grid md:grid-cols-[1fr_2fr] gap-12 items-center">
                     {/* Image Column */}
                     {showProfileImage && (

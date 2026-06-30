@@ -12,7 +12,7 @@ export default function BlogDetailsMinimal({ siteData }: SectionProps) {
 
     return (
         <article className="bg-background py-12 text-foreground md:py-20">
-            <div className="mx-auto max-w-3xl px-6">
+            <div className="mx-auto max-w-theme px-6">
                 <BackToBlogLink className="mb-10 inline-flex items-center gap-2 text-sm text-muted-foreground underline-offset-4 transition-colors hover:text-foreground hover:underline" />
 
                 <header className="border-b border-border pb-10">

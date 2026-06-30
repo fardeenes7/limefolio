@@ -8,7 +8,7 @@ export default function AboutTerminal({ section, siteData }: SectionProps) {
 
     return (
         <section id="about" className="border-y border-border bg-background py-20 font-mono">
-            <div className="mx-auto max-w-5xl px-6">
+            <div className="mx-auto max-w-theme px-6">
                 <div className="rounded-lg border border-border bg-card">
                     <div className="border-b border-border bg-muted/40 px-4 py-2 text-xs text-muted-foreground">
                         <span className="text-primary">$</span> man about

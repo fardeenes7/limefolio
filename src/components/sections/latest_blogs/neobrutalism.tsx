@@ -20,7 +20,7 @@ export default function LatestBlogsNeobrutalism({ section, siteData }: SectionPr
 
     return (
         <section id="blog" className="border-b-4 border-border bg-muted py-20">
-            <div className="mx-auto max-w-7xl px-6">
+            <div className="mx-auto max-w-theme px-6">
                 <div className="mb-10 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
                     <h2 className="border-4 border-border bg-background px-4 py-3 text-4xl font-black uppercase leading-none tracking-tighter text-foreground shadow-[8px_8px_0_hsl(var(--border))] sm:text-6xl">{sectionTitle}</h2>
                     {showViewAll && maxItems !== undefined && posts.length > maxItems && <Link href="/blog" className="inline-flex w-fit items-center gap-2 border-4 border-border bg-accent px-5 py-3 text-sm font-black uppercase text-accent-foreground shadow-[6px_6px_0_hsl(var(--border))]">{viewAllLabel}<IconArrowRight size={18} /></Link>}

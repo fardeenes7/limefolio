@@ -93,6 +93,7 @@ const defaultTemplate: Template = {
     defaultTheme: "default",
     // "inter" is the first sans-serif font in Fonts (src/lib/fonts.ts) and the fallback.
     defaultFont: "inter",
+    defaultLayoutWidth: "default",
 
     // ── Layout sections (rendered by layout.tsx on every page) ─────────────────
     layout: [
@@ -344,7 +345,8 @@ const cinematicTemplate: Template = {
     label: "Cinematic",
     version: "1.0.0",
     defaultTheme: "cinematic-dark",
-    defaultFont: "space-grotesk",
+    defaultFont: "inter",
+    defaultLayoutWidth: "default",
 
     // ── Layout sections (rendered by layout.tsx on every page) ─────────────────
     layout: [
@@ -568,7 +570,8 @@ const terminalTemplate: Template = {
     label: "Terminal",
     version: "1.0.0",
     defaultTheme: "terminal-dark",
-    defaultFont: "jetbrains-mono",
+    defaultFont: "inter",
+    defaultLayoutWidth: "default",
 
     layout: [
         {
@@ -796,7 +799,8 @@ const vscodeTemplate: Template = {
     label: "VS Code",
     version: "1.0.0",
     defaultTheme: "vscode-dark",
-    defaultFont: "jetbrains-mono",
+    defaultFont: "inter",
+    defaultLayoutWidth: "default",
 
     layout: [
         {
@@ -1019,7 +1023,8 @@ const minimalTemplate: Template = {
     label: "Minimal",
     version: "1.0.0",
     defaultTheme: "default",
-    defaultFont: "geist-sans",
+    defaultFont: "inter",
+    defaultLayoutWidth: "default",
 
     layout: [
         {
@@ -1238,7 +1243,8 @@ const neobrutalismTemplate: Template = {
     label: "Neobrutalism",
     version: "1.0.0",
     defaultTheme: "neobrutalism",
-    defaultFont: "archivo-black",
+    defaultFont: "inter",
+    defaultLayoutWidth: "default",
 
     layout: [
         {

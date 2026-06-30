@@ -37,7 +37,7 @@ export default function FooterCompact({ section, siteData }: SectionProps) {
 
     return (
         <footer className={`border-t border-border py-6 ${backgroundClass}`}>
-            <div className="container max-w-5xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div className="container max-w-theme mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
                 <div className="flex flex-col items-center gap-1 sm:items-start">
                     {showCopyright && (
                         <p className="text-sm text-muted-foreground font-mono">
@@ -80,7 +80,7 @@ export default function FooterCompact({ section, siteData }: SectionProps) {
                 </div>
             </div>
             {showLimefolioAttribution && attributionPlacement === 'bottom' && (
-                <div className="container max-w-5xl mx-auto px-6 pt-4 text-center">
+                <div className="container max-w-theme mx-auto px-6 pt-4 text-center">
                     <LimefolioAttribution className="hover:text-primary" />
                 </div>
             )}

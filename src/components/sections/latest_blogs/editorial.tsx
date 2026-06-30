@@ -27,7 +27,7 @@ export default function LatestBlogsEditorial({ section, siteData }: SectionProps
 
     return (
         <section id="blog" className="bg-background py-24">
-            <div className="container mx-auto max-w-7xl px-6">
+            <div className="container mx-auto max-w-theme px-6">
                 <div className="mb-14 flex flex-col gap-5 border-b border-border pb-8 md:flex-row md:items-end md:justify-between">
                     <div>
                         <p className="mb-3 text-sm font-semibold uppercase tracking-[0.25em] text-primary">Journal</p>

@@ -22,13 +22,13 @@ export default function CtaDefault({ section }: SectionProps) {
             {/* Background decoration */}
             <div className="absolute top-0 left-0 w-full h-full bg-[linear-gradient(45deg,transparent_25%,rgba(255,255,255,0.1)_50%,transparent_75%,transparent_100%)] bg-[length:20px_20px] opacity-20 pointer-events-none" />
 
-            <div className="container max-w-4xl mx-auto px-6 text-center relative z-10">
+            <div className="container max-w-theme mx-auto px-6 text-center relative z-10">
                 <h2 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-6">
                     {headline}
                 </h2>
 
                 {subtext && (
-                    <p className="text-xl text-primary-foreground/80 mb-10 max-w-2xl mx-auto">
+                    <p className="text-xl text-primary-foreground/80 mb-10 max-w-theme mx-auto">
                         {subtext}
                     </p>
                 )}

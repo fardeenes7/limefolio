@@ -19,8 +19,8 @@ export default function ContactSocialCards({ section, siteData }: SectionProps) 
 
     return (
         <section id="contact" className="bg-muted/20 py-24">
-            <div className="container mx-auto max-w-6xl px-6">
-                <div className="mx-auto mb-12 max-w-2xl text-center">
+            <div className="container mx-auto max-w-theme px-6">
+                <div className="mx-auto mb-12 max-w-theme text-center">
                     <p className="mb-3 text-sm font-semibold uppercase tracking-[0.25em] text-primary">Contact</p>
                     <h2 className="text-4xl font-black tracking-tight text-foreground md:text-6xl">{sectionTitle}</h2>
                 </div>

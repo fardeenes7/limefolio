@@ -26,7 +26,7 @@ export default function FooterNeobrutalism({ section, siteData }: SectionProps) 
 
     return (
         <footer className={`border-t-4 border-border py-10 text-foreground ${backgroundClass}`}>
-            <div className="mx-auto flex max-w-7xl flex-col gap-8 px-6 sm:flex-row sm:items-center sm:justify-between">
+            <div className="mx-auto flex max-w-theme flex-col gap-8 px-6 sm:flex-row sm:items-center sm:justify-between">
                 <div className="border-4 border-border bg-background p-4 shadow-[8px_8px_0_hsl(var(--border))]">
                     {showCopyright && <p className="text-sm font-black uppercase tracking-tight">{finalCopyright}</p>}
                     {showLimefolioAttribution && attributionPlacement === 'copyright' && <LimefolioAttribution className="mt-2 inline-block font-black uppercase" />}
@@ -52,7 +52,7 @@ export default function FooterNeobrutalism({ section, siteData }: SectionProps) 
                     )}
                 </div>
             </div>
-            {showLimefolioAttribution && attributionPlacement === 'bottom' && <div className="mx-auto max-w-7xl px-6 pt-8 text-center"><LimefolioAttribution /></div>}
+            {showLimefolioAttribution && attributionPlacement === 'bottom' && <div className="mx-auto max-w-theme px-6 pt-8 text-center"><LimefolioAttribution /></div>}
         </footer>
     );
 }

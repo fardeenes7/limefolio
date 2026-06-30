@@ -69,6 +69,29 @@ export function ThemeCustomizer({ stateHelpers }: ThemeCustomizerProps) {
 
     return (
         <div className="p-3 space-y-4">
+            <div className="space-y-3 pb-3 border-b border-border">
+                <div className="flex flex-col gap-2">
+                    <label className="text-xs font-medium text-foreground">
+                        Layout Width
+                    </label>
+                    <div className="flex items-center gap-2">
+                        {['narrow', 'default', 'wide', 'full'].map((w) => (
+                            <button
+                                key={w}
+                                onClick={() => stateHelpers.setLayoutWidth(w)}
+                                className={`px-2 py-1 text-xs rounded border capitalize transition-colors ${
+                                    stateHelpers.selectedLayoutWidth === w
+                                        ? 'bg-primary text-primary-foreground border-primary'
+                                        : 'bg-background text-muted-foreground border-border hover:bg-muted'
+                                }`}
+                            >
+                                {w}
+                            </button>
+                        ))}
+                    </div>
+                </div>
+            </div>
+
             {supportsDark && (
                 <div className="flex items-center justify-between pb-3 border-b border-border">
                     <label className="text-xs font-medium text-foreground">

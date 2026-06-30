@@ -22,7 +22,7 @@ export default function SkillsIconGrid({ section, siteData }: SectionProps) {
 
     return (
         <section id="skills" className="py-24 bg-muted/30">
-            <div className="container max-w-5xl mx-auto px-6">
+            <div className="container max-w-theme mx-auto px-6">
                 <div className="flex items-center gap-3 justify-center mb-12">
                     <IconCode className="text-primary" size={32} />
                     <h2 className="text-3xl font-bold text-foreground">

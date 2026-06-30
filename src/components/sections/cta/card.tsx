@@ -16,7 +16,7 @@ export default function CtaCard({ section }: SectionProps) {
 
     return (
         <section className="py-24 bg-background">
-            <div className="container max-w-4xl mx-auto px-6">
+            <div className="container max-w-theme mx-auto px-6">
                 <div 
                     className="p-12 md:p-16 rounded-3xl text-center bg-card border border-border shadow-xl relative overflow-hidden"
                     style={backgroundStyle ? { backgroundColor: `hsl(var(${backgroundStyle}))` } : undefined}
@@ -26,7 +26,7 @@ export default function CtaCard({ section }: SectionProps) {
                     </h2>
                     
                     {subtext && (
-                        <p className="text-lg text-muted-foreground mb-8 max-w-xl mx-auto">
+                        <p className="text-lg text-muted-foreground mb-8 max-w-theme mx-auto">
                             {subtext}
                         </p>
                     )}

@@ -22,7 +22,7 @@ export default function LatestBlogsTerminal({ section, siteData }: SectionProps)
 
     return (
         <section id="blog" className="border-y border-border bg-card py-20 font-mono">
-            <div className="mx-auto max-w-5xl px-6">
+            <div className="mx-auto max-w-theme px-6">
                 <div className="mb-6 flex items-center justify-between gap-4">
                     <h2 className="text-sm font-bold uppercase tracking-[0.3em] text-primary">$ tail -f ./{sectionTitle.toLowerCase()}</h2>
                     {showViewAll && maxItems !== undefined && posts.length > maxItems && <Link href="/blog" className="text-sm text-primary hover:underline">{viewAllLabel}</Link>}

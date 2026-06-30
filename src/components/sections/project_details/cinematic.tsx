@@ -23,7 +23,7 @@ export default function ProjectDetailsCinematic({ siteData }: SectionProps) {
                 <div className="absolute inset-x-0 top-10 h-px bg-primary/40" />
                 <div className="absolute inset-x-0 bottom-10 h-px bg-primary/40" />
 
-                <div className="relative mx-auto flex min-h-[88vh] max-w-7xl flex-col justify-end px-6 py-16 md:py-24">
+                <div className="relative mx-auto flex min-h-[88vh] max-w-theme flex-col justify-end px-6 py-16 md:py-24">
                     <BackToProjectsLink className="mb-10 inline-flex w-fit items-center gap-2 rounded-full border border-primary/30 bg-background/60 px-4 py-2 text-sm font-semibold text-primary backdrop-blur transition-colors hover:bg-primary hover:text-primary-foreground" />
                     <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_22rem] lg:items-end">
                         <div>
@@ -58,7 +58,7 @@ export default function ProjectDetailsCinematic({ siteData }: SectionProps) {
             </section>
 
             <section className="py-20 md:py-28">
-                <div className="mx-auto grid max-w-7xl gap-12 px-6 lg:grid-cols-[minmax(0,1fr)_24rem]">
+                <div className="mx-auto grid max-w-theme gap-12 px-6 lg:grid-cols-[minmax(0,1fr)_24rem]">
                     <div>
                         <p className="mb-5 text-sm font-bold uppercase tracking-[0.35em] text-primary">Production Notes</p>
                         <div className="space-y-7 text-xl leading-9 text-muted-foreground">
@@ -113,7 +113,7 @@ export default function ProjectDetailsCinematic({ siteData }: SectionProps) {
 
             {media.length > 1 && (
                 <section className="border-y border-border bg-card/30 py-14">
-                    <div className="mx-auto flex max-w-7xl items-center justify-between gap-6 px-6">
+                    <div className="mx-auto flex max-w-theme items-center justify-between gap-6 px-6">
                         <p className="inline-flex items-center gap-2 text-sm font-bold uppercase tracking-[0.3em] text-primary"><IconPhoto size={16} /> {media.length} frames archived</p>
                         <Link href="/projects" className="text-sm font-semibold text-muted-foreground transition-colors hover:text-primary">All projects</Link>
                     </div>

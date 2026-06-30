@@ -207,6 +207,8 @@ export type Template = {
     defaultTheme: string;
     /** Must exist in Fonts. Applied when the user first switches to this template. */
     defaultFont: string;
+    /** Default max-width of sections. Applied when the user first switches to this template. */
+    defaultLayoutWidth?: string;
     /** Global sections rendered by layout.tsx — header, footer, etc. */
     layout: SectionInstance[];
     /** Per-route page definitions. One entry per supported page type. */
@@ -250,6 +252,7 @@ export type UserPortfolioConfig = {
     templateKey: string;
     themeKey: string;
     fontKey: string;
+    layoutWidth?: string;
     templateVersion: string;
     themeOverrides: Record<string, string>;
     overrides: {
@@ -321,6 +324,7 @@ export type ResolvedPortfolioConfig = {
     templateKey: string;
     themeKey: string;
     fontKey: string;
+    layoutWidth: string;
     themeOverrides: Record<string, string>;
     layout: ResolvedSection[];
     pages: ResolvedPage[];

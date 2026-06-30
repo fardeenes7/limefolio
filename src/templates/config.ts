@@ -6,6 +6,7 @@ type RawTemplateConfig = Partial<{
     template_key: string;
     theme_key: string;
     font_key: string;
+    layout_width: string;
     template_version: string;
     theme_overrides: Record<string, string>;
     config_overrides: UserPortfolioConfig['overrides'];
@@ -21,20 +22,23 @@ export function userConfigFromRaw(
         templateKey?: string | null;
         themeKey?: string | null;
         fontKey?: string | null;
+        layoutWidth?: string | null;
     },
 ): UserPortfolioConfig {
     const templateKey = fallback.templateKey || rawConfig?.template_key || template.key;
     const themeKey = fallback.themeKey || rawConfig?.theme_key || template.defaultTheme;
     const fontKey = fallback.fontKey || rawConfig?.font_key || template.defaultFont;
+    const layoutWidth = fallback.layoutWidth || rawConfig?.layout_width || template.defaultLayoutWidth || 'default';
 
     if (!rawConfig || rawConfig.error) {
-        return emptyUserConfig(templateKey, themeKey, fontKey, template.version);
+        return emptyUserConfig(templateKey, themeKey, fontKey, template.version, layoutWidth);
     }
 
     return {
         templateKey,
         themeKey,
         fontKey,
+        layoutWidth,
         templateVersion: rawConfig.template_version || template.version,
         themeOverrides: rawConfig.theme_overrides || {},
         overrides: rawConfig.config_overrides || { layout: {}, pages: {} },

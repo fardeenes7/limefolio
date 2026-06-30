@@ -36,7 +36,7 @@ export default function HeroTerminal({ section, siteData }: SectionProps) {
     return (
         <section className="relative min-h-screen overflow-hidden bg-background py-12 font-mono text-foreground">
             <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-primary/40" />
-            <div className="relative mx-auto flex min-h-[calc(100vh-6rem)] max-w-6xl items-center px-4 sm:px-6">
+            <div className="relative mx-auto flex min-h-[calc(100vh-6rem)] max-w-theme items-center px-4 sm:px-6">
                 <div className="w-full overflow-hidden rounded-lg border border-border bg-card shadow-2xl shadow-primary/5">
                     <div className="flex items-center justify-between gap-4 border-b border-border bg-muted/40 px-4 py-3 text-xs text-muted-foreground">
                         <span className="truncate">~/portfolio</span>

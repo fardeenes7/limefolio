@@ -47,7 +47,7 @@ export default function HeroSplitSection({ section, siteData }: SectionProps) {
         >
             <HeroBackground section={section} />
 
-            <div className="container max-w-6xl mx-auto px-6 py-20 relative z-10 flex flex-col md:flex-row items-center gap-12">
+            <div className="container max-w-theme mx-auto px-6 py-20 relative z-10 flex flex-col md:flex-row items-center gap-12">
                 
                 {/* Typography / Left Side */}
                 <div className="flex-1 text-center md:text-left">
@@ -62,7 +62,7 @@ export default function HeroSplitSection({ section, siteData }: SectionProps) {
                     )}
 
                     {body && (
-                        <p className="text-lg text-muted-foreground mb-8 max-w-xl mx-auto md:mx-0 leading-relaxed">
+                        <p className="text-lg text-muted-foreground mb-8 max-w-theme mx-auto md:mx-0 leading-relaxed">
                             {body}
                         </p>
                     )}

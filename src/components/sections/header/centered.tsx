@@ -26,7 +26,7 @@ export default function HeaderCentered({ section, siteData }: SectionProps) {
         <>
             <style dangerouslySetInnerHTML={{ __html: headerInitialStyle }} />
             <header className={headerClass} ref={headerRef}>
-            <div className="container max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
+            <div className="container max-w-theme mx-auto flex items-center justify-between px-6 py-4">
                 {/* Logo / Site name */}
                 <div className="flex-1">
                     <Link

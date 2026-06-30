@@ -24,7 +24,7 @@ export default function FooterTerminal({ section, siteData }: SectionProps) {
 
     return (
         <footer className="border-t border-border bg-background py-8 font-mono text-sm">
-            <div className="mx-auto flex max-w-7xl flex-col gap-5 px-6 md:flex-row md:items-center md:justify-between">
+            <div className="mx-auto flex max-w-theme flex-col gap-5 px-6 md:flex-row md:items-center md:justify-between">
                 <div className="space-y-1">
                     {showCopyright && <p className="text-muted-foreground"><span className="text-primary">$</span> {copyrightText}</p>}
                     {showLimefolioAttribution && <LimefolioAttribution className="font-mono hover:text-primary" />}

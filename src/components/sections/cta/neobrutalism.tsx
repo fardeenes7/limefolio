@@ -12,7 +12,7 @@ export default function CtaNeobrutalism({ section }: SectionProps) {
 
     return (
         <section className="border-b-4 border-border bg-primary py-16 text-primary-foreground">
-            <div className="mx-auto max-w-7xl px-6">
+            <div className="mx-auto max-w-theme px-6">
                 <div className="grid gap-8 border-4 border-border bg-background p-6 text-foreground shadow-[12px_12px_0_hsl(var(--border))] md:grid-cols-[1fr_auto] md:items-center md:p-10">
                     <div>
                         <p className="mb-3 inline-block border-4 border-border bg-accent px-3 py-1 text-xs font-black uppercase text-accent-foreground">Call to action</p>

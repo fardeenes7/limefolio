@@ -14,7 +14,7 @@ export default function ServicesNeobrutalism({ section, siteData }: SectionProps
 
     return (
         <section id="services" className="border-b-4 border-border bg-accent py-20 text-accent-foreground">
-            <div className="mx-auto max-w-7xl px-6">
+            <div className="mx-auto max-w-theme px-6">
                 <h2 className="mb-10 text-5xl font-black uppercase leading-none tracking-tighter sm:text-7xl">{sectionTitle}</h2>
                 <div className={`grid gap-6 ${gridCols}`}>
                     {services.map((service) => (

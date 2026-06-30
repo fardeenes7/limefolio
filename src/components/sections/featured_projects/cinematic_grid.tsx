@@ -63,7 +63,7 @@ export default function FeaturedProjectsCinematicGrid({ section, siteData }: Sec
     return (
         <section id="projects" className="relative z-10 overflow-hidden bg-background py-32">
             <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_75%_20%,hsl(var(--primary)/0.12),transparent_30%),radial-gradient(circle_at_10%_90%,hsl(var(--accent)/0.12),transparent_28%)]" />
-            <div className="container max-w-7xl mx-auto px-6">
+            <div className="container max-w-theme mx-auto px-6">
                 <div className="relative flex flex-col md:flex-row md:items-end justify-between mb-20 gap-8">
                     <div>
                         <p className="mb-4 text-xs font-bold uppercase tracking-[0.45em] text-primary">Selected Scenes</p>

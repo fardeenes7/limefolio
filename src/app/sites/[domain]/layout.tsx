@@ -13,6 +13,7 @@ import { getTemplate } from "@/templates/registry";
 import { userConfigFromRaw } from "@/templates/config";
 import { LivePreviewProvider } from "@/components/preview/LivePreviewProvider";
 import { THEMES_META } from "@/lib/themes-meta";
+import { getLayoutWidthValue } from "@/lib/utils";
 
 const allThemes = THEMES_META.flatMap(t => [t.slug, `${t.slug}-dark`]);
 
@@ -108,7 +109,6 @@ export default async function DomainLayout({
 
     // 4. Load only this site's theme CSS
     const themeCSS = await loadThemeCSS(colorThemeSlug);
-
     return (
         <html lang="en" className={`${allFontVariables} ${colorThemeSlug}`}>
             <head>
@@ -131,8 +131,9 @@ export default async function DomainLayout({
             <body
                 className={`antialiased font-${fontSlug}`}
                 style={{
-                    fontFamily: `var(${selectedFont.variable})`
-                }}
+                    fontFamily: `var(${selectedFont.variable})`,
+                    '--theme-layout-width': getLayoutWidthValue(resolvedConfig.layoutWidth)
+                } as React.CSSProperties}
             >
                 <ThemeProvider
                     attribute="class"

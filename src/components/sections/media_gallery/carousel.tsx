@@ -12,7 +12,7 @@ export default function MediaGalleryCarousel({ section, siteData }: SectionProps
 
     return (
         <section id="gallery" className="overflow-hidden bg-background py-24">
-            <div className="container mx-auto max-w-7xl px-6">
+            <div className="container mx-auto max-w-theme px-6">
                 <div className="mb-12 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
                     {inputs.sectionTitle && (
                         <h2 className="max-w-2xl text-3xl font-bold text-foreground md:text-5xl">{inputs.sectionTitle}</h2>

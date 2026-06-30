@@ -63,7 +63,7 @@ export default function MediaGalleryHorizontalScroll({ section, siteData }: Sect
     if (media.length === 0) {
         return (
             <section id="gallery" className="bg-background py-24">
-                <div className="container mx-auto max-w-7xl px-6">
+                <div className="container mx-auto max-w-theme px-6">
                 {inputs.sectionTitle && <h2 className="mb-8 text-4xl font-black uppercase leading-none tracking-tighter text-foreground md:text-6xl">{inputs.sectionTitle}</h2>}
                     <EmptyGallery />
                 </div>
@@ -78,7 +78,7 @@ export default function MediaGalleryHorizontalScroll({ section, siteData }: Sect
             className="relative min-h-[calc(var(--gallery-sticky-height,700px)+var(--gallery-scroll-distance,0px))] border-y border-border bg-card"
         >
             <div ref={stickyRef} className="sticky top-[var(--header-height,0px)] overflow-hidden bg-card py-16 md:py-24">
-                <div className="container mx-auto mb-10 max-w-7xl px-6">
+                <div className="container mx-auto mb-10 max-w-theme px-6">
                     <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
                         <div>
                             <p className="mb-4 text-xs font-bold uppercase tracking-[0.45em] text-primary">Frame by Frame</p>

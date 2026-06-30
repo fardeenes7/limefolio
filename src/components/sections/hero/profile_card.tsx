@@ -22,9 +22,9 @@ export default function HeroProfileCard({ section, siteData }: SectionProps) {
     return (
         <section className="relative overflow-hidden bg-muted/20 py-20 md:py-28">
             <div className="absolute inset-x-0 top-0 h-48 bg-linear-to-b from-primary/10 to-transparent" />
-            <div className="container relative z-10 mx-auto max-w-6xl px-6">
+            <div className="container relative z-10 mx-auto max-w-theme px-6">
                 <div className="grid items-center gap-10 rounded-[2rem] border border-border bg-card p-6 shadow-2xl shadow-foreground/5 md:grid-cols-[0.9fr_1.1fr] md:p-10">
-                    <div className="relative mx-auto aspect-square w-full max-w-sm overflow-hidden rounded-[1.5rem] border border-border bg-muted">
+                    <div className="relative mx-auto aspect-square w-full max-w-theme overflow-hidden rounded-[1.5rem] border border-border bg-muted">
                         {avatarUrl ? (
                             <img src={avatarUrl} alt={siteData.title} className="h-full w-full object-cover" />
                         ) : (

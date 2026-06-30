@@ -20,7 +20,7 @@ export default function ContactNeobrutalismTicket({ section, siteData }: Section
 
     return (
         <section id="contact" className="bg-primary py-20 text-primary-foreground">
-            <div className="mx-auto max-w-6xl px-6">
+            <div className="mx-auto max-w-theme px-6">
                 <div className="border-4 border-border bg-background text-foreground shadow-[16px_16px_0_hsl(var(--border))]">
                     <div className="grid lg:grid-cols-[0.9fr_1.1fr]">
                         <div className="border-b-4 border-border bg-accent p-6 text-accent-foreground sm:p-10 lg:border-b-0 lg:border-r-4">

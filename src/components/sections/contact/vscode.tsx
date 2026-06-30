@@ -17,7 +17,7 @@ export default function ContactVsCode({ section, siteData }: SectionProps) {
 
     return (
         <section id="contact" className="bg-background py-8 pb-16 font-mono">
-            <div className="mx-auto max-w-6xl px-4 sm:px-6">
+            <div className="mx-auto max-w-theme px-4 sm:px-6">
                 <div className="overflow-hidden rounded-lg border border-border bg-card">
                     <div className="flex items-center gap-2 border-b border-border bg-muted/50 px-4 py-2 text-xs text-muted-foreground"><IconTerminal2 size={14} /> {sectionTitle}</div>
                     <div className="grid gap-0 lg:grid-cols-[minmax(0,1fr)_18rem]">

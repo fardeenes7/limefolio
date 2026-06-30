@@ -11,7 +11,7 @@ export default function SkillsNeobrutalism({ section, siteData }: SectionProps) 
 
     return (
         <section id="skills" className="border-b-4 border-border bg-secondary py-20 text-secondary-foreground">
-            <div className="mx-auto max-w-7xl px-6">
+            <div className="mx-auto max-w-theme px-6">
                 <div className="mb-10 flex items-end justify-between gap-6">
                     <h2 className="border-4 border-border bg-background px-4 py-3 text-4xl font-black uppercase leading-none tracking-tighter text-foreground shadow-[8px_8px_0_hsl(var(--border))] sm:text-6xl">{sectionTitle}</h2>
                     <span className="hidden border-4 border-border bg-accent px-4 py-2 text-sm font-black uppercase text-accent-foreground sm:block">{skills.length} tools</span>

@@ -15,7 +15,7 @@ export default function SkillsTagCloud({ section, siteData }: SectionProps) {
 
     return (
         <section id="skills" className="py-24 bg-background font-mono border-y border-border/50">
-            <div className="container max-w-4xl mx-auto px-6">
+            <div className="container max-w-theme mx-auto px-6">
                 <div className="flex flex-col items-center text-center mb-12">
                     {sectionTitle && (
                         <h2 className="text-2xl font-bold text-foreground mb-2">
