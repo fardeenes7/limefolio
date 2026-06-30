@@ -3,6 +3,13 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { GithubIcon, GoogleIcon } from "@/lib/icons";
 import { signIn } from "@/auth";
+import { constructMetadata } from "@/lib/seo";
+
+export const metadata = constructMetadata({
+    title: "Sign in | Limefolio",
+    description: "Sign in to your Limefolio account.",
+    noIndex: true, // we don't want search engines indexing the login page
+});
 
 export default async function LoginForm({
     searchParams,

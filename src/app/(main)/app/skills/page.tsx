@@ -7,3 +7,8 @@ export default async function SkillsPage() {
 
     return <SkillsClient initialSkills={skills} />;
 }
+
+
+export const metadata = {
+    title: "Skills",
+};

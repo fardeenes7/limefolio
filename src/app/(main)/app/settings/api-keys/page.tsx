@@ -8,3 +8,8 @@ export default function ApiKeysPage() {
         />
     );
 }
+
+
+export const metadata = {
+    title: "API Keys",
+};

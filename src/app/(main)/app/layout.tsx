@@ -2,8 +2,14 @@ import { AppSidebar } from "@/components/navigation/sidebar";
 import {
     SidebarInset,
     SidebarProvider,
-    SidebarTrigger
 } from "@/components/ui/sidebar";
+import { constructMetadata } from "@/lib/seo";
+
+export const metadata = constructMetadata({
+    title: "Dashboard",
+    noIndex: true,
+});
+
 
 export default function DashboardLayout({
     children

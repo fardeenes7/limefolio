@@ -1,13 +1,13 @@
-import type { Metadata } from "next";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { IconFileText } from "@tabler/icons-react";
+import { constructMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-    title: "Terms and Conditions",
-    description:
-        "Read the Limefolio Terms and Conditions to understand the rules governing the use of our platform.",
-};
+export const metadata = constructMetadata({
+    title: "Terms and Conditions | Limefolio",
+    description: "Read the Limefolio Terms and Conditions to understand the rules governing the use of our platform.",
+});
+
 
 const lastUpdated = "February 19, 2026";
 

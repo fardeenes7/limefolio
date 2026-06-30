@@ -8,3 +8,8 @@ export default function FeedbackPage() {
         />
     );
 }
+
+
+export const metadata = {
+    title: "Feedback",
+};

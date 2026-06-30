@@ -46,3 +46,8 @@ export default async function EditPostPage({
         </Page>
     );
 }
+
+
+export const metadata = {
+    title: "Edit Post",
+};

@@ -38,3 +38,8 @@ export default function NewProjectPage() {
         </Page>
     );
 }
+
+
+export const metadata = {
+    title: "New Project",
+};

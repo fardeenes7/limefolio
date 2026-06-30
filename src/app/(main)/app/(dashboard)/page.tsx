@@ -34,3 +34,8 @@ export default async function DashboardPage() {
         </Page>
     );
 }
+
+
+export const metadata = {
+    title: "Dashboard Overview",
+};

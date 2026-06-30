@@ -7,3 +7,8 @@ export default async function SocialLinksPage() {
 
     return <SocialLinksClient initialLinks={socialLinks} />;
 }
+
+
+export const metadata = {
+    title: "Social Links",
+};

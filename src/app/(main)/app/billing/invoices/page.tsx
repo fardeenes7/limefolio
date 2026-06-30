@@ -8,3 +8,8 @@ export default function InvoicesPage() {
         />
     );
 }
+
+
+export const metadata = {
+    title: "Invoices",
+};

@@ -44,3 +44,8 @@ export default async function EditProjectPage({
         </Page>
     );
 }
+
+
+export const metadata = {
+    title: "Edit Project",
+};

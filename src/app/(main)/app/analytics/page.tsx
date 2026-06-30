@@ -34,3 +34,8 @@ export default async function AnalyticsPage() {
         </Page>
     );
 }
+
+
+export const metadata = {
+    title: "Analytics",
+};

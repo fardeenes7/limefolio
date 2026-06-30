@@ -7,3 +7,8 @@ export default async function ExperiencesPage() {
 
     return <ExperiencesClient initialExperiences={experiences} />;
 }
+
+
+export const metadata = {
+    title: "Experiences",
+};

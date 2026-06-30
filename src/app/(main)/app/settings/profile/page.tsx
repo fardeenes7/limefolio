@@ -8,3 +8,8 @@ export default function ProfileSettingsPage() {
         />
     );
 }
+
+
+export const metadata = {
+    title: "Profile Settings",
+};

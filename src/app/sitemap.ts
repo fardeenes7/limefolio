@@ -11,7 +11,7 @@ const BASE_URL = "https://www.limefolio.com";
  * those are served from the public app and have their own sitemap.
  */
 export default function sitemap(): MetadataRoute.Sitemap {
-    const now = new Date("2026-02-19");
+    const now = new Date("2026-06-30");
 
     /** Static public routes */
     const staticRoutes: MetadataRoute.Sitemap = [
@@ -20,6 +20,24 @@ export default function sitemap(): MetadataRoute.Sitemap {
             lastModified: now,
             changeFrequency: "weekly",
             priority: 1.0,
+        },
+        {
+            url: `${BASE_URL}/features`,
+            lastModified: now,
+            changeFrequency: "weekly",
+            priority: 0.8,
+        },
+        {
+            url: `${BASE_URL}/pricing`,
+            lastModified: now,
+            changeFrequency: "weekly",
+            priority: 0.8,
+        },
+        {
+            url: `${BASE_URL}/templates`,
+            lastModified: now,
+            changeFrequency: "weekly",
+            priority: 0.8,
         },
         {
             url: `${BASE_URL}/terms`,

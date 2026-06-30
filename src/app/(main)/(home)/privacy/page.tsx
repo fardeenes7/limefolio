@@ -1,13 +1,12 @@
-import type { Metadata } from "next";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { IconShield } from "@tabler/icons-react";
+import { constructMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-    title: "Privacy Policy",
-    description:
-        "Learn how Limefolio collects, uses, and protects your personal data.",
-};
+export const metadata = constructMetadata({
+    title: "Privacy Policy | Limefolio",
+    description: "Learn how Limefolio collects, uses, and protects your personal data.",
+});
 
 const lastUpdated = "February 19, 2026";
 

@@ -8,3 +8,8 @@ export default function SupportPage() {
         />
     );
 }
+
+
+export const metadata = {
+    title: "Support",
+};

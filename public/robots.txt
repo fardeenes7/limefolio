@@ -1,0 +1,21 @@
+User-agent: *
+Allow: /
+Allow: /terms
+Allow: /privacy
+Disallow: /app/
+Disallow: /api/
+Disallow: /login
+Disallow: /reset-password
+Disallow: /verify-email
+
+User-agent: GPTBot
+User-agent: ChatGPT-User
+User-agent: CCBot
+User-agent: anthropic-ai
+User-agent: Claude-Web
+User-agent: Omgilibot
+User-agent: FacebookBot
+Disallow: /
+
+Sitemap: https://www.limefolio.com/sitemap.xml
+Host: https://www.limefolio.com

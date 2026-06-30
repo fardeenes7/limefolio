@@ -38,3 +38,8 @@ export default function NewPostPage() {
         </Page>
     );
 }
+
+
+export const metadata = {
+    title: "New Post",
+};

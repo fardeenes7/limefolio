@@ -8,3 +8,8 @@ export default function SubscriptionPage() {
         />
     );
 }
+
+
+export const metadata = {
+    title: "Subscription",
+};

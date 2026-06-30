@@ -46,3 +46,8 @@ export default async function BlogPostsPage() {
         </Page>
     );
 }
+
+
+export const metadata = {
+    title: "Posts",
+};
